@@ -1,0 +1,129 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <changeSet id="createColumnNumeroDocumento" author="deivy.spaulonci">
+        <addColumn tableName="honorario">
+            <column name="NUMERO_DOC" type="varchar(255)" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnStatusPagamento" author="deivy.spaulonci">
+        <addColumn tableName="honorario">
+            <column name="STATUS_PAGAMENTO" type="BIGINT" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnPercentual" author="deivy.spaulonci">
+        <addColumn tableName="honorario">
+            <column name="PERCENTUAL" type="DECIMAL(19, 4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnDataLancamento" author="deivy.spaulonci">
+        <addColumn tableName="honorario">
+            <column name="DATA_LANCAMENTO" type="DATETIME">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="createColumnNumeroDocumentoAud" author="deivy.spaulonci">
+        <addColumn tableName="honorario_aud">
+            <column name="NUMERO_DOC" type="varchar(255)" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnStatusPagamentoAud" author="deivy.spaulonci">
+        <addColumn tableName="honorario_aud">
+            <column name="STATUS_PAGAMENTO" type="BIGINT" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnPercentualAud" author="deivy.spaulonci">
+        <addColumn tableName="honorario_aud">
+            <column name="PERCENTUAL" type="DECIMAL(19, 4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnDataLancamentoAud" author="deivy.spaulonci">
+        <addColumn tableName="honorario_aud">
+            <column name="DATA_LANCAMENTO" type="DATETIME">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="permissao-pagar-honorario" author="deivy.spaulonci">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="644"/>
+            <column name="DESCRICAO" value="Pagar Honorario(s)"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="324"/>
+            <column name="ORDEM" valueNumeric="5"/>
+            <column name="CODIGO" value="gestao-processos:processos:honorario:pagar-honorario"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="configuracao-cliente-somente-numero-numero-documento-honorario" author="deivy.spaulonci">
+        <addColumn tableName="CONFIGURACAO_CLIENTE">
+            <column name="NUMDOCPROCHONORARIOSOMENTENUM" type="BOOLEAN" value="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="configuracao-cliente-aud-somente-numero-numero-documento-honorario" author="deivy.spaulonci">
+        <addColumn tableName="CONFIGURACAO_CLIENTE_AUD">
+            <column name="NUMDOCPROCHONORARIOSOMENTENUM" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="removerItemDuplicarStatusFinalRel" author="deivy.spaulonci">
+        <delete tableName="PERFIL_PERMISSAO">
+            <where>ID_PERMISSAO = 214</where>
+        </delete>
+    </changeSet>
+    <changeSet id="removerItemDuplicarStatusFinal" author="deivy.spaulonci">
+        <delete tableName="PERMISSAO">
+            <where>ID = 214</where>
+        </delete>
+    </changeSet>
+
+    <changeSet id="encerraExecucoesRotinasAntigas" author="andre.baroni">
+        <update tableName="rotina_execucao" >
+            <column name="rotina_status_id" value="2" />
+            <where>
+                rotina_status_id = 3
+            </where>
+        </update>
+    </changeSet>
+
+    <changeSet id="aumenta-tamanho-coluna-nome-tabela-formulario" author="andre.baroni">
+        <modifyDataType tableName="FORMULARIO" columnName="NOME" newDataType="VARCHAR(255)" />
+    </changeSet>
+
+    <changeSet id="aumenta-tamanho-coluna-identificador-tabela-formulario" author="andre.baroni">
+        <modifyDataType tableName="FORMULARIO" columnName="IDENTIFICADOR" newDataType="VARCHAR(255)" />
+    </changeSet>
+
+    <changeSet id="aumenta-tamanho-coluna-nome-tabela-formulario-aud" author="andre.baroni">
+        <modifyDataType tableName="FORMULARIO_AUD" columnName="NOME" newDataType="VARCHAR(255)" />
+    </changeSet>
+
+    <changeSet id="aumenta-tamanho-coluna-identificador-tabela-formulario-aud" author="andre.baroni">
+        <modifyDataType tableName="FORMULARIO_AUD" columnName="IDENTIFICADOR" newDataType="VARCHAR(255)" />
+    </changeSet>
+
+    <changeSet id="aumenta-tamanho-coluna-nome-tabela-formulario-log" author="andre.baroni">
+        <modifyDataType tableName="FORMULARIO_LOG" columnName="NOME" newDataType="VARCHAR(255)" />
+    </changeSet>
+
+    <changeSet id="aumenta-tamanho-coluna-identificador-tabela-formulario-log" author="andre.baroni" >
+        <modifyDataType tableName="FORMULARIO_LOG" columnName="IDENTIFICADOR" newDataType="VARCHAR(255)" />
+    </changeSet>
+
+</databaseChangeLog>

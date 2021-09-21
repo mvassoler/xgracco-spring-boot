@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!--TABELA FILA_ESPERA-->
+    <changeSet author="felipe.costa" id="create-table-FILA_ESPERA">
+        <createTable tableName="FILA_ESPERA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_ESPERA"/>
+            </column>
+
+            <column name="FK_FILA_ATIVA_ESPERA" type="BIGINT" />
+
+        </createTable>
+    </changeSet>
+
+    <!--TABELA FILA_ESPERA_AUD-->
+    <changeSet author="felipe.costa" id="create-table-FILA_ESPERA_AUD">
+        <createTable tableName="FILA_ESPERA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_ESPERA_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_ESPERA_AUD"/>
+            </column>
+
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="FK_FILA_ATIVA_ESPERA" type="BIGINT" />
+        </createTable>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet id="create-fk-FK_FILA_ESPERA" author="felipe.costa">
+        <addForeignKeyConstraint baseColumnNames="FK_FILA_ATIVA_ESPERA" baseTableName="FILA_ESPERA"
+                                 constraintName="FK_FILA_ATIVA_ESPERA_FILA_ESPERA"
+                                 referencedColumnNames="ID" referencedTableName="FILA"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="create-fk-FK_FILA_ATIVA_ESPERA" author="felipe.costa">
+        <addForeignKeyConstraint baseColumnNames="FK_FILA_ATIVA_ESPERA" baseTableName="FILA_ESPERA"
+                                 constraintName="FK_FILA__ATIVA_ESPERA_FILA_ESPERA"
+                                 referencedColumnNames="ID" referencedTableName="FILA"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="create-fk-FK_ID_AUD" author="felipe.costa">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="FILA_ESPERA_AUD"
+                                 constraintName="FK_ID_AUD_FILA_ESPERA"
+                                 referencedColumnNames="ID" referencedTableName="LOG_AUDITORIA"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!--Sequences-->
+    <changeSet author="felipe.costa" id="create-sequence-5.17.0" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_FILA_ESPERA"/>
+    </changeSet>
+
+</databaseChangeLog>

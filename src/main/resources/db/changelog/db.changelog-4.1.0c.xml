@@ -1,0 +1,124 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- Remove os registros da tabela AGENDAMENTO onde FK_TAREFA é nulo -->
+    <changeSet id="delete-AGENDAMENTO-where-FK_TAREFA-is-null" author="thiago.fogar">
+        <delete tableName="AGENDAMENTO">
+            <where>
+                FK_DADOSBASICOSTAREFA IN (SELECT ID FROM DADOSBASICOSTAREFA WHERE FK_TAREFA IS NULL)
+            </where>
+        </delete>
+    </changeSet>
+
+    <!-- Remove os registros da tabela DADOSBASICOSTAREFACAMPOS onde FK_TAREFA é nulo -->
+    <changeSet id="delete-DADOSBASICOSTAREFACAMPOS-where-FK_TAREFA-is-null" author="thiago.fogar">
+        <delete tableName="DADOSBASICOSTAREFACAMPOS">
+            <where>
+                FK_DADOSBASICOSTAREFA IN (SELECT ID FROM DADOSBASICOSTAREFA WHERE FK_TAREFA IS NULL)
+            </where>
+        </delete>
+    </changeSet>
+
+    <!-- Remove os registros da tabela DADOSBASICOSTAREFA onde FK_TAREFA é nulo -->
+    <changeSet id="delete-DADOSBASICOSTAREFA-where-FK_TAREFA-is-null" author="thiago.fogar">
+        <delete tableName="DADOSBASICOSTAREFA">
+            <where>FK_TAREFA IS NULL</where>
+        </delete>
+    </changeSet>
+
+    <!-- Cria Not-Null Constraint no campo FK_FLUXOTRABALHOTAREFA na tabela DadosBasicosTarefa -->
+    <changeSet author="thiago.fogar" id="add-unique-DADOSBASICOSTAREFA">
+        <addNotNullConstraint columnName="FK_FLUXOTRABALHOTAREFA" columnDataType="BIGINT"
+                              tableName="DADOSBASICOSTAREFA"/>
+    </changeSet>
+
+    <!-- Cria Not-Null Constraint no campo FK_FLUXOTRABALHOTAREFA na tabela CARTEIRA_EVENTO_TAREFA -->
+    <changeSet author="thiago.fogar" id="add-unique-CARTEIRA_EVENTO_TAREFA">
+        <addNotNullConstraint columnName="FK_FLUXOTRABALHOTAREFA" columnDataType="BIGINT"
+                              tableName="CARTEIRA_EVENTO_TAREFA"/>
+    </changeSet>
+
+    <!-- Cria Not-Null Constraint no campo FK_FLUXOTRABALHOTAREFA na tabela FILA_TAREFA -->
+    <changeSet author="thiago.fogar" id="add-unique-FILA_TAREFA">
+        <addNotNullConstraint columnName="FK_FLUXOTRABALHOTAREFA" columnDataType="BIGINT" tableName="FILA_TAREFA"/>
+    </changeSet>
+
+    <!-- Cria Not-Null Constraint no campo FK_FLUXOTRABALHOTAREFA na tabela ESTEIRA_TAREFA -->
+    <changeSet author="thiago.fogar" id="add-unique-ESTEIRA_TAREFA">
+        <addNotNullConstraint columnName="FK_FLUXOTRABALHOTAREFA" columnDataType="BIGINT" tableName="ESTEIRA_TAREFA"/>
+    </changeSet>
+
+    <!-- Cria UniqueKey nos campos FK_FLUXOTRABALHOTAREFA,ID_STATUS_FINAL,ID_STATUS na tabela TAREFA_STATUS_FINAL -->
+    <!--<changeSet author="thiago.fogar" id="add-unique-TAREFA_STATUS_FINAL">-->
+    <!--<addUniqueConstraint tableName="TAREFA_STATUS_FINAL" constraintName="UK_TAREFA_MOTIVO"-->
+    <!--columnNames="FK_FLUXOTRABALHOTAREFA,ID_STATUS_FINAL,ID_STATUS"/>-->
+    <!--</changeSet>-->
+
+    <changeSet author="thiago.fogar" id="drop-fk-FK_CONCLUSAOAUTOMATICA_TAREFA_STATUSFINAL">
+        <dropForeignKeyConstraint baseTableName="CONCLUSAOAUTOMATICA" constraintName="FK_CONCLUSAOAUTOMATICA_TSF"/>
+    </changeSet>
+
+    <changeSet id="drop-column-CONCLUSAO_AUTOMATICA-FK_TAREFASTATUSFINAL" author="thiago.fogar">
+        <dropColumn tableName="CONCLUSAOAUTOMATICA" columnName="FK_TAREFASTATUSFINAL"/>
+    </changeSet>
+
+    <changeSet id="add-column-CONCLUSAO_AUTOMATICA-FK_STATUSFINALCONCLUSAO" author="thiago.fogar">
+        <addColumn tableName="CONCLUSAOAUTOMATICA">
+            <column name="FK_STATUSFINALCONCLUSAO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!--<changeSet id="add-not-null-CONCLUSAO_AUTOMATICA-FK_STATUSFINALCONCLUSAO" author="thiago.fogar">-->
+        <!--<addNotNullConstraint tableName="CONCLUSAOAUTOMATICA" columnName="FK_STATUSFINALCONCLUSAO" columnDataType="BIGINT"/>-->
+    <!--</changeSet>-->
+
+    <changeSet author="thiago.fogar" id="add-fk-FK_CONCLUSAOAUTOMATICA_TAREFA_STATUS">
+        <addForeignKeyConstraint baseTableName="CONCLUSAOAUTOMATICA" baseColumnNames="FK_STATUSFINALCONCLUSAO"
+                                 constraintName="FK_CONCLUSAOAUTOMATICA_TAREFA_SF" referencedColumnNames="ID"
+                                 referencedTableName="STATUS_FINAL" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="delete-RELATORIOCAMPO_ACTHITASKINST" author="bruno.silva">
+        <delete tableName="RELATORIOCAMPO">
+            <where>
+                ID_RELATORIOPERFIL IN (SELECT ID FROM RELATORIOPERFIL WHERE CLASSE LIKE 'br.com.finchsolucoes.xgracco.domain.entity.camunda.ActHiTaskInst')
+            </where>
+        </delete>
+    </changeSet>
+
+    <changeSet id="delete-RELATORIOPERFIL_ACTHITASKINST" author="bruno.silva">
+        <delete tableName="RELATORIOPERFIL">
+            <where>
+                CLASSE LIKE 'br.com.finchsolucoes.xgracco.domain.entity.camunda.ActHiTaskInst'
+            </where>
+        </delete>
+    </changeSet>
+
+    <changeSet id="update-RELATORIOCAMPO_PROCESSO_PESSOA_NOME_AI" author="bruno.silva" dbms="${dbmsAutoIncrement}">
+        <sql>
+            update RELATORIOCAMPO set campo = campo + '.nomeRazaoSocial', classe = 'java.lang.String'
+            where classe like 'br.com.finchsolucoes.xgracco.domain.entity.Pessoa'
+            and campo like 'processo.%'
+        </sql>
+    </changeSet>
+
+    <changeSet id="update-RELATORIOCAMPO_PROCESSO_PESSOA_NOME_SEQ" author="bruno.silva" dbms="${dbmsSequence}">
+        <sql>
+            update RELATORIOCAMPO set campo = campo || '.nomeRazaoSocial', classe = 'java.lang.String'
+            where classe like 'br.com.finchsolucoes.xgracco.domain.entity.Pessoa'
+            and campo like 'processo.%'
+        </sql>
+    </changeSet>
+
+    <changeSet id="insert-rotina-job-tlegal" author="guilherme.camargo">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="8"/>
+            <column name="DESCRICAO" value="Publicações - Fornecedor T_Legal"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <changeSet author="raphael.moreira" id="insert-tipo-responsavel-agendamento-coordenador">
+        <insert tableName="TIPO_RESPONSAVEL_AGENDAMENTO">
+            <column name="ID" valueNumeric="5"/>
+            <column name="DESCRICAO" value="Coordenador"/>
+        </insert>
+    </changeSet>
+
+    <!-- INSERT INTO PERMISSAO -->
+    <changeSet author="thiago.fogar" id="insert-permissao-tarefa">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="573"/>
+            <column name="DESCRICAO" value="Visualizar tarefas automáticas"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="1"/>
+            <column name="ORDEM" valueNumeric="11"/>
+            <column name="CODIGO" value="gestao-processos:processos:tutelar:ver-tarefa-automatica"/>
+        </insert>
+    </changeSet>
+
+    <!-- INSERT INTO PERMISSAO -->
+    <changeSet author="thiago.fogar" id="insert-permissao-solicitacao">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="574"/>
+            <column name="DESCRICAO" value="Acessar Solicitações de Qualquer Usuário"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="293"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:notificacoes:solicitacoes:qualquer-usuario"/>
+        </insert>
+    </changeSet>
+
+    <!-- INSERT INTO PERMISSAO -->
+    <changeSet author="guilherme.camargo" id="insert-permissao-agendamento-multiplo">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="576"/>
+            <column name="DESCRICAO" value="Agendamento múltiplo"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="351"/>
+            <column name="ORDEM" valueNumeric="7"/>
+            <column name="CODIGO" value="gestao-processos:processos:tutelar:agendamento-multiplo"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

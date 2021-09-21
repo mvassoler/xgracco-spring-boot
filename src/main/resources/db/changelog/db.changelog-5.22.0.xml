@@ -1,0 +1,47 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!--DELETE PRE_CADASTRO_INFO_ADICIONAL SEM PROCESSO UNICO-->
+    <changeSet author="raphael.moreira" id="delete-PRE_CADASTRO_INFO_ADICIONAL-PROCESSOUNICO">
+        <sql>
+            DELETE FROM PRE_CADASTRO_INFO_ADICIONAL
+            WHERE FK_PRE_CADASTRO_PROCESSO IN (SELECT ID FROM PRE_CADASTRO_PROCESSO WHERE PROCESSOUNICO IS NULL)
+        </sql>
+    </changeSet>
+
+    <!--DELETE PRE_CADASTRO_PARTE SEM PROCESSO UNICO-->
+    <changeSet author="raphael.moreira" id="delete-PRE_CADASTRO_PARTE-PROCESSOUNICO">
+        <sql>
+            DELETE FROM PRE_CADASTRO_PARTE
+            WHERE FK_PRE_CADASTRO_PROCESSO IN (SELECT ID FROM PRE_CADASTRO_PROCESSO WHERE PROCESSOUNICO IS NULL)
+        </sql>
+    </changeSet>
+
+    <!--DELETE PRE_CADASTRO_PROCESSO_TAG SEM PROCESSO UNICO-->
+    <changeSet author="raphael.moreira" id="delete-PRE_CADASTRO_PROCESSO_TAG-PROCESSOUNICO">
+        <sql>
+            DELETE FROM PRE_CADASTRO_PROCESSO_TAG
+            WHERE FK_PRE_CADASTRO_PROCESSO IN (SELECT ID FROM PRE_CADASTRO_PROCESSO WHERE PROCESSOUNICO IS NULL)
+        </sql>
+    </changeSet>
+
+    <!--DELETE PRE_CADASTRO_USUARIO_RESPONSAVEL SEM PROCESSO UNICO-->
+    <changeSet author="raphael.moreira" id="delete-PRE_CADASTRO_USUARIO_RESPONSAVEL-PROCESSOUNICO">
+        <sql>
+            DELETE FROM PRE_CADASTRO_USUARIO_RESPONSAVEL
+            WHERE FK_PRE_CADASTRO_PROCESSO IN (SELECT ID FROM PRE_CADASTRO_PROCESSO WHERE PROCESSOUNICO IS NULL)
+        </sql>
+    </changeSet>
+
+    <!--DELETE PRE_CADASTRO_PROCESSO SEM PROCESSO UNICO-->
+    <changeSet author="raphael.moreira" id="delete-PRE_CADASTRO_PROCESSO-PROCESSOUNICO">
+        <sql>
+            DELETE FROM PRE_CADASTRO_PROCESSO
+            WHERE PROCESSOUNICO IS NULL
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

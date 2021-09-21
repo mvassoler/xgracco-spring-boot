@@ -1,0 +1,352 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="rodolpho.couto" id="1">
+        <createTable tableName="TIPO_RESP_CARTEIRA_TAREFA">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPO_RESP_CARTEIRA_TAREFA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="2">
+        <createTable tableName="TIPO_INTERVALO_CARTEIRA_TAREFA">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPO_INTERV_CARTEIRA_TAREFA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="3">
+        <insert tableName="TIPO_RESP_CARTEIRA_TAREFA">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Operação"/>
+        </insert>
+        <insert tableName="TIPO_RESP_CARTEIRA_TAREFA">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Específico"/>
+        </insert>
+        <insert tableName="TIPO_RESP_CARTEIRA_TAREFA">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Fila"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="4">
+        <insert tableName="TIPO_INTERVALO_CARTEIRA_TAREFA">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Minutos"/>
+        </insert>
+        <insert tableName="TIPO_INTERVALO_CARTEIRA_TAREFA">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Horas"/>
+        </insert>
+        <insert tableName="TIPO_INTERVALO_CARTEIRA_TAREFA">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Dias"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="5">
+        <createTable tableName="CARTEIRA_TAREFA_ACEITAR_PROC">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_TAREFA_ACEITAR_PRO"/>
+            </column>
+            <column name="ID_CARTEIRA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TAREFA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TIPO_RESPONSAVEL" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TIPO_INTERVALO" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INTERVALO" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DIAS_UTEIS" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_RESPONSAVEL" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="6">
+        <addForeignKeyConstraint baseColumnNames="ID_CARTEIRA" baseTableName="CARTEIRA_TAREFA_ACEITAR_PROC"
+                                 constraintName="FK_CAR_TAR_ACEI_PROC_CARTEIRA" referencedColumnNames="ID"
+                                 referencedTableName="CARTEIRA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="7">
+        <addForeignKeyConstraint baseColumnNames="ID_TAREFA" baseTableName="CARTEIRA_TAREFA_ACEITAR_PROC"
+                                 constraintName="FK_CAR_TAR_ACEI_PROC_TAREFA" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="8">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_RESPONSAVEL" baseTableName="CARTEIRA_TAREFA_ACEITAR_PROC"
+                                 constraintName="FK_CAR_TAR_ACEI_PROC_TIP_RESP" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_RESP_CARTEIRA_TAREFA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="9">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_INTERVALO" baseTableName="CARTEIRA_TAREFA_ACEITAR_PROC"
+                                 constraintName="FK_CAR_TAR_ACEI_PROC_TIP_INT" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_INTERVALO_CARTEIRA_TAREFA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="10">
+        <addForeignKeyConstraint baseColumnNames="ID_RESPONSAVEL" baseTableName="CARTEIRA_TAREFA_ACEITAR_PROC"
+                                 constraintName="FK_CAR_TAR_ACEI_PROC_RESP" referencedColumnNames="ID"
+                                 referencedTableName="USUARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="11" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CARTEIRA_TAREFA_ACEI_PROC"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="12">
+        <createTable tableName="CARTEIRA_TAREFA_RECUSAR_PROC">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_TAREFA_RECUSAR_PRO"/>
+            </column>
+            <column name="ID_CARTEIRA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TAREFA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TIPO_RESPONSAVEL" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TIPO_INTERVALO" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INTERVALO" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DIAS_UTEIS" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_RESPONSAVEL" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="13">
+        <addForeignKeyConstraint baseColumnNames="ID_CARTEIRA" baseTableName="CARTEIRA_TAREFA_RECUSAR_PROC"
+                                 constraintName="FK_CAR_TAR_RECU_PROC_CARTEIRA" referencedColumnNames="ID"
+                                 referencedTableName="CARTEIRA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="14">
+        <addForeignKeyConstraint baseColumnNames="ID_TAREFA" baseTableName="CARTEIRA_TAREFA_RECUSAR_PROC"
+                                 constraintName="FK_CAR_TAR_RECU_PROC_TAREFA" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="15">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_RESPONSAVEL" baseTableName="CARTEIRA_TAREFA_RECUSAR_PROC"
+                                 constraintName="FK_CAR_TAR_RECU_PROC_TIP_RESP" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_RESP_CARTEIRA_TAREFA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="16">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_INTERVALO" baseTableName="CARTEIRA_TAREFA_RECUSAR_PROC"
+                                 constraintName="FK_CAR_TAR_RECU_PROC_TIP_INT" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_INTERVALO_CARTEIRA_TAREFA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="17">
+        <addForeignKeyConstraint baseColumnNames="ID_RESPONSAVEL" baseTableName="CARTEIRA_TAREFA_RECUSAR_PROC"
+                                 constraintName="FK_CAR_TAR_RECU_PROC_RESP" referencedColumnNames="ID"
+                                 referencedTableName="USUARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="18" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CARTEIRA_TAREFA_RECU_PROC"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="19">
+        <createTable tableName="TIPO_ACAO_ROTINALOG">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPO_ACAO_LOG_ROTINA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Jordano" id="20">
+        <addColumn tableName="ROTINALOG">
+            <column name="ID_TIPO_ACAO_ROTINALOG" type="INTEGER"/>
+            <column name="DATA_ACAO" type="DATETIME"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="OBSERVACAO" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="21">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_ACAO_ROTINALOG" baseTableName="ROTINALOG"
+                                 constraintName="FK_TIPO_ACAO_ROTINALOG" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_ACAO_ROTINALOG" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="22">
+        <insert tableName="TIPO_ACAO_ROTINALOG">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Resolvido"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="23">
+        <createTable tableName="PROCESSO_CASE_INSTANCE">
+            <column name="ID_CASE_INSTANCE" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_CASE_INSTANCE"/>
+            </column>
+            <column name="ID_PROCESSO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="24">
+        <addForeignKeyConstraint baseColumnNames="ID_PROCESSO" baseTableName="PROCESSO_CASE_INSTANCE"
+                                 constraintName="FK_PROCESSO_CASE_INST_PROCESSO" referencedColumnNames="ID"
+                                 referencedTableName="PROCESSO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="25">
+        <sql>
+            INSERT INTO PROCESSO_CASE_INSTANCE (ID_CASE_INSTANCE, ID_PROCESSO)
+            SELECT CASE_INSTANCE_ID, ID FROM PROCESSO WHERE CASE_INSTANCE_ID IS NOT NULL
+        </sql>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="26">
+        <addForeignKeyConstraint baseColumnNames="CASE_INSTANCE_ID" baseTableName="PROCESSO"
+                                 constraintName="FK_PROCESSO_PROCESSO_CASE_INST"
+                                 referencedColumnNames="ID_CASE_INSTANCE"
+                                 referencedTableName="PROCESSO_CASE_INSTANCE" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="27">
+        <addColumn tableName="PROCESSO">
+            <column name="FK_FASE" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="28">
+        <addForeignKeyConstraint baseColumnNames="FK_FASE" baseTableName="PROCESSO"
+                                 constraintName="FK_FASE_PROCESSO" referencedColumnNames="ID"
+                                 referencedTableName="FASE" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <changeSet author="paulo.marcon" id="29">
+        <delete tableName="RISCOCAUSA">
+            <where>DESCRICAO = 'Inexistente'</where>
+        </delete>
+        <delete tableName="RISCOCAUSA">
+            <where>DESCRICAO = 'Perda Possível'</where>
+        </delete>
+        <delete tableName="RISCOCAUSA">
+            <where>DESCRICAO = 'Perda Provável'</where>
+        </delete>
+        <delete tableName="RISCOCAUSA">
+            <where>DESCRICAO = 'Perda Remota'</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="30">
+        <createTable tableName="POSSIBILIDADEPERDA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_POSSIBILIDADEPERDA"/>
+            </column>
+            <column name="FK_RISCOCAUSA" type="BIGINT"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+            <column name="PERCENTUAL" type="DECIMAL(19,4)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="31">
+        <createSequence sequenceName="SEQ_POSSIBILIDADEPERDA"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="32">
+        <addForeignKeyConstraint baseColumnNames="FK_RISCOCAUSA" baseTableName="POSSIBILIDADEPERDA"
+                                 constraintName="FK_POSSIBILIDADEPERDA_RISCOCAU" referencedColumnNames="ID"
+                                 referencedTableName="RISCOCAUSA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="33">
+        <addForeignKeyConstraint baseColumnNames="FK_CARTEIRA" baseTableName="POSSIBILIDADEPERDA"
+                                 constraintName="FK_POSSIBILIDADEPERDA_CARTEIRA" referencedColumnNames="ID"
+                                 referencedTableName="CARTEIRA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="34">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="88"/>
+            <column name="DESCRICAO" value="Permissão para cadastrar possibilidades de perda"/>
+            <column name="EXIBE" valueBoolean="true"/>
+            <column name="FEATURE" value="possibilidadeperda"/>
+            <column name="REDIRECT" value="/possibilidadeperda/lista"/>
+            <column name="TIPO" value="CADASTROPROCESSO"/>
+            <column name="CODIGO" value="Processo | Possibilidade de Perda"/>
+            <column name="DIRETORIOVIEW" value="/possibilidadeperda"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="35">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="88"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="88"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="88"/>
+            <column name="ID_OPERACAO" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

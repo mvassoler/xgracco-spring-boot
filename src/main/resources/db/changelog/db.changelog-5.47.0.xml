@@ -1,0 +1,68 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="eloi.correia" id="inserção do item de menu USUARIOS LOGADOS">
+        <sql>
+            UPDATE PERMISSAO
+            SET DESCRICAO = 'Usuários Conectados'
+            WHERE ID = 652
+        </sql>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="Controla o tempo de vida do token da aplicação em segundos (3600 = 1 hora)">
+        <insert tableName="PARAMETROGLOBAL">
+            <column name="ID" value="27"/>
+            <column name="CHAVE" value="ParametroTempoVidaToken"/>
+            <column name="DESCRICAO" value="Controle o tempo do token da aplicação em segundos (3600 = 1 hora)"/>
+            <column name="VALOR" value="3600"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="Lista com os possíveis nomes de parâmetros que passam pelo proxy">
+        <insert tableName="PARAMETROGLOBAL">
+            <column name="ID" value="28"/>
+            <column name="CHAVE" value="ParametroListaDePossiveisNomesProxy"/>
+            <column name="DESCRICAO" value="Lista com os possíveis nomes de parâmetros que passam pelo proxy"/>
+            <column name="VALOR"
+                    value="X-Forwarded-For,Proxy-Client-IP,WL-Proxy-Client-IP,HTTP_X_FORWARDED_FOR,HTTP_X_FORWARDED,HTTP_X_CLUSTER_CLIENT_IP,HTTP_CLIENT_IP,HTTP_FORWARDED_FOR,HTTP_FORWARDED,HTTP_VIA,REMOTE_ADDR,X-REAL-IP"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="nathan.barbosa" id="Mudança da frase TEMPO_DE_VIDA_FRONTEND na tela Parâmetros">
+        <sql>
+            UPDATE PARAMETROGLOBAL
+            SET DESCRICAO = 'Controla em segundos o tempo que a aplicação deve aguardar comunicação antes de invalidar a sessão (Mínimo: 30 segundos)'
+            WHERE CHAVE = 'ParametroTimeoutFrontend'
+        </sql>
+    </changeSet>
+
+    <changeSet author="nathan.barbosa" id="Mudança da frase TEMPO_IDLE na tela Parâmetros">
+        <sql>
+            UPDATE PARAMETROGLOBAL
+            SET DESCRICAO = 'Controla o tempo máximo em minutos que o sistema pode ficar ocioso com a sessão ativa (Máximo: 60 minutos)'
+            WHERE CHAVE = 'ParametroTimeIdleFrontend'
+        </sql>
+    </changeSet>
+
+    <changeSet author="nathan.barbosa" id="Mudança da frase TEMPO_VIDA_TOKEN na tela Parâmetros">
+        <sql>
+            UPDATE PARAMETROGLOBAL
+            SET DESCRICAO = 'Controla o tempo do token da aplicação em segundos (Máximo: 3600 segundos = 1 hora)'
+            WHERE CHAVE = 'ParametroTempoVidaToken'
+        </sql>
+    </changeSet>
+
+    <changeSet author="nathan.barbosa" id="mudança de nome 'Carteiras' para 'Carteiras de Processos'">
+        <sql>
+            UPDATE PERMISSAO
+            SET DESCRICAO = 'Carteiras de Processos'
+            WHERE ID = 11
+        </sql>
+    </changeSet>
+
+
+
+</databaseChangeLog>

@@ -1,0 +1,216 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="renan.gigliotti" id="drop-table-CARTEIRA_TAREFA_ACEITAR_PROC">
+        <dropTable tableName="CARTEIRA_TAREFA_ACEITAR_PROC"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="drop-sequence-SEQ_CARTEIRA_TAREFA_ACEI_PROC" dbms="${dbmsSequence}">
+        <dropSequence sequenceName="SEQ_CARTEIRA_TAREFA_ACEI_PROC"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="drop-table-CARTEIRA_TAREFA_RECUSAR_PROC">
+        <dropTable tableName="CARTEIRA_TAREFA_RECUSAR_PROC"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="drop-sequence-SEQ_CARTEIRA_TAREFA_RECU_PROC" dbms="${dbmsSequence}">
+        <dropSequence sequenceName="SEQ_CARTEIRA_TAREFA_RECU_PROC"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-table-EVENTO">
+        <createTable tableName="EVENTO">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_EVENTO"/>
+            </column>
+            <column name="NOME" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="insert-EVENTO">
+        <insert tableName="EVENTO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="NOME" value="Incluir Processo"/>
+        </insert>
+        <insert tableName="EVENTO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="NOME" value="Aceitar Processo"/>
+        </insert>
+        <insert tableName="EVENTO">
+            <column name="ID" valueNumeric="3"/>
+            <column name="NOME" value="Recusar Processo"/>
+        </insert>
+        <insert tableName="EVENTO">
+            <column name="ID" valueNumeric="4"/>
+            <column name="NOME" value="Nova Publicação"/>
+        </insert>
+        <insert tableName="EVENTO">
+            <column name="ID" valueNumeric="5"/>
+            <column name="NOME" value="Novo Andamento"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-table-CARTEIRA_EVENTO">
+        <createTable tableName="CARTEIRA_EVENTO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_EVENTO"/>
+            </column>
+            <column name="ID_CARTEIRA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_EVENTO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NOME" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ATIVO" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="add-fk-FK_CARTEIRA_EVENTO_CARTEIRA">
+        <addForeignKeyConstraint baseColumnNames="ID_CARTEIRA" baseTableName="CARTEIRA_EVENTO"
+                                 constraintName="FK_CARTEIRA_EVENTO_CARTEIRA" referencedColumnNames="ID"
+                                 referencedTableName="CARTEIRA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="add-fk-FK_CARTEIRA_EVENTO_EVENTO">
+        <addForeignKeyConstraint baseColumnNames="ID_EVENTO" baseTableName="CARTEIRA_EVENTO"
+                                 constraintName="FK_CARTEIRA_EVENTO_EVENTO" referencedColumnNames="ID"
+                                 referencedTableName="EVENTO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-sequence-SEQ_CARTEIRA_EVENTO" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CARTEIRA_EVENTO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-table-CARTEIRA_EVENTO_TAREFA">
+        <createTable tableName="CARTEIRA_EVENTO_TAREFA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_EVENTO_TAREFA"/>
+            </column>
+            <column name="ID_CARTEIRA_EVENTO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TAREFA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TIPO_RESPONSAVEL" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TIPO_INTERVALO" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INTERVALO" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DIAS_UTEIS" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_RESPONSAVEL" type="BIGINT"/>
+            <column name="CONDICAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="add-fk-FK_CAR_EVE_TAR_CAR_EVE">
+        <addForeignKeyConstraint baseColumnNames="ID_CARTEIRA_EVENTO" baseTableName="CARTEIRA_EVENTO_TAREFA"
+                                 constraintName="FK_CAR_EVE_CAR_EVE_TAR" referencedColumnNames="ID"
+                                 referencedTableName="CARTEIRA_EVENTO" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="add-fk-FK_CAR_EVE_TAR_TAREFA">
+        <addForeignKeyConstraint baseColumnNames="ID_TAREFA" baseTableName="CARTEIRA_EVENTO_TAREFA"
+                                 constraintName="FK_CAR_EVE_TAR_CARTEIRA" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="add-fk-FK_CAR_EVE_TAR_TIP_RESP">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_RESPONSAVEL" baseTableName="CARTEIRA_EVENTO_TAREFA"
+                                 referencedTableName="TIPO_RESP_CARTEIRA_TAREFA" deferrable="false"
+                                 constraintName="FK_CAR_EVE_TAR_TIP_RESP" referencedColumnNames="ID"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="add-fk-FK_CAR_EVE_TAR_TIP_INT">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_INTERVALO" baseTableName="CARTEIRA_EVENTO_TAREFA"
+                                 constraintName="FK_CAR_EVE_TAR_TIP_INT" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_INTERVALO_CARTEIRA_TAREFA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="add-fk-FK_CAR_EVE_TAR_RESP">
+        <addForeignKeyConstraint baseColumnNames="ID_RESPONSAVEL" baseTableName="CARTEIRA_EVENTO_TAREFA"
+                                 constraintName="FK_CAR_EVE_TAR_RESP" referencedColumnNames="ID"
+                                 referencedTableName="USUARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-sequence-SEQ_CARTEIRA_EVENTO_TAREFA" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CARTEIRA_EVENTO_TAREFA"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-table-CARTEIRA_EVENTO_FUNCAO">
+        <createTable tableName="CARTEIRA_EVENTO_FUNCAO">
+            <column name="ID_CARTEIRA_EVENTO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_EVENTO_FUNCAO"/>
+            </column>
+            <column name="ID_FUNCAO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_EVENTO_FUNCAO"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="add-fk-FK_CAR_EVE_FUN_EVENTO">
+        <addForeignKeyConstraint baseColumnNames="ID_CARTEIRA_EVENTO" baseTableName="CARTEIRA_EVENTO_FUNCAO"
+                                 constraintName="FK_CAR_EVE_FUN_EVENTO" referencedColumnNames="ID"
+                                 referencedTableName="CARTEIRA_EVENTO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="add-fk-FK_CAR_EVE_FUN_FUNCAO">
+        <addForeignKeyConstraint baseColumnNames="ID_FUNCAO" baseTableName="CARTEIRA_EVENTO_FUNCAO"
+                                 constraintName="FK_CAR_EVE_FUN_FUNCAO" referencedColumnNames="ID"
+                                 referencedTableName="FUNCAO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-table-CARTEIRA_EVENTO_TAREFA_TAG">
+        <createTable tableName="CARTEIRA_EVENTO_TAREFA_TAG">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_EVENTO_TAREFA_TAG"/>
+            </column>
+            <column name="ID_CARTEIRA_EVENTO_TAREFA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TAG" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="add-fk-FK_CAR_EVE_TAR_TAG_CAR_EVE_TAR">
+        <addForeignKeyConstraint baseColumnNames="ID_CARTEIRA_EVENTO_TAREFA" baseTableName="CARTEIRA_EVENTO_TAREFA_TAG"
+                                 constraintName="FK_CAR_EVE_TAR_TAG_CAR_EVE_TAR" referencedColumnNames="ID"
+                                 referencedTableName="CARTEIRA_EVENTO_TAREFA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-sequence-SEQ_CARTEIRA_EVENTO_TAREFA" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CARTEIRA_EVENTO_TAREFA"/>
+    </changeSet>
+
+</databaseChangeLog>

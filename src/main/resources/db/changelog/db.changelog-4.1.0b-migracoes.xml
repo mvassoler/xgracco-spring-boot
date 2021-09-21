@@ -1,0 +1,349 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="create-table-TMP_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <createTable tableName="TMP_FLUXOTRABALHOTAREFA">
+            <column name="ID_TAREFA" type="BIGINT"></column>
+            <column name="ID_TAREFANOVO" type="BIGINT"></column>
+            <column name="ID_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </createTable>
+    </changeSet>
+
+    <!-- Altera o valor do auto-incremento da tabela TAREFA para 5000 -->
+    <changeSet id="reiniciar-sequence-TAREFA" author="thiago.fogar" dbms="${dbmsAutoIncrement}">
+        <sql>
+            DBCC CHECKIDENT('TAREFA', RESEED, 5000)
+        </sql>
+    </changeSet>
+
+    <!-- Altera o valor da Sequence SEQ_TAREFA para 5000 -->
+    <changeSet id="reiniciar-sequence-TAREFA" author="thiago.fogar" dbms="${dbmsSequence}">
+        <sql>
+            ALTER SEQUENCE SEQ_TAREFA RESTART WITH 5000
+        </sql>
+    </changeSet>
+
+    <!-- Normaliza o nome das tarefas -->
+    <changeSet id="normalizar-NOME-TAREFA" author="thiago.fogar" dbms="${dbmsAutoIncrement}">
+        <sql>
+            update tarefa set nome = ltrim(rtrim(replace(replace(nome, CHAR(10), ''), CHAR(13), '')))
+        </sql>
+    </changeSet>
+
+    <!-- Normaliza o nome das tarefas -->
+    <changeSet id="normalizar-NOME-TAREFA" author="thiago.fogar" dbms="${dbmsSequence}">
+        <sql>
+            update tarefa set nome = trim(regexp_replace(nome, '\r|\n', '', 'g'))
+        </sql>
+    </changeSet>
+
+    <!-- Insere as tarefas a partir do ID 5000 -->
+    <changeSet id="insert-novas-tarefas" author="thiago.fogar" dbms="${dbmsAutoIncrement}">
+        <sql>
+            insert into tarefa (nome)
+            SELECT DISTINCT NOME FROM TAREFA
+        </sql>
+    </changeSet>
+
+    <!-- Insere as tarefas a partir do ID 5000 -->
+    <changeSet id="insert-novas-tarefas" author="thiago.fogar" dbms="${dbmsSequence}">
+        <sql>
+            insert into tarefa (id, nome)
+            SELECT NEXTVAL('SEQ_TAREFA'), T.NOME
+            FROM (SELECT DISTINCT NOME FROM TAREFA) AS T;
+        </sql>
+    </changeSet>
+
+    <!-- Migração dos dados SQL SERVER -->
+    <changeSet id="refatoracao-fluxo-MIGRAR-TAREFAS" author="thiago.fogar" dbms="${dbmsAutoIncrement}">
+        <sql endDelimiter="$" splitStatements="false">
+            DECLARE @ID_TAREFA BIGINT;
+            DECLARE @NOME_TAREFA VARCHAR(255);
+
+            DECLARE TAREFA_CURSOR CURSOR FOR
+            SELECT ID, NOME
+            FROM TAREFA WHERE ID >= 5000;
+
+            OPEN TAREFA_CURSOR
+            FETCH NEXT FROM TAREFA_CURSOR INTO @ID_TAREFA, @NOME_TAREFA
+
+            WHILE @@FETCH_STATUS = 0
+            BEGIN
+
+            INSERT INTO FLUXO_TRABALHO_TAREFA (FK_FLUXOTRABALHO, FK_TAREFA, ATIVO)
+            SELECT ID_FLUXO_TRABALHO, @ID_TAREFA, ATIVO
+            FROM TAREFA
+            WHERE NOME = @NOME_TAREFA
+            AND ID_FLUXO_TRABALHO IS NOT NULL;
+
+            INSERT INTO TMP_FLUXOTRABALHOTAREFA (ID_FLUXOTRABALHOTAREFA, ID_TAREFANOVO, ID_TAREFA)
+            SELECT FTT.ID, T.ID AS ID_TAREFA_NOVO, T2.ID AS ID_TAREFA_ANTIGO
+            FROM FLUXO_TRABALHO_TAREFA FTT
+            INNER JOIN TAREFA T ON T.ID = FTT.FK_TAREFA
+            INNER JOIN TAREFA T2 ON T2.NOME = T.NOME AND T.ID != T2.ID AND T2.ID_FLUXO_TRABALHO = FTT.FK_FLUXOTRABALHO
+            WHERE T.ID = @ID_TAREFA
+
+            FETCH NEXT FROM TAREFA_CURSOR INTO @ID_TAREFA, @NOME_TAREFA
+            END
+
+            CLOSE TAREFA_CURSOR
+            DEALLOCATE TAREFA_CURSOR
+        </sql>
+    </changeSet>
+
+    <changeSet id="refatoracao-fluxo-MIGRAR-TAREFAS" author="thiago.fogar" dbms="${dbmsSequence}">
+        <sql endDelimiter="$$" splitStatements="false">
+            CREATE OR REPLACE FUNCTION importar_tarefas()
+            returns void AS
+            $$
+            DECLARE
+            v_ID_TAREFA BIGINT;
+            v_NOME_TAREFA VARCHAR(255);
+            TAREFA_CURSOR CURSOR FOR
+            SELECT ID, NOME FROM TAREFA WHERE ID >= 5000;
+
+            BEGIN
+
+            OPEN TAREFA_CURSOR;
+
+            FETCH NEXT FROM TAREFA_CURSOR INTO v_ID_TAREFA, v_NOME_TAREFA;
+
+            WHILE FOUND
+            LOOP
+
+            INSERT INTO FLUXO_TRABALHO_TAREFA (ID, FK_FLUXOTRABALHO, FK_TAREFA, ATIVO)
+            SELECT NEXTVAL('SEQ_FLUXOTRABALHOTAREFA'), ID_FLUXO_TRABALHO, v_ID_TAREFA, ATIVO
+            FROM TAREFA
+            WHERE NOME = v_NOME_TAREFA
+            AND ID_FLUXO_TRABALHO IS NOT NULL;
+
+            INSERT INTO TMP_FLUXOTRABALHOTAREFA (ID_FLUXOTRABALHOTAREFA, ID_TAREFANOVO, ID_TAREFA)
+            SELECT FTT.ID, T.ID AS ID_TAREFA_NOVO, T2.ID AS ID_TAREFA_ANTIGO
+            FROM FLUXO_TRABALHO_TAREFA FTT
+            INNER JOIN TAREFA T ON T.ID = FTT.FK_TAREFA
+            INNER JOIN TAREFA T2 ON T2.NOME = T.NOME AND T.ID != T2.ID AND T2.ID_FLUXO_TRABALHO = FTT.FK_FLUXOTRABALHO
+            WHERE T.ID = v_ID_TAREFA;
+
+            FETCH NEXT FROM TAREFA_CURSOR INTO v_ID_TAREFA, v_NOME_TAREFA;
+            END LOOP;
+
+            CLOSE TAREFA_CURSOR;
+            END;
+            $$
+
+            LANGUAGE plpgsql;
+
+            SELECT importar_tarefas();
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-DADOSBASICOSTAREFA" author="thiago.fogar">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA as T
+            WHERE T.ID_TAREFA = FK_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-TAREFA_STATUS_FINAL" author="thiago.fogar">
+        <sql>
+            UPDATE TAREFA_STATUS_FINAL
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = TAREFA_STATUS_FINAL.ID_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-TAREFA_STATUS_FINAL_AGENDA" author="thiago.fogar">
+        <sql>
+            UPDATE TAREFA_STATUS_FINAL_AGENDA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = TAREFA_STATUS_FINAL_AGENDA.ID_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-HISTORICO_FILA_PESSOA" author="thiago.fogar">
+        <sql>
+            UPDATE HISTORICO_FILA_PESSOA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = FK_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-HISTORICO_FILA_DEVOLUCAO" author="thiago.fogar">
+        <sql>
+            UPDATE HISTORICO_FILA_DEVOLUCAO
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = FK_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-ATENDIMENTO_FILA_PESSOA" author="thiago.fogar">
+        <sql>
+            UPDATE ATENDIMENTO_FILA_PESSOA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = FK_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-FILA_TAREFA" author="thiago.fogar">
+        <sql>
+            UPDATE FILA_TAREFA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = TAREFA_ID
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-ESTEIRA_TAREFA" author="thiago.fogar">
+        <sql>
+            UPDATE ESTEIRA_TAREFA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = ESTEIRA_TAREFA.ID_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-CONTRATOCLAUSULA_TAREFA" author="thiago.fogar">
+        <sql>
+            UPDATE CONTRATOCLAUSULA_TAREFA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = CONTRATOCLAUSULA_TAREFA.ID_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-PAINEL_TAREFA" author="thiago.fogar">
+        <sql>
+            UPDATE PAINEL_TAREFA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = FK_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-CARTEIRA_EVENTO_TAREFA" author="thiago.fogar">
+        <sql>
+            UPDATE CARTEIRA_EVENTO_TAREFA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = CARTEIRA_EVENTO_TAREFA.ID_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-CONCLUSAOAUTOMATICATAREFA" author="thiago.fogar">
+        <sql>
+            UPDATE CONCLUSAOAUTOMATICATAREFA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = FK_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-CONCLUSAOAUTOMATICA" author="thiago.fogar">
+        <sql>
+            UPDATE CONCLUSAOAUTOMATICA
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = FK_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-MODELOGENDAMENTO" author="thiago.fogar">
+        <sql>
+            UPDATE MODELOGENDAMENTO
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = FK_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="UPDATE-TAREFAS-ATIVO-FALSE" author="thiago.fogar" dbms="${dbmsAutoIncrement}">
+       <sql>
+           UPDATE TAREFA SET ATIVO = 0 WHERE ID &lt; 5000
+       </sql>
+    </changeSet>
+
+    <changeSet id="UPDATE-TAREFAS-ATIVO-FALSE" author="Jordano" dbms="${dbmsSequence}">
+       <sql>
+           UPDATE TAREFA SET ATIVO = FALSE WHERE ID &lt; 5000
+       </sql>
+    </changeSet>
+
+    <changeSet id="update-nome-tarefas-antigas" author="paulo.marcon">
+        <sql>
+            UPDATE TAREFA SET NOME = NOME WHERE ID &lt; 5000
+        </sql>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em CONTRATOCLAUSULA_TAREFA_AUD -->
+    <changeSet id="alter-table-CONTRATOCLAUSULA_TAREFA_AUD-add-FK_FLUXOTRABALHOTAREFA" author="andre.baroni">
+        <addColumn tableName="CONTRATOCLAUSULA_TAREFA_AUD">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="migrar-tarefa-CONTRATOCLAUSULA_TAREFA_AUD" author="andre.baroni">
+        <sql>
+            UPDATE CONTRATOCLAUSULA_TAREFA_AUD
+            SET FK_FLUXOTRABALHOTAREFA = T.ID_FLUXOTRABALHOTAREFA
+            FROM TMP_FLUXOTRABALHOTAREFA T WHERE T.ID_TAREFA = CONTRATOCLAUSULA_TAREFA_AUD.ID_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="drop-primary-key-from-contratoclausula-tarefa" author="andre.baroni">
+        <dropPrimaryKey constraintName="pk_contrato_clausula_tarefa"
+                        tableName="contratoclausula_tarefa"/>
+    </changeSet>
+
+    <changeSet id="drop-not-null-constraint-from-id-tarefa-contratoclausula-tarefa" author="andre.baroni">
+        <dropNotNullConstraint tableName="contratoclausula_tarefa" columnName="id_tarefa" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet id="add-not-null-constraint-into-fk-fluxotrabalhotarefa-contratoclausula-tarefa" author="andre.baroni">
+        <addNotNullConstraint tableName="contratoclausula_tarefa" columnName="fk_fluxotrabalhotarefa" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet id="add-new-primary-key-into-contratoclausula-tarefa" author="andre.baroni">
+        <addPrimaryKey tableName="contratoclausula_tarefa"
+                       constraintName="pk_contrato_clausula_tarefa"
+                       columnNames="id_contrato_clausula, fk_fluxotrabalhotarefa" />
+    </changeSet>
+
+    <changeSet id="add-not-null-constraint-into-fk-fluxotrabalhotarefa-contratoclausula-tarefa_aud" author="andre.baroni">
+        <addNotNullConstraint tableName="contratoclausula_tarefa_aud" columnName="fk_fluxotrabalhotarefa" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <!-- Adiciona ligação entre contratoclausula_tarefa e fluxo_trabalho_tarefa -->
+    <changeSet id="add-fk-into-contratoclausula-tarefa-to-fluxo-trabalho-tarefa" author="andre.baroni">
+        <addForeignKeyConstraint baseTableName="contratoclausula_tarefa"
+                                 baseColumnNames="fk_fluxotrabalhotarefa"
+                                 constraintName="fkclausula_tarefa_fluxo_trabalho_tarefa"
+                                 referencedTableName="fluxo_trabalho_tarefa"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <!-- Adiciona ligação entre contratoclausula_tarefa_aud e fluxo_trabalho_tarefa -->
+    <changeSet id="add-fk-into-contratoclausula-tarefa-aud-to-fluxo-trabalho-tarefa" author="andre.baroni">
+        <addForeignKeyConstraint baseTableName="contratoclausula_tarefa_aud"
+                                 baseColumnNames="fk_fluxotrabalhotarefa"
+                                 constraintName="fkclausula_tarefa_aud_fluxo_trabalho_tarefa"
+                                 referencedTableName="fluxo_trabalho_tarefa"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="drop-primary-key-from-contratoclausula-tarefa-aud" author="andre.baroni">
+        <dropPrimaryKey constraintName="pk_contratoclausula_tarefa_aud"
+                        tableName="contratoclausula_tarefa_aud" />
+    </changeSet>
+
+    <changeSet id="drop-not-null-constraint-from-id-tarefa-contratoclausula-tarefa-aud" author="andre.baroni">
+        <dropNotNullConstraint tableName="contratoclausula_tarefa_aud" columnName="id_tarefa" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet id="add-not-null-constraint-into-fk-fluxotrabalhotarefa-contratoclausula-tarefa-aud" author="andre.baroni">
+        <addNotNullConstraint tableName="contratoclausula_tarefa_aud" columnName="fk_fluxotrabalhotarefa" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet id="add-new-primary-key-into-contratoclausula-tarefa-aud" author="andre.baroni">
+        <addPrimaryKey tableName="contratoclausula_tarefa_aud"
+                       constraintName="pk_contratoclausula_tarefa_aud"
+                       columnNames="id_contrato_clausula, fk_fluxotrabalhotarefa, id_aud" />
+    </changeSet>
+
+</databaseChangeLog>

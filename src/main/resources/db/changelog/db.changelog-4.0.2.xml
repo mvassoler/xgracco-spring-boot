@@ -1,0 +1,764 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- INSERT INTO EVENTO -->
+    <changeSet author="raphael.moreira" id="insert-evento-incluir-despesa">
+        <insert tableName="EVENTO">
+            <column name="ID" valueNumeric="6"/>
+            <column name="NOME" value="Incluir Despesa"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="insert-evento-alterar-despesa">
+        <insert tableName="EVENTO">
+            <column name="ID" valueNumeric="7"/>
+            <column name="NOME" value="Alterar Despesa"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="addColumn-DADOSBASICOSTAREFA-PROCESSODESPESAS">
+        <addColumn tableName="DADOSBASICOSTAREFA">
+            <column name="FK_PROCESSODESPESAS" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="addContraint-PROCESSODESPESAS-DADOSBASICOSTAREFA">
+        <addForeignKeyConstraint baseColumnNames="FK_PROCESSODESPESAS" baseTableName="DADOSBASICOSTAREFA"
+                                 constraintName="FK_DESPESA_TAREFA" referencedColumnNames="ID"
+                                 referencedTableName="PROCESSODESPESAS" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="addColumn-DADOSBASICOSTAREFA_AUD-PROCESSODESPESAS">
+        <addColumn tableName="DADOSBASICOSTAREFA_AUD">
+            <column name="FK_PROCESSODESPESAS" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="addContraint-PROCESSODESPESAS-DADOSBASICOSTAREFA_AUD">
+        <addForeignKeyConstraint baseColumnNames="FK_PROCESSODESPESAS" baseTableName="DADOSBASICOSTAREFA_AUD"
+                                 constraintName="FK_DESPESA_AUD_TAREFA" referencedColumnNames="ID"
+                                 referencedTableName="PROCESSODESPESAS" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <!-- PEDIDO -->
+    <changeSet author="guilherme.camargo" id="add-columns-valores-tabela-pedido">
+        <addColumn tableName="PEDIDO">
+            <column name="VALOR2" type="DECIMAL(19, 2)"/>
+        </addColumn>
+        <addColumn tableName="PEDIDO">
+            <column name="VALOR3" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="guilherme.camargo" id="add-columns-valores-tabela-pedidoAUD">
+        <addColumn tableName="PEDIDO_AUD">
+            <column name="VALOR2" type="DECIMAL(19, 2)"/>
+        </addColumn>
+        <addColumn tableName="PEDIDO_AUD">
+            <column name="VALOR3" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="add-columns-valor-provisao-tabela-pedido">
+        <addColumn tableName="PEDIDO">
+            <column name="VALORPROVISAO2" type="DECIMAL(19, 2)"/>
+        </addColumn>
+        <addColumn tableName="PEDIDO">
+            <column name="VALORPROVISAO3" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="guilherme.camargo" id="add-columns-valor-provisao-tabela-pedido-aud">
+        <addColumn tableName="PEDIDO_AUD">
+            <column name="VALORPROVISAO2" type="DECIMAL(19, 2)"/>
+        </addColumn>
+        <addColumn tableName="PEDIDO_AUD">
+            <column name="VALORPROVISAO3" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+
+    <!-- UPDATE PEDIDOS JÁ EXISTENTES -->
+    <changeSet author="guilherme.camargo" id="update-columns-value-0-table-pedidos">
+        <update tableName="PEDIDO">
+            <column name="VALOR2" valueNumeric="0"/>
+            <column name="VALOR3" valueNumeric="0"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="renan.peres" id="addColumn-PROCESSO-RESUMO">
+        <addColumn tableName="PROCESSO">
+            <column name="RESUMO" type="VARCHAR(2000)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="renan.peres" id="addColumn-PROCESSO-RESUMO_AUD">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="RESUMO" type="VARCHAR(2000)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="create-table-USUARIO-ESCRITORIO">
+        <createTable tableName="USUARIO_ESCRITORIO">
+            <column name="FK_USUARIO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_ESCRITORIO"/>
+            </column>
+            <column name="FK_ESCRITORIO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_ESCRITORIO"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-column-USUARIO-ESCRITORIO-PRINCIPAL">
+        <addColumn tableName="USUARIO_ESCRITORIO">
+            <column name="PRINCIPAL" type="BOOLEAN"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-index-in-dadosbasicostarefa-to-processo" author="guilherme.camargo">
+        <createIndex indexName="idx_dbt_processo"
+                     tableName="DADOSBASICOSTAREFA">
+            <column name="FK_PROCESSO" type="BIGINT"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="create-index-in-processo-to-escritorio" author="guilherme.camargo">
+        <createIndex indexName="idx_processo_escritorio"
+                     tableName="PROCESSO">
+            <column name="FK_ESCRITORIO" type="BIGINT"/>
+        </createIndex>
+    </changeSet>
+
+
+    <changeSet author="Jordano" id="insert-PERMISSAO-pesquisa-processo">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="588"/>
+            <column name="DESCRICAO" value="Pesquisar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="3"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="294"/>
+            <column name="ORDEM" valueNumeric="14"/>
+            <column name="CODIGO" value="gestao-processos:processos:pesquisar"/>
+        </insert>
+
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="589"/>
+            <column name="DESCRICAO" value="Exibir todos os processos"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="3"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="588"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:processos:pesquisar:exibir-todos"/>
+        </insert>
+    </changeSet>
+
+    <!-- Criação da tabela de percentual das provisões -->
+    <changeSet author="guilherme.camargo" id="create-table-percentual-calculo-precificacao">
+        <createTable tableName="PERCENTUAL_CALCULO_PRECIFICACAO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PERCENTUALCALCULOPRECIFICACAO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="PERCENTUAL" type="DECIMAL(12, 4)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-table-percentual-calculo-precificacao-aud">
+        <createTable tableName="PERCENTUAL_CALCULO_PRECIFICACAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PERCENTUALCALCULOPRECIFICACAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PERCENTUALCALCULOPRECIFICACAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="PERCENTUAL" type="DECIMAL(12, 4)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- SEQUENCE PARA A TABELA PERCENTUAL_CALCULO_PRECIFICACAO -->
+    <changeSet id="sequence-percentual-calculo-precificacao" author="guilherme.camargo">
+        <createSequence sequenceName="SEQ_PERCENTUAL_CALCULO_PRECIFICACAO"/>
+    </changeSet>
+
+    <!-- ADD PERMISSOES PARA O CRUD PERCENTUAL_CAUCLO_PRECIFICACAO -->
+    <changeSet id="permissoes-percentual-calculo-precificacao" author="guilherme.camargo">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="590"/>
+            <column name="DESCRICAO" value="Percentual para Cálculo de Precificação"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="5"/>
+            <column name="ORDEM" valueNumeric="20"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:percentual-calculo-precificacao"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="591"/>
+            <column name="DESCRICAO" value="Incluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="590"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:percentual-calculo-precificacao:incluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="592"/>
+            <column name="DESCRICAO" value="Editar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="590"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:percentual-calculo-precificacao:editar"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="593"/>
+            <column name="DESCRICAO" value="Excluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="590"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:percentual-calculo-precificacao:excluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="594"/>
+            <column name="DESCRICAO" value="Duplicar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="590"/>
+            <column name="ORDEM" valueNumeric="4"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:percentual-calculo-precificacao:duplicar"/>
+        </insert>
+    </changeSet>
+
+    <!-- Criação da tabela de percentual das provisões -->
+    <changeSet author="guilherme.camargo" id="create-table-calculo-precificacao">
+        <createTable tableName="CALCULO_PRECIFICACAO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CALCPRECIFICACAO"/>
+            </column>
+            <column name="VALOR_MEDIA_APLICADA" type="DECIMAL(19,2)"/>
+            <column name="MES" type="INTEGER"/>
+            <column name="ANO" type="INTEGER"/>
+            <column name="ROTINA_EXECUTADA" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-table-calculo-precificacao-aud">
+        <createTable tableName="CALCULO_PRECIFICACAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CALCPRECIFICACAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CALCPRECIFICACAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="VALOR_MEDIA_APLICADA" type="DECIMAL(19,2)"/>
+            <column name="MES" type="INTEGER"/>
+            <column name="ANO" type="INTEGER"/>
+            <column name="ROTINA_EXECUTADA" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <!-- SEQUENCE PARA A TABELA MEDIA_PRECIFICACAO -->
+    <changeSet id="sequence-calculo-precificacao" author="guilherme.camargo">
+        <createSequence sequenceName="SEQ_CALCULO_PRECIFICACAO"/>
+    </changeSet>
+
+    <!-- ADD PERMISSOES PARA O CRUD MEDIA_PRECIFICACAO -->
+    <changeSet id="permissoes-calculo-precificacao" author="guilherme.camargo">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="595"/>
+            <column name="DESCRICAO" value="Cálculo de Precificação"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="5"/>
+            <column name="ORDEM" valueNumeric="21"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:calculo-precificacao"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="596"/>
+            <column name="DESCRICAO" value="Incluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="595"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:calculo-precificacao:incluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="597"/>
+            <column name="DESCRICAO" value="Editar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="595"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:calculo-precificacao:editar"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="598"/>
+            <column name="DESCRICAO" value="Excluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="595"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:calculo-precificacao:excluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="599"/>
+            <column name="DESCRICAO" value="Executar Rotina"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="595"/>
+            <column name="ORDEM" valueNumeric="4"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:calculo-precificacao:executar-rotina"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="add-columns-precificacao-processo" author="guilherme.camargo">
+        <addColumn tableName="PROCESSO">
+            <column name="VALORPRECIFICACAO" type="DECIMAL(12, 4)"/>
+            <column name="FK_PERCENTUALPRECIFICACAO" type="BIGINT"/>
+            <column name="DATAATUALIZACAOPRECIFICACAO" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-fk-FK_PROCESSO_PERCENTUAL_PRECIFICACAO">
+        <addForeignKeyConstraint baseColumnNames="FK_PERCENTUALPRECIFICACAO" baseTableName="PROCESSO"
+                                 constraintName="FK_PROCESSO_PERCENTUALPRECIFICACAO" referencedColumnNames="ID"
+                                 referencedTableName="PERCENTUAL_CALCULO_PRECIFICACAO" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="add-columns-precificacao-processo_aud" author="guilherme.camargo">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="VALORPRECIFICACAO" type="DECIMAL(12, 4)"/>
+            <column name="FK_PERCENTUALPRECIFICACAO" type="BIGINT"/>
+            <column name="DATAATUALIZACAOPRECIFICACAO" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="update-valorprecificacao-processo" author="guilherme.camargo">
+        <update tableName="PROCESSO">
+            <column name="VALORPRECIFICACAO" valueNumeric="0.00"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-table-calculo-precificacao-execucao-log">
+        <createTable tableName="CALCULO_PRECIFICACAO_EXECUCAO_LOG">
+            <column name="ID" autoIncrement="${autoIncrement}" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CALCPRECIFICACAOEXEC"/>
+            </column>
+            <column name="FK_CALCULOPRECIFICACAO" type="BIGINT"/>
+            <column name="PROCESSOUNICO" type="VARCHAR(255)"/>
+            <column name="MENSAGEM" type="VARCHAR(255)"/>
+            <column name="DATA_EXECUCAO" type="VARCHAR(255)"/>
+            <column name="PROCESSO_ATUALIZADO" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-fk-FK_CALCULO_PRECIFICACAO_EXECUCAO">
+        <addForeignKeyConstraint baseColumnNames="FK_CALCULOPRECIFICACAO"
+                                 baseTableName="CALCULO_PRECIFICACAO_EXECUCAO_LOG"
+                                 constraintName="FK_CALCPRECIFICACAO_LOG" referencedColumnNames="ID"
+                                 referencedTableName="CALCULO_PRECIFICACAO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <!-- SEQUENCE PARA A TABELA MEDIA_PRECIFICACAO -->
+    <changeSet id="sequence-calculo-precificacao-execucao" author="guilherme.camargo">
+        <createSequence sequenceName="SEQ_CALCULO_PRECIFICACAO_EXECUCAO"/>
+    </changeSet>
+
+    <changeSet id="update-descricao-permissao-calculomensal" author="guilherme.camargo">
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Cálculo mensal da média"/>
+            <where>id = 595</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="update-descricao-permissao-statuscopia" author="guilherme.camargo">
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Status Cópia"/>
+            <where>id = 590</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="create-table-REVERSAO_PROVISAO">
+        <createTable tableName="REVERSAO_PROVISAO">
+            <column autoIncrement="false" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_REVERSAO_PROVISAO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVERSAO" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add-column-FK_REVERSAO_PROVISAO" author="Jordano">
+        <addColumn tableName="PROCESSO">
+            <column name="FK_REVERSAO_PROVISAO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet author="Jordano" id="add-column-FK_REVERSAO_PROVISAO-FK">
+        <addForeignKeyConstraint baseColumnNames="FK_REVERSAO_PROVISAO" baseTableName="PROCESSO"
+                                 constraintName="FK_REVERSAO_PROVISAO" referencedColumnNames="ID"
+                                 referencedTableName="REVERSAO_PROVISAO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <changeSet author="Jordano" id="insert-REVERSAO_PROVISAO">
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Terceiro Interessado"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="BBB Parte Ativa"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="FCVS"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="4"/>
+            <column name="DESCRICAO" value="Arquivado Em Definitivo"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="5"/>
+            <column name="DESCRICAO" value="Acordo"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="6"/>
+            <column name="DESCRICAO" value="Remoto"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="7"/>
+            <column name="DESCRICAO" value="Recovery"/>
+            <column name="REVERSAO" value="0"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="8"/>
+            <column name="DESCRICAO" value="BBB Excluído"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="9"/>
+            <column name="DESCRICAO" value="Passivo Vinculado"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="10"/>
+            <column name="DESCRICAO" value="Não Localizado"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="11"/>
+            <column name="DESCRICAO" value="JEC"/>
+            <column name="REVERSAO" value="0"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="12"/>
+            <column name="DESCRICAO" value="Ilíquido Permanente"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="13"/>
+            <column name="DESCRICAO" value="Usucapião"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="14"/>
+            <column name="DESCRICAO" value="JEF"/>
+            <column name="REVERSAO" value="0"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="15"/>
+            <column name="DESCRICAO" value="Arquivado"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="16"/>
+            <column name="DESCRICAO" value="Obrigação De Fazer"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+
+        <insert tableName="REVERSAO_PROVISAO">
+            <column name="ID" valueNumeric="17"/>
+            <column name="DESCRICAO" value="Prognóstico inconclusivo / sem prognóstico"/>
+            <column name="REVERSAO" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="addColumn-PROCESSO_AUD-FK_REVERSAO_PROVISAO">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="FK_REVERSAO_PROVISAO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="createSequence-SalarioMinimo">
+        <createSequence sequenceName="SEQ_SALARIO_MINIMO"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="createTable-SALARIO_MINIMO">
+        <createTable tableName="SALARIO_MINIMO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SALARIO_MINIMO"/>
+            </column>
+            <column name="DATA" type="DATETIME"/>
+            <column name="VALOR" type="DECIMAL(12, 4)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Jordano" id="create-table-SALARIO_MINIMO_AUD">
+        <createTable tableName="SALARIO_MINIMO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SALARIO_MINIMO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SALARIO_MINIMO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DATA" type="DATETIME"/>
+            <column name="VALOR" type="DECIMAL(19, 2)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="permissoes-SALARIO_MINIMO" author="Jordano">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="600"/>
+            <column name="DESCRICAO" value="Salário Mínimo"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="5"/>
+            <column name="ORDEM" valueNumeric="22"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:salario-minimo"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="601"/>
+            <column name="DESCRICAO" value="Incluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="600"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:salario-minimo:incluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="602"/>
+            <column name="DESCRICAO" value="Editar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="600"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:salario-minimo:editar"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="603"/>
+            <column name="DESCRICAO" value="Excluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="600"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:salario-minimo:excluir"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-PERFIL_PERMISSAO-SALARIO_MINIMO">
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="600"/>
+        </insert>
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="601"/>
+        </insert>
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="602"/>
+        </insert>
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="603"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="drop-column-SALARIO_MINIMO-DATA" author="Jordano">
+        <dropColumn tableName="SALARIO_MINIMO">
+            <column name="DATA" />
+        </dropColumn>
+    </changeSet>
+
+    <changeSet id="add-columns-SALARIO_MINIMO-ano" author="Jordano">
+        <addColumn tableName="SALARIO_MINIMO">
+            <column name="ANO" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="drop-column-SALARIO_MINIMO_AUD-DATA" author="Jordano">
+        <dropColumn tableName="SALARIO_MINIMO_AUD">
+            <column name="DATA"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet id="add-columns-SALARIO_MINIMO_AUD-ano" author="Jordano">
+        <addColumn tableName="SALARIO_MINIMO_AUD">
+            <column name="ANO" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-table-TAREFA_STATUS_FINAL_AUD" author="renan.peres">
+        <createTable tableName="TAREFA_STATUS_FINAL_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFASTATUSFINAL_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFASTATUSFINAL_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="ID_TAREFA" type="BIGINT"/>
+            <column name="ID_STATUS_FINAL" type="BIGINT"/>
+            <column name="ID_STATUS" type="BIGINT"/>
+            <column name="ID_FORMULARIO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table_TAREFA_STATUS_FINAL_AGENDA_AUD" author="renan.peres">
+        <createTable tableName="TAREFA_STATUS_FINAL_AGENDA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFASTATUSFINALAGENDA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFASTATUSFINALAGENDA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="ID_TAREFA_STATUS_FINAL" type="BIGINT"/>
+            <column name="ID_TAREFA" type="BIGINT"/>
+            <column name="ID_TIPO_DATA" type="BIGINT"/>
+            <column name="ID_TIPO_RESPONSAVEL" type="BIGINT"/>
+            <column name="ID_TIPO_INTERVALO" type="BIGINT"/>
+            <column name="INTERVALO" type="INTEGER"/>
+            <column name="DIAS_UTEIS" type="BOOLEAN"/>
+            <column name="ID_CAMPO_DATA" type="BIGINT"/>
+            <column name="ID_CAMPO_RESPONSAVEL" type="BIGINT"/>
+            <column name="ID_RESPONSAVEL" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!-- DROP COLUMN VALOR 2 E 3 DO PEDIDO, SERÁ CÁLCULADO DE UMA OUTRA FORMA -->
+    <changeSet id="delete-valor2e3-processopedido" author="guilherme.camargo">
+        <dropColumn tableName="PEDIDO" columnName="VALOR2" />
+        <dropColumn tableName="PEDIDO" columnName="VALOR3" />
+        <dropColumn tableName="PEDIDO" columnName="VALORPROVISAO2" />
+        <dropColumn tableName="PEDIDO" columnName="VALORPROVISAO3" />
+    </changeSet>
+
+    <!-- SEQUENCE PARA A TABELA PROCESSOPEDIDO_CENARIOS -->
+    <changeSet id="sequence-pedido-cenarios" author="guilherme.camargo">
+        <createSequence sequenceName="SEQ_PROCESSO_PEDIDO_CENARIOS"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-table-processopedido-cenarios">
+        <createTable tableName="PROCESSOPEDIDO_CENARIOS">
+            <column name="ID" autoIncrement="${autoIncrement}"  type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="FK_PEDIDOCENARIO"/>
+            </column>
+            <column name="VALOR_PEDIDO"  type="DECIMAL(19, 2)"/>
+            <column name="DATA_BASE_JUROS" type="DATETIME"/>
+            <column name="DATA_BASE_TAXA" type="DATETIME"/>
+            <column name="VALOR_CORRIGIDO_A"  type="DECIMAL(19, 2)"/>
+            <column name="VALOR_CORRIGIDO_B"  type="DECIMAL(19, 2)"/>
+            <column name="VALOR_CORRIGIDO_C"  type="DECIMAL(19, 2)"/>
+            <column name="DATA_CALCULO" type="VARCHAR(255)"/>
+            <column name="FK_PEDIDO" type="BIGINT"/>
+            <column name="FK_INDICEECONICO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-table-processopedido-cenarios_aud">
+        <createTable tableName="PROCESSOPEDIDO_CENARIOS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="FK_PEDIDOCENARIO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="FK_PEDIDOCENARIO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="VALOR_PEDIDO"  type="DECIMAL(19, 2)"/>
+            <column name="DATA_BASE_JUROS" type="DATETIME"/>
+            <column name="DATA_BASE_TAXA" type="DATETIME"/>
+            <column name="VALOR_CORRIGIDO_A"  type="DECIMAL(19, 2)"/>
+            <column name="VALOR_CORRIGIDO_B"  type="DECIMAL(19, 2)"/>
+            <column name="VALOR_CORRIGIDO_C"  type="DECIMAL(19, 2)"/>
+            <column name="DATA_CALCULO" type="VARCHAR(255)"/>
+            <column name="FK_PEDIDO" type="BIGINT"/>
+            <column name="FK_INDICEECONICO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="addContraint-CENARIOS-PEDIDO">
+        <addForeignKeyConstraint baseColumnNames="FK_PEDIDO" baseTableName="PROCESSOPEDIDO_CENARIOS"
+                                 constraintName="FK_CENARIOS_PEDIDO" referencedColumnNames="ID"
+                                 referencedTableName="PEDIDO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="addContraint-CENARIOS-INDICE">
+        <addForeignKeyConstraint baseColumnNames="FK_INDICEECONICO" baseTableName="PROCESSOPEDIDO_CENARIOS"
+                                 constraintName="FK_CENARIOS_INDICE" referencedColumnNames="ID"
+                                 referencedTableName="PEDIDO_INDICE" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="addcolumn-habilitarcenarios-pedido-and-update" author="guilherme.camargo">
+        <addColumn tableName="PEDIDO">
+            <column name="HABILITAR_CENARIOS" type="BOOLEAN" />
+        </addColumn>
+        <update tableName="PEDIDO">
+            <column name="HABILITAR_CENARIOS" valueBoolean="FALSE"/>
+        </update>
+    </changeSet>
+
+    <changeSet id="addcolumn-habilitarcenarios-pedido-aud" author="guilherme.camargo">
+        <addColumn tableName="PEDIDO_AUD">
+            <column name="HABILITAR_CENARIOS" type="BOOLEAN" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="drop-fk-add-fk-cenarios-indices" author="guilherme.camargo">
+        <dropForeignKeyConstraint baseTableName="PROCESSOPEDIDO_CENARIOS" constraintName="FK_CENARIOS_INDICE"/>
+
+        <addForeignKeyConstraint baseColumnNames="FK_INDICEECONICO" baseTableName="PROCESSOPEDIDO_CENARIOS"
+                                 constraintName="FK_CENARIOS_INDICE" referencedColumnNames="ID"
+                                 referencedTableName="INDICEECONOMICO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="insert-PERMISSAO-habilita-cenarios">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="611"/>
+            <column name="DESCRICAO" value="Hablitar cenários"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="341"/>
+            <column name="ORDEM" valueNumeric="7"/>
+            <column name="CODIGO" value="gestao-processos:processos:pedido:habilitar-cenarios"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

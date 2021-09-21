@@ -1,0 +1,613 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <changeSet id="create-table-PROCESSO_CAMPO_CARTEIRA" author="raphael.moreira">
+        <createTable tableName="PROCESSO_CAMPO_CARTEIRA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ID_PROCESSO_CAMPO_CARTEIRA"/>
+            </column>
+            <column name="CARTEIRA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_CAMPO_CARTEIRA"/>
+            </column>
+            <column name="ENUM_ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_CAMPO_CARTEIRA"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-sequence-PROCESSO_CAMPO_CARTEIRA" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PROCESSO_CAMPO_CARTEIRA"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-table-PROCESSO_CAMPO_CARTEIRA_AUD">
+        <createTable tableName="PROCESSO_CAMPO_CARTEIRA_AUD">
+            <column name="CARTEIRA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_CAMPO_CARTEIRA_AUD"/>
+            </column>
+            <column name="ENUM_ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_CAMPO_CARTEIRA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_CAMPO_CARTEIRA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK_PROCESSO_CAMPO_CARTEIRA_AUD">
+        <addForeignKeyConstraint baseTableName="PROCESSO_CAMPO_CARTEIRA_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_PROCESSO_CAMPO_CARTEIRA_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <changeSet author="raphael.moreira" id="insert-PROCESSO_CAMPO_CARTEIRA" dbms="${dbmsSequence}">
+        <sql>
+            INSERT INTO PROCESSO_CAMPO_CARTEIRA (ID, CARTEIRA_ID, ENUM_ID)
+            SELECT
+            NEXTVAL('SEQ_PROCESSO_CAMPO_CARTEIRA'),
+            CAR.ID,
+            ENUM.ID
+            FROM CARTEIRA CAR
+            CROSS JOIN (
+            SELECT 36 AS ID
+            UNION
+            SELECT 2 AS ID
+            UNION
+            SELECT 28 AS ID
+            UNION
+            SELECT 15 AS ID
+            UNION
+            SELECT 16 AS ID
+            UNION
+            SELECT 37 AS ID
+            UNION
+            SELECT 9 AS ID
+            UNION
+            SELECT 12 AS ID
+            UNION
+            SELECT 13 AS ID
+            UNION
+            SELECT 14 AS ID
+            ) AS ENUM
+            ORDER BY CAR.ID
+        </sql>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="insert-PROCESSO_CAMPO_CARTEIRA" dbms="${dbmsAutoIncrement}">
+        <sql>
+            INSERT INTO PROCESSO_CAMPO_CARTEIRA
+            SELECT
+            CAR.ID,
+            ENUM.ID
+            FROM CARTEIRA CAR
+            CROSS JOIN (
+            SELECT 36 AS ID
+            UNION
+            SELECT 2 AS ID
+            UNION
+            SELECT 28 AS ID
+            UNION
+            SELECT 15 AS ID
+            UNION
+            SELECT 16 AS ID
+            UNION
+            SELECT 37 AS ID
+            UNION
+            SELECT 9 AS ID
+            UNION
+            SELECT 12 AS ID
+            UNION
+            SELECT 13 AS ID
+            UNION
+            SELECT 14 AS ID
+            ) AS ENUM
+            ORDER BY CAR.ID
+        </sql>
+    </changeSet>
+
+
+    <!-- INSERT INTO PERMISSAO -->
+    <changeSet author="guilherme.camargo" id="insert-permissao-solicitacao-somente-do-usuario">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="586"/>
+            <column name="DESCRICAO" value="Acessar Somente Solicitações do Usuário"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="293"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:notificacoes:solicitacoes:somente-minhas-solicitacoes"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="drop-column-ID-PROCESSO_CAMPO_CARTEIRA">
+        <dropUniqueConstraint tableName="PROCESSO_CAMPO_CARTEIRA" constraintName="PK_ID_PROCESSO_CAMPO_CARTEIRA"
+                              uniqueColumns="ID"/>
+        <dropColumn tableName="PROCESSO_CAMPO_CARTEIRA" columnName="ID"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="addColum-TIPOGARANTIA">
+        <addColumn tableName="TIPOGARANTIA">
+            <column name="NUMEROAPOLICE" type="BOOLEAN" defaultValue="false"/>
+            <column name="INICIOVIGENCIA" type="BOOLEAN" defaultValue="false"/>
+            <column name="FIMVIGENCIA" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALORSEGURO" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALORPREMIO" type="BOOLEAN" defaultValue="false"/>
+            <column name="STATUS" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="update-false-colunas-TIPOGARANTIA">
+        <update tableName="TIPOGARANTIA">
+            <column name="NUMEROAPOLICE" value="false"/>
+            <column name="INICIOVIGENCIA" value="false"/>
+            <column name="FIMVIGENCIA" value="false"/>
+            <column name="VALORSEGURO" value="false"/>
+            <column name="VALORPREMIO" value="false"/>
+            <column name="STATUS" value="false"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="addColum-TIPOGARANTIA_AUD">
+        <addColumn tableName="TIPOGARANTIA_AUD">
+            <column name="NUMEROAPOLICE" type="BOOLEAN" defaultValue="false"/>
+            <column name="INICIOVIGENCIA" type="BOOLEAN" defaultValue="false"/>
+            <column name="FIMVIGENCIA" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALORSEGURO" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALORPREMIO" type="BOOLEAN" defaultValue="false"/>
+            <column name="STATUS" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+
+    <!-- CAMPO (Garantia) -->
+    <changeSet author="Jordano" id="insert-campos-tipo-garantia-SEQ" dbms="${dbmsSequence}">
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Número da Apólice"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="26"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Início da Vigência"/>
+            <column name="TIPO_CAMPO" valueNumeric="1"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="27"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Fim da Vigência"/>
+            <column name="TIPO_CAMPO" valueNumeric="1"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="28"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Valor do Seguro"/>
+            <column name="TIPO_CAMPO" valueNumeric="5"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="29"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Valor do Prêmio"/>
+            <column name="TIPO_CAMPO" valueNumeric="5"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="30"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Status"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="31"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+    </changeSet>
+
+
+    <changeSet author="rodolpho.couto" id="insert-campos-tipo-garantia" dbms="${dbmsAutoIncrement}">
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Número da Apólice"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="26"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Início da Vigência"/>
+            <column name="TIPO_CAMPO" valueNumeric="1"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="27"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Fim da Vigência"/>
+            <column name="TIPO_CAMPO" valueNumeric="1"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="28"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Valor do Seguro"/>
+            <column name="TIPO_CAMPO" valueNumeric="5"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="29"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Valor do Prêmio"/>
+            <column name="TIPO_CAMPO" valueNumeric="5"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="30"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Status"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="31"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-column-ATIVO-TAREFA">
+        <addColumn tableName="TAREFA">
+            <column name="ATIVO" type="BOOLEAN" defaultValue="true"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-table-TAREFA_AUD" author="thiago.fogar">
+        <createTable tableName="TAREFA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="NOME" type="VARCHAR(255)"/>
+            <column name="ID_TAREFA" type="VARCHAR(255)"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+            <column name="ID_FLUXO_TRABALHO" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-column-ATIVO-TAREFA_AUD">
+        <addColumn tableName="TAREFA_AUD">
+            <column name="ATIVO" type="BOOLEAN"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="UPDATE-TAREFA-ATIVO">
+        <update tableName="TAREFA">
+            <column name="ATIVO" valueBoolean="true"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="create-table-DADOSBASICOSTAREFA_AUD">
+        <createTable tableName="DADOSBASICOSTAREFA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DADOSBASICOSTAREFA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DADOSBASICOSTAREFA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="CASE_EXECUTION_ID" type="VARCHAR(200)"/>
+            <column name="CASE_INSTANCE_ID" type="VARCHAR(200)"/>
+            <column name="DATA_AGENDAMENTO" type="DATETIME"/>
+            <column name="DATA_CONCLUSAO" type="DATETIME"/>
+            <column name="DATA_INICIO" type="DATETIME"/>
+            <column name="DATA_PRAZO_FATAL" type="DATETIME"/>
+            <column name="ROTULO" type="INTEGER"/>
+            <column name="STATUS" type="INTEGER"/>
+            <column name="FK_AGENDAR_PARA" type="BIGINT"/>
+            <column name="ID_STATUS_FINAL" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="FK_REALIZADO_POR" type="BIGINT"/>
+            <column name="CASE_EXECUTION_ID_ORIGEM" type="VARCHAR(200)"/>
+            <column name="MEMO" type="CLOB"/>
+            <column name="FK_TAREFA" type="BIGINT"/>
+            <column name="FK_RESPONSAVEL" type="BIGINT"/>
+            <column name="FK_DADOSBASICOSTAREFA_PAI" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="thigo.fogar" id="addNotNullConstraint-PROCESSO-DADOSBASICOSTAREFA">
+        <addNotNullConstraint tableName="DADOSBASICOSTAREFA" columnName="FK_PROCESSO" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="thigo.fogar" id="addNotNullConstraint-DATAAGENDAMENTO-DADOSBASICOSTAREFA">
+        <addNotNullConstraint tableName="DADOSBASICOSTAREFA" columnName="DATA_AGENDAMENTO" columnDataType="DATETIME"/>
+    </changeSet>
+
+
+    <changeSet author="Jordano" id="addColum-TIPOGARANTIA">
+        <addColumn tableName="TIPOGARANTIA">
+            <column name="NUMEROAPOLICE" type="BOOLEAN" defaultValue="false"/>
+            <column name="INICIOVIGENCIA" type="BOOLEAN" defaultValue="false"/>
+            <column name="FIMVIGENCIA" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALORSEGURO" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALORPREMIO" type="BOOLEAN" defaultValue="false"/>
+            <column name="STATUS" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="update-false-colunas-TIPOGARANTIA">
+        <update tableName="TIPOGARANTIA">
+            <column name="NUMEROAPOLICE" value="false"/>
+            <column name="INICIOVIGENCIA" value="false"/>
+            <column name="FIMVIGENCIA" value="false"/>
+            <column name="VALORSEGURO" value="false"/>
+            <column name="VALORPREMIO" value="false"/>
+            <column name="STATUS" value="false"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="addColum-TIPOGARANTIA_AUD">
+        <addColumn tableName="TIPOGARANTIA_AUD">
+            <column name="NUMEROAPOLICE" type="BOOLEAN" defaultValue="false"/>
+            <column name="INICIOVIGENCIA" type="BOOLEAN" defaultValue="false"/>
+            <column name="FIMVIGENCIA" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALORSEGURO" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALORPREMIO" type="BOOLEAN" defaultValue="false"/>
+            <column name="STATUS" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+
+    <!-- CAMPO (Garantia) -->
+    <changeSet author="Jordano" id="insert-campos-tipo-garantia-SEQ" dbms="${dbmsSequence}">
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Número da Apólice"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="26"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Início da Vigência"/>
+            <column name="TIPO_CAMPO" valueNumeric="1"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="27"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Fim da Vigência"/>
+            <column name="TIPO_CAMPO" valueNumeric="1"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="28"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Valor do Seguro"/>
+            <column name="TIPO_CAMPO" valueNumeric="5"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="29"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Valor do Prêmio"/>
+            <column name="TIPO_CAMPO" valueNumeric="5"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="30"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Status"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="31"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+    </changeSet>
+
+
+    <changeSet author="rodolpho.couto" id="insert-campos-tipo-garantia" dbms="${dbmsAutoIncrement}">
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Número da Apólice"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="26"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Início da Vigência"/>
+            <column name="TIPO_CAMPO" valueNumeric="1"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="27"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Fim da Vigência"/>
+            <column name="TIPO_CAMPO" valueNumeric="1"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="28"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Valor do Seguro"/>
+            <column name="TIPO_CAMPO" valueNumeric="5"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="29"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Valor do Prêmio"/>
+            <column name="TIPO_CAMPO" valueNumeric="5"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="30"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Status"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="31"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+    </changeSet>
+
+
+    <changeSet author="Jordano" id="insert-PERMISSAO">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="587"/>
+            <column name="DESCRICAO" value="Contratos Iniciados"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="504"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-contratos:tarefas-pendentes"/>
+        </insert>
+    </changeSet>
+
+
+    <!-- Criando novo tipo de campo -->
+    <changeSet id="add-tipocampo-listadinamica" author="guilherme.camargo">
+        <insert tableName="TIPOCAMPO">
+            <column name="ID" valueNumeric="11"/>
+            <column name="DESCRICAO" value="Lista Dinâmica"/>
+        </insert>
+    </changeSet>
+
+    <!-- Add novos campos na tela Campo e na Aud-->
+    <changeSet author="guilherme.camargo" id="add-columns-table-campo">
+        <addColumn tableName="CAMPO">
+            <column name="PAI_LISTA_DINAMICA" type="BOOLEAN"/>
+        </addColumn>
+        <addColumn tableName="CAMPO">
+            <column name="FK_CAMPO_PAI" type="BIGINT"/>
+        </addColumn>
+        <addColumn tableName="CAMPO">
+            <column name="FK_CAMPOLISTA_PAI" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="add-columns-table-campo-aud">
+        <addColumn tableName="CAMPO_AUD">
+            <column name="PAI_LISTA_DINAMICA" type="BOOLEAN"/>
+        </addColumn>
+        <addColumn tableName="CAMPO_AUD">
+            <column name="FK_CAMPO_PAI" type="BIGINT"/>
+        </addColumn>
+        <addColumn tableName="CAMPO_AUD">
+            <column name="FK_CAMPOLISTA_PAI" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!--Update campo pai da tabela campo para false-->
+    <changeSet author="guilherme.camargo" id="update-false-column-pai-listadinamica">
+        <update tableName="CAMPO">
+            <column name="PAI_LISTA_DINAMICA" valueBoolean="false"/>
+        </update>
+    </changeSet>
+
+    <!-- Criando FKS para as colunas criadas acima -->
+    <changeSet author="guilherme.camargo" id="add-fk_campo_pai-campo">
+    <addForeignKeyConstraint baseColumnNames="FK_CAMPO_PAI" baseTableName="CAMPO"
+                             constraintName="FK_CAMPO_CAMPO" referencedColumnNames="ID"
+                             referencedTableName="CAMPO" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="add-fk_campolista-pai">
+    <addForeignKeyConstraint baseColumnNames="FK_CAMPOLISTA_PAI" baseTableName="CAMPO"
+                             constraintName="FK_CAMPO_CAMPOLISTA" referencedColumnNames="ID"
+                             referencedTableName="CAMPOLISTA" deferrable="false" initiallyDeferred="false"
+                             onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="alter-column-processodespesatipo-descricao-clob" author="guilherme.camargo">
+        <modifyDataType tableName="PROCESSODESPESAS" columnName="DESCRICAO" newDataType="CLOB"/>
+        <modifyDataType tableName="PROCESSODESPESAS_AUD" columnName="DESCRICAO" newDataType="CLOB"/>
+    </changeSet>
+</databaseChangeLog>

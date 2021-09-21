@@ -1,0 +1,671 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- Renomeando tabelas -->
+    <changeSet author="rodolpho.couto" id="rename-endereco">
+        <renameTable oldTableName="ENDERECO" newTableName="PESSOA_ENDERECO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-telefone">
+        <renameTable oldTableName="TELEFONE" newTableName="PESSOA_TELEFONE"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-oab">
+        <renameTable oldTableName="OAB" newTableName="PESSOA_OAB"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-enderecoeletronico">
+        <renameTable oldTableName="ENDERECOELETRONICO" newTableName="PESSOA_ENDERECO_ELETRONICO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-empresa_coligada">
+        <renameTable oldTableName="EMPRESA_COLIGADA" newTableName="PESSOA_EMPRESA_COLIGADA"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-empresa_colaborador">
+        <renameTable oldTableName="EMPRESA_COLABORADOR" newTableName="PESSOA_EMPRESA_COLABORADOR"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-divisaopessoa">
+        <renameTable oldTableName="DIVISAOPESSOA" newTableName="PESSOA_DIVISAO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-dadosbancarios">
+        <renameTable oldTableName="DADOSBANCARIOS" newTableName="PESSOA_DADO_BANCARIO"/>
+    </changeSet>
+
+    <!-- Renomeando tabelas de auditoria -->
+    <changeSet author="rodolpho.couto" id="rename-telefone_aud">
+        <renameTable oldTableName="TELEFONE_AUD" newTableName="PESSOA_TELEFONE_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-oab_aud">
+        <renameTable oldTableName="OAB_AUD" newTableName="PESSOA_OAB_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-enderecoeletronico_aud">
+        <renameTable oldTableName="ENDERECOELETRONICO_AUD" newTableName="PESSOA_ENDERECO_ELETRONICO_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-empresa_coligada_aud">
+        <renameTable oldTableName="EMPRESA_COLIGADA_AUD" newTableName="PESSOA_EMPRESA_COLIGADA_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-empresa_colaborador_aud">
+        <renameTable oldTableName="EMPRESA_COLABORADOR_AUD" newTableName="PESSOA_EMPRESA_COLABORADOR_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-divisaopessoa_aud">
+        <renameTable oldTableName="DIVISAOPESSOA_AUD" newTableName="PESSOA_DIVISAO_AUD"/>
+    </changeSet>
+
+    <!-- Dropando PKs -->
+    <changeSet author="rodolpho.couto" id="drop-pk_endereco">
+        <dropPrimaryKey tableName="PESSOA_ENDERECO" constraintName="PK_ENDERECO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_telefone">
+        <dropPrimaryKey tableName="PESSOA_TELEFONE" constraintName="PK_TELEFONE"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_oab">
+        <dropPrimaryKey tableName="PESSOA_OAB" constraintName="PK_OAB"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_enderecoeletronico">
+        <dropPrimaryKey tableName="PESSOA_ENDERECO_ELETRONICO" constraintName="PK_ENDERECOELETRONICO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_relpessoaempresa">
+        <dropPrimaryKey tableName="PESSOA_EMPRESA_COLIGADA" constraintName="PK_RELPESSOAEMPRESA"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_relpessoapessoa">
+        <dropPrimaryKey tableName="PESSOA_EMPRESA_COLABORADOR" constraintName="PK_RELPESSOAPESSOA"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-fk_processo_divisaopessoa">
+        <dropForeignKeyConstraint baseTableName="PROCESSO" constraintName="FK_PROCESSO_DIVISAOPESSOA"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_divisaopessoa">
+        <dropPrimaryKey tableName="PESSOA_DIVISAO" constraintName="PK_DIVISAOPESSOA"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_dadosbancarios">
+        <dropPrimaryKey tableName="PESSOA_DADO_BANCARIO" constraintName="PK_DADOSBANCARIOS"/>
+    </changeSet>
+
+    <!-- Dropando PKs de auditoria -->
+    <changeSet author="rodolpho.couto" id="drop-pk_telefone_aud">
+        <dropPrimaryKey tableName="PESSOA_TELEFONE_AUD" constraintName="PK_TELEFONE_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_oab_aud">
+        <dropPrimaryKey tableName="PESSOA_OAB_AUD" constraintName="PK_OAB_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_enderecoeletronico_aud">
+        <dropPrimaryKey tableName="PESSOA_ENDERECO_ELETRONICO_AUD" constraintName="PK_ENDERECOELETRONICO_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_empresa_coligada_aud">
+        <dropPrimaryKey tableName="PESSOA_EMPRESA_COLIGADA_AUD" constraintName="PK_EMPRESA_COLIGADA_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_empresa_colaborador_aud">
+        <dropPrimaryKey tableName="PESSOA_EMPRESA_COLABORADOR_AUD" constraintName="PK_EMPRESA_COLABORADOR_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pk_divisaopessoa_aud">
+        <dropPrimaryKey tableName="PESSOA_DIVISAO_AUD" constraintName="PK_DIVISAOPESSOA_AUD"/>
+    </changeSet>
+
+    <!-- Criando PKs -->
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_endereco">
+        <addPrimaryKey tableName="PESSOA_ENDERECO"
+                       columnNames="ID"
+                       constraintName="PK_PESSOA_ENDERECO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_telefone">
+        <addPrimaryKey tableName="PESSOA_TELEFONE"
+                       columnNames="ID"
+                       constraintName="PK_PESSOA_TELEFONE"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_oab">
+        <addPrimaryKey tableName="PESSOA_OAB"
+                       columnNames="ID"
+                       constraintName="PK_PESSOA_OAB"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_endereco_eletronico">
+        <addPrimaryKey tableName="PESSOA_ENDERECO_ELETRONICO"
+                       columnNames="ID"
+                       constraintName="PK_PESSOA_ENDERECO_ELETRONICO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_empresa_coligada">
+        <addPrimaryKey tableName="PESSOA_EMPRESA_COLIGADA"
+                       columnNames="ID"
+                       constraintName="PK_PESSOA_EMPRESA_COLIGADA"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_empresa_colaborador">
+        <addPrimaryKey tableName="PESSOA_EMPRESA_COLABORADOR"
+                       columnNames="ID"
+                       constraintName="PK_PESSOA_EMPRESA_COLABORADOR"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_divisao">
+        <addPrimaryKey tableName="PESSOA_DIVISAO"
+                       columnNames="ID"
+                       constraintName="PK_PESSOA_DIVISAO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-fk_processo_pessoa_divisao">
+        <addForeignKeyConstraint baseTableName="PROCESSO" baseColumnNames="FK_DIVISAO"
+                                 constraintName="FK_PROCESSO_PESSOA_DIVISAO" referencedTableName="PESSOA_DIVISAO"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_dado_bancario">
+        <addPrimaryKey tableName="PESSOA_DADO_BANCARIO"
+                       columnNames="ID"
+                       constraintName="PK_PESSOA_DADO_BANCARIO"/>
+    </changeSet>
+
+    <!-- Criando PKs de auditoria -->
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_telefone_aud">
+        <addPrimaryKey tableName="PESSOA_TELEFONE_AUD"
+                       columnNames="ID,ID_AUD"
+                       constraintName="PK_PESSOA_TELEFONE_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_oab_aud">
+        <addPrimaryKey tableName="PESSOA_OAB_AUD"
+                       columnNames="ID,ID_AUD"
+                       constraintName="PK_PESSOA_OAB_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pes_endereco_eletronico_aud">
+        <addPrimaryKey tableName="PESSOA_ENDERECO_ELETRONICO_AUD"
+                       columnNames="ID,ID_AUD"
+                       constraintName="PK_PES_ENDERECO_ELETRONICO_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_empresa_coligada_aud">
+        <addPrimaryKey tableName="PESSOA_EMPRESA_COLIGADA_AUD"
+                       columnNames="ID,ID_AUD"
+                       constraintName="PK_PESSOA_EMPRESA_COLIGADA_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pes_empresa_colaborador_aud">
+        <addPrimaryKey tableName="PESSOA_EMPRESA_COLABORADOR_AUD"
+                       columnNames="ID,ID_AUD"
+                       constraintName="PK_PES_EMPRESA_COLABORADOR_AUD"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="create-pk_pessoa_divisao_aud">
+        <addPrimaryKey tableName="PESSOA_DIVISAO_AUD"
+                       columnNames="ID,ID_AUD"
+                       constraintName="PK_PESSOA_DIVISAO_AUD"/>
+    </changeSet>
+
+    <!-- Renomeando sequences -->
+    <changeSet author="rodolpho.couto" id="rename-seq_endereco" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_ENDERECO" newSequenceName="SEQ_PESSOA_ENDERECO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-seq_telefone" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_TELEFONE" newSequenceName="SEQ_PESSOA_TELEFONE"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-seq_oab" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_OAB" newSequenceName="SEQ_PESSOA_OAB"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-seq_enderecoeletronico" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_ENDERECOELETRONICO" newSequenceName="SEQ_PESSOA_ENDERECO_ELETRONICO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-seq_empresa_coligada" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_EMPRESA_COLIGADA" newSequenceName="SEQ_PESSOA_EMPRESA_COLIGADA"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-seq_empresa_colaborador" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_EMPRESA_COLABORADOR" newSequenceName="SEQ_PESSOA_EMPRESA_COLABORADOR"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-seq_divisaopessoa" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_DIVISAOPESSOA" newSequenceName="SEQ_PESSOA_DIVISAO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-seq_dadosbancarios" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_DADOSBANCARIOS" newSequenceName="SEQ_PESSOA_DADO_BANCARIO"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="add-row-PERIODOJUROSCORRECAO">
+        <insert tableName="PERIODOJUROSCORRECAO">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Semestral"/>
+        </insert>
+
+        <insert tableName="PERIODOJUROSCORRECAO">
+            <column name="ID" valueNumeric="4"/>
+            <column name="DESCRICAO" value="Anual"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="update-permissao">
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Config. Gerador de Planilha"/>
+            <column name="CODIGO" value="gestao-processos:ferramentas:config-gerador-planilha"/>
+            <where>ID = 275</where>
+        </update>
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Consulta SQL"/>
+            <column name="CODIGO" value="gestao-processos:ferramentas:config-gerador-planilha:consulta-sql"/>
+            <where>ID = 276</where>
+        </update>
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Duplicar"/>
+            <column name="CODIGO" value="gestao-processos:ferramentas:config-gerador-planilha:duplicar"/>
+            <where>ID = 277</where>
+        </update>
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Editar"/>
+            <column name="CODIGO" value="gestao-processos:ferramentas:config-gerador-planilha:editar"/>
+            <where>ID = 278</where>
+        </update>
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Excluir"/>
+            <column name="CODIGO" value="gestao-processos:ferramentas:config-gerador-planilha:excluir"/>
+            <where>ID = 279</where>
+        </update>
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Incluir"/>
+            <column name="CODIGO" value="gestao-processos:ferramentas:config-gerador-planilha:incluir"/>
+            <where>ID = 280</where>
+        </update>
+
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Gerador de Planilha"/>
+            <column name="CODIGO" value="gestao-processos:ferramentas:gerador-planilha"/>
+            <where>ID = 400</where>
+        </update>
+    </changeSet>
+
+    <!-- Renomeando colunas de PESSOA -->
+    <changeSet author="rodolpho.couto" id="rename-pessoa_tipopessoa">
+        <renameColumn tableName="PESSOA"
+                      oldColumnName="TIPOPESSOA"
+                      newColumnName="TIPO"
+                      columnDataType="INTEGER"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-pessoa_pessoa_tratamento_fk">
+        <renameColumn tableName="PESSOA"
+                      oldColumnName="PESSOA_TRATAMENTO_FK"
+                      newColumnName="ID_TRATAMENTO"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-pessoa_fk_estadocivil">
+        <renameColumn tableName="PESSOA"
+                      oldColumnName="FK_ESTADOCIVIL"
+                      newColumnName="ID_ESTADO_CIVIL"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-pessoa_fk_estadocivil">
+        <renameColumn tableName="PESSOA"
+                      oldColumnName="FK_ESTADOCIVIL"
+                      newColumnName="ID_ESTADO_CIVIL"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-pessoa_datanascimento">
+        <renameColumn tableName="PESSOA"
+                      oldColumnName="DATANASCIMENTO"
+                      newColumnName="DATA_NASCIMENTO"
+                      columnDataType="DATETIME"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-pessoa_inscricaomunicipal">
+        <renameColumn tableName="PESSOA"
+                      oldColumnName="INSCRICAOMUNICIPAL"
+                      newColumnName="INSCRICAO_MUNICIPAL"
+                      columnDataType="VARCHAR(15)"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pessoa_cpf_cnpj_nd">
+        <dropColumn tableName="PESSOA" columnName="CPF_CNPJ_ND"/>
+    </changeSet>
+
+    <!-- Renomeando colunas de PESSOA_AUD -->
+    <changeSet author="rodolpho.couto" id="rename-pessoa_aud_tipopessoa">
+        <renameColumn tableName="PESSOA_AUD"
+                      oldColumnName="TIPOPESSOA"
+                      newColumnName="TIPO"
+                      columnDataType="INTEGER"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-pessoa_aud_pessoa_tratamento_fk">
+        <renameColumn tableName="PESSOA_AUD"
+                      oldColumnName="PESSOA_TRATAMENTO_FK"
+                      newColumnName="ID_TRATAMENTO"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-pessoa_aud_fk_estadocivil">
+        <renameColumn tableName="PESSOA_AUD"
+                      oldColumnName="FK_ESTADOCIVIL"
+                      newColumnName="ID_ESTADO_CIVIL"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-pessoa_aud_fk_estadocivil">
+        <renameColumn tableName="PESSOA_AUD"
+                      oldColumnName="FK_ESTADOCIVIL"
+                      newColumnName="ID_ESTADO_CIVIL"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-pessoa_aud_datanascimento">
+        <renameColumn tableName="PESSOA_AUD"
+                      oldColumnName="DATANASCIMENTO"
+                      newColumnName="DATA_NASCIMENTO"
+                      columnDataType="DATETIME"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="rename-pessoa_aud_inscricaomunicipal">
+        <renameColumn tableName="PESSOA_AUD"
+                      oldColumnName="INSCRICAOMUNICIPAL"
+                      newColumnName="INSCRICAO_MUNICIPAL"
+                      columnDataType="VARCHAR(15)"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="drop-pessoa_aud_cpf_cnpj_nd">
+        <dropColumn tableName="PESSOA_AUD" columnName="CPF_CNPJ_ND"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-contraint-not-null-CASO-RESPONSAVEL">
+        <dropNotNullConstraint columnName="ID_RESPONSAVEL" tableName="CASO" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-relatorio-perfil-partes">
+        <update tableName="RELATORIOPERFIL">
+            <column name="CLASSE" value="br.com.finchsolucoes.xgracco.domain.entity.ProcessoParte"
+                    type="VARCHAR(255)"></column>
+            <where>CLASSE = 'br.com.finchsolucoes.xgracco.domain.entity.Parte'</where>
+        </update>
+    </changeSet>
+
+
+    <changeSet author="paulo.marcon" id="update-intervalo-ROTINA">
+        <update tableName="ROTINA">
+            <column name="REPETICAO" valueNumeric="1"/>
+            <column name="TIPO_REPETICAO_ID" valueNumeric="3"/>
+            <where>REPETICAO = 60 AND TIPO_REPETICAO_ID = 2</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="addColum-TIPOGARANTIA">
+        <addColumn tableName="TIPOGARANTIA">
+            <column name="DESCRICAOGARANTIA" type="BOOLEAN" defaultValue="false"/>
+            <column name="ESTADO" type="BOOLEAN" defaultValue="false"/>
+            <column name="CIDADE" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALORJUDICIAL" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALOREXTRAJUDICIAL" type="BOOLEAN" defaultValue="false"/>
+            <column name="ONUSADMINISTRACAO" type="BOOLEAN" defaultValue="false"/>
+            <column name="PROPRIETARIO" type="BOOLEAN" defaultValue="false"/>
+            <column name="NUMEROMATRICULA" type="BOOLEAN" defaultValue="false"/>
+            <column name="DATAMATRICULA" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet author="Jordano" id="insert-Campo-Garantia" dbms="${dbmsAutoIncrement}">
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Descrição"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="17"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Estado"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="18"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Cidade"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="19"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Valor Judicial"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="20"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Valor Extrajudicial"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="21"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Ônus Administração"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="22"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Proprietário"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="23"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Número Matrícula"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="24"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Data Matrícula"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="25"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-Campo-Garantia" dbms="${dbmsSequence}">
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Descrição"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="17"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Estado"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="18"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Cidade"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="19"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Valor Judicial"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="20"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Valor Extrajudicial"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="21"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Ônus Administração"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="22"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Proprietário"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="23"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Número Matrícula"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="24"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Data Matrícula"/>
+            <column name="TIPO_CAMPO" valueNumeric="4"/>
+            <column name="TIPO_CAMPO_SISTEMA" valueNumeric="25"/>
+            <column name="ATIVO" valueBoolean="false"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="VISIVEL" valueBoolean="false"/>
+        </insert>
+
+    </changeSet>
+
+    <changeSet author="Jordano" id="addColum-TIPOGARANTIA_AUD">
+        <addColumn tableName="TIPOGARANTIA_AUD">
+            <column name="DESCRICAOGARANTIA" type="BOOLEAN" defaultValue="false"/>
+            <column name="ESTADO" type="BOOLEAN" defaultValue="false"/>
+            <column name="CIDADE" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALORJUDICIAL" type="BOOLEAN" defaultValue="false"/>
+            <column name="VALOREXTRAJUDICIAL" type="BOOLEAN" defaultValue="false"/>
+            <column name="ONUSADMINISTRACAO" type="BOOLEAN" defaultValue="false"/>
+            <column name="PROPRIETARIO" type="BOOLEAN" defaultValue="false"/>
+            <column name="NUMEROMATRICULA" type="BOOLEAN" defaultValue="false"/>
+            <column name="DATAMATRICULA" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="update-false-colunas-TIPOGARANTIA">
+        <update tableName="TIPOGARANTIA">
+            <column name="DESCRICAOGARANTIA" value="false"/>
+            <column name="ESTADO" value="false"/>
+            <column name="CIDADE" value="false"/>
+            <column name="VALORJUDICIAL" value="false"/>
+            <column name="VALOREXTRAJUDICIAL" value="false"/>
+            <column name="ONUSADMINISTRACAO" value="false"/>
+            <column name="PROPRIETARIO" value="false"/>
+            <column name="NUMEROMATRICULA" value="false"/>
+            <column name="DATAMATRICULA" value="false"/>
+        </update>
+    </changeSet>
+
+
+
+    <changeSet author="thiago.fogar" id="delete-COMARCA_AUX">
+        <delete tableName="COMARCA_AUD"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="insert-COMARCA_AUX">
+        <sql>
+            INSERT INTO COMARCA_AUD (ID, ID_AUD, TIPO_AUD, DESCRICAO, METROPOLITANA, FK_UF)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA),0, descricao, metropolitana, fk_uf FROM COMARCA
+        </sql>
+    </changeSet>
+
+    <changeSet author="Jordano" id="dropColumn-Formulario-padrao">
+        <dropColumn columnName="PADRAO"
+                    tableName="FORMULARIO"/>
+    </changeSet>
+
+    <changeSet id="paulo.marcon" author="add-column-statusTarefa-CONTRATO_CLAUSULA">
+        <addColumn tableName="CONTRATO_CLAUSULA">
+            <column name="ID_STATUS_TAREFA" type="BIGINT" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="paulo.marcon" author="add-column-statusTarefa-CONTRATO_CLAUSULA_AUD">
+        <addColumn tableName="CONTRATO_CLAUSULA_AUD">
+            <column name="ID_STATUS_TAREFA" type="BIGINT" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add-column-processo-DATA_INATIVACAO" author="paulo.marcon">
+        <addColumn tableName="PROCESSO">
+            <column name="DATAINATIVACAO" type="DATETIME"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add-column-processo_aud-DATA_INATIVACAO" author="paulo.marcon">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="DATAINATIVACAO" type="DATETIME"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add-column-padrao-tipodocumento" author="paulo.marcon">
+        <addColumn tableName="TIPODOCUMENTO">
+            <column name = "PADRAO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="remove-column-cod_int-tipodocumento" author="paulo.marcon">
+        <dropColumn tableName="TIPODOCUMENTO" columnName="COD_INT" />
+    </changeSet>
+
+    <changeSet id="remove-column-constante-tipodocumento" author="paulo.marcon">
+        <dropColumn tableName="TIPODOCUMENTO" columnName="CONSTANTE" />
+    </changeSet>
+
+    <changeSet id="add-column-padrao-tipodocumento_aud" author="paulo.marcon">
+        <addColumn tableName="TIPODOCUMENTO_AUD">
+            <column name = "PADRAO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="remove-column-cod_int-tipodocumento_aud" author="paulo.marcon">
+        <dropColumn tableName="TIPODOCUMENTO_AUD" columnName="COD_INT" />
+    </changeSet>
+
+    <changeSet id="remove-column-constante-tipodocumento_aud" author="paulo.marcon">
+        <dropColumn tableName="TIPODOCUMENTO_AUD" columnName="CONSTANTE" />
+    </changeSet>
+
+</databaseChangeLog>

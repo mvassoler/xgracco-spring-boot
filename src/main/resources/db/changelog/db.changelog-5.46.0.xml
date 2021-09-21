@@ -1,0 +1,234 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!--TABELA Importação de Planilha-->
+    <changeSet author="alessandro.ramos" id="create-table-IMPORTACAO_PLANILHA">
+        <createTable tableName="IMPORTACAO_PLANILHA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_IMPORTACAO_PLANILHA"/>
+            </column>
+            <column name="FK_USUARIO" type="BIGINT"/>
+            <column name="DATA_ENCAMINHAMENTO" type="DATETIME"/>
+            <column name="MODELO" type="BIGINT"/>
+            <column name="ARQUIVO_IMPORTACAO" type="VARCHAR(255)"/>
+            <column name="NOME_ORIGINAL" type="VARCHAR(255)"/>
+            <column name="STATUS" type="INTEGER"/>
+            <column name="DATA_INICIO" type="DATETIME"/>
+            <column name="DATA_FINALIZACAO" type="DATETIME"/>
+            <column name="OBSERVACAO" type="VARCHAR(512)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createSequence-IMPORTACAO_PLANILHA" author="henrique.oliveira">
+        <createSequence sequenceName="SEQ_IMPORTACAO_PLANILHA"/>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet author="alessandro.ramos" id="create-fk-FK_IMPORTACAO_PLANILHA_PESSOA_USUARIO">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO" baseTableName="IMPORTACAO_PLANILHA"
+                                 constraintName="FK_IMPORTACAO_PLANILHA_PESSOA_USUARIO"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- ADICIONADO O CAMPO ORGAO NA TABELA DE PROCESSO -->
+    <changeSet author="eloi.correia" id="add-new-field-orgao">
+        <addColumn tableName="PROCESSO">
+            <column name="ORGAO" type="VARCHAR(200)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- ADICIONADO O CAMPO ORGAO NA TABELA DE PROCESSO -->
+    <changeSet author="eloi.correia" id="add-new-field-orgao-AUDITORIA">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="ORGAO" type="VARCHAR(200)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="createTable-usuario-log-acesso-origem">
+        <createTable tableName="USUARIO_ACESSO_LOG_ORIGEM">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_ACESSO_LOG_ORIGEM"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="insertAutoIncrement-USUARIO_ACESSO_LOG_ORIGEM">
+        <insert tableName="USUARIO_ACESSO_LOG_ORIGEM">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="API"/>
+        </insert>
+        <insert tableName="USUARIO_ACESSO_LOG_ORIGEM">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="WEB"/>
+        </insert>
+        <insert tableName="USUARIO_ACESSO_LOG_ORIGEM">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="TEST"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="criar-tabela-usuario-log-acesso-logoff">
+        <createTable tableName="USUARIO_ACESSO_LOG_LOGOFF">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_ACESSO_LOG_LOGOFF"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="insertAutoIncrement-USUARIO_ACESSO_LOG_LOGOFF">
+        <insert tableName="USUARIO_ACESSO_LOG_LOGOFF">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Usuario realizou logoff"/>
+        </insert>
+        <insert tableName="USUARIO_ACESSO_LOG_LOGOFF">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Desconectado por tempo"/>
+        </insert>
+        <insert tableName="USUARIO_ACESSO_LOG_LOGOFF">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Desconectado por outro usuário"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="altera-tabela-ACESSO_LOG-para-ZZZ_ACESSO_LOG">
+        <renameTable  newTableName="ZZZ_ACESSO_LOG" oldTableName="ACESSO_LOG"/>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="altera-tabela-ACESSO_LOG-para-ZZZ_ACESSO_LOG_ACAO">
+        <renameTable  newTableName="ZZZ_ACESSO_LOG_ACAO" oldTableName="ACESSO_LOG_ACAO"/>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="criar-tabela-USUARIO-ACESSO-LOG">
+        <createTable tableName="USUARIO_ACESSO_LOG">
+            <column autoIncrement="${autoIncrement}"  name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_ACESSO_LOG"/>
+            </column>
+            <column name="FK_USUARIO" type="BIGINT"/>
+            <column name="DATA_LOGIN" type="DATETIME"/>
+            <column name="DATA_LOGOFF" type="DATETIME"/>
+            <column name="EXPIRACAO" type="DATETIME"/>
+            <column name="SESSAO" type="VARCHAR(100)"/>
+            <column name="TOKENAUTORIZACAO" type="VARCHAR(4000)"/>
+            <column name="IP" type="VARCHAR(100)"/>
+            <column name="ESTACAO" type="VARCHAR(100)"/>
+            <column name="FK_USUARIO_ACESSO_LOG_ORIGEM" type="BIGINT"/>
+            <column name="FK_USUARIO_ACESSO_LOG_LOGOFF" type="BIGINT"/>
+            <column name="FK_USUARIO_DESCONECTOU" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!-- SEQUENCE -->
+    <changeSet id="createSequence-USUARIO_ACESSO_LOG" author="eloi.correia">
+        <createSequence sequenceName="SEQ_USUARIO_ACESSO_LOG"/>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet author="eloi.correia" id="create-fk-FK_USUARIO_ACESSO_LOG_USUARIO">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO" baseTableName="USUARIO_ACESSO_LOG"
+                                 constraintName="FK_USUARIO_ACESSO_LOG_USUARIO"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet author="eloi.correia" id="create-fk-FK_USUARIO_ACESSO_LOG_USUARIO_DECONECTOU">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO_DESCONECTOU" baseTableName="USUARIO_ACESSO_LOG"
+                                 constraintName="FK_USUARIO_ACESSO_LOG_USUARIO_DECONECTOU"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet author="eloi.correia" id="create-fk-FK_USUARIO_ACESSO_LOG_ORIGEM">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO_ACESSO_LOG_ORIGEM" baseTableName="USUARIO_ACESSO_LOG"
+                                 constraintName="FK_USUARIO_ACESSO_LOG_ORIGEM"
+                                 referencedColumnNames="ID" referencedTableName="USUARIO_ACESSO_LOG_ORIGEM" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet author="eloi.correia" id="create-fk-FK_USUARIO_ACESSO_LOG_LOGOFF">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO_ACESSO_LOG_LOGOFF" baseTableName="USUARIO_ACESSO_LOG"
+                                 constraintName="FK_USUARIO_ACESSO_LOG_LOGOFF"
+                                 referencedColumnNames="ID" referencedTableName="USUARIO_ACESSO_LOG_LOGOFF" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Adicionar o campo ultima comunicação do front -->
+    <changeSet author="eloi.correia" id="alter-table-USUARIO_ACESSO_LOG">
+        <addColumn tableName="USUARIO_ACESSO_LOG">
+            <column name="ULTIMA_COMUNICACAO" type="TIMESTAMP">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="inserção do parametro tempo de vida do navegador">
+        <insert tableName="PARAMETROGLOBAL">
+            <column name="ID" value="25" />
+            <column name="CHAVE" value="ParametroTimeoutFrontend"/>
+            <column name="DESCRICAO" value="Controla o tempo em que o frontend tem que enviar comunicação com o backend (em segundos)"/>
+            <column name="VALOR" value="30" />
+        </insert>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="inserção do parametro tempo de ociosidade no frontend (em minutos)">
+        <insert tableName="PARAMETROGLOBAL">
+            <column name="ID" value="26" />
+            <column name="CHAVE" value="ParametroTimeIdleFrontend"/>
+            <column name="DESCRICAO" value="Controla o tempo de ociosidade do frontend (Valor em minutos)"/>
+            <column name="VALOR" value="5" />
+        </insert>
+    </changeSet>
+
+    <!-- Adicionar o campo ultima comunicação do front -->
+    <changeSet author="eloi.correia" id="alter-table-USUARIO_ACESSO_LOG">
+        <addColumn tableName="USUARIO_ACESSO_LOG">
+            <column name="ULTIMA_COMUNICACAO" type="TIMESTAMP">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="inserção do parametro tempo de vida do navegador">
+        <insert tableName="PARAMETROGLOBAL">
+            <column name="ID" value="25" />
+            <column name="CHAVE" value="ParametroTimeoutFrontend"/>
+            <column name="DESCRICAO" value="Controla o tempo em que o frontend tem que enviar comunicação com o backend (em segundos)"/>
+            <column name="VALOR" value="30" />
+        </insert>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="inserção do parametro tempo de ociosidade no frontend (em minutos)">
+        <insert tableName="PARAMETROGLOBAL">
+            <column name="ID" value="26" />
+            <column name="CHAVE" value="ParametroTimeIdleFrontend"/>
+            <column name="DESCRICAO" value="Controla o tempo de ociosidade do frontend (Valor em minutos)"/>
+            <column name="VALOR" value="5" />
+        </insert>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="inserção do item de menu USUARIOS LOGADOS">
+        <insert tableName="PERMISSAO">
+            <column name="ID" value="652"/>
+            <column name="DESCRICAO" value="Usuários Logados"/>
+            <column name="ID_TIPO_PERMISSAO" value="2"/>
+            <column name="ID_PERMISSAO_PAI" value="269"/>
+            <column name="ORDEM" value="8"/>
+            <column name="CODIGO" value="gestao-processos:ferramentas:usuarios-logados"/>
+        </insert>
+    </changeSet>
+
+
+
+</databaseChangeLog>

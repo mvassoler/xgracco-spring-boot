@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="roberto.neto" id="addColumn-FILA_PESSOA_AUD">
+        <addColumn tableName="FILA_PESSOA_AUD">
+            <column name="ATIVO" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="updateColumn-ativo-pessoa" author="guilherme.camargo">
+        <update tableName="PESSOA">
+            <column name="ATIVO" valueBoolean="false"/>
+                <where> ATIVO is NULL</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="create-constraintnotnull-ativo-tablepessoa" author="guilherme.camargo">
+        <addNotNullConstraint tableName="PESSOA" columnName="ATIVO" columnDataType="BOOLEAN"/>
+    </changeSet>
+
+
+    <changeSet id="add-column-ENVIA_RECEBE_PUBLICACAO_GRACCO_AUD" author="guilherme.camargo">
+        <addColumn tableName="DECISAO_AUD">
+            <column name="ENVIA_PUBLICACAO_GRACCO" type="BOOLEAN"/>
+            <column name="RECEBE_PUBLICACAO_GRACCO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

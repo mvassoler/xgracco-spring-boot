@@ -1,0 +1,66 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="roberto.neto" id="createTable-ACESSO_LOG_ACAO">
+        <createTable tableName="ACESSO_LOG_ACAO">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACESSO_LOG_ACAO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="roberto.neto" id="createSequence-SEQ_ACESSO_LOG" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_ACESSO_LOG"/>
+    </changeSet>
+
+    <changeSet author="roberto.neto" id="insertAutoIncrement-ACESSO_LOG_ACAO">
+        <insert tableName="ACESSO_LOG_ACAO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Login"/>
+        </insert>
+        <insert tableName="ACESSO_LOG_ACAO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Logout"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="roberto.neto" id="createTable-ACESSO_LOG">
+        <createTable tableName="ACESSO_LOG">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACESSO_LOG"/>
+            </column>
+            <column name="FK_USUARIO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_ACESSO_LOG_ACAO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_ACAO" type="DATETIME">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="roberto.neto" id="addForeignKeyConstraint-ACESSO_LOG-FK_USUARIO">
+        <addForeignKeyConstraint constraintName="FK_ACESSO_LOG_USUARIO"
+                                 baseTableName="ACESSO_LOG" baseColumnNames="FK_USUARIO"
+                                 referencedTableName="USUARIO" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="roberto.neto" id="addForeignKeyConstraint-ACESSO_LOG-FK_ACESSO_LOG_ACAO">
+        <addForeignKeyConstraint constraintName="FK_ACESSO_LOG_ACESSO_LOG_ACAO"
+                                 baseTableName="ACESSO_LOG" baseColumnNames="FK_ACESSO_LOG_ACAO"
+                                 referencedTableName="ACESSO_LOG_ACAO" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>

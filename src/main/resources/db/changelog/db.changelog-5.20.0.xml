@@ -1,0 +1,55 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!--TABELA PRE_CADASTRO_USUARIO_RESPONSAVEL-->
+    <changeSet author="felipe.costa" id="create-table-PRE_CADASTRO_USUARIO_RESPONSAVEL">
+        <createTable tableName="PRE_CADASTRO_USUARIO_RESPONSAVEL">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_USUARIO_RESPONSAVEL"/>
+            </column>
+            <column name="FK_PRE_CADASTRO_PROCESSO" type="BIGINT"/>
+            <column name="DATA_INICIO" type="DATETIME"/>
+            <column name="DATA_FIM" type="DATETIME"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!--TABELA PRE_CADASTRO_USUARIO_RESPONSAVEL_AUD-->
+    <changeSet author="felipe.costa" id="create-table-PRE_CADASTRO_USUARIO_RESPONSAVEL_AUD">
+        <createTable tableName="PRE_CADASTRO_USUARIO_RESPONSAVEL_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_USUARIO_RESPONSAVEL_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_USUARIO_RESPONSAVEL_AUD"/>
+            </column>
+
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="FK_PRE_CADASTRO_PROCESSO" type="BIGINT"/>
+            <column name="DATA_INICIO" type="DATETIME"/>
+            <column name="DATA_FIM" type="DATETIME"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet author="felipe.costa" id="create-fk-FK_PRE_CADASTRO_USUARIO_RESPONSAVEL_PESSOA">
+        <addForeignKeyConstraint baseColumnNames="FK_PESSOA" baseTableName="PRE_CADASTRO_USUARIO_RESPONSAVEL"
+                                 constraintName="FK_PRE_CADASTRO_USUARIO_RESPONSAVEL_PESSOA"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipe.costa" id="create-fk-FK_PRE_CADASTRO_USUARIO_RESPONSAVEL_PRE_CADASTRO_PROCESSO">
+        <addForeignKeyConstraint baseColumnNames="FK_PRE_CADASTRO_PROCESSO" baseTableName="PRE_CADASTRO_USUARIO_RESPONSAVEL"
+                                 constraintName="FK_PRE_CADASTRO_USUARIO_RESPONSAVEL_PRE_CADASTRO_PROCESSO"
+                                 referencedColumnNames="ID" referencedTableName="PRE_CADASTRO_PROCESSO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>

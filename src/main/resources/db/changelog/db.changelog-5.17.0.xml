@@ -1,0 +1,130 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!--TABELA FILA_PESSOA_ESPERA-->
+    <changeSet author="raphael.moreira" id="create-table-FILA_PESSOA_ESPERA">
+        <createTable tableName="FILA_PESSOA_ESPERA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_PESSOA_ESPERA"/>
+            </column>
+
+            <column name="FK_FILA_ORIGEM" type="BIGINT" />
+
+            <column name="FK_FILA_DESTINO" type="BIGINT" />
+
+            <column name="FK_PESSOA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--TABELA FILA_PESSOA_ESPERA_AUD-->
+    <changeSet author="raphael.moreira" id="create-table-FILA_PESSOA_ESPERA_AUD">
+        <createTable tableName="FILA_PESSOA_ESPERA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_PESSOA_ESPERA_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_PESSOA_ESPERA_AUD"/>
+            </column>
+
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="FK_FILA_ORIGEM" type="BIGINT" />
+            <column name="FK_FILA_DESTINO" type="BIGINT" />
+            <column name="FK_PESSOA" type="BIGINT" />
+        </createTable>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet id="create-fk-FK_FILA_ORIGEM" author="raphael.moreira">
+        <addForeignKeyConstraint baseColumnNames="FK_FILA_ORIGEM" baseTableName="FILA_PESSOA_ESPERA"
+                                 constraintName="FK_FILA_ORIGEM_FILA_PESSOA_ESPERA"
+                                 referencedColumnNames="ID" referencedTableName="FILA"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="create-fk-FK_FILA_DESTINO" author="raphael.moreira">
+        <addForeignKeyConstraint baseColumnNames="FK_FILA_DESTINO" baseTableName="FILA_PESSOA_ESPERA"
+                                 constraintName="FK_FILA_DESTINO_FILA_PESSOA_ESPERA"
+                                 referencedColumnNames="ID" referencedTableName="FILA"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="create-fk-FK_PESSOA" author="raphael.moreira">
+        <addForeignKeyConstraint baseColumnNames="FK_PESSOA" baseTableName="FILA_PESSOA_ESPERA"
+                                 constraintName="FK_PESSOA_FILA_PESSOA_ESPERA"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="create-fk-FK_ID_AUD" author="raphael.moreira">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="FILA_PESSOA_ESPERA_AUD"
+                                 constraintName="FK_ID_AUD_FILA_PESSOA_ESPERA"
+                                 referencedColumnNames="ID" referencedTableName="LOG_AUDITORIA"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!--Sequences-->
+    <changeSet author="raphael.moreira" id="create-sequence-5.17.0" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_FILA_PESSOA_ESPERA"/>
+    </changeSet>
+
+    <changeSet id="create-column-base_ativa" author="felipe.costa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="provisao" columnName="base_ativa"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="provisao">
+            <column name="base_ativa" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="update-column-base_ativa-false" author="felipe.costa">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="provisao" columnName="base_ativa"/>
+        </preConditions>
+
+        <update tableName="provisao">
+            <column name="base_ativa" value="true" type="BOOLEAN"/>
+            <where>
+                base_ativa = null
+            </where>
+        </update>
+
+    </changeSet>
+
+    <changeSet author="felipe.costa" id="createTable-USUARIO_DASHBOARD">
+        <createTable tableName="USUARIO_DASHBOARD">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_DASHBOARD"/>
+            </column>
+            <column name="FK_USUARIO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="base_ativa" value="false" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipe.costa" id="addForeignKeyConstraint-USUARIO_DASHBOARD-FK_USUARIO">
+        <addForeignKeyConstraint constraintName="FK_USUARIO_DASHBOARD_USUARIO"
+                                 baseTableName="USUARIO_DASHBOARD" baseColumnNames="FK_USUARIO"
+                                 referencedTableName="USUARIO" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipe.costa" id="create-seq-SEQ_USUARIO_DASHBOARD" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_USUARIO_DASHBOARD"/>
+    </changeSet>
+
+</databaseChangeLog>

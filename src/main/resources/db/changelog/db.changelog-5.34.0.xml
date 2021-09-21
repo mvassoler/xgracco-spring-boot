@@ -1,0 +1,49 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!--AUMENTO DO CAMPO DESCRIÇAO DO PROCESSO CONSULTIVO TABELA PROCESSO_AUTO-->
+    <changeSet author="deivy.spaulonci" id="ALTER-SIZE-COLUMN-DESCRICAO-PROCESSO">
+        <modifyDataType
+                columnName="DESCRICAO"
+                newDataType="VARCHAR(8000)"
+                tableName="PROCESSO"/>
+    </changeSet>
+
+    <!--AUMENTO DO CAMPO DESCRIÇAO DO PROCESSO CONSULTIVO TABELA PROCESSO_AUD-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-DESCRICAO-PROCESSO_AUD" >
+        <modifyDataType
+                columnName="DESCRICAO"
+                newDataType="VARCHAR(8000)"
+                tableName="PROCESSO_AUD"/>
+    </changeSet>
+
+    <!-- DROP UK_USUARIO_LOGIN_ID_SISTEMA_EXTERNO -->
+    <changeSet  author="henrique.oliveira"  id="DROP-UNIQUE-UK_USUARIO_LOGIN_ID_SISTEMA_EXTERNO">
+        <dropUniqueConstraint  constraintName="UK_USUARIO_LOGIN_ID_SISTEMA_EXTERNO" tableName="USUARIO" uniqueColumns="LOGIN, ID_SISTEMA_EXTERNO"/>
+    </changeSet>
+
+    <!-- Add UK_USUARIO_LOGIN -->
+    <changeSet author="raphael.moreira" id="ADD-UK_USUARIO_LOGIN">
+        <addUniqueConstraint tableName="USUARIO" columnNames="LOGIN" constraintName="UK_USUARIO_LOGIN"/>
+    </changeSet>
+
+    <!--ALTERACAO DO CAMPO DESCRIÇAO DO PROCESSO CONSULTIVO TABELA PROCESSO_AUTO-->
+    <changeSet author="henrique.oliveira" id="ALTER-TYPE-COLUMN-DESCRICAO-PROCESSO">
+        <modifyDataType
+                columnName="DESCRICAO"
+                newDataType="VARCHAR(7500)"
+                tableName="PROCESSO"/>
+    </changeSet>
+
+    <!--ALTERACAO DO CAMPO DESCRIÇAO DO PROCESSO CONSULTIVO TABELA PROCESSO_AUD-->
+    <changeSet author="henrique.oliveira" id="ALTER-TYPE-COLUMN-DESCRICAO-PROCESSO_AUD" >
+        <modifyDataType
+                columnName="DESCRICAO"
+                newDataType="VARCHAR(7500)"
+                tableName="PROCESSO_AUD"/>
+    </changeSet>
+
+</databaseChangeLog>

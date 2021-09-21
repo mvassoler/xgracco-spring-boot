@@ -1,0 +1,80 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- DATA DISTRIBUIÇÃO PUBLICACAO -->
+    <changeSet author="henrique.oliveira" id="alter-column-name-DATA_DISPONIBILIZACAO">
+        <renameColumn tableName="PUBLICACAO"
+                      oldColumnName="DATA_DISTRIBUICAO"
+                      newColumnName="DATA_DISPONIBILIZACAO"
+                      columnDataType="DATETIME"/>
+    </changeSet>
+
+    <!-- DATA DISTRIBUIÇÃO PUBLICACAO_AUD -->
+    <changeSet author="henrique.oliveira" id="alter-column-name-DATA_DISPONIBILIZACAO_aud">
+        <renameColumn tableName="PUBLICACAO_AUD"
+                      oldColumnName="DATA_DISTRIBUICAO"
+                      newColumnName="DATA_DISPONIBILIZACAO"
+                      columnDataType="DATETIME"/>
+    </changeSet>
+
+    <!-- ATUALIZA DATA DISPONIBIZILIZAÇÃO CAMPO -->
+    <changeSet author="henrique.oliveira" id="altera-campo-data-disponibilizacao-increment" dbms="${dbmsAutoIncrement}">
+        <sql>
+            UPDATE CAMPO
+            SET DESCRICAO = 'Data Disponibilização'
+            FROM CAMPO
+            INNER JOIN FORMULARIO FML ON CAMPO.FK_FORMULARIO = FML.ID
+            WHERE CAMPO.DESCRICAO = 'Data Distribuição' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+    </changeSet>
+
+    <!-- ATUALIZA DATA DISPONIBIZILIZAÇÃO CAMPO -->
+    <changeSet author="henrique.oliveira" id="altera-campo-data-disponibilizacao-sequence" dbms="${dbmsSequence}">
+        <sql>
+            UPDATE CAMPO
+            SET DESCRICAO = 'Data Disponibilização'
+            FROM FORMULARIO FML
+            WHERE CAMPO.fk_formulario = FML.ID AND
+            CAMPO.DESCRICAO = 'Data Distribuição' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+    </changeSet>
+
+    <!-- DATA DISPONIBIZILIZAÇÃO CAMPO_AUD -->
+    <changeSet author="henrique.oliveira" id="altera-campo-data-disponibilizacao-aud-sequence-increment" dbms="${dbmsAutoIncrement}">
+        <insert tableName="LOG_AUDITORIA">
+            <column name="DATA_ALTERACAO" valueDate="GETDATE()"/>
+            <column name="USUARIO" value="admin"/>
+        </insert>
+        <sql>INSERT INTO CAMPO_AUD (ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO,
+            TIPO_CAMPO, SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, ID_AUD, TIPO_AUD)
+            SELECT CAMPO.ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO, TIPO_CAMPO,
+            CAMPO.SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, (SELECT MAX(ID) FROM
+            LOG_AUDITORIA), 1 AS TIPO_AUD
+            FROM CAMPO
+            INNER JOIN FORMULARIO FML ON CAMPO.FK_FORMULARIO = FML.ID
+            WHERE CAMPO.DESCRICAO = 'Data Disponibilização' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+    </changeSet>
+
+    <!-- DATA DISPONIBIZILIZAÇÃO CAMPO_AUD -->
+    <changeSet author="henrique.oliveira" id="altera-campo-data-disponibilizacao-aud-sequence" dbms="${dbmsSequence}">
+        <insert tableName="LOG_AUDITORIA">
+            <column name="ID" valueSequenceNext="SEQ_LOG_AUDITORIA"/>
+            <column name="DATA_ALTERACAO" valueDate="NOW()"/>
+            <column name="USUARIO" value="admin"/>
+        </insert>
+        <sql>INSERT INTO CAMPO_AUD (ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO,
+            TIPO_CAMPO, SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, ID_AUD, TIPO_AUD)
+            SELECT CAMPO.ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO, TIPO_CAMPO,
+            CAMPO.SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, (SELECT MAX(ID) FROM
+            LOG_AUDITORIA), 1 AS TIPO_AUD
+            FROM CAMPO
+            INNER JOIN FORMULARIO FML ON CAMPO.FK_FORMULARIO = FML.ID
+            WHERE CAMPO.DESCRICAO = 'Data Disponibilização' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

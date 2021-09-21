@@ -1,0 +1,744 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <changeSet author="raphael.moreira" id="addColum-DESC_CORRESPONDENTE-SOLICITACAO_LOG">
+        <addColumn tableName="SOLICITACAO_LOG">
+            <column name="DESC_CORRESPONDENTE" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="addColum-DESC_CORRESPONDENTE-SOLICITACAO_LOG_AUD">
+        <addColumn tableName="SOLICITACAO_LOG_AUD">
+            <column name="DESC_CORRESPONDENTE" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="campo-idArquivo-wsintegracao">
+        <addColumn tableName="ARQUIVO">
+            <column name="IDARQUIVO_WSINTEGRACAO" type="VARCHAR(255)"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="campo-idArquivo-wsintegracao-aud">
+        <addColumn tableName="ARQUIVO_AUD">
+            <column name="IDARQUIVO_WSINTEGRACAO" type="VARCHAR(255)"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="SEQ_SOLICITACAO_ARQUIVO" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_SOLICITACAO_ARQUIVO"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="tabela-SOLICITACAO_ARQUIVO">
+        <createTable tableName="SOLICITACAO_ARQUIVO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SOLICITACAO_ARQUIVO"/>
+            </column>
+
+            <column name="ID_ARQUIVO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_SOLICITACAO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="FK-SOLICITACAO-ARQUIVO">
+        <addForeignKeyConstraint baseColumnNames="ID_ARQUIVO" baseTableName="SOLICITACAO_ARQUIVO"
+                                 constraintName="FK_SOL_ARQUIVO_ARQUIVO" referencedColumnNames="ID"
+                                 referencedTableName="ARQUIVO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint baseColumnNames="ID_SOLICITACAO" baseTableName="SOLICITACAO_ARQUIVO"
+                                 constraintName="FK_SOL_ARQUIVO_SOLICITACAO" referencedColumnNames="ID"
+                                 referencedTableName="SOLICITACAO_LOG" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="insert-permissao-transferencia">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="575"/>
+            <column name="DESCRICAO" value="Transferir Tarefa"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="351"/>
+            <column name="ORDEM" valueNumeric="6"/>
+            <column name="CODIGO" value="gestao-processos:processos:tutelar:transferir-tarefa"/>
+        </insert>
+    </changeSet>
+
+    <!-- INSERT INTO PERMISSAO -->
+    <changeSet author="thiago.fogar" id="insert-permissao-solicitacao-visualizar">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="582"/>
+            <column name="DESCRICAO" value="Visualizar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="293"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:notificacoes:solicitacoes:visualizar"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="update-permissao-ver-qualquer-solicitacao" author="thiago.fogar">
+        <sql>
+            INSERT INTO PERFIL_PERMISSAO
+            SELECT P.ID, 574 FROM PERFIL P
+            WHERE P.ID NOT IN (SELECT DISTINCT ID_PERFIL
+            FROM PERFIL_PERMISSAO
+            WHERE ID_PERMISSAO = 574)
+        </sql>
+    </changeSet>
+
+
+    <changeSet author="thiago.fogar" id="update-permissao-visualizar-tarefas">
+        <update tableName="PERMISSAO">
+            <column name="ID_PERMISSAO_PAI" value="351"></column>
+            <column name="ORDEM" valueNumeric="8"/>
+            <where>ID = 573</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="update-perfil-visualizar-tarefas-automaticas" author="thiago.fogar">
+        <sql>
+            INSERT INTO PERFIL_PERMISSAO
+            SELECT P.ID, 573 FROM PERFIL P
+            WHERE P.ID NOT IN (SELECT DISTINCT ID_PERFIL
+            FROM PERFIL_PERMISSAO
+            WHERE ID_PERMISSAO = 573)
+        </sql>
+    </changeSet>
+
+    <changeSet author="Jordano" id="createSequence-SEQ_CARTEIRA_EVENTO_TAREFA_TAG" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CARTEIRA_EVENTO_TAREFA_TAG"/>
+    </changeSet>
+
+    <!-- INSERT INTO PERMISSAO - MENU SISTEMAS VIRTUAIS e AÇÕES DO MESMO-->
+    <changeSet author="guilherme.camargo" id="insert-permissao-sistemas-virtuais">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="577"/>
+            <column name="DESCRICAO" value="Sistemas virtuais"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="136"/>
+            <column name="ORDEM" valueNumeric="26"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:sistemas-virtuais"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="insert-permissao-sistemas-virtuais-incluir">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="578"/>
+            <column name="DESCRICAO" value="Incluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="577"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:sistemas-virtuais:incluir"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="insert-permissao-sistemas-virtuais-editar">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="579"/>
+            <column name="DESCRICAO" value="Editar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="577"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:sistemas-virtuais:editar"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="insert-permissao-sistemas-virtuais-excluir">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="580"/>
+            <column name="DESCRICAO" value="Excluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="577"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:sistemas-virtuais:excluir"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="insert-permissao-sistemas-virtuais-duplicar">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="581"/>
+            <column name="DESCRICAO" value="Duplicar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="577"/>
+            <column name="ORDEM" valueNumeric="4"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:sistemas-virtuais:duplicar"/>
+        </insert>
+    </changeSet>
+
+    <!--Create Sequence SistemaVirtual-->
+    <changeSet author="guilherme.camargo" id="sequence-sistema-virtual" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_SISTEMA_VIRTUAL" />
+    </changeSet>
+
+    <!--Delete all rows from table sistemavirtual_uf-->
+    <changeSet author="guilherme.camargo" id="delete-registros-sistemavirtual-uf">
+        <delete tableName="SISTEMAVIRTUAL_UF" />
+    </changeSet>
+
+    <!-- Drop fk Processo - SistemaVirtual -->
+    <changeSet author="guilherme.camargo" id="drop-fk-processo-sistema-virtual">
+        <dropForeignKeyConstraint baseTableName="PROCESSO" constraintName="FK_PROCESSO_SISTEMAVIRTUAL"/>
+    </changeSet>
+
+    <!--Delete all rows from table sistemavirtual-->
+    <changeSet author="guilherme.camargo" id="delete-registros-sistemavirtual">
+        <delete tableName="SISTEMAVIRTUAL" />
+    </changeSet>
+
+    <!--Delete fk SistemaVirtual - SistemaVirtual_UF-->
+    <changeSet author="guilherme.camargo" id="drop-fk-sistemavirtual-uf">
+        <dropForeignKeyConstraint baseTableName="SISTEMAVIRTUAL_UF" constraintName="FK_SISTEMAVIRTUAL_UF_SISTVIR"/>
+    </changeSet>
+
+    <!--Drop pk from table sistemavirtual-->
+    <changeSet author="guilherme.camargo" id="remove-pk-sistemavirtual">
+        <dropPrimaryKey tableName="SISTEMAVIRTUAL" constraintName="PK_SISTEMAVIRTUAL"/>
+    </changeSet>
+
+    <!--Drop column id from table sistemavirtual-->
+    <changeSet author="guilherme.camargo" id="drop-column-id-sistemavirtual">
+        <dropColumn columnName="ID" tableName="SISTEMAVIRTUAL"/>
+    </changeSet>
+
+    <!--Add column id with autoincrement from sistemavirtual-->
+    <changeSet author="guilherme.camargo" id="add-column-id-autoincrement-sistemavirtual">
+        <addColumn tableName="SISTEMAVIRTUAL">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SISTEMAVIRTUAL"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="insert-sistemavirtual-sequence" dbms="${dbmsSequence}">
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="Eletrônico"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="Eletrônico (e-Proc)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="Eletrônico (e-Saj)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="Eletrônico (e-Themmis)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="Eletrônico (PEA)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="Eletrônico (Pje)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="Eletrônico (SGD - 2º Grau)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="e-Pat"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="JEF"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="Projudi"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="TRF 1"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="TRF 2"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="TRF 4"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="TRF 5"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="TRF 3"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="ID" valueSequenceNext="SEQ_SISTEMA_VIRTUAL"/>
+            <column name="DESCRICAO" value="Vara Federal (Creta)"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="insert-sistemavirtual-autoincrement" dbms="${dbmsAutoIncrement}">
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="Eletrônico"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="Eletrônico (e-Proc)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="Eletrônico (e-Saj)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="Eletrônico (e-Themmis)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="Eletrônico (PEA)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="Eletrônico (Pje)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="Eletrônico (SGD - 2º Grau)"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="e-Pat"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="JEF"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="Projudi"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="TRF 1"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="TRF 2"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="TRF 4"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="TRF 5"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="TRF 3"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL">
+            <column name="DESCRICAO" value="Vara Federal (Creta)"/>
+        </insert>
+    </changeSet>
+
+
+    <!--Add FK sistemavirtual - sistemavirtual_uf -->
+    <changeSet author="guilherme.camargo" id="add-fk-sistemavirtual-uf">
+        <addForeignKeyConstraint baseColumnNames="SISTEMAVIRTUAL_ID" baseTableName="SISTEMAVIRTUAL_UF"
+                                 constraintName="FK_SISTEMAVIRTUAL_UF_SISTVIR" referencedColumnNames="ID"
+                                 referencedTableName="SISTEMAVIRTUAL" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <!-- Add constraint Processo - SistemaVirtual-->
+    <changeSet author="guilherme.camargo" id="add-fk-processo-sistema_virtual">
+        <addForeignKeyConstraint baseColumnNames="FK_SISTEMAVIRTUAL" baseTableName="PROCESSO"
+                                 constraintName="FK_PROCESSO_SISTEMAVIRTUAL" referencedColumnNames="ID"
+                                 referencedTableName="SISTEMAVIRTUAL" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="insert-perfilpermissao-sistemavirtual">
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="577"/>
+        </insert>
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="578"/>
+        </insert>
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="579"/>
+        </insert>
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="580"/>
+        </insert>
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="581"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-relacoes-sistemavirtual-uf-padrao" author="guilherme.camargo">
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="3"/>
+            <column name="UF_ID" valueNumeric="1"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="1"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="3"/>
+            <column name="UF_ID" valueNumeric="2"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="2"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="14"/>
+            <column name="UF_ID" valueNumeric="2"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="16"/>
+            <column name="UF_ID" valueNumeric="2"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="2"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="3"/>
+            <column name="UF_ID" valueNumeric="3"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="3"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="3"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="3"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="1"/>
+            <column name="UF_ID" valueNumeric="4"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="4"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="3"/>
+            <column name="UF_ID" valueNumeric="5"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="5"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="5"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="5"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="3"/>
+            <column name="UF_ID" valueNumeric="6"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="6"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="6"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="14"/>
+            <column name="UF_ID" valueNumeric="6"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="16"/>
+            <column name="UF_ID" valueNumeric="6"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="7"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="7"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="8"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="8"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="9"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="9"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="9"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="10"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="10"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="10"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="11"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="11"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="11"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="3"/>
+            <column name="UF_ID" valueNumeric="12"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="12"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="5"/>
+            <column name="UF_ID" valueNumeric="13"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="13"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="13"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="13"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="14"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="14"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="14"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="15"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="15"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="14"/>
+            <column name="UF_ID" valueNumeric="15"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="16"/>
+            <column name="UF_ID" valueNumeric="15"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="16"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="16"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="14"/>
+            <column name="UF_ID" valueNumeric="16"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="16"/>
+            <column name="UF_ID" valueNumeric="16"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="17"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="17"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="17"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="3"/>
+            <column name="UF_ID" valueNumeric="18"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="18"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="13"/>
+            <column name="UF_ID" valueNumeric="18"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="18"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="1"/>
+            <column name="UF_ID" valueNumeric="19"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="19"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="3"/>
+            <column name="UF_ID" valueNumeric="20"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="20"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="20"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="14"/>
+            <column name="UF_ID" valueNumeric="20"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="16"/>
+            <column name="UF_ID" valueNumeric="20"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="21"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="7"/>
+            <column name="UF_ID" valueNumeric="21"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="21"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="21"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="22"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="22"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="22"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="4"/>
+            <column name="UF_ID" valueNumeric="23"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="23"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="13"/>
+            <column name="UF_ID" valueNumeric="23"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="3"/>
+            <column name="UF_ID" valueNumeric="24"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="13"/>
+            <column name="UF_ID" valueNumeric="24"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="24"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="1"/>
+            <column name="UF_ID" valueNumeric="25"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="14"/>
+            <column name="UF_ID" valueNumeric="25"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="25"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="3"/>
+            <column name="UF_ID" valueNumeric="26"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="8"/>
+            <column name="UF_ID" valueNumeric="26"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="9"/>
+            <column name="UF_ID" valueNumeric="26"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="15"/>
+            <column name="UF_ID" valueNumeric="26"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="26"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="2"/>
+            <column name="UF_ID" valueNumeric="27"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="10"/>
+            <column name="UF_ID" valueNumeric="27"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="11"/>
+            <column name="UF_ID" valueNumeric="27"/>
+        </insert>
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="27"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

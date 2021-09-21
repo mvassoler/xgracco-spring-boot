@@ -1,0 +1,344 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="createTableCapturaAndamento" author="andre.baroni">
+        <createTable tableName="captura_andamento">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             primaryKeyName="pk_capturaandamento"/>
+            </column>
+            <column name="descricao" type="VARCHAR(100)">
+                <constraints nullable="false"
+                             unique="true"
+                             uniqueConstraintName="uk_descricao_capturaandamento"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createSequenceCapturaAndamento" author="andre.baroni">
+        <createSequence sequenceName="seq_capturaandamento"
+                        startValue="1"
+                        incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="createTableCapturaAndamentoAud" author="andre.baroni">
+        <createTable tableName="captura_andamento_aud">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             primaryKeyName="pk_capturaandamentoaud"/>
+            </column>
+            <column name="id_aud" type="BIGINT">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             primaryKeyName="pk_capturaandamentoaud"/>
+            </column>
+            <column name="tipo_aud" type="integer"/>
+            <column name="descricao" type="VARCHAR(100)" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createTableCapturaAndamentoProc" author="andre.baroni">
+        <createTable tableName="captura_andamento_proc">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_capturaandamentoproc"
+                             nullable="false"/>
+            </column>
+            <column name="fk_capturaandamento" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_capturaandproc_capturaand"
+                             referencedTableName="captura_andamento"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="fk_processo" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_capturaandproc_processo"
+                             referencedTableName="processo"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="ativo" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ultimo_retorno" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createSequenceCapturaAndamentoProc" author="andre.baroni">
+        <createSequence sequenceName="seq_capturaandamentoproc"
+                        startValue="1"
+                        incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="createTableCapturaAndamentoProcAud" author="andre.baroni">
+        <createTable tableName="captura_andamento_proc_aud">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_capturaandamentoprocaud"
+                             nullable="false"/>
+            </column>
+            <column name="id_aud" type="bigint">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             primaryKeyName="pk_capturaandamentoprocaud"/>
+            </column>
+            <column name="tipo_aud" type="integer"/>
+            <column name="fk_capturaandamento" type="BIGINT" />
+            <column name="fk_processo" type="BIGINT" />
+            <column name="ativo" type="boolean"/>
+            <column name="ultimo_retorno" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="inserePermissaoMenuTelaCapturaAndamento" author="andre.baroni">
+        <insert tableName="permissao">
+            <column name="id" value="636" />
+            <column name="descricao" value="Captura de Andamentos" />
+            <column name="id_tipo_permissao" value="2" />
+            <column name="id_permissao_pai" value="269" />
+            <column name="ordem" value="7" />
+            <column name="codigo" value="gestao-processos:ferramentas:captura-andamento" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="inserePermissoesBotoesTelaCapturaAndamento" author="andre.baroni">
+        <insert tableName="permissao">
+            <column name="id" value="637" />
+            <column name="descricao" value="Incluir" />
+            <column name="id_tipo_permissao" value="4" />
+            <column name="id_permissao_pai" value="636" />
+            <column name="ordem" value="1" />
+            <column name="codigo" value="gestao-processos:ferramentas:captura-andamento:incluir" />
+        </insert>
+
+        <insert tableName="permissao">
+            <column name="id" value="638" />
+            <column name="descricao" value="Editar" />
+            <column name="id_tipo_permissao" value="4" />
+            <column name="id_permissao_pai" value="636" />
+            <column name="ordem" value="2" />
+            <column name="codigo" value="gestao-processos:ferramentas:captura-andamento:editar" />
+        </insert>
+
+        <insert tableName="permissao">
+            <column name="id" value="639" />
+            <column name="descricao" value="Excluir" />
+            <column name="id_tipo_permissao" value="4" />
+            <column name="id_permissao_pai" value="636" />
+            <column name="ordem" value="3" />
+            <column name="codigo" value="gestao-processos:ferramentas:captura-andamento:excluir" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="updateRotinaJob" author="andre.baroni">
+        <update tableName="rotina_job">
+            <column name="descricao" value="Captura de Novos Andamentos" type="CLOB"/>
+            <where>
+                id = 7
+            </where>
+        </update>
+    </changeSet>
+
+    <changeSet id="addColumnCapturaAndamentoTabelaRotina" author="andre.baroni">
+        <addColumn tableName="rotina">
+            <column name="fk_capturaandamento" type="bigint">
+                <constraints referencedTableName="captura_andamento"
+                             referencedColumnNames="id"
+                             foreignKeyName="fk_rotina_capturaandamento"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="addColumnCapturaAndamentoTabelaRotinaAud" author="andre.baroni">
+        <addColumn tableName="rotina_aud">
+            <column name="fk_capturaandamento" type="bigint" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createTableSolicitacaoAndamento" author="andre.baroni">
+        <createTable tableName="solicitacao_andamento">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_solcitaicaoandamento" />
+            </column>
+            <column name="fk_capturaandamento" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="solicitacao" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_solicitacao" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createSequenceSolicitacaoAndamento" author="andre.baroni">
+        <createSequence sequenceName="seq_solicitacaoandamento"
+                        startValue="1"
+                        incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="createTableSolicitacaoAndamentoAud" author="andre.baroni">
+        <createTable tableName="solicitacao_andamento_aud">
+            <column name="id" type="bigint" >
+                <constraints primaryKey="true"
+                             nullable="false"
+                             primaryKeyName="pk_solicitacaoandamentoaud"/>
+            </column>
+            <column name="id_aud" type="bigint">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             primaryKeyName="pk_solicitacaoandamentoaud"/>
+            </column>
+            <column name="tipo_aud" type="integer"/>
+            <column name="fk_capturaandamento" type="bigint" />
+            <column name="solicitacao" type="varchar(100)" />
+            <column name="data_solicitacao" type="timestamp" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createTableSolicitacaoAndamentoLog" author="andre.baroni">
+        <createTable tableName="solicitacao_andamento_log">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_solicitacaoandamentolog" />
+            </column>
+            <column name="fk_solicitacaoandamento" type="bigint">
+                <constraints foreignKeyName="fk_solandamentolog_soland"
+                             referencedTableName="solicitacao_andamento"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="fk_processo" type="bigint">
+                <constraints foreignKeyName="fk_solandamento_processo"
+                             referencedTableName="processo"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="descricao" type="VARCHAR(255)" />
+            <column name="status" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantidade_novo_andamento" type="integer">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createSequenceSolicitacaoAndamentoLog" author="andre.baroni">
+        <createSequence sequenceName="seq_solicitacaoandamentolog"
+                        startValue="1"
+                        incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="createTableSolicitacaoAndamentoLogAud" author="andre.baroni">
+        <createTable tableName="solicitacao_andamento_log_aud">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             primaryKeyName="pk_solicitacaoandamentologaud"/>
+            </column>
+            <column name="id_aud" type="bigint">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             primaryKeyName="pk_solicitacaoandamentologaud"/>
+            </column>
+            <column name="tipo_aud" type="integer"/>
+            <column name="fk_solicitacaoandamento" type="bigint" />
+            <column name="fk_processo" type="bigint" />
+            <column name="descricao" type="VARCHAR(255)" />
+            <column name="status" type="integer" />
+            <column name="quantidade_novo_andamento" type="integer" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addColumnCienciaAndTituloAtProcessoAndamentos" author="andre.baroni">
+        <addColumn tableName="PROCESSOANDAMENTOS">
+            <column name="ciencia" type="BOOLEAN"/>
+            <column name="titulo" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="setCienciaInAllProcessoAndamentos" author="andre.baroni">
+        <update tableName="PROCESSOANDAMENTOS">
+            <column name="ciencia" type="BOOLEAN" value="true" />
+        </update>
+    </changeSet>
+
+    <changeSet id="inserePermissaoDarCienciaNovosAndamentos" author="andre.baroni">
+        <insert tableName="permissao">
+            <column name="id" value="640" />
+            <column name="descricao" value="Informar ciência" />
+            <column name="id_tipo_permissao" value="4" />
+            <column name="id_permissao_pai" value="291" />
+            <column name="ordem" value="1" />
+            <column name="codigo" value="gestao-processos:notificacoes:novos-andamentos:ciencia" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="inserePermissaoAdicionarProcessoCapturaAndamento" author="andre.baroni">
+        <insert tableName="permissao">
+            <column name="id" value="641" />
+            <column name="descricao" value="Adicionar Processos" />
+            <column name="id_tipo_permissao" value="3" />
+            <column name="id_permissao_pai" value="636" />
+            <column name="ordem" value="4" />
+            <column name="codigo" value="gestao-processos:ferramentas:captura-andamento:adicionar-processo" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="inserePermissaoRemoverProcessoCapturaAndamento" author="andre.baroni">
+        <insert tableName="permissao">
+            <column name="id" value="642" />
+            <column name="descricao" value="Remover Processos" />
+            <column name="id_tipo_permissao" value="4" />
+            <column name="id_permissao_pai" value="636" />
+            <column name="ordem" value="5" />
+            <column name="codigo" value="gestao-processos:ferramentas:captura-andamento:remover-processo" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="inserePermissaoVisualizarLogCapturaAndamento" author="andre.baroni">
+        <insert tableName="permissao">
+            <column name="id" value="643" />
+            <column name="descricao" value="Visualizar Log" />
+            <column name="id_tipo_permissao" value="3" />
+            <column name="id_permissao_pai" value="636" />
+            <column name="ordem" value="6" />
+            <column name="codigo" value="gestao-processos:ferramentas:captura-andamento:visualizar-log" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="adiciona-paramentro-permitir-duplicidade-numero-processo" author="andre.baroni">
+        <addColumn tableName="CARTEIRA">
+            <column name="PERMITE_DUPLICIDADE_NUM_PROC" type="BOOLEAN" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="adiciona-paramentro-permitir-duplicidade-numero-processo-auditoria" author="andre.baroni">
+        <addColumn tableName="CARTEIRA_AUD">
+            <column name="PERMITE_DUPLICIDADE_NUM_PROC" type="BOOLEAN" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="atualiza-carteiras-existentes-nao-permite-duplicidade-numero-processo" author="andre.baroni">
+        <update tableName="carteira">
+            <column name="PERMITE_DUPLICIDADE_NUM_PROC" value="false" />
+        </update>
+    </changeSet>
+
+    <changeSet id="cria-parametro-global-autocorrecao-rotinas-agendadas" author="andre.baroni">
+        <insert tableName="PARAMETROGLOBAL">
+            <column name="ID" valueNumeric="24"/>
+            <column name="CHAVE" value="ParametrosRotinasAgendadas.agendamentoRotinas.autocorrecao.tempo"/>
+            <column name="CLASSE" value="br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosRotinasAgendadas"/>
+            <column name="DESCRICAO" value="Tempo para autocorreção de execuções de rotinas agendadas (Valor em Horas)"/>
+            <column name="VALOR" value="12" />
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

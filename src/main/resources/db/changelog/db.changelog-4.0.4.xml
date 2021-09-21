@@ -1,0 +1,426 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="permissoes-FECHAMENTO-LOTE" author="raphael.moreira">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="612"/>
+            <column name="DESCRICAO" value="Fechamento Lote"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="269"/>
+            <column name="ORDEM" valueNumeric="6"/>
+            <column name="CODIGO" value="gestao-processos:ferramentas:fechamento-lote"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-rotina-atualizacao-cenarios-pedido" author="guilherme.camargo">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="13"/>
+            <column name="DESCRICAO" value="Atualização dos cenários(Pedido)"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="create-sequence-db-publicacao-nao-colada" author="guilherme.camargo" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PUBNCOLADA"/>
+    </changeSet>
+    
+    <changeSet id="create-table-publicacao-nao-colada" author="guilherme.camargo">
+        <createTable tableName="PUBLICACAO_NAO_COLADA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PUBLICACAO_NAO_COLADA"/>
+            </column>
+            <column name="EMPRESA" type="VARCHAR(250)"/>
+            <column name="PARTES" type="VARCHAR(250)"/>
+            <column name="ORGAO" type="VARCHAR(250)"/>
+            <column name="JUIZO" type="CLOB"/>
+            <column name="NOME_DIARIO" type="VARCHAR(250)"/>
+            <column name="NUMERO_PROCESSO" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TEXTO_PUBLICACAO" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODIGO_RELACIONAL" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_CRIACAO" type="DATETIME"/>
+            <column name="DATA_ALTERACAO" type="DATETIME"/>
+            <column name="DATA_PUBLICACAO" type="DATETIME"/>
+            <column name="MOTIVO_TRATAMENTO" type="VARCHAR(255)"/>
+            <column name="STATUS" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="create-table-publicacao-nao-colada-aud" author="guilherme.camargo" >
+        <createTable tableName="PUBLICACAO_NAO_COLADA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PUBLICACAO_NAO_COLADA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PUBLICACAO_NAO_COLADA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="EMPRESA" type="VARCHAR(250)"/>
+            <column name="PARTES" type="VARCHAR(250)"/>
+            <column name="ORGAO" type="VARCHAR(250)"/>
+            <column name="JUIZO" type="CLOB"/>
+            <column name="NUMERO_PROCESSO" type="VARCHAR(30)"/>
+            <column name="NOME_DIARIO" type="VARCHAR(250)"/>
+            <column name="TEXTO_PUBLICACAO" type="CLOB"/>
+            <column name="CODIGO_RELACIONAL" type="BIGINT"/>
+            <column name="DATA_CRIACAO" type="DATETIME"/>
+            <column name="DATA_ALTERACAO" type="DATETIME"/>
+            <column name="DATA_PUBLICACAO" type="DATETIME"/>
+            <column name="MOTIVO_TRATAMENTO" type="VARCHAR(255)"/>
+            <column name="STATUS" type="INTEGER"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add-permissoes-publicacoes-nao-coladas" author="guilherme.camargo">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="615"/>
+            <column name="DESCRICAO" value="Publicações não coladas"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="289"/>
+            <column name="ORDEM" valueNumeric="5"/>
+            <column name="CODIGO" value="gestao-processos:notificacoes:publicacoes-nao-coladas"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="616"/>
+            <column name="DESCRICAO" value="Vincular à um processo"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="615"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:notificacoes:publicacoes-nao-coladas:vincular-processo"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="617"/>
+            <column name="DESCRICAO" value="Ignorar publicação"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="615"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:notificacoes:publicacoes-nao-coladas:ignorar-publicacao"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="618"/>
+            <column name="DESCRICAO" value="Criar novo processo"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="615"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:notificacoes:publicacoes-nao-coladas:criar-processo"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="619"/>
+            <column name="DESCRICAO" value="Encaminhar para cadastro"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="615"/>
+            <column name="ORDEM" valueNumeric="4"/>
+            <column name="CODIGO" value="gestao-processos:notificacoes:publicacoes-nao-coladas:encaminhar-cadastro"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="620"/>
+            <column name="DESCRICAO" value="Encaminhar para tratamento"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="615"/>
+            <column name="ORDEM" valueNumeric="5"/>
+            <column name="CODIGO" value="gestao-processos:notificacoes:publicacoes-nao-coladas:encaminhar-tratamento"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="621"/>
+            <column name="DESCRICAO" value="Exportar resultados"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="615"/>
+            <column name="ORDEM" valueNumeric="6"/>
+            <column name="CODIGO" value="gestao-processos:notificacoes:publicacoes-nao-coladas:exportar-resultados"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-rotina-atualizacao-cenarios-pedido" author="guilherme.camargo">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="13"/>
+            <column name="DESCRICAO" value="Atualização dos cenários(Pedido)"/>
+        </insert>
+    </changeSet>
+
+
+
+    <changeSet id="insert-rotina-atualizacao-cenarios-pedido" author="guilherme.camargo">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="13"/>
+            <column name="DESCRICAO" value="Atualização dos cenários(Pedido)"/>
+        </insert>
+    </changeSet>
+
+
+
+    <changeSet author="raphael.moreira" id="create-LOTE_CUSTAS">
+        <createTable tableName="LOTE_CUSTAS">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_LOTE_CUSTAS"/>
+            </column>
+
+            <column name="NUMERO" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="DATA_LOTE" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="STATUS" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="FK_PESSOA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="INTEGRADO" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK-PESSOA">
+        <addForeignKeyConstraint baseColumnNames="FK_PESSOA" baseTableName="LOTE_CUSTAS"
+                                 constraintName="FK_PESSOA_LOTE_CUSTAS" referencedColumnNames="ID"
+                                 referencedTableName="PESSOA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-table-LOTE_CUSTAS_AUD">
+        <createTable tableName="LOTE_CUSTAS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_LOTE_CUSTAS_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_LOTE_CUSTAS_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+
+            <column name="NUMERO" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="DATA_LOTE" type="DATETIME">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="STATUS" type="INTEGER">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="FK_PESSOA" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="INTEGRADO" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK_LOTE_CUSTAS_AUD">
+        <addForeignKeyConstraint baseTableName="LOTE_CUSTAS_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_LOTE_CUSTAS_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <changeSet author="raphael.moreira" id="create-LOTE_CUSTAS_ITEM">
+        <createTable tableName="LOTE_CUSTAS_ITEM">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_LOTE_CUSTAS_ITEM"/>
+            </column>
+
+            <column name="FK_LOTE_CUSTAS" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="FK_PROCESSODESPESAS" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK-LOTE_CUSTAS">
+        <addForeignKeyConstraint baseColumnNames="FK_LOTE_CUSTAS" baseTableName="LOTE_CUSTAS_ITEM"
+                                 constraintName="FK_LOTE_CUSTAS" referencedColumnNames="ID"
+                                 referencedTableName="LOTE_CUSTAS" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK-PROCESSODESPESAS">
+        <addForeignKeyConstraint baseColumnNames="FK_PROCESSODESPESAS" baseTableName="LOTE_CUSTAS_ITEM"
+                                 constraintName="FK_PROCESSODESPESAS_CUSTAS" referencedColumnNames="ID"
+                                 referencedTableName="PROCESSODESPESAS" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-table-LOTE_CUSTAS_ITEM_AUD">
+        <createTable tableName="LOTE_CUSTAS_ITEM_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_LOTE_CUSTAS_ITEM_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_LOTE_CUSTAS_ITEM_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+
+            <column name="FK_LOTE_CUSTAS" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="FK_PROCESSODESPESAS" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK_LOTE_CUSTAS_ITEM_AUD">
+        <addForeignKeyConstraint baseTableName="LOTE_CUSTAS_ITEM_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_LOTE_CUSTAS_ITEM_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <changeSet author="raphael.moreira" id="create-CAIXA_LOTE_CUSTAS">
+        <createTable tableName="CAIXA_LOTE_CUSTAS">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAIXA_LOTE_CUSTAS"/>
+            </column>
+
+            <column name="FK_LOTE_CUSTAS" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="VALOR" type="DECIMAL(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK-LOTE_CUSTAS">
+        <addForeignKeyConstraint baseColumnNames="FK_LOTE_CUSTAS" baseTableName="LOTE_CUSTAS_ITEM"
+                                 constraintName="FK_LOTE_CUSTAS" referencedColumnNames="ID"
+                                 referencedTableName="LOTE_CUSTAS" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-table-CAIXA_LOTE_CUSTAS_AUD">
+        <createTable tableName="CAIXA_LOTE_CUSTAS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAIXA_LOTE_CUSTAS_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAIXA_LOTE_CUSTAS_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+
+            <column name="FK_LOTE_CUSTAS" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="VALOR" type="DECIMAL(15, 2)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK_CAIXA_LOTE_CUSTAS_AUD">
+        <addForeignKeyConstraint baseTableName="CAIXA_LOTE_CUSTAS_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_CAIXA_LOTE_CUSTAS_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <changeSet author="raphael.moreira" id="create-SEQUENCE-CHANGELOG-4.0.4" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_LOTE_CUSTAS"/>
+        <createSequence sequenceName="SEQ_LOTE_CUSTAS_ITEM"/>
+        <createSequence sequenceName="SEQ_CAIXA_LOTE_CUSTAS"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-FK_PUBLICACAO_NAO_COLADA_PROCESSO">
+        <addForeignKeyConstraint baseTableName="PUBLICACAO_NAO_COLADA" baseColumnNames="FK_PROCESSO"
+                                 constraintName="FK_PUBLICACAO_NAO_COLADA_PROCESSO"
+                                 referencedTableName="PROCESSO"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="create-sequence-db-publicacao-nao-colada-acao" author="guilherme.camargo" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PUBNCOLADA_ACAO"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-table-PUBLICACAO_NAO_COLADA_ACAO">
+        <createTable tableName="PUBLICACAO_NAO_COLADA_ACAO">
+            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints  nullable="false" primaryKey="true" primaryKeyName="PK_PUBLICACAO_NAO_COLADA_ACAO"/>
+            </column>
+
+            <column name="FK_PUBLICACAO_NAO_COLADA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="FK_PESSOA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACAO" type="INTEGER"/>
+            <column name="DATA_ACAO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-table-PUBLICACAO_NAO_COLADA_ACAO_AUD">
+        <createTable tableName="PUBLICACAO_NAO_COLADA_ACAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PUBLICACAO_NAO_COLADA_ACAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PUBLICACAO_NAO_COLADA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="FK_PUBLICACAO_NAO_COLADA" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="ACAO" type="INTEGER"/>
+            <column name="DATA_ACAO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-fks-publicacao-nao-colada-acao">
+        <addForeignKeyConstraint baseTableName="PUBLICACAO_NAO_COLADA_ACAO" baseColumnNames="FK_PUBLICACAO_NAO_COLADA"
+                                 constraintName="FK_PUBLICACAO_NAO_COLADA_ACAO_PUBLICACAO"
+                                 referencedTableName="PUBLICACAO_NAO_COLADA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint baseTableName="PUBLICACAO_NAO_COLADA_ACAO" baseColumnNames="FK_PROCESSO"
+                                 constraintName="FK_PUBLICACAO_NAO_COLADA_ACAO_PROCESSO"
+                                 referencedTableName="PROCESSO"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint baseTableName="PUBLICACAO_NAO_COLADA_ACAO" baseColumnNames="FK_PESSOA"
+                                 constraintName="FK_PUBLICACAO_NAO_COLADA_ACAO_PESSOA"
+                                 referencedTableName="PESSOA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>

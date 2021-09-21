@@ -1,0 +1,904 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- Create CASO -->
+    <changeSet author="marcelo.aguiar" id="TABLE_CASO">
+        <createTable tableName="CASO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CASO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_RESPONSAVEL" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RECEBER_NOTIFICACOES" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Create FK_CASO_RESPONSAVEL -->
+    <changeSet author="marcelo.aguiar" id="FK_CASO_RESPONSAVEL">
+        <addForeignKeyConstraint baseColumnNames="ID_RESPONSAVEL" baseTableName="CASO"
+                                 constraintName="FK_CASO_RESPONSAVEL" referencedColumnNames="ID"
+                                 referencedTableName="USUARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Create UK_CASO_DESCRICAO -->
+    <changeSet author="marcelo.aguiar" id="CASO_UNIQUE_DESCRICAO">
+        <addUniqueConstraint tableName="CASO" constraintName="UK_CASO_DESCRICAO"
+                             columnNames="DESCRICAO"/>
+    </changeSet>
+
+    <!-- Create SEQ_CASO -->
+    <changeSet author="marcelo.aguiar" id="SEQ_CASO" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CASO"/>
+    </changeSet>
+
+    <!-- Create CASO_PROCESSO -->
+    <changeSet author="marcelo.aguiar" id="TABLE_CASO_PROCESSO">
+        <createTable tableName="CASO_PROCESSO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CASO_PROCESSO"/>
+            </column>
+            <column name="ID_CASO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_PROCESSO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_PAI" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create FK_CASO_PROCESSO_CASO -->
+    <changeSet author="marcelo.aguiar" id="FK_CASO_PROCESSO_CASO">
+        <addForeignKeyConstraint baseColumnNames="ID_CASO" baseTableName="CASO_PROCESSO"
+                                 constraintName="FK_CASO_PROCESSO_CASO" referencedColumnNames="ID"
+                                 referencedTableName="CASO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Create FK_CASO_PROCESSO_PROCESSO -->
+    <changeSet author="marcelo.aguiar" id="FK_CASO_PROCESSO_PROCESSO">
+        <addForeignKeyConstraint baseColumnNames="ID_PROCESSO" baseTableName="CASO_PROCESSO"
+                                 constraintName="FK_CASO_PROCESSO_PROCESSO" referencedColumnNames="ID"
+                                 referencedTableName="PROCESSO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Create FK_CASO_PROCESSO_PAI -->
+    <changeSet author="marcelo.aguiar" id="FK_CASO_PROCESSO_PAI">
+        <addForeignKeyConstraint baseColumnNames="ID_PAI" baseTableName="CASO_PROCESSO"
+                                 constraintName="FK_CASO_PROCESSO_PAI" referencedColumnNames="ID"
+                                 referencedTableName="CASO_PROCESSO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Create UK_CASO_PROCESSO -->
+    <changeSet author="marcelo.aguiar" id="UK_CASO_PROCESSO">
+        <addUniqueConstraint tableName="CASO_PROCESSO" constraintName="UK_CASO_PROCESSO"
+                             columnNames="ID_CASO, ID_PROCESSO"/>
+    </changeSet>
+
+    <!-- Create SEQ_CASO_PROCESSO -->
+    <changeSet author="marcelo.aguiar" id="SEQ_CASO_PROCESSO" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CASO_PROCESSO"/>
+    </changeSet>
+
+    <!-- Create CASO_AUD -->
+    <changeSet author="marcelo.aguiar" id="TABLE_CASO_AUD">
+        <createTable tableName="CASO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CASO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CASO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="ID_RESPONSAVEL" type="BIGINT"/>
+            <column name="RECEBER_NOTIFICACOES" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create FK_CASO_AUD -->
+    <changeSet author="marcelo.aguiar" id="FK_CASO_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CASO_AUD"
+                                 constraintName="FK_CASO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAO-93">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="93"/>
+            <column name="DESCRICAO" value="Permissão para Cadastro de Casos"/>
+            <column name="EXIBE" valueBoolean="true"/>
+            <column name="FEATURE" value="caso"/>
+            <column name="REDIRECT" value="/casos/lista"/>
+            <column name="ID_TIPO_PERMISSAO" type="INTEGER" value="2"/>
+            <column name="CODIGO" value="Processo | Casos"/>
+            <column name="DIRETORIOVIEW" value="/caso"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-93">
+        <!--INSERIR-->
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="93"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+        <!--EXCLUIR-->
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="93"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+        <!--DUPLICAR-->
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="93"/>
+            <column name="ID_OPERACAO" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-INSERIR.93" dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="93"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-INSERIR-93" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="93"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-EXCLUIR.93" dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="93"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-EXCLUIR-93" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="93"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-DUPLICAR.93" dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="93"/>
+            <column name="ID_OPERACAO" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-DUPLICAR-93" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="93"/>
+            <column name="ID_OPERACAO" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="create-column-CASO-IDENTIFICADOR">
+        <addColumn tableName="CASO">
+            <column name="IDENTIFICADOR" type="VARCHAR(50)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="create-column-CASO_AUD-IDENTIFICADOR">
+        <addColumn tableName="CASO_AUD">
+            <column name="IDENTIFICADOR" type="VARCHAR(50)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="delete-garantia-dataexclusao">
+        <delete tableName="GARANTIA">
+            <where>DATAEXCLUSAO IS NOT NULL</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-dataexclusao-GARANTIA_AUD">
+        <dropColumn columnName="DATAEXCLUSAO" tableName="GARANTIA_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-dataalteracao-GARANTIA_AUD">
+        <dropColumn columnName="DATAALTERACAO" tableName="GARANTIA_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-dataexclusao-GARANTIA">
+        <dropColumn columnName="DATAEXCLUSAO" tableName="GARANTIA"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-dataalteracao-GARANTIA">
+        <dropColumn columnName="DATAALTERACAO" tableName="GARANTIA"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-table-GARANTIAHISTORICO">
+        <dropTable tableName="GARANTIAHISTORICO"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-table-PEDIDO_INDICE">
+        <createTable tableName="PEDIDO_INDICE">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PEDIDO_INDICE"/>
+            </column>
+            <column name="DATAINICIO" type="DATETIME"/>
+            <column name="DATAFINAL" type="DATETIME"/>
+            <column name="VALORFIXO" type="DECIMAL(19, 2)"/>
+            <column name="FK_INDICE_ECONOMICO" type="BIGINT" />
+            <column name="FK_PEDIDO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk_INDICE_ECONOMICO">
+        <addForeignKeyConstraint baseColumnNames="FK_INDICE_ECONOMICO" baseTableName="PEDIDO_INDICE"
+                                 constraintName="FK_INDICE_ECONOMICO" referencedColumnNames="ID"
+                                 referencedTableName="INDICEECONOMICO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk_PEDIDO">
+        <addForeignKeyConstraint baseColumnNames="FK_PEDIDO" baseTableName="PEDIDO_INDICE"
+                                 constraintName="FK_PEDIDO" referencedColumnNames="ID"
+                                 referencedTableName="PEDIDO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-seq-PEDIDO_INDICE" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PEDIDO_INDICE"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO-PEDIDO_INDICE_SEQ" dbms="${dbmsSequence}">
+        <sql>
+            INSERT INTO PEDIDO_INDICE (ID, DATAINICIO, DATAFINAL, VALORFIXO, FK_INDICE_ECONOMICO, FK_PEDIDO)
+            SELECT NEXTVAL('SEQ_PEDIDO_INDICE'), CORRECAODE, CORRECAOATE, CORRECAOVALORFIXO, FK_INDICE_ECONOMICO, ID FROM PEDIDO
+            WHERE FK_INDICE_ECONOMICO IS NOT NULL OR CORRECAOVALORFIXO IS NOT NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO-PEDIDO_INDICE_INC" dbms="${dbmsAutoIncrement}">
+        <sql>
+            INSERT INTO PEDIDO_INDICE (DATAINICIO, DATAFINAL, VALORFIXO, FK_INDICE_ECONOMICO, FK_PEDIDO)
+            SELECT CORRECAODE, CORRECAOATE, CORRECAOVALORFIXO, FK_INDICE_ECONOMICO, ID FROM PEDIDO
+            WHERE FK_INDICE_ECONOMICO IS NOT NULL OR CORRECAOVALORFIXO IS NOT NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-PEDIDO_INDICE_AUD">
+        <createTable tableName="PEDIDO_INDICE_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PEDIDO_INDICE_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PEDIDO_INDICE_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DATAINICIO" type="DATETIME"/>
+            <column name="DATAFINAL" type="DATETIME"/>
+            <column name="VALORFIXO" type="DECIMAL(19, 2)"/>
+            <column name="FK_INDICE_ECONOMICO" type="BIGINT" />
+            <column name="FK_PEDIDO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk_FK_PEDIDO_INDICE_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PEDIDO_INDICE_AUD"
+                                 constraintName="FK_PEDIDO_INDICE_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO-PEDIDO_INDICE_AUD">
+        <sql>
+            INSERT INTO PEDIDO_INDICE_AUD (ID, ID_AUD, TIPO_AUD, DATAINICIO, DATAFINAL, VALORFIXO, FK_INDICE_ECONOMICO, FK_PEDIDO)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0, DATAINICIO, DATAFINAL, VALORFIXO, FK_INDICE_ECONOMICO, FK_PEDIDO FROM PEDIDO_INDICE
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-columns-PEDIDO_AUD">
+        <dropColumn columnName="CORRECAODE" tableName="PEDIDO_AUD"/>
+        <dropColumn columnName="CORRECAOATE" tableName="PEDIDO_AUD"/>
+        <dropColumn columnName="CORRECAOVALORFIXO" tableName="PEDIDO_AUD"/>
+        <dropColumn columnName="USERNAMECADASTRO" tableName="PEDIDO_AUD"/>
+        <dropColumn columnName="USERNAMEALTERACAO" tableName="PEDIDO_AUD"/>
+        <dropColumn columnName="USERNAMEEXCLUSAO" tableName="PEDIDO_AUD"/>
+        <dropColumn columnName="FK_INDICE_ECONOMICO" tableName="PEDIDO_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-columns-PEDIDO">
+        <dropColumn columnName="CORRECAODE" tableName="PEDIDO"/>
+        <dropColumn columnName="CORRECAOATE" tableName="PEDIDO"/>
+        <dropColumn columnName="CORRECAOVALORFIXO" tableName="PEDIDO"/>
+        <dropColumn columnName="USERNAMECADASTRO" tableName="PEDIDO"/>
+        <dropColumn columnName="USERNAMEALTERACAO" tableName="PEDIDO"/>
+        <dropColumn columnName="USERNAMEEXCLUSAO" tableName="PEDIDO"/>
+        <dropForeignKeyConstraint baseTableName="PEDIDO" constraintName="FK_PEDIDO_INDICEECONOMICO"/>
+        <dropColumn columnName="FK_INDICE_ECONOMICO" tableName="PEDIDO"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-table-PEDIDO_JUROS">
+        <createTable tableName="PEDIDO_JUROS">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PEDIDO_JUROS"/>
+            </column>
+            <column name="PRORATA" type="BOOLEAN"/>
+            <column name="DATAINICIO" type="DATETIME"/>
+            <column name="DATAFINAL" type="DATETIME"/>
+            <column name="VALORFIXO" type="DECIMAL(19, 2)"/>
+            <column name="PERCENTUALMANUAL" type="DECIMAL(19, 4)"/>
+            <column name="FK_PERIODICIDADE_MANUAL" type="BIGINT" />
+            <column name="TIPOJUROS" type="INTEGER"/>
+            <column name="FK_JUROS" type="BIGINT" />
+            <column name="FK_PEDIDO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk_JUROS">
+        <addForeignKeyConstraint baseColumnNames="FK_JUROS" baseTableName="PEDIDO_JUROS"
+                                 constraintName="FK_JUROS" referencedColumnNames="ID"
+                                 referencedTableName="JUROS" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk_PEDIDO">
+        <addForeignKeyConstraint baseColumnNames="FK_PEDIDO" baseTableName="PEDIDO_INDICE"
+                                 constraintName="FK_PEDIDO" referencedColumnNames="ID"
+                                 referencedTableName="PEDIDO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-seq-PEDIDO_JUROS" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PEDIDO_JUROS"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO-PEDIDO_JUROS_SEQ" dbms="${dbmsSequence}">
+        <sql>
+            INSERT INTO PEDIDO_JUROS (ID, PRORATA, DATAINICIO, DATAFINAL, VALORFIXO, PERCENTUALMANUAL, FK_PERIODICIDADE_MANUAL, FK_JUROS, FK_PEDIDO)
+            SELECT NEXTVAL('SEQ_PEDIDO_JUROS'), PRORATAJUROS, PEDIDO_JUROSDE, JUROSATE, JUROSVALORFIXO, PERCENTUALJUROSMANUAL, FK_PERIODOJUROSCORRECAO, FK_JUROS, ID  FROM PEDIDO
+            WHERE FK_JUROS IS NOT NULL OR JUROSVALORFIXO IS NOT NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO-PEDIDO_JUROS_INC" dbms="${dbmsAutoIncrement}">
+        <sql>
+            INSERT INTO PEDIDO_JUROS (PRORATA, DATAINICIO, DATAFINAL, VALORFIXO, PERCENTUALMANUAL, FK_PERIODICIDADE_MANUAL, FK_JUROS, FK_PEDIDO)
+            SELECT PRORATAJUROS, PEDIDO_JUROSDE, JUROSATE, JUROSVALORFIXO, PERCENTUALJUROSMANUAL, FK_PERIODOJUROSCORRECAO, FK_JUROS, ID  FROM PEDIDO
+            WHERE FK_JUROS IS NOT NULL OR JUROSVALORFIXO IS NOT NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-PEDIDO_JUROS_AUD">
+        <createTable tableName="PEDIDO_JUROS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PEDIDO_JUROS_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PEDIDO_JUROS_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="PRORATA" type="BOOLEAN"/>
+            <column name="DATAINICIO" type="DATETIME"/>
+            <column name="DATAFINAL" type="DATETIME"/>
+            <column name="VALORFIXO" type="DECIMAL(19, 2)"/>
+            <column name="PERCENTUALMANUAL" type="DECIMAL(19, 4)"/>
+            <column name="FK_PERIODICIDADE_MANUAL" type="BIGINT" />
+            <column name="TIPOJUROS" type="INTEGER"/>
+            <column name="FK_JUROS" type="BIGINT" />
+            <column name="FK_PEDIDO" type="BIGINT" />
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk_FK_PEDIDO_JUROS_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PEDIDO_JUROS_AUD"
+                                 constraintName="FK_PEDIDO_JUROS_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO-PEDIDO_JUROS_AUD">
+        <sql>
+            INSERT INTO PEDIDO_JUROS_AUD (ID, ID_AUD, TIPO_AUD, PRORATA, DATAINICIO, DATAFINAL, VALORFIXO, PERCENTUALMANUAL, FK_PERIODICIDADE_MANUAL, TIPOJUROS, FK_JUROS, FK_PEDIDO)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0, PRORATA, DATAINICIO, DATAFINAL, VALORFIXO, PERCENTUALMANUAL, FK_PERIODICIDADE_MANUAL, TIPOJUROS, FK_JUROS, FK_PEDIDO FROM PEDIDO_JUROS
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-columns-juros-PEDIDO">
+        <dropColumn columnName="JUROSATE" tableName="PEDIDO"/>
+        <dropColumn columnName="PEDIDO_JUROSDE" tableName="PEDIDO"/>
+        <dropColumn columnName="PRORATAJUROS" tableName="PEDIDO"/>
+        <dropColumn columnName="JUROSVALORFIXO" tableName="PEDIDO"/>
+        <dropColumn columnName="PERCENTUALJUROSMANUAL" tableName="PEDIDO"/>
+
+        <dropForeignKeyConstraint baseTableName="PEDIDO" constraintName="FK_PEDIDO_JUROS"/>
+        <dropColumn columnName="FK_JUROS" tableName="PEDIDO"/>
+
+        <dropForeignKeyConstraint baseTableName="PEDIDO" constraintName="FK_PEDIDO_PERJURCOR"/>
+        <dropColumn columnName="FK_PERIODOJUROSCORRECAO" tableName="PEDIDO"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-proratacorrecao-pedido">
+        <dropColumn columnName="PRORATACORRECAO" tableName="PEDIDO"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-PUBLICACAO_AUD">
+        <createTable tableName="PUBLICACAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PUBLICACAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PUBLICACAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="CASEEXECUTIONID" type="VARCHAR(255)"/>
+            <column name="DATACOLAGEM" type="VARCHAR(255)" />
+            <column name="DATAPUBLICACAO" type="VARCHAR(255)" />
+            <column name="IDPUBLICACAO" type="BIGINT" />
+            <column name="ORIGEM" type="VARCHAR(255)"/>
+            <column name="ORIGEMINTEGRACAO" type="INTEGER" />
+            <column name="PEGOU" type="BOOLEAN"/>
+            <column name="SITUACAO" type="VARCHAR(255)"/>
+            <column name="TEXTO" type="CLOB" />
+            <column name="MOTIVO_DEVOLUCAO" type="VARCHAR(255)"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk-PUBLICACAO_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PUBLICACAO_AUD"
+                                 constraintName="FK_PUBLICACAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PUBLICACAO_AUD">
+        <sql>INSERT INTO PUBLICACAO_AUD (ID, ID_AUD, TIPO_AUD, CASEEXECUTIONID, DATACOLAGEM, DATAPUBLICACAO,
+             IDPUBLICACAO, ORIGEM, ORIGEMINTEGRACAO, PEGOU, SITUACAO, TEXTO, MOTIVO_DEVOLUCAO, FK_PROCESSO)
+             SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD, CASEEXECUTIONID, DATACOLAGEM, DATAPUBLICACAO,
+             IDPUBLICACAO, ORIGEM, ORIGEMINTEGRACAO, PEGOU, SITUACAO, TEXTO, MOTIVO_DEVOLUCAO, FK_PROCESSO FROM PUBLICACAO
+        </sql>
+    </changeSet>
+
+
+
+
+    <changeSet author="paulo.marcon" id="create-AGENDA_AUD">
+        <createTable tableName="AGENDAMENTO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AGENDAMENTO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AGENDAMENTO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="ALERTA" type="BOOLEAN"/>
+            <column name="FK_CASEEXECUTION" type="VARCHAR(100)"/>
+            <column name="DATAAGENDAMENTO" type="DATETIME"/>
+            <column name="DATAFINAL" type="DATETIME"/>
+            <column name="FK_RESPONSAVEL" type="BIGINT"/>
+            <column name="LOCAL" type="VARCHAR(255)"/>
+            <column name="REALIZADO" type="BOOLEAN"/>
+            <column name="ROTULO" type="INTEGER"/>
+            <column name="TEXTO" type="CLOB"/>
+            <column name="MEMO" type="CLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk-AGENDA_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="AGENDAMENTO_AUD"
+                                 constraintName="FK_AGENDAMENTO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-AGENDA_AUD">
+        <sql>INSERT INTO AGENDAMENTO_AUD (ID, ID_AUD, TIPO_AUD, ALERTA, FK_CASEEXECUTION,
+             DATAAGENDAMENTO, DATAFINAL, FK_RESPONSAVEL, LOCAL, REALIZADO, ROTULO, TEXTO, MEMO)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD, ALERTA, FK_CASEEXECUTION,
+            DATAAGENDAMENTO, DATAFINAL, FK_RESPONSAVEL, LOCAL, REALIZADO, ROTULO, TEXTO, MEMO FROM AGENDAMENTO
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO_INDICE_VALORFIXO_SEQ" dbms="${dbmsSequence}">
+        <sql>
+            INSERT INTO PEDIDO_INDICE
+            SELECT
+            NEXTVAL('SEQ_PEDIDO_INDICE'),
+            IND1.DATAINICIO,
+            IND1.DATAFINAL,
+            NULL,
+            IND1.FK_INDICE_ECONOMICO,
+            IND1.FK_PEDIDO
+            FROM PEDIDO_INDICE IND1
+            WHERE IND1.VALORFIXO > 0
+            AND IND1.FK_INDICE_ECONOMICO IS NOT NULL;
+
+            UPDATE PEDIDO_INDICE SET DATAINICIO = NULL, DATAFINAL = NULL, FK_INDICE_ECONOMICO = NULL WHERE VALORFIXO > 0 AND FK_INDICE_ECONOMICO IS NOT NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO_INDICE_VALORFIXO_INC" dbms="${dbmsAutoIncrement}">
+        <sql>
+            INSERT INTO PEDIDO_INDICE
+            SELECT
+            IND1.DATAINICIO,
+            IND1.DATAFINAL,
+            NULL,
+            IND1.FK_INDICE_ECONOMICO,
+            IND1.FK_PEDIDO
+            FROM PEDIDO_INDICE IND1
+            WHERE IND1.VALORFIXO > 0
+            AND IND1.FK_INDICE_ECONOMICO IS NOT NULL;
+
+            UPDATE PEDIDO_INDICE SET DATAINICIO = NULL, DATAFINAL = NULL, FK_INDICE_ECONOMICO = NULL WHERE VALORFIXO > 0 AND FK_INDICE_ECONOMICO IS NOT NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO_JUROS-1-SEQ" dbms="${dbmsSequence}">
+        <sql>
+            insert into pedido_juros
+            select
+            NEXTVAL('SEQ_PEDIDO_JUROS'),
+            NULL,
+            NULL,
+            NULL,
+            valorfixo,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is null);
+
+            insert into pedido_juros
+            select
+            NEXTVAL('SEQ_PEDIDO_JUROS'),
+            prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_juros,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is null);
+
+            delete FROM pedido_juros where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is null);
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO_JUROS-1-INC" dbms="${dbmsAutoIncrement}">
+        <sql>
+            insert into pedido_juros
+            select
+            NULL,
+            NULL,
+            NULL,
+            valorfixo,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is null);
+
+            insert into pedido_juros
+            select
+            prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_juros,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is null);
+
+            delete FROM pedido_juros where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is null);
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO_JUROS-2-SEQ" dbms="${dbmsSequence}">
+        <sql>
+            insert into pedido_juros
+            select
+            NEXTVAL('SEQ_PEDIDO_JUROS'),
+            NULL,
+            NULL,
+            NULL,
+            valorfixo,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is null and fk_periodicidade_manual is not null);
+
+            insert into pedido_juros
+            select
+            NEXTVAL('SEQ_PEDIDO_JUROS'),
+            prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            percentualmanual,
+            fk_periodicidade_manual,
+            tipojuros,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is null and fk_periodicidade_manual is not null);
+
+            delete FROM pedido_juros where (valorfixo > 0 and fk_juros is null and fk_periodicidade_manual is not null);
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO_JUROS-2-INC" dbms="${dbmsAutoIncrement}">
+        <sql>
+            insert into pedido_juros
+            SELECT NULL,
+            NULL,
+            NULL,
+            valorfixo,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is null and fk_periodicidade_manual is not null);
+
+            insert into pedido_juros
+            select prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            percentualmanual,
+            fk_periodicidade_manual,
+            tipojuros,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is null and fk_periodicidade_manual is not null);
+
+            delete FROM pedido_juros where (valorfixo > 0 and fk_juros is null and fk_periodicidade_manual is not null);
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO_JUROS-3-SEQ" dbms="${dbmsSequence}">
+        <sql>
+            insert into pedido_juros
+            select
+            NEXTVAL('SEQ_PEDIDO_JUROS'),
+            prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_juros,
+            fk_pedido
+            from pedido_juros
+            where ((valorfixo = 0 or valorfixo is null) and fk_juros is not null and fk_periodicidade_manual is not null);
+
+            insert into pedido_juros
+            select
+            NEXTVAL('SEQ_PEDIDO_JUROS'),
+            prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            percentualmanual,
+            fk_periodicidade_manual,
+            tipojuros,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where ((valorfixo = 0 or valorfixo is null) and fk_juros is not null and fk_periodicidade_manual is not null);
+
+            delete FROM pedido_juros
+            where ((valorfixo = 0 or valorfixo is null) and fk_juros is not null and fk_periodicidade_manual is not null);
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO_JUROS-3-INC" dbms="${dbmsAutoIncrement}">
+        <sql>
+            insert into pedido_juros
+            SELECT prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_juros,
+            fk_pedido
+            from pedido_juros
+            where ((valorfixo = 0 or valorfixo is null) and fk_juros is not null and fk_periodicidade_manual is not null);
+
+            insert into pedido_juros
+            SELECT prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            percentualmanual,
+            fk_periodicidade_manual,
+            tipojuros,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where ((valorfixo = 0 or valorfixo is null) and fk_juros is not null and fk_periodicidade_manual is not null);
+
+            delete FROM pedido_juros
+            where ((valorfixo = 0 or valorfixo is null) and fk_juros is not null and fk_periodicidade_manual is not null);
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO_JUROS-4-SEQ" dbms="${dbmsSequence}">
+        <sql>
+            insert into pedido_juros
+            select
+            NEXTVAL('SEQ_PEDIDO_JUROS'),
+            NULL,
+            NULL,
+            NULL,
+            valorfixo,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is not null);
+
+            insert into pedido_juros
+            select
+            NEXTVAL('SEQ_PEDIDO_JUROS'),
+            prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_juros,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is not null);
+
+            insert into pedido_juros
+            select
+            NEXTVAL('SEQ_PEDIDO_JUROS'),
+            prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            percentualmanual,
+            fk_periodicidade_manual,
+            tipojuros,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is not null);
+
+            delete FROM pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is not null);
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-PEDIDO_JUROS-4-INC" dbms="${dbmsAutoIncrement}">
+        <sql>
+            insert into pedido_juros
+            SELECT NULL,
+            NULL,
+            NULL,
+            valorfixo,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is not null);
+
+            insert into pedido_juros
+            SELECT prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            fk_juros,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is not null);
+
+            insert into pedido_juros
+            SELECT prorata,
+            datainicio,
+            datafinal,
+            NULL,
+            percentualmanual,
+            fk_periodicidade_manual,
+            tipojuros,
+            NULL,
+            fk_pedido
+            from pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is not null);
+
+            delete FROM pedido_juros
+            where (valorfixo > 0 and fk_juros is not null and fk_periodicidade_manual is not null);
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-column-PROCESSO_JUDICIAL_ANTIGO">
+        <addColumn tableName="PROCESSO">
+            <column name="PROCESSO_JUDICIAL_ANTIGO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-column-PROCESSO_JUDICIAL_ANTIGO-aud">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="PROCESSO_JUDICIAL_ANTIGO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-PROCESSO_JUDICIAL_ANTIGO-pg" dbms="postgresql">
+        <sql>
+            UPDATE PROCESSO SET PROCESSO_JUDICIAL_ANTIGO = false WHERE FK_TIPOPROCESSO = 2;
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-PROCESSO_JUDICIAL_ANTIGO-mssql" dbms="mssql">
+        <sql>
+            UPDATE PROCESSO SET PROCESSO_JUDICIAL_ANTIGO = 0 WHERE FK_TIPOPROCESSO = 2;
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-PROCESSO_JUDICIAL_ANTIGO-aud-pg" dbms="postgresql">
+        <sql>
+            UPDATE PROCESSO_AUD SET PROCESSO_JUDICIAL_ANTIGO = false WHERE FK_TIPOPROCESSO = 2;
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-PROCESSO_JUDICIAL_ANTIGO-aud-mssql" dbms="mssql">
+        <sql>
+            UPDATE PROCESSO_AUD SET PROCESSO_JUDICIAL_ANTIGO = 0 WHERE FK_TIPOPROCESSO = 2;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

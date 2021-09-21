@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="update-column-valor-causa-processo" author="raphael.moreira">
+        <sql>
+            UPDATE PROCESSO SET VALORCAUSA = 0
+            WHERE VALORCAUSA IS NULL
+        </sql>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="addNotNullConstraint-valor-causa-processo">
+        <addNotNullConstraint columnDataType="DECIMAL(19, 2)"
+                              columnName="VALORCAUSA"
+                              tableName="PROCESSO"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="update-descricao-menu-configuraçao">
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Configuração"/>
+            <where>ID = 506</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-PERMISSAO-Pesquisa-Tarefa">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="629"/>
+            <column name="DESCRICAO" value="Pesquisar Tarefas"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="503"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-contratos:tarefas:pesquisar"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-perfilpermissao-pesquisa-tarefa">
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="629"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>

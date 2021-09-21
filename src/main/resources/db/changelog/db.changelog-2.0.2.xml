@@ -1,0 +1,2639 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="paulo.marcon" id="227">
+        <createTable tableName="LOG_AUDITORIA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AUDITORIA_LOG"/>
+            </column>
+            <column name="DATA_ALTERACAO" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USUARIO" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="228">
+        <createTable tableName="ACT_HI_TASKINST_AUD">
+            <column name="ID_" type="VARCHAR(64)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACT_HI_TASKINST_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACT_HI_TASKINST_AUD"/>
+            </column>
+
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="TASK_DEF_KEY_" type="VARCHAR(255)"/>
+            <column name="CASE_INST_ID_" type="VARCHAR(64)"/>
+            <column name="PROC_DEF_KEY_" type="VARCHAR(255)"/>
+            <column name="PROC_DEF_ID_" type="VARCHAR(64)"/>
+            <column name="PROC_INST_ID_" type="VARCHAR(64)"/>
+            <column name="EXECUTION_ID_" type="VARCHAR(64)"/>
+            <column name="CASE_DEF_KEY_" type="VARCHAR(255)"/>
+            <column name="CASE_DEF_ID_" type="VARCHAR(64)"/>
+            <column name="CASE_EXECUTION_ID_" type="VARCHAR(64)"/>
+            <column name="ACT_INST_ID_" type="VARCHAR(64)"/>
+            <column name="NAME_" type="VARCHAR(255)"/>
+            <column name="PARENT_TASK_ID_" type="VARCHAR(64)"/>
+            <column name="DESCRIPTION_" type="CLOB"/>
+            <column name="OWNER_" type="VARCHAR(255)"/>
+            <column name="ASSIGNEE_" type="VARCHAR(255)"/>
+            <column name="START_TIME_" type="DATETIME"/>
+            <column name="END_TIME_" type="DATETIME"/>
+            <column name="DURATION_" type="BIGINT"/>
+            <column name="PRIORITY_" type="INTEGER"/>
+            <column name="DUE_DATE_" type="DATETIME"/>
+            <column name="FOLLOW_UP_DATE_" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="229">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ACT_HI_TASKINST_AUD"
+                                 constraintName="FK_ACT_HI_TASKINST_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="230">
+        <createTable tableName="ACT_HI_VARINST_AUD">
+            <column name="ID_" type="VARCHAR(64)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACT_HI_VARINST_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACT_HI_VARINST_AUD"/>
+            </column>
+
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="CASE_INST_ID_" type="VARCHAR(64)"/>
+            <column name="CASE_EXECUTION_ID_" type="VARCHAR(64)"/>
+            <column name="VAR_TYPE_" type="VARCHAR(100)"/>
+            <column name="REV_" type="INTEGER"/>
+            <column name="BYTEARRAY_ID_" type="VARCHAR(64)"/>
+            <column name="DOUBLE_" type="DECIMAL(15, 0)"/>
+            <column name="LONG_" type="BIGINT"/>
+            <column name="TEXT_" type="CLOB"/>
+            <column name="TEXT2_" type="CLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="231">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ACT_HI_VARINST_AUD"
+                                 constraintName="FK_ACT_HI_VARINST_LOG" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="232">
+        <createTable tableName="SOLICITACAO_LOG_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SOLICITACAO_LOG_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SOLICITACAO_LOG_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="FK_SOLICITANTE" type="BIGINT"/>
+            <column name="PROCESSOUNICO" type="VARCHAR(255)"/>
+            <column name="DATALIMITE" type="DATETIME"/>
+            <column name="DATAAUDIENCIA" type="DATETIME"/>
+            <column name="DATASOLICITACAO" type="DATETIME"/>
+            <column name="HORAAUDIENCIA" type="VARCHAR(255)"/>
+            <column name="LOCAL" type="VARCHAR(255)"/>
+            <column name="PREPOSTO" type="INTEGER"/>
+            <column name="NOMEPREPOSTO" type="VARCHAR(255)"/>
+            <column name="IDCOMARCA" type="INTEGER"/>
+            <column name="TEXTOSOLICITACAO" type="CLOB"/>
+            <column name="IDSOLICITACAOBOOMER" type="BIGINT"/>
+            <column name="IDTIPODILIGENCIA" type="INTEGER"/>
+            <column name="IDPROCESSO" type="BIGINT"/>
+            <column name="STATUS" type="VARCHAR(255)"/>
+            <column name="MENSAGEM" type="VARCHAR(255)"/>
+            <column name="DESCRICAO_TIPO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="233">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="SOLICITACAO_LOG_AUD"
+                                 constraintName="FK_SOLICITACAO_LOG_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="234">
+        <createTable tableName="PROCESSO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="SUMARIO" type="CLOB"/>
+            <column name="NUMERO" type="VARCHAR(255)"/>
+            <column name="PASTA" type="VARCHAR(255)"/>
+            <column name="DATADISTRIBUICAO" type="DATETIME"/>
+            <column name="DATADISTRIBUICAOVISUALIZACAO" type="DATETIME"/>
+            <column name="DATAENCERRAMENTO" type="DATETIME"/>
+            <column name="PERCENTUAL" type="DECIMAL(19,4)"/>
+            <column name="NUMEROANTIGO" type="VARCHAR(255)"/>
+            <column name="PROCESSO_VIRTUAL" type="BOOLEAN"/>
+            <column name="PROCESSO_ELETRONICO" type="BOOLEAN"/>
+            <column name="PROJUDI" type="BOOLEAN"/>
+            <column name="PUBENVIA" type="BOOLEAN"/>
+            <column name="PUBRECEBE" type="BOOLEAN"/>
+            <column name="SUPERESPECIAL" type="BOOLEAN"/>
+            <column name="ORDINAL" type="INTEGER"/>
+            <column name="NUMERORDEM" type="VARCHAR(255)"/>
+            <column name="VIRTUALHABILITADO" type="BOOLEAN"/>
+            <column name="VALORCAUSA" type="DECIMAL(19,2)"/>
+            <column name="VALORSENTENCA" type="DECIMAL(19,2)"/>
+            <column name="FK_TIPOPROCESSO" type="BIGINT"/>
+            <column name="FK_INSTANCIA" type="BIGINT"/>
+            <column name="FK_MATERIA" type="BIGINT"/>
+            <column name="FK_AREA" type="BIGINT"/>
+            <column name="FK_PRATICA" type="BIGINT"/>
+            <column name="FK_ACAO" type="BIGINT"/>
+            <column name="FK_PROCESSO_AUDITORIA" type="BIGINT"/>
+            <column name="FK_PESPARTEINT" type="BIGINT"/>
+            <column name="FK_PESPARTECONT" type="BIGINT"/>
+            <column name="FK_PESADV" type="BIGINT"/>
+            <column name="FK_PESADVRESP" type="BIGINT"/>
+            <column name="FK_POSICAOPARTE" type="BIGINT"/>
+            <column name="ULTIMA_ATUALIZACAO" type="DATETIME"/>
+            <column name="FK_TIPOPROCESSOELETRONICO" type="BIGINT"/>
+            <column name="FK_UF" type="BIGINT"/>
+            <column name="FK_COMARCA" type="BIGINT"/>
+            <column name="FK_REPARTICAO" type="BIGINT"/>
+            <column name="FK_TIPOJUSTICA" type="BIGINT"/>
+            <column name="NUMERO_VARA" type="VARCHAR(255)"/>
+            <column name="FK_VARA" type="BIGINT"/>
+            <column name="FK_FORO" type="BIGINT"/>
+            <column name="FK_ESCRITORIO" type="BIGINT"/>
+            <column name="FK_SISTEMAVIRTUAL" type="BIGINT"/>
+            <column name="CONTROLECLIENTE" type="VARCHAR(255)"/>
+            <column name="DATARECEBIMENTO" type="DATETIME"/>
+            <column name="DATACADASTRO" type="DATETIME"/>
+            <column name="PROCESSOUNICO" type="VARCHAR(255)"/>
+            <column name="FK_CLIENTE" type="BIGINT"/>
+            <column name="FK_USUARIO" type="BIGINT"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+            <column name="FK_OPERACIONAL" type="BIGINT"/>
+            <column name="FK_DIVISAO" type="BIGINT"/>
+            <column name="IDPROCESSOUNICO_WSINTEGRACAO" type="VARCHAR(255)"/>
+            <column name="CLASSIFICACAO" type="VARCHAR(255)"/>
+            <column name="STATUS" type="INTEGER"/>
+            <column name="CASE_INSTANCE_ID" type="VARCHAR(255)"/>
+            <column name="FK_PEDIDORESUMO" type="BIGINT"/>
+            <column name="FK_DECISAO" type="BIGINT"/>
+            <column name="DATA_DECISAO" type="DATETIME"/>
+            <column name="FK_PROCESSOPAI" type="BIGINT"/>
+            <column name="CONSULTANOVOSANDAMENTOS" type="BOOLEAN"/>
+            <column name="NOTIFICARNOVOSANDAMENTOS" type="BOOLEAN"/>
+            <column name="CONSULTAPARACERTIFICACAO" type="BOOLEAN"/>
+            <column name="NOTIFICARRETORNOCERTIFICACAO" type="BOOLEAN"/>
+            <column name="CERTIFICADO" type="BOOLEAN"/>
+            <column name="VALORTOTALPROVISIONAMENTO" type="DECIMAL(19,2)"/>
+            <column name="VALORTOTALPEDIDO" type="DECIMAL(19,2)"/>
+            <column name="ANOTACAO" type="CLOB"/>
+            <column name="ESTRATEGIA" type="CLOB"/>
+            <column name="DEPLOYID" type="VARCHAR(255)"/>
+            <column name="DATASINCRONISMO" type="DATETIME"/>
+            <column name="SINCRONIZADO" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="235">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PROCESSO_AUD"
+                                 constraintName="FK_PROCESSO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="236">
+        <createTable tableName="PESSOA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PESSOA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PESSOA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="TIPOPESSOA" type="INTEGER"/>
+            <column name="PESSOA_TRATAMENTO_FK" type="BIGINT"/>
+            <column name="NOME_RAZAOSOCIAL" type="VARCHAR(200)"/>
+            <column name="APELIDO_FANTASIA" type="VARCHAR(200)"/>
+            <column name="RG_INSCRICAOESTADUAL" type="VARCHAR(30)"/>
+            <column name="FK_ESTADOCIVIL" type="BIGINT"/>
+            <column name="DATANASCIMENTO" type="DATETIME"/>
+            <column name="SEXO" type="INTEGER"/>
+            <column name="INSCRICAOMUNICIPAL" type="VARCHAR(15)"/>
+            <column name="CPF_CNPJ" type="VARCHAR(30)"/>
+            <column name="CPF_CNPJ_ND" type="BOOLEAN"/>
+            <column name="MICROEMPRESA" type="BOOLEAN"/>
+            <column name="ANOTACAO" type="CLOB"/>
+            <column name="ATIVO" type="BOOLEAN"/>
+            <column name="EXCLUIDO" type="BOOLEAN"/>
+            <column name="IMAGEM" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="237">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PESSOA_AUD"
+                                 constraintName="FK_PESSOA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="238">
+        <createTable tableName="MATERIA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MATERIA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MATERIA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="239">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="MATERIA_AUD"
+                                 constraintName="FK_MATERIA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="240">
+        <createTable tableName="PRATICA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRATICA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRATICA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="FK_AREA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="241">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PRATICA_AUD"
+                                 constraintName="FK_PRATICA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="242">
+        <createTable tableName="ACAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="243">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ACAO_AUD"
+                                 constraintName="FK_ACAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="244">
+        <createTable tableName="POSICAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_POSICAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_POSICAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="POSICAO_CONTRARIA" type="VARCHAR(100)"/>
+            <column name="POLOATUACAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="245">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="POSICAO_AUD"
+                                 constraintName="FK_POSICAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="246">
+        <createTable tableName="TIPOPROCESSO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOPROCESSO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOPROCESSO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="247">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="TIPOPROCESSO_AUD"
+                                 constraintName="FK_TIPOPROCESSO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="248">
+        <createTable tableName="INSTANCIA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_INSTANCIA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_INSTANCIA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="249">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="INSTANCIA_AUD"
+                                 constraintName="FK_INSTANCIA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="250">
+        <createTable tableName="AREA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AREA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AREA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="FK_TIPOPEDIDO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="251">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="AREA_AUD"
+                                 constraintName="FK_AREA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="252">
+        <createTable tableName="TIPOPEDIDO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOPEDIDO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOPEDIDO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="CLOB"/>
+            <column name="FK_AREA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="253">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="TIPOPEDIDO_AUD"
+                                 constraintName="FK_TIPOPEDIDO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="254">
+        <createTable tableName="TIPOPROCESSOELETRONICO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOPROCESSOELETRONICO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOPROCESSOELETRONICO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="255">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="TIPOPROCESSOELETRONICO_AUD"
+                                 constraintName="FK_TIPOPROCESSOELETRONICO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="256">
+        <createTable tableName="UF_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_UF_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_UF_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="SIGLA" type="VARCHAR(2)"/>
+            <column name="NOME" type="VARCHAR(100)"/>
+            <column name="UF_ICMS" type="DECIMAL(12,4)"/>
+            <column name="REGIAO" type="INTEGER"/>
+            <column name="CODIGO_EXTERNO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="257">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="UF_AUD"
+                                 constraintName="FK_UF_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="258">
+        <createTable tableName="COMARCA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_COMARCA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_COMARCA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="METROPOLITANA" type="BOOLEAN"/>
+            <column name="FK_UF" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="259">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="COMARCA_AUD"
+                                 constraintName="FK_COMARCA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="260">
+        <createTable tableName="REPARTICAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_REPARTICAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_REPARTICAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="FK_COMARCA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="261">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="REPARTICAO_AUD"
+                                 constraintName="FK_REPARTICAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="262">
+        <createTable tableName="TIPOJUSTICA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOJUSTICA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOJUSTICA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="MASCARA" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="263">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="TIPOJUSTICA_AUD"
+                                 constraintName="FK_TIPOJUSTICA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="264">
+        <createTable tableName="VARA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VARA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VARA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="265">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="VARA_AUD"
+                                 constraintName="FK_VARA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="266">
+        <createTable tableName="FORO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FORO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FORO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="FK_COMARCA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="267">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="FORO_AUD"
+                                 constraintName="FK_FORO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="268">
+        <createTable tableName="ESCRITORIO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ESCRITORIO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ESCRITORIO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="269">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ESCRITORIO_AUD"
+                                 constraintName="FK_ESCRITORIO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="270">
+        <createTable tableName="SISTEMAVIRTUAL_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SISTEMAVIRTUAL_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SISTEMAVIRTUAL_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="271">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="SISTEMAVIRTUAL_AUD"
+                                 constraintName="FK_SISTEMAVIRTUAL_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="272">
+        <createTable tableName="USUARIO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="LOGIN" type="VARCHAR(200)"/>
+            <column name="SENHA" type="VARCHAR(100)"/>
+            <column name="JORNADA_TRABALHO" type="INTEGER"/>
+            <column name="ATIVO" type="BOOLEAN"/>
+            <column name="FK_PERFIL" type="BIGINT"/>
+            <column name="FK_ESCRITORIO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="273">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="USUARIO_AUD"
+                                 constraintName="FK_USUARIO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="274">
+        <createTable tableName="PERFIL_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PERFIL_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PERFIL_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="NOME" type="VARCHAR(255)"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="275">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PERFIL_AUD"
+                                 constraintName="FK_PERFIL_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="276">
+        <createTable tableName="CARTEIRA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="CODIGO" type="VARCHAR(100)"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="PUBENVIA" type="BOOLEAN"/>
+            <column name="PUBRECEBE" type="BOOLEAN"/>
+            <column name="ID_ACM" type="BIGINT"/>
+            <column name="FK_MODELOTEMPLATE" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="277">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CARTEIRA_AUD"
+                                 constraintName="FK_CARTEIRA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="278">
+        <createTable tableName="ACM_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACM_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACM_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="DEPLOYID" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="279">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ACM_AUD"
+                                 constraintName="FK_ACM_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="280">
+        <createTable tableName="MODELOTEMPLATE_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MODELOTEMPLATE_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MODELOTEMPLATE_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="281">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="MODELOTEMPLATE_AUD"
+                                 constraintName="FK_MODELOTEMPLATE_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="282">
+        <createTable tableName="DIVISAOPESSOA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DIVISAOPESSOA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DIVISAOPESSOA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="283">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="DIVISAOPESSOA_AUD"
+                                 constraintName="FK_DIVISAOPESSOA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="284">
+        <createTable tableName="PEDIDORESUMO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PEDIDORESUMO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PEDIDORESUMO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="VALORTOTAL" type="DECIMAL(19,2)"/>
+            <column name="VALORPROVISAO" type="DECIMAL(19,2)"/>
+            <column name="DATACADASTRO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="285">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PEDIDORESUMO_AUD"
+                                 constraintName="FK_PEDIDORESUMO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="286">
+        <createTable tableName="DECISAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DECISAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DECISAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="FK_POLO_ATIVO" type="BIGINT"/>
+            <column name="FK_POLO_PASSIVO" type="BIGINT"/>
+            <column name="BLOQUEAR_REATIVACAO" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="287">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="DECISAO_AUD"
+                                 constraintName="FK_DECISAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="288">
+        <createTable tableName="FORMULARIO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FORMULARIO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FORMULARIO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="NOME" type="VARCHAR(50)"/>
+            <column name="ID_FORMULARIO_PAI" type="BIGINT"/>
+            <column name="ID_TIPO_EXIBICAO_PAI" type="INTEGER"/>
+            <column name="IDENTIFICADOR" type="VARCHAR(50)"/>
+            <column name="PADRAO" type="BOOLEAN"/>
+            <column name="SISTEMA" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="289">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="FORMULARIO_AUD"
+                                 constraintName="FK_FORMULARIO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="290">
+        <createTable tableName="ESTEIRA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ESTEIRA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ESTEIRA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="FK_PESSOA_CRIADOR" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="291">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ESTEIRA_AUD"
+                                 constraintName="FK_ESTEIRA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="292">
+        <createTable tableName="GRUPOAGENDAMENTO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GRUPOAGENDAMENTO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GRUPOAGENDAMENTO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+            <column name="FK_AREA" type="BIGINT"/>
+            <column name="TIPOCONTAGEMDIAS" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="293">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="GRUPOAGENDAMENTO_AUD"
+                                 constraintName="FK_GRUPOAGENDAMENTO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="294">
+        <createTable tableName="CAMPO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAMPO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAMPO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="ORDEM" type="INTEGER"/>
+            <column name="TAMANHO" type="INTEGER"/>
+            <column name="VISIVEL" type="BOOLEAN"/>
+            <column name="OBRIGATORIO" type="BOOLEAN"/>
+            <column name="FK_GRUPOCAMPO" type="BIGINT"/>
+            <column name="FK_FORMULARIO" type="BIGINT"/>
+            <column name="TIPO_CAMPO" type="INTEGER"/>
+            <column name="SISTEMA" type="BOOLEAN"/>
+            <column name="TIPO_CAMPO_SISTEMA" type="INTEGER"/>
+            <column name="TAMANHOMAXIMO" type="BIGINT"/>
+            <column name="ATIVO" type="BOOLEAN"/>
+            <column name="EXTENSAO" type="VARCHAR(255)"/>
+            <column name="CONSULTA_SQL" type="CLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="295">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CAMPO_AUD"
+                                 constraintName="FK_CAMPO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="296">
+        <createTable tableName="CAMPOLISTA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAMPOLISTA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAMPOLISTA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="VISIVEL" type="BOOLEAN"/>
+            <column name="FK_CAMPO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="297">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CAMPOLISTA_AUD"
+                                 constraintName="FK_CAMPOLISTA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="298">
+        <createTable tableName="MOTIVOSTATUSFINAL_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MOTIVOSTATUSFINAL_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MOTIVOSTATUSFINAL_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="MOTIVO" type="VARCHAR(100)"/>
+            <column name="STATUS" type="INTEGER"/>
+            <column name="FK_FORMULARIO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="299">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="MOTIVOSTATUSFINAL_AUD"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="300">
+        <createTable tableName="MOTIVOSTATUSFINAL_TAREFA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MOTIVOSTATUSFINAL_TAR_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MOTIVOSTATUSFINAL_TAR_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="ID_MOTIVOSTATUSFINAL" type="BIGINT"/>
+            <column name="ID_TAREFA" type="BIGINT"/>
+            <column name="ID_TIPO_DATA" type="INTEGER"/>
+            <column name="ID_TIPO_RESPONSAVEL" type="INTEGER"/>
+            <column name="ID_TIPO_INTERVALO" type="INTEGER"/>
+            <column name="INTERVALO" type="INTEGER"/>
+            <column name="DIAS_UTEIS" type="BOOLEAN"/>
+            <column name="ID_CAMPO_DATA" type="BIGINT"/>
+            <column name="ID_CAMPO_RESPONSAVEL" type="BIGINT"/>
+            <column name="ID_RESPONSAVEL" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="301">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="MOTIVOSTATUSFINAL_TAREFA_AUD"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="302">
+        <createTable tableName="TAREFA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="ID_TAREFA" type="VARCHAR(255)"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="303">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="TAREFA_AUD"
+                                 constraintName="FK_TAREFA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="304">
+        <createTable tableName="PROVISAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROVISAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROVISAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DATA" type="DATETIME"/>
+            <column name="VALOR" type="DECIMAL(19,2)"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="305">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PROVISAO_AUD"
+                                 constraintName="FK_PROVISAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="306">
+        <createTable tableName="ROTINA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="CLOB"/>
+            <column name="VERSAO" type="DECIMAL(19,2)"/>
+            <column name="DATAULTIMAATUALIZACAO" type="DATETIME"/>
+            <column name="INTERVALOMINUTOS" type="INTEGER"/>
+            <column name="STATUS" type="INTEGER"/>
+            <column name="ROBO" type="VARCHAR(255)"/>
+            <column name="JSON" type="CLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="307">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ROTINA_AUD"
+                                 constraintName="FK_ROTINA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="308">
+        <createTable tableName="PARTE_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PARTE_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PARTE_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="PRINCIPAL" type="BOOLEAN"/>
+            <column name="FK_TIPO_PARTE" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="309">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PARTE_AUD"
+                                 constraintName="FK_PARTE_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="310">
+        <createTable tableName="GARANTIA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GARANTIA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GARANTIA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="VALOR" type="DECIMAL(19,2)"/>
+            <column name="DATAGARANTIA" type="DATETIME"/>
+            <column name="LEVANTADO" type="BOOLEAN"/>
+            <column name="DATALEVANTADO" type="DATETIME"/>
+            <column name="OBS" type="CLOB"/>
+            <column name="DATACADASTRO" type="DATETIME"/>
+            <column name="DATAEXCLUSAO" type="DATETIME"/>
+            <column name="DATAALTERACAO" type="DATETIME"/>
+            <column name="FK_TIPOGARANTIA" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="311">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="GARANTIA_AUD"
+                                 constraintName="FK_GARANTIA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="312">
+        <createTable tableName="PEDIDO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PEDIDO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PEDIDO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="VALOR" type="DECIMAL(19,2)"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="PRORATACORRECAO" type="BOOLEAN"/>
+            <column name="PRORATAJUROS" type="BOOLEAN"/>
+            <column name="CORRECAODE" type="DATETIME"/>
+            <column name="CORRECAOATE" type="DATETIME"/>
+            <column name="PEDIDO_JUROSDE" type="DATETIME"/>
+            <column name="JUROSATE" type="DATETIME"/>
+            <column name="CORRECAOVALORFIXO" type="DECIMAL(19,2)"/>
+            <column name="JUROSVALORFIXO" type="DECIMAL(19,2)"/>
+            <column name="MULTAVALOR" type="DECIMAL(19,2)"/>
+            <column name="MULTAMEMO" type="CLOB"/>
+            <column name="PERCENTUALJUROSMANUAL" type="DECIMAL(19,4)"/>
+            <column name="PERCENTUALMULTA" type="DECIMAL(19,4)"/>
+            <column name="POSSIBILIDADEPERDA" type="DECIMAL(19,4)"/>
+            <column name="VALORPROVISAO" type="DECIMAL(19,2)"/>
+            <column name="MULTAVALORFIXO" type="DECIMAL(19,2)"/>
+            <column name="DATACADASTRO" type="DATETIME"/>
+            <column name="DATAALTERACAO" type="DATETIME"/>
+            <column name="DATAEXCLUSAO" type="DATETIME"/>
+            <column name="MOTIVOALTERACAO" type="VARCHAR(100)"/>
+            <column name="EMBASAMENTOPROVISAO" type="CLOB"/>
+            <column name="USERNAMECADASTRO" type="VARCHAR(255)"/>
+            <column name="USERNAMEALTERACAO" type="VARCHAR(255)"/>
+            <column name="USERNAMEEXCLUSAO" type="VARCHAR(255)"/>
+            <column name="FK_TIPO_PEDIDO" type="BIGINT"/>
+            <column name="FK_INDICE_ECONOMICO" type="BIGINT"/>
+            <column name="FK_JUROS" type="BIGINT"/>
+            <column name="FK_RISCO_CAUSA" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="VALOR_ATUALIZADO" type="DECIMAL(19,2)"/>
+            <column name="PROVISAO_ATUALIZADO" type="DECIMAL(19,2)"/>
+            <column name="FK_PERIODOJUROSCORRECAO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="313">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PEDIDO_AUD"
+                                 constraintName="FK_PEDIDO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="314">
+        <createTable tableName="INDICEECONOMICO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_INDICEECONOMICO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_INDICEECONOMICO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="FK_TIPO_IND_ECO" type="BIGINT"/>
+            <column name="FK_PER_JUR_COR" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="315">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="INDICEECONOMICO_AUD"
+                                 constraintName="FK_INDICEECONOMICO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="316">
+        <createTable tableName="TIPOINDICEECONOMICO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOINDICEECONOMICO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOINDICEECONOMICO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="317">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="TIPOINDICEECONOMICO_AUD"
+                                 constraintName="FK_TIPOINDICEECONOMICO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="318">
+        <createTable tableName="PERIODOJUROSCORRECAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PERIODOJUROSCORRECAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PERIODOJUROSCORRECAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="319">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PERIODOJUROSCORRECAO_AUD"
+                                 constraintName="FK_PERIODOJUROSCORRECAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="320">
+        <createTable tableName="JUROS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JUROS_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JUROS_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="PERCENTUAL" type="DECIMAL(19,4)"/>
+            <column name="FK_PERIODOJUROSCORRECAO" type="BIGINT"/>
+            <column name="TIPOJUROS" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="321">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="JUROS_AUD"
+                                 constraintName="FK_JUROS_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="322">
+        <createTable tableName="RISCOCAUSA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_RISCOCAUSA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_RISCOCAUSA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="PROBABILIDADE" type="DECIMAL(19,4)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="323">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="RISCOCAUSA_AUD"
+                                 constraintName="FK_RISCOCAUSA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="324">
+        <createTable tableName="HONORARIO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_HONORARIO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_HONORARIO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DATAVENCIMENTO" type="DATETIME"/>
+            <column name="DATAPAGAMENTO" type="DATETIME"/>
+            <column name="PERCENTUAL" type="DECIMAL(19,4)"/>
+            <column name="PAGAMENTO" type="DECIMAL(19,2)"/>
+            <column name="PAGO" type="BOOLEAN"/>
+            <column name="OBSERVACAO" type="CLOB"/>
+            <column name="FK_HO_REFERENCIA" type="BIGINT"/>
+            <column name="FK_TIPO_PAGA_HO" type="BIGINT"/>
+            <column name="FK_ADVOGADO" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="FK_HONORARIO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="325">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="HONORARIO_AUD"
+                                 constraintName="FK_HONORARIO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="326">
+        <createTable tableName="REFERENCIAHONORARIOS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_REFERENCIAHONORARIOS_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_REFERENCIAHONORARIOS_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="327">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="REFERENCIAHONORARIOS_AUD"
+                                 constraintName="FK_REFERENCIAHONORARIOS_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="330">
+        <createTable tableName="PROCESSODESPESAS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSODESPESAS_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSODESPESAS_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DATA" type="DATETIME"/>
+            <column name="DATA_LANCAMENTO" type="DATETIME"/>
+            <column name="VALOR" type="DECIMAL(19,2)"/>
+            <column name="OBS" type="CLOB"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="FK_PR_DISPESA_TIPO" type="BIGINT"/>
+            <column name="FK_RESPONSAVEL" type="BIGINT"/>
+            <column name="NUMERO_DOC" type="VARCHAR(255)"/>
+            <column name="PRE_APROVADO" type="BOOLEAN"/>
+            <column name="SALDO" type="DECIMAL(19,2)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="331">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PROCESSODESPESAS_AUD"
+                                 constraintName="FK_PROCESSODESPESAS_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="332">
+        <createTable tableName="PROCESSODESPESASTIPO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSODESPESASTIPO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSODESPESASTIPO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="DC" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="333">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PROCESSODESPESASTIPO_AUD"
+                                 constraintName="FK_PROCESSODESPESASTIPO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="334">
+        <createTable tableName="INFORMACOESADICIONAIS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_INFORMACOESADICIONAIS_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_INFORMACOESADICIONAIS_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="CLOB"/>
+            <column name="FK_CAMPO" type="BIGINT"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="FK_GARANTIA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="335">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="INFORMACOESADICIONAIS_AUD"
+                                 constraintName="FK_INFORMACOESADICIONAIS_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="336">
+        <createTable tableName="GEDPROFILE_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GEDPROFILE_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GEDPROFILE_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="NOMEPROFILE" type="VARCHAR(100)"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="DATACRIACAO" type="DATETIME"/>
+            <column name="FK_PROFILE" type="BIGINT"/>
+            <column name="ISFINCH" type="BOOLEAN"/>
+            <column name="PROFILEFINCH" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="337">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="GEDPROFILE_AUD"
+                                 constraintName="FK_GEDPROFILE_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="338">
+        <createTable tableName="ARQUIVO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ARQUIVO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ARQUIVO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="CAMINHO_DOCUMENTO" type="VARCHAR(255)"/>
+            <column name="NOMEARQUIVO" type="VARCHAR(255)"/>
+            <column name="DATA_ANEXO" type="DATETIME"/>
+            <column name="ANEXO_EMAIL" type="BOOLEAN"/>
+            <column name="ENVIADO_INDEX" type="BOOLEAN"/>
+            <column name="DISPOSITIVO_VIRTUAL" type="BOOLEAN"/>
+            <column name="ID_ORIGEM" type="INTEGER"/>
+            <column name="FK_TIPODOCUMENTO" type="BIGINT"/>
+            <column name="FK_PROFILE" type="BIGINT"/>
+            <column name="IDARQUIVOFINCH" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="339">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ARQUIVO_AUD"
+                                 constraintName="FK_ARQUIVO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="340">
+        <createTable tableName="TIPODOCUMENTO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPODOCUMENTO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPODOCUMENTO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="COD_INT" type="INTEGER"/>
+            <column name="CONSTANTE" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="341">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="TIPODOCUMENTO_AUD"
+                                 constraintName="FK_TIPODOCUMENTO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="342">
+        <createTable tableName="DESDOBRAMENTO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DESDOBRAMENTO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DESDOBRAMENTO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="INSTANCIA_DESCRICAO" type="VARCHAR(255)"/>
+            <column name="PROCESSO_DATADISTRIBUICAO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="343">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="DESDOBRAMENTO_AUD"
+                                 constraintName="FK_DESDOBRAMENTO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="346">
+        <createTable tableName="RELUSUARIOFUNCAO_AUD">
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_RELUSUARIOFUNCAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="ID_USUARIO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_RELUSUARIOFUNCAO_AUD"/>
+            </column>
+            <column name="ID_FUNCAO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_RELUSUARIOFUNCAO_AUD"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="347">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="RELUSUARIOFUNCAO_AUD"
+                                 constraintName="FK_RELUSUARIOFUNCAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="348">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="91"/>
+            <column name="DESCRICAO" value="Permissão para auditar dados do sistema"/>
+            <column name="EXIBE" valueBoolean="true"/>
+            <column name="FEATURE" value="auditoria"/>
+            <column name="REDIRECT" value="/auditoria/lista"/>
+            <column name="ID_TIPO_PERMISSAO" value="3"/>
+            <column name="CODIGO" value="Sistema | Auditoria"/>
+            <column name="DIRETORIOVIEW" value="/auditoria"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="349">
+        <insert tableName="OPERACAO">
+            <column name="ID" valueNumeric="35"/>
+            <column name="DESCRICAO" value="Operação | Auditoria"/>
+            <column name="CODIGO" value="Permissão para auditar dados do sistema"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="350">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="91"/>
+            <column name="ID_OPERACAO" valueNumeric="35"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="351" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_LOG_AUDITORIA"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="352" dbms="${dbmsSequence}">
+        <insert tableName="LOG_AUDITORIA">
+            <column name="ID" valueSequenceNext="SEQ_LOG_AUDITORIA"/>
+            <column name="DATA_ALTERACAO" valueDate="2016-01-01 00:00:00.000"/>
+            <column name="USUARIO" value="admin"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="353" dbms="${dbmsAutoIncrement}">
+        <insert tableName="LOG_AUDITORIA">
+            <column name="DATA_ALTERACAO" valueDate="2016-01-01 00:00:00.000"/>
+            <column name="USUARIO" value="admin"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="354">
+        <addColumn tableName="USUARIO_AUD">
+            <column name="TEMPO_SESSAO" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="355">
+        <dropColumn columnName="PAGAMENTO" tableName="HONORARIO_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="356">
+        <dropColumn columnName="DATAPAGAMENTO" tableName="HONORARIO_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="357">
+        <dropColumn columnName="FK_TIPO_PAGA_HO" tableName="HONORARIO_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="358">
+        <dropColumn columnName="PAGO" tableName="HONORARIO_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="359">
+        <dropColumn columnName="OBSERVACAO" tableName="HONORARIO_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="360">
+        <dropColumn columnName="FK_ADVOGADO" tableName="HONORARIO_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="361">
+        <dropColumn columnName="PERCENTUAL" tableName="HONORARIO_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="362">
+        <addColumn tableName="HONORARIO_AUD">
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="363">
+        <addColumn tableName="HONORARIO_AUD">
+            <column name="VALOR" type="DECIMAL(12, 4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="364">
+        <addColumn tableName="HONORARIO_AUD">
+            <column name="FK_RESPONSAVEL" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="365">
+        <addColumn tableName="PROCESSODESPESASTIPO_AUD">
+            <column name="REEMBOLSAVEL" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="366">
+        <dropColumn columnName="OBS" tableName="PROCESSODESPESAS_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="367">
+        <dropColumn columnName="PRE_APROVADO" tableName="PROCESSODESPESAS_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="368">
+        <dropColumn columnName="SALDO" tableName="PROCESSODESPESAS_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="369">
+        <addColumn tableName="PROCESSODESPESAS_AUD">
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="370">
+        <addColumn tableName="PROCESSODESPESAS_AUD">
+            <column name="FATURAVEL" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="371">
+        <dropColumn columnName="DATA" tableName="PROCESSODESPESAS_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="372">
+        <addColumn tableName="SOLICITACAO_LOG_AUD">
+            <column name="ID_STATUS_SOLICITACAO" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="373">
+        <dropColumn tableName="SOLICITACAO_LOG_AUD" columnName="STATUS"></dropColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="374">
+        <addColumn tableName="POSICAO_AUD">
+            <column name="ID_POLO_ATUACAO" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="700">
+        <dropColumn tableName="POSICAO_AUD" columnName="POLOATUACAO"></dropColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="375">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="ACEITO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="376">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="VALORCONDENACAO" type="DECIMAL(19,2)"/>
+        </addColumn>
+    </changeSet>
+    <!--UF AUD-->
+    <changeSet author="paulo.marcon" id="378">
+        <sql>INSERT INTO UF_AUD (ID, SIGLA, NOME, UF_ICMS, REGIAO, CODIGO_EXTERNO, ID_AUD, TIPO_AUD)
+            SELECT ID, SIGLA, NOME, UF_ICMS, REGIAO, CODIGO_EXTERNO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM UF
+        </sql>
+    </changeSet>
+
+    <!--ACAO AUD-->
+    <changeSet author="paulo.marcon" id="379">
+        <sql>INSERT INTO ACAO_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM ACAO
+        </sql>
+    </changeSet>
+
+    <!--ACM AUD-->
+    <changeSet author="paulo.marcon" id="380">
+        <sql>INSERT INTO ACM_AUD (ID, DESCRICAO, DEPLOYID, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, DEPLOYID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM ACM
+        </sql>
+    </changeSet>
+
+    <!--AREA AUD-->
+    <changeSet author="paulo.marcon" id="383">
+        <sql>INSERT INTO AREA_AUD (ID, DESCRICAO, FK_TIPOPEDIDO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, FK_TIPOPEDIDO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM AREA
+        </sql>
+    </changeSet>
+
+    <!--ARQUIVO AUD-->
+    <changeSet author="paulo.marcon" id="384">
+        <sql>INSERT INTO ARQUIVO_AUD (ID, ANEXO_EMAIL, CAMINHO_DOCUMENTO, NOMEARQUIVO, DATA_ANEXO, ENVIADO_INDEX,
+            DISPOSITIVO_VIRTUAL,
+            ID_ORIGEM, FK_TIPODOCUMENTO, FK_PROFILE, IDARQUIVOFINCH, ID_AUD, TIPO_AUD)
+            SELECT ID, ANEXO_EMAIL, CAMINHO_DOCUMENTO, NOMEARQUIVO, DATA_ANEXO, ENVIADO_INDEX, DISPOSITIVO_VIRTUAL,
+            ID_ORIGEM, FK_TIPODOCUMENTO, FK_PROFILE, IDARQUIVOFINCH, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM ARQUIVO
+        </sql>
+    </changeSet>
+
+    <!--CAMPO AUD-->
+    <changeSet author="paulo.marcon" id="385">
+        <sql>INSERT INTO CAMPO_AUD (ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO,
+            TIPO_CAMPO,
+            SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO, TIPO_CAMPO,
+            SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, (SELECT MIN(ID) FROM
+            LOG_AUDITORIA), 0 AS TIPO_AUD FROM CAMPO
+        </sql>
+    </changeSet>
+
+    <!--CAMPO_LISTA AUD-->
+    <changeSet author="paulo.marcon" id="386">
+        <sql>INSERT INTO CAMPOLISTA_AUD (ID, DESCRICAO, VISIVEL, FK_CAMPO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, VISIVEL, FK_CAMPO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM CAMPOLISTA
+        </sql>
+    </changeSet>
+
+    <!--CARTEIRA AUD-->
+    <changeSet author="paulo.marcon" id="387">
+        <sql>INSERT INTO CARTEIRA_AUD (ID, CODIGO, DESCRICAO, PUBENVIA, PUBRECEBE, ID_ACM, FK_MODELOTEMPLATE, ID_AUD,
+            TIPO_AUD)
+            SELECT ID, CODIGO, DESCRICAO, PUBENVIA, PUBRECEBE, ID_ACM, FK_MODELOTEMPLATE, (SELECT MIN(ID) FROM
+            LOG_AUDITORIA), 0 AS TIPO_AUD FROM CARTEIRA
+        </sql>
+    </changeSet>
+
+    <!--COMARCA AUD-->
+    <changeSet author="paulo.marcon" id="388">
+        <sql>INSERT INTO COMARCA_AUD (ID, DESCRICAO, METROPOLITANA, FK_UF, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, METROPOLITANA, FK_UF, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM COMARCA
+        </sql>
+    </changeSet>
+
+    <!--DECISAO AUD-->
+    <changeSet author="paulo.marcon" id="389">
+        <sql>INSERT INTO DECISAO_AUD (ID, DESCRICAO, FK_POLO_ATIVO, FK_POLO_PASSIVO, BLOQUEAR_REATIVACAO, ID_AUD,
+            TIPO_AUD)
+            SELECT ID, DESCRICAO, FK_POLO_ATIVO, FK_POLO_PASSIVO, BLOQUEAR_REATIVACAO, (SELECT MIN(ID) FROM
+            LOG_AUDITORIA), 0 AS TIPO_AUD FROM DECISAO
+        </sql>
+    </changeSet>
+
+    <!--DESDOBRAMENTO AUD-->
+    <changeSet author="paulo.marcon" id="390">
+        <sql>INSERT INTO DESDOBRAMENTO_AUD (ID, FK_PROCESSO, INSTANCIA_DESCRICAO, PROCESSO_DATADISTRIBUICAO, ID_AUD,
+            TIPO_AUD)
+            SELECT ID, FK_PROCESSO, INSTANCIA_DESCRICAO, PROCESSO_DATADISTRIBUICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA),
+            0 AS TIPO_AUD FROM DESDOBRAMENTO
+        </sql>
+    </changeSet>
+
+    <!--DIVISAOPESSOA AUD-->
+    <changeSet author="paulo.marcon" id="391">
+        <sql>INSERT INTO DIVISAOPESSOA_AUD (ID, DESCRICAO, FK_PESSOA, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, FK_PESSOA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM DIVISAOPESSOA
+        </sql>
+    </changeSet>
+
+    <!--ESCRITORIO AUD-->
+    <changeSet author="paulo.marcon" id="392">
+        <sql>INSERT INTO ESCRITORIO_AUD (ID, ID_AUD, TIPO_AUD)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM ESCRITORIO
+        </sql>
+    </changeSet>
+
+    <!--ESTEIRA AUD-->
+    <changeSet author="paulo.marcon" id="393">
+        <sql>INSERT INTO ESTEIRA_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM ESTEIRA
+        </sql>
+    </changeSet>
+
+    <!--FORMULARIO AUD-->
+    <changeSet author="paulo.marcon" id="394">
+        <sql>INSERT INTO FORMULARIO_AUD (ID, NOME, ID_FORMULARIO_PAI, ID_TIPO_EXIBICAO_PAI, IDENTIFICADOR, PADRAO,
+            SISTEMA, ID_AUD, TIPO_AUD)
+            SELECT ID, NOME, ID_FORMULARIO_PAI, ID_TIPO_EXIBICAO_PAI, IDENTIFICADOR, PADRAO, SISTEMA, (SELECT MIN(ID)
+            FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM FORMULARIO
+        </sql>
+    </changeSet>
+
+    <!--FORO AUD-->
+    <changeSet author="paulo.marcon" id="395">
+        <sql>INSERT INTO FORO_AUD (ID, DESCRICAO, FK_COMARCA, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, FK_COMARCA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM FORO
+        </sql>
+    </changeSet>
+
+    <!--GARANTIA AUD-->
+    <changeSet author="paulo.marcon" id="396">
+        <sql>INSERT INTO GARANTIA_AUD (ID, VALOR, DATAGARANTIA, LEVANTADO, DATALEVANTADO, OBS,
+            DATACADASTRO, DATAEXCLUSAO, DATAALTERACAO, FK_TIPOGARANTIA, FK_PROCESSO, ID_AUD, TIPO_AUD)
+            SELECT ID, VALOR, DATAGARANTIA, LEVANTADO, DATALEVANTADO, OBS,
+            DATACADASTRO, DATAEXCLUSAO, DATAALTERACAO, FK_TIPOGARANTIA, FK_PROCESSO,
+            (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM GARANTIA
+        </sql>
+    </changeSet>
+
+    <!--GEDPROFILE AUD-->
+    <changeSet author="paulo.marcon" id="397">
+        <sql>INSERT INTO GEDPROFILE_AUD (ID, FK_PROCESSO, NOMEPROFILE, FK_PESSOA, DATACRIACAO, FK_PROFILE, ISFINCH,
+            PROFILEFINCH, ID_AUD, TIPO_AUD)
+            SELECT ID, FK_PROCESSO, NOMEPROFILE, FK_PESSOA, DATACRIACAO, FK_PROFILE, ISFINCH, PROFILEFINCH,
+            (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM GEDPROFILE
+        </sql>
+    </changeSet>
+
+    <!--GRUPOAGENDAMENTO AUD-->
+    <changeSet author="paulo.marcon" id="398">
+        <sql>INSERT INTO GRUPOAGENDAMENTO_AUD (ID, DESCRICAO, TIPOCONTAGEMDIAS, FK_AREA, FK_CARTEIRA, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, TIPOCONTAGEMDIAS, FK_AREA, FK_CARTEIRA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS
+            TIPO_AUD FROM GRUPOAGENDAMENTO
+        </sql>
+    </changeSet>
+
+    <!--HONORARIO AUD-->
+    <changeSet author="paulo.marcon" id="399">
+        <sql>INSERT INTO HONORARIO_AUD (ID, DATAVENCIMENTO, FK_HO_REFERENCIA, VALOR, DESCRICAO,
+            FK_PROCESSO, FK_RESPONSAVEL, ID_AUD, TIPO_AUD)
+            SELECT ID, DATAVENCIMENTO, FK_HO_REFERENCIA, VALOR, DESCRICAO,
+            FK_PROCESSO, FK_RESPONSAVEL, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM HONORARIO
+        </sql>
+    </changeSet>
+
+    <!--INDICE ECONOMICO AUD-->
+    <changeSet author="paulo.marcon" id="400">
+        <sql>INSERT INTO INDICEECONOMICO_AUD (ID, DESCRICAO, FK_TIPO_IND_ECO, FK_PER_JUR_COR, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, FK_TIPO_IND_ECO, FK_PER_JUR_COR, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM INDICEECONOMICO
+        </sql>
+    </changeSet>
+
+    <!--INFORMACOESADICIONAIS AUD-->
+    <changeSet author="paulo.marcon" id="401">
+        <sql>INSERT INTO INFORMACOESADICIONAIS_AUD (ID, DESCRICAO, FK_CAMPO, FK_PESSOA, FK_PROCESSO, FK_GARANTIA,
+            ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, FK_CAMPO, FK_PESSOA, FK_PROCESSO, FK_GARANTIA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0
+            AS TIPO_AUD FROM INFORMACOESADICIONAIS
+        </sql>
+    </changeSet>
+
+    <!--INSTANCIA AUD-->
+    <changeSet author="paulo.marcon" id="402">
+        <sql>INSERT INTO INSTANCIA_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM INSTANCIA
+        </sql>
+    </changeSet>
+
+    <!--JUROS AUD-->
+    <changeSet author="paulo.marcon" id="403">
+        <sql>INSERT INTO JUROS_AUD (ID, DESCRICAO, PERCENTUAL, FK_PERIODOJUROSCORRECAO, TIPOJUROS, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, PERCENTUAL, FK_PERIODOJUROSCORRECAO, TIPOJUROS, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0
+            AS TIPO_AUD FROM JUROS
+        </sql>
+    </changeSet>
+
+    <!--MATERIA AUD-->
+    <changeSet author="paulo.marcon" id="404">
+        <sql>INSERT INTO MATERIA_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM MATERIA
+        </sql>
+    </changeSet>
+
+    <!--MODELOTEMPLATE AUD-->
+    <changeSet author="paulo.marcon" id="405">
+        <sql>INSERT INTO MODELOTEMPLATE_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM MODELOTEMPLATE
+        </sql>
+    </changeSet>
+
+    <!--MOTIVOSTATUSFINAL AUD-->
+    <changeSet author="paulo.marcon" id="406">
+        <sql>INSERT INTO MOTIVOSTATUSFINAL_AUD (ID, MOTIVO, STATUS, FK_FORMULARIO, ID_AUD, TIPO_AUD)
+            SELECT ID, MOTIVO, STATUS, FK_FORMULARIO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM
+            MOTIVOSTATUSFINAL
+        </sql>
+    </changeSet>
+
+    <!--MOTIVOSTATUSFINAL_TAREFA AUD-->
+    <changeSet author="paulo.marcon" id="407">
+        <sql>INSERT INTO MOTIVOSTATUSFINAL_TAREFA_AUD (ID, ID_MOTIVOSTATUSFINAL, ID_TAREFA, ID_TIPO_DATA,
+            ID_TIPO_RESPONSAVEL,
+            ID_TIPO_INTERVALO, INTERVALO, DIAS_UTEIS, ID_CAMPO_DATA, ID_CAMPO_RESPONSAVEL,
+            ID_RESPONSAVEL, ID_AUD, TIPO_AUD)
+            SELECT ID, ID_MOTIVOSTATUSFINAL, ID_TAREFA, ID_TIPO_DATA, ID_TIPO_RESPONSAVEL,
+            ID_TIPO_INTERVALO, INTERVALO, DIAS_UTEIS, ID_CAMPO_DATA, ID_CAMPO_RESPONSAVEL,
+            ID_RESPONSAVEL, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM MOTIVOSTATUSFINAL_TAREFA
+        </sql>
+    </changeSet>
+
+    <!--PARTE AUD-->
+    <changeSet author="paulo.marcon" id="408">
+        <sql>INSERT INTO PARTE_AUD (ID, FK_PESSOA, PRINCIPAL, FK_TIPO_PARTE, FK_PROCESSO, ID_AUD, TIPO_AUD)
+            SELECT ID, FK_PESSOA, PRINCIPAL, FK_TIPO_PARTE, FK_PROCESSO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS
+            TIPO_AUD FROM PARTE
+        </sql>
+    </changeSet>
+
+    <!--PEDIDO AUD-->
+    <changeSet author="paulo.marcon" id="409">
+        <sql>INSERT INTO PEDIDO_AUD (ID, VALOR, DESCRICAO, PRORATACORRECAO, PRORATAJUROS, CORRECAODE, CORRECAOATE,
+            PEDIDO_JUROSDE,
+            JUROSATE, CORRECAOVALORFIXO, JUROSVALORFIXO, MULTAVALOR, MULTAMEMO, PERCENTUALJUROSMANUAL,
+            PERCENTUALMULTA, POSSIBILIDADEPERDA, VALORPROVISAO, MULTAVALORFIXO, DATACADASTRO,
+            DATAALTERACAO, DATAEXCLUSAO, MOTIVOALTERACAO, EMBASAMENTOPROVISAO, USERNAMECADASTRO,
+            USERNAMEALTERACAO, USERNAMEEXCLUSAO, FK_TIPO_PEDIDO, FK_INDICE_ECONOMICO, FK_JUROS, FK_RISCO_CAUSA,
+            FK_PROCESSO,VALOR_ATUALIZADO, PROVISAO_ATUALIZADO, FK_PERIODOJUROSCORRECAO, ID_AUD, TIPO_AUD)
+            SELECT ID, VALOR, DESCRICAO, PRORATACORRECAO, PRORATAJUROS, CORRECAODE, CORRECAOATE, PEDIDO_JUROSDE,
+            JUROSATE, CORRECAOVALORFIXO, JUROSVALORFIXO, MULTAVALOR, MULTAMEMO, PERCENTUALJUROSMANUAL,
+            PERCENTUALMULTA, POSSIBILIDADEPERDA, VALORPROVISAO, MULTAVALORFIXO, DATACADASTRO, DATAALTERACAO,
+            DATAEXCLUSAO, MOTIVOALTERACAO, EMBASAMENTOPROVISAO, USERNAMECADASTRO,
+            USERNAMEALTERACAO, USERNAMEEXCLUSAO, FK_TIPO_PEDIDO, FK_INDICE_ECONOMICO, FK_JUROS, FK_RISCO_CAUSA,
+            FK_PROCESSO,VALOR_ATUALIZADO, PROVISAO_ATUALIZADO, FK_PERIODOJUROSCORRECAO, (SELECT MIN(ID) FROM
+            LOG_AUDITORIA), 0 AS TIPO_AUD FROM PEDIDO
+        </sql>
+    </changeSet>
+
+    <!--PEDIDORESUMO-->
+    <changeSet author="paulo.marcon" id="410">
+        <sql>INSERT INTO PEDIDORESUMO_AUD (ID, FK_PROCESSO, VALORTOTAL, VALORPROVISAO, DATACADASTRO, ID_AUD, TIPO_AUD)
+            SELECT ID, FK_PROCESSO, VALORTOTAL, VALORPROVISAO, DATACADASTRO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS
+            TIPO_AUD FROM PEDIDORESUMO
+        </sql>
+    </changeSet>
+
+    <!--PERFIL_AUD-->
+    <changeSet author="paulo.marcon" id="411">
+        <sql>INSERT INTO PERFIL_AUD (ID, DESCRICAO, NOME, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, NOME, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM PERFIL
+        </sql>
+    </changeSet>
+
+    <!--PERIODOJUROSCORRECAO AUD-->
+    <changeSet author="paulo.marcon" id="412">
+        <sql>INSERT INTO PERIODOJUROSCORRECAO_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM PERIODOJUROSCORRECAO
+        </sql>
+    </changeSet>
+
+    <!--PESSOA AUD-->
+    <changeSet author="paulo.marcon" id="413">
+        <sql>INSERT INTO PESSOA_AUD (ID, TIPOPESSOA, PESSOA_TRATAMENTO_FK, NOME_RAZAOSOCIAL, APELIDO_FANTASIA,
+            RG_INSCRICAOESTADUAL,
+            FK_ESTADOCIVIL, DATANASCIMENTO, SEXO, INSCRICAOMUNICIPAL, CPF_CNPJ, CPF_CNPJ_ND, MICROEMPRESA,
+            ANOTACAO, ATIVO, EXCLUIDO, IMAGEM, ID_AUD, TIPO_AUD)
+            SELECT ID, TIPOPESSOA, PESSOA_TRATAMENTO_FK, NOME_RAZAOSOCIAL, APELIDO_FANTASIA, RG_INSCRICAOESTADUAL,
+            FK_ESTADOCIVIL, DATANASCIMENTO, SEXO, INSCRICAOMUNICIPAL, CPF_CNPJ, CPF_CNPJ_ND, MICROEMPRESA,
+            ANOTACAO, ATIVO, EXCLUIDO, IMAGEM, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM PESSOA
+        </sql>
+    </changeSet>
+
+    <!--POSICAO AUD-->
+    <changeSet author="paulo.marcon" id="414">
+        <sql>INSERT INTO POSICAO_AUD (ID, DESCRICAO, POSICAO_CONTRARIA, ID_POLO_ATUACAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, POSICAO_CONTRARIA, ID_POLO_ATUACAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM POSICAO
+        </sql>
+    </changeSet>
+
+    <!--PRATICA AUD-->
+    <changeSet author="paulo.marcon" id="415">
+        <sql>INSERT INTO PRATICA_AUD (ID, DESCRICAO, FK_AREA, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, FK_AREA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM PRATICA
+        </sql>
+    </changeSet>
+
+    <!--PROCESSO AUD-->
+    <changeSet author="paulo.marcon" id="416">
+        <sql>INSERT INTO PROCESSO_AUD (ID, SUMARIO, NUMERO, PASTA, DATADISTRIBUICAO, DATADISTRIBUICAOVISUALIZACAO,
+            DATAENCERRAMENTO, PERCENTUAL,
+            NUMEROANTIGO, PROCESSO_VIRTUAL, PROCESSO_ELETRONICO, PROJUDI, PUBENVIA, PUBRECEBE, SUPERESPECIAL, ORDINAL,
+            NUMERORDEM,
+            VIRTUALHABILITADO, VALORCAUSA, VALORSENTENCA, FK_TIPOPROCESSO, FK_INSTANCIA, FK_MATERIA, FK_AREA,
+            FK_PRATICA,
+            FK_ACAO, FK_PROCESSO_AUDITORIA, FK_PESPARTEINT, FK_PESPARTECONT, FK_PESADV, FK_PESADVRESP, FK_POSICAOPARTE,
+            ULTIMA_ATUALIZACAO, FK_TIPOPROCESSOELETRONICO, FK_UF, FK_COMARCA, FK_REPARTICAO, FK_TIPOJUSTICA,
+            NUMERO_VARA,
+            FK_VARA, FK_FORO, FK_ESCRITORIO, FK_SISTEMAVIRTUAL, CONTROLECLIENTE, DATARECEBIMENTO, DATACADASTRO,
+            PROCESSOUNICO,
+            FK_CLIENTE, FK_USUARIO, FK_CARTEIRA, FK_OPERACIONAL, FK_DIVISAO, IDPROCESSOUNICO_WSINTEGRACAO,
+            CLASSIFICACAO, STATUS,
+            CASE_INSTANCE_ID, FK_PEDIDORESUMO, FK_DECISAO, DATA_DECISAO, FK_PROCESSOPAI, CONSULTANOVOSANDAMENTOS,
+            NOTIFICARNOVOSANDAMENTOS,
+            CONSULTAPARACERTIFICACAO, NOTIFICARRETORNOCERTIFICACAO, CERTIFICADO, VALORTOTALPROVISIONAMENTO,
+            VALORTOTALPEDIDO, ANOTACAO,
+            ESTRATEGIA, DEPLOYID, DATASINCRONISMO, SINCRONIZADO, ID_AUD, TIPO_AUD)
+            SELECT ID, SUMARIO, NUMERO, PASTA, DATADISTRIBUICAO, DATADISTRIBUICAOVISUALIZACAO, DATAENCERRAMENTO,
+            PERCENTUAL,
+            NUMEROANTIGO, PROCESSO_VIRTUAL, PROCESSO_ELETRONICO, PROJUDI, PUBENVIA, PUBRECEBE, SUPERESPECIAL, ORDINAL,
+            NUMERORDEM,
+            VIRTUALHABILITADO, VALORCAUSA, VALORSENTENCA, FK_TIPOPROCESSO, FK_INSTANCIA, FK_MATERIA, FK_AREA,
+            FK_PRATICA,
+            FK_ACAO, FK_PROCESSO_AUDITORIA, FK_PESPARTEINT, FK_PESPARTECONT, FK_PESADV, FK_PESADVRESP, FK_POSICAOPARTE,
+            ULTIMA_ATUALIZACAO, FK_TIPOPROCESSOELETRONICO, FK_UF, FK_COMARCA, FK_REPARTICAO, FK_TIPOJUSTICA,
+            NUMERO_VARA,
+            FK_VARA, FK_FORO, FK_ESCRITORIO, FK_SISTEMAVIRTUAL, CONTROLECLIENTE, DATARECEBIMENTO, DATACADASTRO,
+            PROCESSOUNICO,
+            FK_CLIENTE, FK_USUARIO, FK_CARTEIRA, FK_OPERACIONAL, FK_DIVISAO, IDPROCESSOUNICO_WSINTEGRACAO,
+            CLASSIFICACAO, STATUS,
+            CASE_INSTANCE_ID, FK_PEDIDORESUMO, FK_DECISAO, DATA_DECISAO, FK_PROCESSOPAI, CONSULTANOVOSANDAMENTOS,
+            NOTIFICARNOVOSANDAMENTOS,
+            CONSULTAPARACERTIFICACAO, NOTIFICARRETORNOCERTIFICACAO, CERTIFICADO, VALORTOTALPROVISIONAMENTO,
+            VALORTOTALPEDIDO, ANOTACAO,
+            ESTRATEGIA, DEPLOYID, DATASINCRONISMO, SINCRONIZADO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM
+            PROCESSO
+        </sql>
+    </changeSet>
+
+    <!--PROCESSODESPESAS AUD-->
+    <changeSet author="paulo.marcon" id="417">
+        <sql>INSERT INTO PROCESSODESPESAS_AUD (ID, DATA_LANCAMENTO, VALOR, FK_PROCESSO, FK_PR_DISPESA_TIPO,
+            FK_RESPONSAVEL, NUMERO_DOC, DESCRICAO, FATURAVEL, ID_AUD, TIPO_AUD)
+            SELECT ID, DATA_LANCAMENTO, VALOR, FK_PROCESSO, FK_PR_DISPESA_TIPO,
+            FK_RESPONSAVEL, NUMERO_DOC, DESCRICAO, FATURAVEL, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM
+            PROCESSODESPESAS
+        </sql>
+    </changeSet>
+
+    <!--PROCESSODESPESASTIPO AUD-->
+    <changeSet author="paulo.marcon" id="418">
+        <sql>INSERT INTO PROCESSODESPESASTIPO_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM PROCESSODESPESASTIPO
+        </sql>
+    </changeSet>
+
+    <!--PROVISAO AUD-->
+    <changeSet author="paulo.marcon" id="419">
+        <sql>INSERT INTO PROVISAO_AUD (ID, DATA, VALOR, FK_CARTEIRA, ID_AUD, TIPO_AUD)
+            SELECT ID, DATA, VALOR, FK_CARTEIRA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM PROVISAO
+        </sql>
+    </changeSet>
+
+    <!--REFERENCIA HONORARIOS AUD-->
+    <changeSet author="paulo.marcon" id="420">
+        <sql>INSERT INTO REFERENCIAHONORARIOS_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM REFERENCIAHONORARIOS
+        </sql>
+    </changeSet>
+
+    <!--REPARTICAO AUD-->
+    <changeSet author="paulo.marcon" id="422">
+        <sql>INSERT INTO REPARTICAO_AUD (ID, DESCRICAO, FK_COMARCA, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, FK_COMARCA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM REPARTICAO
+        </sql>
+    </changeSet>
+
+    <!--RISCO CAUSA AUD-->
+    <changeSet author="paulo.marcon" id="423">
+        <sql>INSERT INTO RISCOCAUSA_AUD (ID, DESCRICAO, PROBABILIDADE, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, PROBABILIDADE, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM RISCOCAUSA
+        </sql>
+    </changeSet>
+
+    <!--ROTINA AUD-->
+    <changeSet author="paulo.marcon" id="424">
+        <sql>INSERT INTO ROTINA_AUD (ID, DESCRICAO, VERSAO, DATAULTIMAATUALIZACAO, INTERVALOMINUTOS, STATUS, ROBO, JSON,
+            ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, VERSAO, DATAULTIMAATUALIZACAO, INTERVALOMINUTOS, STATUS, ROBO, JSON, (SELECT MIN(ID)
+            FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM ROTINA
+        </sql>
+    </changeSet>
+
+    <!--SISTEMA VIRTUAL AUD-->
+    <changeSet author="paulo.marcon" id="425">
+        <sql>INSERT INTO SISTEMAVIRTUAL_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM SISTEMAVIRTUAL
+        </sql>
+    </changeSet>
+
+    <!--SOLICITACAO_LOG AUD-->
+    <changeSet author="paulo.marcon" id="426">
+        <sql>INSERT INTO SOLICITACAO_LOG_AUD (ID, FK_SOLICITANTE, PROCESSOUNICO, DATALIMITE, DATAAUDIENCIA,
+            DATASOLICITACAO,
+            HORAAUDIENCIA, LOCAL, PREPOSTO, NOMEPREPOSTO, IDCOMARCA, TEXTOSOLICITACAO,
+            IDSOLICITACAOBOOMER, IDTIPODILIGENCIA, IDPROCESSO, ID_STATUS_SOLICITACAO, MENSAGEM,
+            DESCRICAO_TIPO, ID_AUD, TIPO_AUD)
+            SELECT ID, FK_SOLICITANTE, PROCESSOUNICO, DATALIMITE, DATAAUDIENCIA, DATASOLICITACAO,
+            HORAAUDIENCIA, LOCAL, PREPOSTO, NOMEPREPOSTO, IDCOMARCA, TEXTOSOLICITACAO,
+            IDSOLICITACAOBOOMER, IDTIPODILIGENCIA, IDPROCESSO, ID_STATUS_SOLICITACAO, MENSAGEM,
+            DESCRICAO_TIPO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM SOLICITACAO_LOG
+        </sql>
+    </changeSet>
+
+    <!--TAREFA AUD-->
+    <changeSet author="paulo.marcon" id="427">
+        <sql>INSERT INTO TAREFA_AUD (ID, ID_TAREFA, FK_CARTEIRA, ID_AUD, TIPO_AUD)
+            SELECT ID, ID_TAREFA, FK_CARTEIRA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM TAREFA
+        </sql>
+    </changeSet>
+
+    <!--TIPODOCUMENTO AUD-->
+    <changeSet author="paulo.marcon" id="428">
+        <sql>INSERT INTO TIPODOCUMENTO_AUD (ID, DESCRICAO, COD_INT, CONSTANTE, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, COD_INT, CONSTANTE, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM
+            TIPODOCUMENTO
+        </sql>
+    </changeSet>
+
+    <!--TIPOINDICEECONOMICO_AUD-->
+    <changeSet author="paulo.marcon" id="429">
+        <sql>INSERT INTO TIPOINDICEECONOMICO_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM TIPOINDICEECONOMICO
+        </sql>
+    </changeSet>
+
+    <!--TIPOJUSTICA AUD-->
+    <changeSet author="paulo.marcon" id="430">
+        <sql>INSERT INTO TIPOJUSTICA_AUD (ID, DESCRICAO, MASCARA, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, MASCARA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM TIPOJUSTICA
+        </sql>
+    </changeSet>
+
+    <!--TIPOPEDIDO_AUD-->
+    <changeSet author="paulo.marcon" id="432">
+        <sql>INSERT INTO TIPOPEDIDO_AUD (ID, DESCRICAO, FK_AREA, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, FK_AREA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM TIPOPEDIDO
+        </sql>
+    </changeSet>
+
+    <!--TIPOPROCESSO AUD-->
+    <changeSet author="paulo.marcon" id="433">
+        <sql>INSERT INTO TIPOPROCESSO_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM TIPOPROCESSO
+        </sql>
+    </changeSet>
+
+    <!--TIPOPROCESSOELETRONICO AUD-->
+    <changeSet author="paulo.marcon" id="434">
+        <sql>INSERT INTO TIPOPROCESSOELETRONICO_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM TIPOPROCESSOELETRONICO
+        </sql>
+    </changeSet>
+
+    <!--USUARIO AUD-->
+    <changeSet author="paulo.marcon" id="435">
+        <sql>INSERT INTO USUARIO_AUD (ID, LOGIN, SENHA, JORNADA_TRABALHO, ATIVO, FK_PERFIL, FK_ESCRITORIO, ID_AUD,
+            TIPO_AUD)
+            SELECT ID, LOGIN, SENHA, JORNADA_TRABALHO, ATIVO, FK_PERFIL, FK_ESCRITORIO, (SELECT MIN(ID) FROM
+            LOG_AUDITORIA), 0 AS TIPO_AUD FROM USUARIO
+        </sql>
+    </changeSet>
+
+    <!--VARA AUD-->
+    <changeSet author="paulo.marcon" id="436">
+        <sql>INSERT INTO VARA_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM VARA
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-ACT_HI_TASKINST_AUD.DESCRIPTION__AUX">
+        <addColumn tableName="ACT_HI_TASKINST_AUD">
+            <column name="DESCRIPTION__AUX" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="update-column-ACT_HI_TASKINST_AUD.DESCRIPTION_">
+        <sql>UPDATE ACT_HI_TASKINST_AUD SET DESCRIPTION__AUX = DESCRIPTION_</sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-column-ACT_HI_TASKINST_AUD.DESCRIPTION_">
+        <dropColumn tableName="ACT_HI_TASKINST_AUD" columnName="DESCRIPTION_"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-ACT_HI_TASKINST_AUD.DESCRIPTION_">
+        <addColumn tableName="ACT_HI_TASKINST_AUD">
+            <column name="DESCRIPTION_" type="VARCHAR(4000)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="update-column-ACT_HI_TASKINST_AUD.DESCRIPTION__AUX">
+        <sql>UPDATE ACT_HI_TASKINST_AUD SET DESCRIPTION_ = DESCRIPTION__AUX</sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-column-ACT_HI_TASKINST_AUD.DESCRIPTION__AUX">
+        <dropColumn tableName="ACT_HI_TASKINST_AUD" columnName="DESCRIPTION__AUX"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-ACT_HI_VARINST_AUD.TEXT__AUX">
+        <addColumn tableName="ACT_HI_VARINST_AUD">
+            <column name="TEXT__AUX" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="update-column-ACT_HI_VARINST_AUD.TEXT_">
+        <sql>UPDATE ACT_HI_VARINST_AUD SET TEXT__AUX = TEXT_</sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-column-ACT_HI_VARINST_AUD.TEXT_">
+        <dropColumn tableName="ACT_HI_VARINST_AUD" columnName="TEXT_"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-ACT_HI_VARINST_AUD.TEXT_">
+        <addColumn tableName="ACT_HI_VARINST_AUD">
+            <column name="TEXT_" type="VARCHAR(4000)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="update-column-ACT_HI_VARINST_AUD.TEXT__AUX">
+        <sql>UPDATE ACT_HI_VARINST_AUD SET TEXT_ = TEXT__AUX</sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-column-ACT_HI_VARINST_AUD.TEXT__AUX">
+        <dropColumn tableName="ACT_HI_VARINST_AUD" columnName="TEXT__AUX"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-ACT_HI_VARINST_AUD.TEXT2__AUX">
+        <addColumn tableName="ACT_HI_VARINST_AUD">
+            <column name="TEXT2__AUX" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="update-column-ACT_HI_VARINST_AUD.TEXT2_">
+        <sql>UPDATE ACT_HI_VARINST_AUD SET TEXT2__AUX = TEXT2_</sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-column-ACT_HI_VARINST_AUD.TEXT2_">
+        <dropColumn tableName="ACT_HI_VARINST_AUD" columnName="TEXT2_"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-ACT_HI_VARINST_AUD.TEXT2_">
+        <addColumn tableName="ACT_HI_VARINST_AUD">
+            <column name="TEXT2_" type="VARCHAR(4000)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="update-column-ACT_HI_VARINST_AUD.TEXT2__AUX">
+        <sql>UPDATE ACT_HI_VARINST_AUD SET TEXT2_ = TEXT2__AUX</sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-column-ACT_HI_VARINST_AUD.TEXT2__AUX">
+        <dropColumn tableName="ACT_HI_VARINST_AUD" columnName="TEXT2__AUX"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-PEDIDO_AUD.DESCRICAO_AUX">
+        <addColumn tableName="PEDIDO_AUD">
+            <column name="DESCRICAO_AUX" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="update-column-PEDIDO_AUD.DESCRICAO">
+        <sql>UPDATE PEDIDO_AUD SET DESCRICAO_AUX = DESCRICAO</sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-column-PEDIDO_AUD.DESCRICAO">
+        <dropColumn tableName="PEDIDO_AUD" columnName="DESCRICAO"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-PEDIDO_AUD.DESCRICAO">
+        <addColumn tableName="PEDIDO_AUD">
+            <column name="DESCRICAO" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="update-column-PEDIDO_AUD.DESCRICAO_AUX">
+        <sql>UPDATE PEDIDO_AUD SET DESCRICAO = DESCRICAO_AUX</sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-column-PEDIDO_AUD.DESCRICAO_AUX">
+        <dropColumn tableName="PEDIDO_AUD" columnName="DESCRICAO_AUX"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-PROCESSO_AUD.FK_FASE">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="FK_FASE" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-TIPOPEDIDO_AUD.DESCRICAO_AUX">
+        <addColumn tableName="TIPOPEDIDO_AUD">
+            <column name="DESCRICAO_AUX" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="update-column-TIPOPEDIDO_AUD.DESCRICAO">
+        <sql>UPDATE TIPOPEDIDO_AUD SET DESCRICAO_AUX = DESCRICAO</sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-column-TIPOPEDIDO_AUD.DESCRICAO">
+        <dropColumn tableName="TIPOPEDIDO_AUD" columnName="DESCRICAO"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-TIPOPEDIDO_AUD.DESCRICAO">
+        <addColumn tableName="TIPOPEDIDO_AUD">
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="update-column-TIPOPEDIDO_AUD.DESCRICAO_AUX">
+        <sql>UPDATE TIPOPEDIDO_AUD SET DESCRICAO = DESCRICAO_AUX</sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-column-TIPOPEDIDO_AUD.DESCRICAO_AUX">
+        <dropColumn tableName="TIPOPEDIDO_AUD" columnName="DESCRICAO_AUX"/>
+    </changeSet>
+
+
+    <changeSet author="felipi.berdun" id="create-table-CONTRATO_AUD">
+        <createTable tableName="CONTRATO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+            <column name="FK_CLIENTE" type="BIGINT"/>
+            <column name="NOME" type="VARCHAR(255)"/>
+            <column name="NUMERO" type="VARCHAR(255)"/>
+            <column name="VALIDADE_FIM" type="DATETIME"/>
+            <column name="VALIDADE_INICIO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-CONTRATO_AUD">
+        <sql>INSERT INTO CONTRATO_AUD (ID, FK_CARTEIRA, FK_CLIENTE, NOME, NUMERO, VALIDADE_FIM, VALIDADE_INICIO, ID_AUD,
+            TIPO_AUD)
+            SELECT ID, FK_CARTEIRA, FK_CLIENTE, NOME, NUMERO, VALIDADE_FIM, VALIDADE_INICIO, (SELECT MIN(ID) FROM
+            LOG_AUDITORIA), 0 AS TIPO_AUD FROM CONTRATO
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_CONTRATO_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CONTRATO_AUD"
+                                 constraintName="FK_CONTRATO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-CONTRATO_CLAUSULA_AUD">
+        <createTable tableName="CONTRATO_CLAUSULA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATO_CLAUSULA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATO_CLAUSULA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="MES_FINAL" type="INTEGER"/>
+            <column name="MES_INICIAL" type="INTEGER"/>
+            <column name="OBSERVACAO" type="CLOB"/>
+            <column name="PERCENTUAL" type="DECIMAL(19, 2)"/>
+            <column name="PISO" type="DECIMAL(19, 2)"/>
+            <column name="TETO" type="DECIMAL(19, 2)"/>
+            <column name="TIPO_CLAUSULA" type="INTEGER"/>
+            <column name="TIPO_DATA_VERIFICACAO" type="INTEGER"/>
+            <column name="VALOR" type="DECIMAL(19, 2)"/>
+            <column name="VALOR_SOBRE" type="INTEGER"/>
+            <column name="FK_CONTRATO" type="BIGINT"/>
+            <column name="FK_PAPEL" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-CONTRATO_CLAUSULA_AUD">
+        <sql>INSERT INTO CONTRATO_CLAUSULA_AUD (ID, DESCRICAO, MES_FINAL, MES_INICIAL, OBSERVACAO, PERCENTUAL, PISO,
+            TETO, TIPO_CLAUSULA, TIPO_DATA_VERIFICACAO, VALOR, VALOR_SOBRE, FK_CONTRATO, FK_PAPEL, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, MES_FINAL, MES_INICIAL, OBSERVACAO, PERCENTUAL, PISO, TETO, TIPO_CLAUSULA,
+            TIPO_DATA_VERIFICACAO, VALOR, VALOR_SOBRE, FK_CONTRATO, FK_PAPEL, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS
+            TIPO_AUD FROM CONTRATO_CLAUSULA
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_CONTRATO_CLAUSULA_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CONTRATO_CLAUSULA_AUD"
+                                 constraintName="FK_CONTRATO_CLAUSULA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-CONTRATOCLAUSULA_DESPESA_AUD">
+        <createTable tableName="CONTRATOCLAUSULA_DESPESA_AUD">
+            <column name="ID_CONTRATO_CLAUSULA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATOCLAUSULA_DESP_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATOCLAUSULA_DESP_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="ID_DESPESATIPO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATOCLAUSULA_DESP_AUD"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-CONTRATOCLAUSULA_DESPESA_AUD">
+        <sql>INSERT INTO CONTRATOCLAUSULA_DESPESA_AUD (ID_CONTRATO_CLAUSULA, ID_DESPESATIPO, ID_AUD, TIPO_AUD)
+            SELECT ID_CONTRATO_CLAUSULA, ID_DESPESATIPO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM
+            CONTRATOCLAUSULA_DESPESA
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_CONTRATOCLAUSULA_DESPESA_AU">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CONTRATOCLAUSULA_DESPESA_AUD"
+                                 constraintName="FK_CONTRATOCLAUSULA_DESPESA_AU" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-CONTRATOCLAUSULA_TAREFA_AUD">
+        <createTable tableName="CONTRATOCLAUSULA_TAREFA_AUD">
+            <column name="ID_CONTRATO_CLAUSULA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATOCLAUSULA_TAREFA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATOCLAUSULA_TAREFA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="ID_TAREFA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATOCLAUSULA_TAREFA_AUD"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-CONTRATOCLAUSULA_TAREFA_AUD">
+        <sql>INSERT INTO CONTRATOCLAUSULA_TAREFA_AUD (ID_CONTRATO_CLAUSULA, ID_TAREFA, ID_AUD, TIPO_AUD)
+            SELECT ID_CONTRATO_CLAUSULA, ID_TAREFA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM
+            CONTRATOCLAUSULA_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_CONTRATOCLAUSULA_TAREFA_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CONTRATOCLAUSULA_TAREFA_AUD"
+                                 constraintName="FK_CONTRATOCLAUSULA_TAREFA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-SERVICO_AUD">
+        <createTable tableName="SERVICO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SERVICO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SERVICO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DATACADASTRO" type="DATETIME"/>
+            <column name="ASSUNTO" type="VARCHAR(255)"/>
+            <column name="ID_CLIENTE" type="BIGINT"/>
+            <column name="ID_SERVICO_STATUS" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-SERVICO_AUD">
+        <sql>INSERT INTO SERVICO_AUD (ID, DATACADASTRO, ASSUNTO, ID_CLIENTE, ID_SERVICO_STATUS, DESCRICAO, ID_AUD,
+            TIPO_AUD)
+            SELECT ID, DATACADASTRO, ASSUNTO, ID_CLIENTE, ID_SERVICO_STATUS, DESCRICAO, (SELECT MIN(ID) FROM
+            LOG_AUDITORIA), 0 AS TIPO_AUD FROM SERVICO
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_SERVICO_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="SERVICO_AUD"
+                                 constraintName="FK_SERVICO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-APONTAMENTO_AUD">
+        <createTable tableName="APONTAMENTO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_APONTAMENTO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_APONTAMENTO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="ID_SERVICO" type="BIGINT"/>
+            <column name="ID_RESPONSAVEL" type="BIGINT"/>
+            <column name="DATALANCAMENTO" type="DATETIME"/>
+            <column name="QUANTIDADEHORAS" type="DECIMAL(19, 2)"/>
+            <column name="ID_PROCESSO" type="BIGINT"/>
+            <column name="FATURAVEL" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-APONTAMENTO_AUD">
+        <sql>INSERT INTO APONTAMENTO_AUD (ID, DESCRICAO, ID_SERVICO, ID_RESPONSAVEL, DATALANCAMENTO, QUANTIDADEHORAS,
+            ID_PROCESSO, FATURAVEL, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, ID_SERVICO, ID_RESPONSAVEL, DATALANCAMENTO, QUANTIDADEHORAS, ID_PROCESSO, FATURAVEL,
+            (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM APONTAMENTO
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_APONTAMENTO_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="APONTAMENTO_AUD"
+                                 constraintName="FK_APONTAMENTO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-PAPEL_AUD">
+        <createTable tableName="PAPEL_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PAPEL_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PAPEL_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="COD_INT" type="INTEGER"/>
+            <column name="DESCRICAO" type="VARCHAR(200)"/>
+            <column name="SISTEMA" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-PAPEL_AUD">
+        <sql>INSERT INTO PAPEL_AUD (ID, COD_INT, DESCRICAO, SISTEMA, ID_AUD, TIPO_AUD)
+            SELECT ID, COD_INT, DESCRICAO, SISTEMA, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM PAPEL
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_PAPEL_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PAPEL_AUD"
+                                 constraintName="FK_PAPEL_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-SERVICO_ARQUIVO_AUD">
+        <createTable tableName="SERVICO_ARQUIVO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SERVICO_ARQUIVO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SERVICO_ARQUIVO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="ID_SERVICO" type="BIGINT"/>
+            <column name="CAMINHO" type="VARCHAR(255)"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="DATA_CADASTRO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-SERVICO_ARQUIVO_AUD">
+        <sql>INSERT INTO SERVICO_ARQUIVO_AUD (ID, ID_SERVICO, CAMINHO, DESCRICAO, DATA_CADASTRO, ID_AUD, TIPO_AUD)
+            SELECT ID, ID_SERVICO, CAMINHO, DESCRICAO, DATA_CADASTRO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM SERVICO_ARQUIVO
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_SERVICO_ARQUIVO_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="SERVICO_ARQUIVO_AUD"
+                                 constraintName="FK_SERVICO_ARQUIVO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-CONSULTA_SQL">
+        <addColumn tableName="RELATORIOPERFIL">
+            <column name="CONSULTA_SQL" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-RELATORIOCAMPO.FILTRO_OBRIGATORIO">
+        <addColumn tableName="RELATORIOCAMPO">
+            <column name="FILTRO_OBRIGATORIO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-column-RELATORIOCAMPO.FILTRO_TIPO_DADO">
+        <addColumn tableName="RELATORIOCAMPO">
+            <column name="FILTRO_TIPO_DADO" type="INTEGER"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-table-RELATORIO_FILTRO_TIPO_DADO" author="felipi.berdun">
+        <createTable tableName="RELATORIO_FILTRO_TIPO_DADO">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_RELATORIO_FILTRO_TIPO_DADO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(60)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="felipi.berdun" author="insert-into-RELATORIO_FILTRO_TIPO_DADO-1">
+        <insert tableName="RELATORIO_FILTRO_TIPO_DADO">
+            <column name="ID" type="INTEGER" valueNumeric="1"/>
+            <column name="DESCRICAO" type="VARCHAR(60)" value="Texto"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="felipi.berdun" author="insert-into-RELATORIO_FILTRO_TIPO_DADO-2">
+        <insert tableName="RELATORIO_FILTRO_TIPO_DADO">
+            <column name="ID" type="INTEGER" valueNumeric="2"/>
+            <column name="DESCRICAO" type="VARCHAR(60)" value="Numero"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="felipi.berdun" author="insert-into-RELATORIO_FILTRO_TIPO_DADO-3">
+        <insert tableName="RELATORIO_FILTRO_TIPO_DADO">
+            <column name="ID" type="INTEGER" valueNumeric="3"/>
+            <column name="DESCRICAO" type="VARCHAR(60)" value="Decimal"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="felipi.berdun" author="insert-into-RELATORIO_FILTRO_TIPO_DADO-4">
+        <insert tableName="RELATORIO_FILTRO_TIPO_DADO">
+            <column name="ID" type="INTEGER" valueNumeric="4"/>
+            <column name="DESCRICAO" type="VARCHAR(60)" value="Data"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="felipi.berdun" author="insert-into-RELATORIO_FILTRO_TIPO_DADO-5">
+        <insert tableName="RELATORIO_FILTRO_TIPO_DADO">
+            <column name="ID" type="INTEGER" valueNumeric="5"/>
+            <column name="DESCRICAO" type="VARCHAR(60)" value="Data Hora"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="felipi.berdun" author="create-fk-FK_RELCAMPO_TIPO_DADO">
+        <addForeignKeyConstraint baseTableName="RELATORIOCAMPO" baseColumnNames="FILTRO_TIPO_DADO"
+                                 constraintName="FK_RELCAMPO_TIPO_DADO"
+                                 referencedTableName="RELATORIO_FILTRO_TIPO_DADO"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>

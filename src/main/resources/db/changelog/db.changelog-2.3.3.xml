@@ -1,0 +1,459 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <!-- PERMISSAO -->
+    <changeSet author="lucas.costa" id="insert-PERMISSAO">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="583"/>
+            <column name="DESCRICAO" value="Monitoramento"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="1"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="1"/>
+            <column name="ORDEM" valueNumeric="11"/>
+            <column name="CODIGO" value="monitoramento"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="584"/>
+            <column name="DESCRICAO" value="Dashboard"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="583"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="monitoramento:dashborad"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="lucas.costa" id="insert-PERFIL_PERMISSAO">
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="583"/>
+        </insert>
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="584"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="alter-fila-FK_OPERACIONAL">
+        <addColumn tableName="FILA">
+            <column name="FK_OPERACIONAL" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="alter-fila-FK_OPERACIONAL-aud">
+        <addColumn tableName="FILA_AUD">
+            <column name="FK_OPERACIONAL" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet author="bruno.thiago" id="insert-permissao-cancelar-solicitacao">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="585"/>
+            <column name="DESCRICAO" value="Cancelar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="355"/>
+            <column name="ORDEM" valueNumeric="6"/>
+            <column name="CODIGO" value="gestao-processos:processos:tutelar:solicitacao:cancelar"/>
+        </insert>
+    </changeSet>
+
+    <!-- CAMPO EMAIL USUÁRIO NÃO OBRIGATÓRIO -->
+    <changeSet author="bruno.thiago" id="ALTER-TABLE-DROP-CONTRAINT-UK_USUARIO_EMAIL">
+        <dropUniqueConstraint tableName="USUARIO" constraintName="UK_USUARIO_EMAIL" />
+    </changeSet>
+
+    <changeSet author="bruno.thiago" id="ALTER-TABLE-DROP-NOTNULL-USUARIO-EMAIL" >
+        <dropNotNullConstraint tableName="USUARIO" columnName="EMAIL" columnDataType="VARCHAR(100)"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-PERMISSAO-pai-monitoramento">
+        <update tableName="PERMISSAO">
+            <column name="ID_PERMISSAO_PAI"/>
+            <where>ID = 583</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-PERMISSAO-ordem-monitoramento">
+        <update tableName="PERMISSAO">
+            <column name="ORDEM" value="3"/>
+            <where>ID = 583</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-PERMISSAO-ordem-dashboard">
+        <update tableName="PERMISSAO">
+            <column name="ORDEM" value="2"/>
+            <where>ID = 584</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-PERMISSAO-codigo-dashboard">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="monitoramento:dashboard"/>
+            <where>ID = 584</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="insert-JUSTICA_AREA-trabalhista-federal" author="paulo.marcon">
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="3"/>
+            <column name="JUSTICA_ID" valueNumeric="5"/>
+        </insert>
+    </changeSet>
+
+
+    <changeSet author="guilherme.camargo" id="addColum-USUARIOWS-CARTEIRA">
+        <addColumn tableName="CARTEIRA">
+            <column name="USUARIO_WS" type="VARCHAR(20)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="addColum-SENHAWS-CARTEIRA">
+        <addColumn tableName="CARTEIRA">
+            <column name="SENHA" type="VARCHAR(20)"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet author="guilherme.camargo" id="addColum-USUARIOWS-CARTEIRA_AUD">
+        <addColumn tableName="CARTEIRA_AUD">
+            <column name="USUARIO_WS" type="VARCHAR(20)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="addColum-SENHAWS-CARTEIRA_AUD">
+        <addColumn tableName="CARTEIRA_AUD">
+            <column name="SENHA" type="VARCHAR(20)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-table-PROCESSODESPESAARQUIVO" author="paulo.marcon">
+        <createTable tableName="PROCESSODESPESAARQUIVO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKeyName="PK_PROCESSODESPESAARQUIVO" primaryKey="true"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CAMINHO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PROCESSODESPESA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-fk-FK_PROCESSODESPESA" author="paulo.marcon">
+        <addForeignKeyConstraint baseTableName="PROCESSODESPESAARQUIVO" baseColumnNames="FK_PROCESSODESPESA"
+                                 constraintName="FK_PROCESSODESPESA"
+                                 referencedTableName="PROCESSODESPESAS"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet id="create-sequence-SEQ_PROCESSODESPESAARQUIVO" author="paulo.marcon" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PROCESSODESPESAARQUIVO"/>
+    </changeSet>
+
+    <changeSet id="create-table-PROCESSODESPESAARQUIVO_AUD" author="paulo.marcon" >
+        <createTable tableName="PROCESSODESPESAARQUIVO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSODESPESAARQUIVO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSODESPESAARQUIVO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="CAMINHO" type="VARCHAR(255)"/>
+            <column name="DATA" type="TIMESTAMP"/>
+            <column name="FK_PROCESSODESPESA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-fk-FK_PROCESSODEPOSITOARQUIVO_AUD" author="paulo.marcon">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PROCESSODESPESAARQUIVO_AUD"
+                                 constraintName="FK_PROCESSODESPESAARQUIVO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="add-column-ativo-fila_pessoa">
+        <addColumn tableName="FILA_PESSOA">
+            <column name="ATIVO" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- DE PARA / ATENDIMENTO_FILA_PESSOA -> FILA_PESSOA -->
+    <changeSet author="guilherme.camargo" id="de-para-recursosativos-atendimentofilapessoa">
+        <update tableName="FILA_PESSOA">
+            <column name="ATIVO" value="true"/>
+            <where>EXISTS (SELECT AFP.FK_PESSOA FROM ATENDIMENTO_FILA_PESSOA AFP
+                WHERE AFP.FK_FILA = FILA_PESSOA.FILA_ID AND AFP.FK_PESSOA = FILA_PESSOA.PESSOA_ID)
+            </where>
+        </update>
+    </changeSet>
+
+    <!-- REMOVE OS REGISTROS ONDE O CASEEXECUTION ID == NULL -->
+    <changeSet id="remove-atendimentofilapessoa-casenull" author="guilherme.camargo">
+        <delete tableName="ATENDIMENTO_FILA_PESSOA">
+            <where>CASEEXECUTIONID IS NULL</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="add-uniquekey-atendimentofilapessoa">
+        <addUniqueConstraint tableName="ATENDIMENTO_FILA_PESSOA" constraintName="UK_CASEEXECUTION"
+                             columnNames="CASEEXECUTIONID"/>
+    </changeSet>
+
+
+    <changeSet author="guilherme.camargo" id="add-column-fila-responsavel">
+        <addColumn tableName="FILA">
+            <column name="FK_PESSOA_CRIADOR" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="add-column-filaaud-responsavel">
+        <addColumn tableName="FILA_AUD">
+            <column name="FK_PESSOA_CRIADOR" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="update-fila-column-pessoacriador">
+        <update tableName="FILA">
+            <column name="FK_PESSOA_CRIADOR" value="1"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="add-fk-fila-pessoa">
+        <addForeignKeyConstraint baseColumnNames="FK_PESSOA_CRIADOR" baseTableName="FILA"
+                                 constraintName="FK_FILA_PESSOACRIADOR" referencedColumnNames="ID"
+                                 referencedTableName="PESSOA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="update-fila-column-pessoacriador-null">
+        <update tableName="FILA">
+            <column name="FK_PESSOA_CRIADOR" value="null"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="add-column-DEPLOYID-PROCESSO_CASE_INSTANCE">
+        <addColumn tableName="PROCESSO_CASE_INSTANCE">
+            <column name="DEPLOYID" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="drop-foreignkey-FK_PROCESSO_PROCESSO_CASE_INST">
+        <dropForeignKeyConstraint baseTableName="PROCESSO" constraintName="FK_PROCESSO_PROCESSO_CASE_INST"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="update-deployid-PROCESSO_CASE_INSTANCE">
+        <sql>
+            update PROCESSO_CASE_INSTANCE set DEPLOYID = f.DEPLOYID
+            from processo p
+            inner join CARTEIRA c on (p.FK_CARTEIRA = c.id)
+            inner join FLUXO_TRABALHO f on (c.ID_FLUXO_TRABALHO = f.ID)
+            inner join PROCESSO_CASE_INSTANCE pc on (pc.ID_PROCESSO = p.id)
+            where pc.DEPLOYID is null
+        </sql>
+    </changeSet>
+
+    <!-- Add coluna processos sem tag para a fila e setando valor false para as já criadas -->
+    <changeSet id="add-column-fila-processos-sem-tag" author="guilherme.camargo">
+        <addColumn tableName="FILA">
+            <column name="PROCESSOS_SEMTAG" type="BOOLEAN" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="update-fila-column-PROCESSOS_SEMTAG">
+        <update tableName="FILA">
+            <column name="PROCESSOS_SEMTAG" value="false"/>
+        </update>
+    </changeSet>
+
+    <changeSet id="add-column-filaaud-processos-sem-tag" author="guilherme.camargo">
+        <addColumn tableName="FILA_AUD">
+            <column name="PROCESSOS_SEMTAG" type="BOOLEAN" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="update-deployid-PROCESSO_CASE_INSTANCE-null">
+        <update tableName="PROCESSO_CASE_INSTANCE">
+            <column name="DEPLOYID" value="null"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-column-PROCESSO_SEM_NUMERO">
+        <addColumn tableName="PROCESSO">
+            <column name="PROCESSO_SEM_NUMERO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="create-column-PROCESSO_SEM_NUMERO-aud">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="PROCESSO_SEM_NUMERO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="drop-not-null-numero-processo">
+        <dropNotNullConstraint columnDataType="VARCHAR(255)"
+                               columnName="NUMERO"
+                               tableName="PROCESSO"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="update-false-column-processosemnumero">
+        <update tableName="PROCESSO">
+            <column name="PROCESSO_SEM_NUMERO" valueBoolean="false"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="add-data-avaliacao-judicial-garantia">
+        <addColumn tableName="GARANTIA">
+            <column name="DATA_AVALIACAO_JUDICIAL" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="add-data-avaliacao-judicial-garantia-aud">
+        <addColumn tableName="GARANTIA_AUD">
+            <column name="DATA_AVALIACAO_JUDICIAL" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="status-pagamento-despesas" author="guilherme.camargo">
+        <addColumn tableName="PROCESSODESPESAS">
+            <column name="STATUS_PAGAMENTO" type="BIGINT" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="status-pagamento-despesas_aud" author="guilherme.camargo">
+        <addColumn tableName="PROCESSODESPESAS_AUD">
+            <column name="STATUS_PAGAMENTO" type="BIGINT" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="update-statuspagamento-despesas">
+        <update tableName="PROCESSODESPESAS">
+            <column name="STATUS_PAGAMENTO" value="0"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="bruno.thiago" id="add-column-VALORMAXIMOALCADA-PROCESSODESPESASTIPO">
+        <addColumn tableName="PROCESSODESPESASTIPO">
+            <column name="VALORMAXIMOALCADA" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="bruno.thiago" id="add-column-VALORMAXIMOALCADA-PROCESSODESPESASTIPO_AUD">
+        <addColumn tableName="PROCESSODESPESASTIPO_AUD">
+            <column name="VALORMAXIMOALCADA" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="add-enviaemailtarefa-carteira" author="guilherme.camargo">
+        <addColumn tableName="CARTEIRA">
+            <column name="ENVIA_EMAIL_TAREFA" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="remove-perfil-permissao-duplicar-usuarios" author="bruno.silva">
+        <delete tableName="PERFIL_PERMISSAO">
+            <where>ID_PERMISSAO = 132</where>
+        </delete>
+    </changeSet>
+
+    <changeSet id="remove-permissao-duplicar-usuarios" author="bruno.silva">
+        <delete tableName="PERMISSAO">
+            <where>ID = 132</where>
+        </delete>
+    </changeSet>
+
+    <changeSet id="insert-rotina-importacao-arquivos-jbm" author="paulo.marcon">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="10"/>
+            <column name="DESCRICAO" value="Importação Arquivos - JBM"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="add-enviaemailtarefa-carteira_aud" author="guilherme.camargo">
+        <addColumn tableName="CARTEIRA_AUD">
+            <column name="ENVIA_EMAIL_TAREFA" type="BOOLEAN" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="update-enviaemailtarefa-carteira" author="guilherme.camargo">
+        <update tableName="CARTEIRA">
+            <column name="ENVIA_EMAIL_TAREFA" valueBoolean="false"/>
+        </update>
+    </changeSet>
+
+    <!-- CRIA SEQUENCE / TABELA DE LOGS DOS EMAILS DISPARADOS APÓS INICIAR UMA TAREFA -->
+    <changeSet id="create-sequence-SEQ_EMAIL_LOGS" author="guilherme.camargo" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_EMAIL_LOGS"/>
+    </changeSet>
+
+    <changeSet author="guilherme.camargo" id="crete-table-EMAIL_LOGS">
+        <createTable tableName="EMAIL_LOGS">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_EMAIL_LOGS"/>
+            </column>
+            <column name="DATA_EXECUCAO" type="DATETIME"/>
+            <column name="NOME_TAREFA" type="VARCHAR(255)"/>
+            <column name="FK_USUARIO_DESTINO" type="BIGINT"/>
+            <column name="FK_USUARIO_LOGADO" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="ENVIADO" type="BOOLEAN"/>
+            <column name="EXCECAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Criação das FKS da tabela EMAIL_LOGS -->
+    <changeSet author="guilherme.camargo" id="add-fk_usuario_destino-email_logs">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO_DESTINO" baseTableName="EMAIL_LOGS"
+                                 constraintName="FK_EMAIL_USUARIODESTINO" referencedColumnNames="ID"
+                                 referencedTableName="PESSOA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+    <changeSet author="guilherme.camargo" id="add-fk_usuario_logado-email_logs">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO_LOGADO" baseTableName="EMAIL_LOGS"
+                                 constraintName="FK_EMAIL_USUARIOLOGADO" referencedColumnNames="ID"
+                                 referencedTableName="PESSOA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+    <changeSet author="guilherme.camargo" id="add-fk_processoemail_logs">
+        <addForeignKeyConstraint baseColumnNames="FK_PROCESSO" baseTableName="EMAIL_LOGS"
+                                 constraintName="FK_EMAIL_PROCESSO" referencedColumnNames="ID"
+                                 referencedTableName="PROCESSO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="bruno.thiago" id="modify-data-type-senhaws-carteira">
+        <modifyDataType tableName="CARTEIRA"
+                        columnName="SENHA"
+                        newDataType="VARCHAR(100)" />
+    </changeSet>
+
+    <changeSet author="bruno.thiago" id="modify-data-type-usuariows-carteira">
+        <modifyDataType tableName="CARTEIRA"
+                        columnName="USUARIO_WS"
+                        newDataType="VARCHAR(100)" />
+    </changeSet>
+
+    <changeSet author="bruno.thiago" id="modify-data-type-senhaws-carteira_aud">
+        <modifyDataType tableName="CARTEIRA_AUD"
+                        columnName="SENHA"
+                        newDataType="VARCHAR(100)" />
+    </changeSet>
+
+    <changeSet author="bruno.thiago" id="modify-data-type-usuariows-carteira_aud">
+        <modifyDataType tableName="CARTEIRA_AUD"
+                        columnName="USUARIO_WS"
+                        newDataType="VARCHAR(100)" />
+    </changeSet>
+
+</databaseChangeLog>

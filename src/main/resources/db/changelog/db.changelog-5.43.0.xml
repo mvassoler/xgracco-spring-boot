@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="createTablePasswordResetToken" author="marcos.vassoler">
+        <createTable tableName="password_reset_token">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true"
+                             primaryKeyName="pk_passwordresettoken"
+                             nullable="false"/>
+            </column>
+            <column name="token" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_expiracao" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reset_senha_executado" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fk_usuario" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_passwordresettoken_usuario"
+                             referencedTableName="USUARIO"
+                             referencedColumnNames="ID"/>
+            </column>
+            <column name="data_solicitacao" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_execucao_reset" type="timestamp"></column>
+        </createTable>
+    </changeSet>
+    <changeSet id="createSequencePasswordResetToken" author="marcos.vassoler">
+        <createSequence sequenceName="seq_passwordresettoken"
+                        startValue="1"
+                        incrementBy="1"/>
+    </changeSet>
+    <changeSet author="marcos.vassoler" id="createUniqueContraintPasswordResetTokenToken">
+        <addUniqueConstraint columnNames="token"
+                             constraintName="uk_passwordresettoken_token"
+                             tableName="password_reset_token"/>
+    </changeSet>
+</databaseChangeLog>

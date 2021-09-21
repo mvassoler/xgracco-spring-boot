@@ -1,0 +1,95 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="create-sequence-seq_log_atendimento_tarefa_fila_usuario" author="andre.baroni" dbms="${dbmsSequence}">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="seq_log_atendimento_tarefa_fila_usuario" schemaName="public"/>
+            </not>
+        </preConditions>
+        <comment>Sequence 'seq_log_atendimento_tarefa_fila_usuario' already created, changeset skipped.</comment>
+        <createSequence sequenceName="seq_log_atendimento_tarefa_fila_usuario" />
+    </changeSet>
+
+    <changeSet id="drop-column-calendar-from-qrtz_calendars" author="andre.baroni" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT count(1)
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME = 'qrtz_calendars'
+                AND COLUMN_NAME = 'calendar'
+                AND DATA_TYPE = 'oid'
+            </sqlCheck>
+        </preConditions>
+
+        <dropColumn tableName="qrtz_calendars" columnName="calendar"/>
+    </changeSet>
+
+    <changeSet id="recreate-column-calendar-in-qrtz_calendars-as-bytea" author="andre.baroni" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="qrtz_calendars" columnName="calendar"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="qrtz_calendars">
+            <column name="calendar" type="bytea"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="drop-column-blob_data-from-qrtz_blob_triggers" author="andre.baroni" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT count(1)
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME = 'qrtz_blob_triggers'
+                AND COLUMN_NAME = 'blob_data'
+                AND DATA_TYPE = 'oid'
+            </sqlCheck>
+        </preConditions>
+
+        <dropColumn tableName="qrtz_blob_triggers" columnName="blob_data"/>
+    </changeSet>
+
+    <changeSet id="recreate-column-blob_data-in-qrtz_blob_triggers-as-bytea" author="andre.baroni" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="qrtz_blob_triggers" columnName="blob_data"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="qrtz_blob_triggers">
+            <column name="blob_data" type="bytea"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="drop-column-job_data-from-qrtz_triggers" author="andre.baroni" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT count(1)
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME = 'qrtz_triggers'
+                AND COLUMN_NAME = 'job_data'
+                AND DATA_TYPE = 'oid'
+            </sqlCheck>
+        </preConditions>
+
+        <dropColumn tableName="qrtz_triggers" columnName="job_data"/>
+    </changeSet>
+
+    <changeSet id="recreate-column-job_data-in-qrtz_triggers-as-bytea" author="andre.baroni" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="qrtz_triggers" columnName="job_data"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="qrtz_triggers">
+            <column name="job_data" type="bytea"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

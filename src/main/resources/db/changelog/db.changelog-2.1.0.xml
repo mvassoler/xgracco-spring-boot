@@ -1,0 +1,572 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- PARAMETROGLOBAL -->
+    <changeSet author="rodolpho.couto" id="1">
+        <sql>
+            UPDATE PARAMETROGLOBAL
+            SET CLASSE = REPLACE(CLASSE, 'br.com.finchsolucoes.xgracco', 'br.com.finchsolucoes.xgracco.legacy')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.legacy%'
+        </sql>
+    </changeSet>
+
+    <!-- RELATORIOCAMPO -->
+    <changeSet author="rodolpho.couto" id="2">
+        <sql>
+            UPDATE RELATORIOCAMPO
+            SET CLASSE = REPLACE(CLASSE, 'br.com.finchsolucoes.xgracco', 'br.com.finchsolucoes.xgracco.legacy')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.legacy%'
+        </sql>
+    </changeSet>
+
+    <!-- RELATORIOPERFIL -->
+    <changeSet author="rodolpho.couto" id="3">
+        <sql>
+            UPDATE RELATORIOPERFIL
+            SET CLASSE = REPLACE(CLASSE, 'br.com.finchsolucoes.xgracco', 'br.com.finchsolucoes.xgracco.legacy')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.legacy%'
+        </sql>
+    </changeSet>
+
+    <!-- ROTINA -->
+    <changeSet author="rodolpho.couto" id="4">
+        <sql>
+            UPDATE ROTINA
+            SET ROBO = REPLACE(ROBO, 'br.com.finchsolucoes.xgracco', 'br.com.finchsolucoes.xgracco.legacy')
+            WHERE ROBO NOT LIKE '%br.com.finchsolucoes.xgracco.legacy%'
+        </sql>
+    </changeSet>
+
+    <!-- PARAMETROGLOBAL -->
+    <changeSet author="rodolpho.couto" id="5">
+        <sql>
+            UPDATE PARAMETROGLOBAL
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.business.enums',
+            'br.com.finchsolucoes.xgracco.domain.entity')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity%'
+        </sql>
+    </changeSet>
+
+    <!-- RELATORIOCAMPO -->
+    <changeSet author="rodolpho.couto" id="6">
+        <sql>
+            UPDATE RELATORIOCAMPO
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.business.enums',
+            'br.com.finchsolucoes.xgracco.domain.entity')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity%'
+        </sql>
+    </changeSet>
+
+    <!-- RELATORIOPERFIL -->
+    <changeSet author="rodolpho.couto" id="7">
+        <sql>
+            UPDATE RELATORIOPERFIL
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.business.enums',
+            'br.com.finchsolucoes.xgracco.domain.entity')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity%'
+        </sql>
+    </changeSet>
+
+    <!-- PARAMETROGLOBAL -->
+    <changeSet author="rodolpho.couto" id="8">
+        <sql>
+            UPDATE PARAMETROGLOBAL
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.beans.entity',
+            'br.com.finchsolucoes.xgracco.domain.entity')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity%'
+        </sql>
+    </changeSet>
+
+    <!-- RELATORIOCAMPO -->
+    <changeSet author="rodolpho.couto" id="9">
+        <sql>
+            UPDATE RELATORIOCAMPO
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.beans.entity',
+            'br.com.finchsolucoes.xgracco.domain.entity')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity%'
+        </sql>
+    </changeSet>
+
+    <!-- RELATORIOPERFIL -->
+    <changeSet author="rodolpho.couto" id="10">
+        <sql>
+            UPDATE RELATORIOPERFIL
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.beans.entity',
+            'br.com.finchsolucoes.xgracco.domain.entity')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity%'
+        </sql>
+    </changeSet>
+
+    <!-- PARAMETROGLOBAL -->
+    <changeSet author="rodolpho.couto" id="11">
+        <sql>
+            UPDATE PARAMETROGLOBAL
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.beans.entity.view',
+            'br.com.finchsolucoes.xgracco.domain.entity')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity%'
+        </sql>
+    </changeSet>
+
+    <!-- RELATORIOCAMPO -->
+    <changeSet author="rodolpho.couto" id="12">
+        <sql>
+            UPDATE RELATORIOCAMPO
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.beans.entity.view',
+            'br.com.finchsolucoes.xgracco.domain.entity')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity%'
+        </sql>
+    </changeSet>
+
+    <!-- RELATORIOPERFIL -->
+    <changeSet author="rodolpho.couto" id="13">
+        <sql>
+            UPDATE RELATORIOPERFIL
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.beans.entity.view',
+            'br.com.finchsolucoes.xgracco.domain.entity')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity%'
+        </sql>
+    </changeSet>
+
+    <!-- PARAMETROGLOBAL -->
+    <changeSet author="rodolpho.couto" id="14">
+        <sql>
+            UPDATE PARAMETROGLOBAL
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.beans.entity.log',
+            'br.com.finchsolucoes.xgracco.domain.entity.camunda')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity.camunda%'
+        </sql>
+    </changeSet>
+
+    <!-- RELATORIOCAMPO -->
+    <changeSet author="rodolpho.couto" id="15">
+        <sql>
+            UPDATE RELATORIOCAMPO
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.beans.entity.log',
+            'br.com.finchsolucoes.xgracco.domain.entity.camunda')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity.camunda%'
+        </sql>
+    </changeSet>
+
+    <!-- RELATORIOPERFIL -->
+    <changeSet author="rodolpho.couto" id="16">
+        <sql>
+            UPDATE RELATORIOPERFIL
+            SET CLASSE = REPLACE(CLASSE,
+            'br.com.finchsolucoes.xgracco.legacy.beans.entity.log',
+            'br.com.finchsolucoes.xgracco.domain.entity.camunda')
+            WHERE CLASSE NOT LIKE '%br.com.finchsolucoes.xgracco.domain.entity.camunda%'
+        </sql>
+    </changeSet>
+
+    <changeSet author="Jordano" id="17">
+        <createTable tableName="GRUPOCAMPO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GRUPOCAMPO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GRUPOCAMPO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Jordano" id="18">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="GRUPOCAMPO_AUD"
+                                 constraintName="FK_GRUPOCAMPO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="19">
+        <sql>INSERT INTO GRUPOCAMPO_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM GRUPOCAMPO
+        </sql>
+    </changeSet>
+
+
+    <!-- Dropa a tabela LOG -->
+    <changeSet author="rodolpho.couto" id="20">
+        <dropTable tableName="LOG"/>
+    </changeSet>
+
+    <!-- Deleta a permissão 48 -->
+    <changeSet author="rodolpho.couto" id="21">
+        <delete tableName="REL_PERFILPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 48</where>
+        </delete>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="22">
+        <delete tableName="RELPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 48</where>
+        </delete>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="23">
+        <delete tableName="PERMISSAO">
+            <where>ID = 48</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="Jordano" id="24">
+        <createTable tableName="JURISPRUDENCIA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JURISPRUDENCIA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_JURISPRUDENCIA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="CLOB"/>
+            <column name="LINK" type="VARCHAR(255)"/>
+            <column name="NUMERO_PROCESSO" type="VARCHAR(255)"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Jordano" id="25">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="JURISPRUDENCIA_AUD"
+                                 constraintName="FK_JURISPRUDENCIA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <changeSet author="JURISPRUDENCIA_AUD" id="26">
+        <sql>INSERT INTO JURISPRUDENCIA_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD, LINK, NUMERO_PROCESSO, FK_PROCESSO)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD, LINK, NUMERO_PROCESSO, FK_PROCESSO
+            FROM JURISPRUDENCIA
+        </sql>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="27">
+        <renameTable oldTableName="ACM" newTableName="FLUXO_TRABALHO"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="28">
+        <dropForeignKeyConstraint baseTableName="CARTEIRA" constraintName="FK_CARTEIRA_ACM"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="29">
+        <renameColumn tableName="CARTEIRA" oldColumnName="ID_ACM" newColumnName="ID_FLUXO_TRABALHO"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="30">
+        <addForeignKeyConstraint baseColumnNames="ID_FLUXO_TRABALHO" baseTableName="CARTEIRA"
+                                 constraintName="FK_CARTEIRA_FLUXO_TRABALHO" referencedColumnNames="ID"
+                                 referencedTableName="FLUXO_TRABALHO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="31">
+        <update tableName="PERMISSAO">
+            <column name="FEATURE" value="fluxoTrabalho"/>
+            <column name="REDIRECT" value="/fluxoTrabalho/lista"/>
+            <column name="DIRETORIOVIEW" value="/fluxoTrabalho"/>
+            <where>ID = 31</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="32" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_ACM" newSequenceName="SEQ_FLUXO_TRABALHO"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="33">
+        <renameTable oldTableName="ACM_AUD" newTableName="FLUXO_TRABALHO_AUD"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="34">
+        <renameColumn tableName="CARTEIRA_AUD" oldColumnName="ID_ACM" newColumnName="ID_FLUXO_TRABALHO"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet id="create-table-PROCESSO_RELACIONADO" author="felipi.berdun">
+        <createTable tableName="PROCESSO_RELACIONADO">
+            <column name="FK_PROCESSO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_RELACIONADO"/>
+            </column>
+            <column name="FK_PROCESSO_RELACIONADO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_RELACIONADO"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-fk-FK_PROC_RELACIONADO_PROCESSO" author="felipi.berdun">
+        <addForeignKeyConstraint baseTableName="PROCESSO_RELACIONADO" baseColumnNames="FK_PROCESSO"
+                                 constraintName="FK_PROC_RELACIONADO_PROCESSO"
+                                 referencedTableName="PROCESSO" referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet id="create-fk-FK_PROCRELACIONADO_RELACIONADO" author="felipi.berdun">
+        <addForeignKeyConstraint baseTableName="PROCESSO_RELACIONADO" baseColumnNames="FK_PROCESSO_RELACIONADO"
+                                 constraintName="FK_PROCRELACIONADO_RELACIONADO"
+                                 referencedTableName="PROCESSO"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet id="create-table-PROCESSO_RELACIONADO_AUD" author="felipi.berdun">
+        <createTable tableName="PROCESSO_RELACIONADO_AUD">
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSO_RELACIONADO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="FK_PROCESSO_RELACIONADO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-fk_FK_PROCESSO_RELACIONADO_AUD" author="felipi.berdun">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PROCESSO_RELACIONADO_AUD"
+                                 constraintName="FK_PROCESSO_RELACIONADO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="create-table-TIPOGARANTIA_AUD" author="Jordano">
+        <createTable tableName="TIPOGARANTIA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOGARANTIA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOGARANTIA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="ANOFABRICACAO" type="BOOLEAN"/>
+            <column name="ANOMODELO" type="BOOLEAN"/>
+            <column name="ATIVO" type="BOOLEAN"/>
+            <column name="CHASSI" type="BOOLEAN"/>
+            <column name="CODIGOMOLICAR" type="BOOLEAN"/>
+            <column name="COR" type="BOOLEAN"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"></column>
+            <column name="DESCRICAOMOTOR" type="BOOLEAN"/>
+            <column name="ESTADOCONVERSAVAO" type="BOOLEAN"/>
+            <column name="MARCA" type="BOOLEAN"/>
+            <column name="MODELO" type="BOOLEAN"/>
+            <column name="PLACA" type="BOOLEAN"/>
+            <column name="RENAVAM" type="BOOLEAN"/>
+            <column name="SERIE" type="BOOLEAN"/>
+            <column name="TIPOCOMBUSTIVEL" type="BOOLEAN"/>
+            <column name="TIPOVEICULO" type="BOOLEAN"/>
+            <column name="VALORMOLICAR" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="Jordano" id="create-fk-TIPOGARANTIA_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="TIPOGARANTIA_AUD"
+                                 constraintName="FK_TIPOGARANTIA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <!--TIPOGARANTIA_AUD-->
+    <changeSet author="Jordano" id="insert-into-TIPOGARANTIA_AUD">
+        <sql>INSERT INTO TIPOGARANTIA_AUD (ID, ANOFABRICACAO, ANOMODELO, ATIVO, CHASSI, CODIGOMOLICAR, COR, DESCRICAO,
+            DESCRICAOMOTOR, MARCA, MODELO, PLACA, RENAVAM, SERIE, TIPOCOMBUSTIVEL, TIPOVEICULO, VALORMOLICAR, ID_AUD,
+            TIPO_AUD )
+            SELECT ID, ANOFABRICACAO, ANOMODELO, ATIVO, CHASSI, CODIGOMOLICAR, COR, DESCRICAO,
+            DESCRICAOMOTOR, MARCA, MODELO, PLACA, RENAVAM, SERIE, TIPOCOMBUSTIVEL, TIPOVEICULO, VALORMOLICAR, (SELECT
+            MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM TIPOGARANTIA
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-TELEFONE_AUD">
+        <createTable tableName="TELEFONE_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TELEFONE_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TELEFONE_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="CONTATO" type="VARCHAR(100)"/>
+            <column name="NUMERO" type="VARCHAR(100)"/>
+            <column name="PADRAO" type="BOOLEAN"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="FK_TIPOTELEFONE" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_TELEFONE_AUD">
+        <addForeignKeyConstraint baseTableName="TELEFONE_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_TELEFONE_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-TELEFONE_AUD">
+        <sql>INSERT INTO TELEFONE_AUD (ID, ID_AUD, TIPO_AUD, CONTATO, NUMERO, PADRAO, FK_PESSOA, FK_TIPOTELEFONE)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD, CONTATO, NUMERO, PADRAO,
+                   FK_PESSOA, FK_TIPOTELEFONE
+              FROM TELEFONE
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-ENDERECOELETRONICO_AUD">
+        <createTable tableName="ENDERECOELETRONICO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ENDERECOELETRONICO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ENDERECOELETRONICO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="PADRAO" type="BOOLEAN"/>
+            <column name="TIPO" type="INTEGER"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_ENDERECOELETRONICO_AUD">
+        <addForeignKeyConstraint baseTableName="ENDERECOELETRONICO_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_ENDERECOELETRONICO_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onUpdate="NO ACTION" onDelete="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-ENDERECOELETRONICO_AUD">
+        <sql>
+            INSERT INTO ENDERECOELETRONICO_AUD (ID, ID_AUD, TIPO_AUD, DESCRICAO, PADRAO, TIPO, FK_PESSOA)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD, DESCRICAO, PADRAO, TIPO, FK_PESSOA
+              FROM ENDERECOELETRONICO
+        </sql>
+    </changeSet>
+
+    <!-- Drop ForeignKeyConstraint FK_PROCESSO_TIPOPROCELETR da tabela PROCESSO -->
+    <changeSet author="marcelo.aguiar" id="drop-foreignkey-FK_PROCESSO_TIPOPROCELETR">
+        <dropForeignKeyConstraint baseTableName="PROCESSO" constraintName="FK_PROCESSO_TIPOPROCELETR"/>
+    </changeSet>
+
+    <!-- Dropando coluna FK_TIPOPROCESSOELETRONICO FROM PROCESSO -->
+    <changeSet author="marcelo.aguiar" id="drop-column-FK_TIPOPROCESSOELETRONICO">
+        <dropColumn tableName="PROCESSO" columnName="FK_TIPOPROCESSOELETRONICO"/>
+    </changeSet>
+
+    <!-- Dropando coluna FK_TIPOPROCESSOELETRONICO FROM PROCESSO_AUD -->
+    <changeSet author="marcelo.aguiar" id="drop-column-FK_TIPOPROCESSOELETRONICO_AUD">
+        <dropColumn tableName="PROCESSO_AUD" columnName="FK_TIPOPROCESSOELETRONICO"/>
+    </changeSet>
+
+    <!-- Dropando TIPOPROCESSOELETRONICO -->
+    <changeSet author="marcelo.aguiar" id="drop-table-TIPOPROCESSOELETRONICO">
+        <dropTable tableName="TIPOPROCESSOELETRONICO"/>
+    </changeSet>
+
+    <!-- Dropando TIPOPROCESSOELETRONICO_AUD -->
+    <changeSet author="marcelo.aguiar" id="drop-table-TIPOPROCESSOELETRONICO_AUD">
+        <dropTable tableName="TIPOPROCESSOELETRONICO_AUD"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-OAB_AUD">
+        <createTable tableName="OAB_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_OAB_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_OAB_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="NUMERO" type="VARCHAR(255)"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="UF_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_OAB_AUD">
+        <addForeignKeyConstraint baseTableName="OAB_AUD" baseColumnNames="ID_AUD" constraintName="FK_OAB_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-OAB_AUD">
+        <sql>
+            INSERT INTO OAB_AUD (ID, ID_AUD, TIPO_AUD, NUMERO, FK_PESSOA, UF_ID)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0, NUMERO, FK_PESSOA, UF_ID
+              FROM OAB
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-POSSIBILIDADEPERDA_AUD">
+        <createTable tableName="POSSIBILIDADEPERDA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_POSSIBILIDADEPERDA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_POSSIBILIDADEPERDA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="FK_RISCOCAUSA" type="BIGINT"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+            <column name="PERCENTUAL" type="DECIMAL(19,4)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk_FK_POSSIBILIDADEPERDA_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="POSSIBILIDADEPERDA_AUD"
+                                 constraintName="FK_POSSIBILIDADEPERDA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-POSSIBILIDADEPERDA_AUD">
+        <sql>
+            INSERT INTO POSSIBILIDADEPERDA_AUD (ID, ID_AUD, TIPO_AUD, FK_RISCOCAUSA, FK_CARTEIRA, PERCENTUAL)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0, FK_RISCOCAUSA, FK_CARTEIRA, PERCENTUAL
+            FROM POSSIBILIDADEPERDA
+        </sql>
+    </changeSet>
+
+
+
+
+
+    <changeSet author="paulo.marcon" id="create-INDICEECONOMICOVAR_AUD">
+        <createTable tableName="INDICEECONOMICOVAR_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_INDICEECONOMICOVAR_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_INDICEECONOMICOVAR_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="VALOR" type="DECIMAL(19,4)"/>
+            <column name="DATAINICIAL" type="DATETIME"/>
+            <column name="DATAFINAL" type="DATETIME"/>
+            <column name="FK_INDICEECONOMICO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk_FK_INDICEECONOMICOVAR_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="INDICEECONOMICOVAR_AUD"
+                                 constraintName="FK_INDICEECONOMICOVAR_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-INDICEECONOMICOVAR_AUD">
+        <sql>
+            INSERT INTO INDICEECONOMICOVAR_AUD (ID, ID_AUD, TIPO_AUD, VALOR, DATAINICIAL, DATAFINAL, FK_INDICEECONOMICO)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0, VALOR, DATAINICIAL, DATAFINAL, FK_INDICEECONOMICO
+            FROM INDICEECONOMICOVAR
+        </sql>
+    </changeSet>
+</databaseChangeLog>

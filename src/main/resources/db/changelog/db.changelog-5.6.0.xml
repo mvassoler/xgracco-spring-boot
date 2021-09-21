@@ -1,0 +1,36 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="permissao-pagar-despesas" author="andre.baroni">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="635"/>
+            <column name="DESCRICAO" value="Pagar Despesa(s)"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="314"/>
+            <column name="ORDEM" valueNumeric="5"/>
+            <column name="CODIGO" value="gestao-processos:processos:despesas:pagar-despesas"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="configuracao-cliente-somente-numero-numero-documento-processo-despesas" author="andre.baroni">
+        <addColumn tableName="CONFIGURACAO_CLIENTE">
+            <column name="NUMDOCPROCDESPESASSOMENTENUM" type="BOOLEAN" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="configuracao-cliente-aud-somente-numero-numero-documento-processo-despesas" author="andre.baroni">
+        <addColumn tableName="CONFIGURACAO_CLIENTE_AUD">
+            <column name="NUMDOCPROCDESPESASSOMENTENUM" type="BOOLEAN" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="atualiza-configuracao-cliente-atual" author="andre.baroni">
+        <update tableName="CONFIGURACAO_CLIENTE">
+            <column name="NUMDOCPROCDESPESASSOMENTENUM" type="BOOLEAN" value="false" />
+        </update>
+    </changeSet>
+
+</databaseChangeLog>

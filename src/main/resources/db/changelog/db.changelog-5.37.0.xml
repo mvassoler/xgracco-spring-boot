@@ -1,0 +1,92 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- Altera hierarquia do processo consultivo para Cadastros Básicos -->
+    <changeSet author="alessandro.ramos" id="altera-hierarquia-consultivo-cadbas">
+        <sql>
+            UPDATE PERMISSAO
+               SET ID_TIPO_PERMISSAO = 4,   
+                   ID_PERMISSAO_PAI = 301,
+                   ORDEM = 12
+             WHERE ID = 650
+        </sql>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="ADD-COLUMN-NOTIFICACAO-CRIACAO-ON-TABLE-FLUXO-TRABALHO-TAREFA">
+        <addColumn tableName="FLUXO_TRABALHO_TAREFA">
+            <column name="NOTIFICACAO_CRIACAO" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="ADD-COLUMN-NOTIFICACAO-VENCIMENTO-ON-TABLE-FLUXO-TRABALHO-TAREFA">
+        <addColumn tableName="FLUXO_TRABALHO_TAREFA">
+            <column name="NOTIFICACAO_VENCIMENTO" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="ADD-COLUMN-NOTIFICACAO-VENCIMENTO-INTERVALO-ON-TABLE-FLUXO-TRABALHO-TAREFA">
+        <addColumn tableName="FLUXO_TRABALHO_TAREFA">
+            <column name="NOTIFICACAO_VENCIMENTO_INTERVALO" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="ADD-COLUMN-NOTIFICACAO-FK-USUARIO-ON-TABLE-FLUXO-TRABALHO-TAREFA">
+        <addColumn tableName="FLUXO_TRABALHO_TAREFA">
+            <column name="NOTIFICACAO_FK_USUARIO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="ADD-FOREIGN-KEY-FK-USUARIO-ON-TABLE-FLUXO-TRABALHO-TAREFA">
+        <addForeignKeyConstraint baseTableName="fluxo_trabalho_tarefa" baseColumnNames="notificacao_fk_usuario"
+                                 constraintName="fk_fluxo_trab_tarefa_notificacao_usuario"
+                                 referencedTableName="usuario" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="ADD-COLUMN-NOTIFICACAO-CRIACAO-ON-TABLE-FLUXO-TRABALHO-TAREFA_AUD">
+        <addColumn tableName="FLUXO_TRABALHO_TAREFA_AUD">
+            <column name="NOTIFICACAO_CRIACAO" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="ADD-COLUMN-NOTIFICACAO-VENCIMENTO-ON-TABLE-FLUXO-TRABALHO-TAREFA_AUD">
+        <addColumn tableName="FLUXO_TRABALHO_TAREFA_AUD">
+            <column name="NOTIFICACAO_VENCIMENTO" type="BOOLEAN" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andre.baroni"
+               id="ADD-COLUMN-NOTIFICACAO-VENCIMENTO-INTERVALO-ON-TABLE-FLUXO-TRABALHO-TAREFA_AUD">
+        <addColumn tableName="FLUXO_TRABALHO_TAREFA_AUD">
+            <column name="NOTIFICACAO_VENCIMENTO_INTERVALO" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="ADD-COLUMN-NOTIFICACAO-FK-USUARIO-ON-TABLE-FLUXO-TRABALHO-TAREFA_AUD">
+        <addColumn tableName="FLUXO_TRABALHO_TAREFA_AUD">
+            <column name="NOTIFICACAO_FK_USUARIO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!--PERMISSAO PRE CADASTRO-->
+    <changeSet id="inserePermissaoPesquisaTarefaVencendo" author="henrique.oliveira">
+        <insert tableName="permissao">
+            <column name="id" value="651" />
+            <column name="descricao" value="Tarefa Vencendo" />
+            <column name="id_tipo_permissao" value="2" />
+            <column name="id_permissao_pai" value="289" />
+            <column name="ordem" value="7" />
+            <column name="codigo" value="gestao-processos:notificacoes:tarefa-vencendo" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-rotina-captura-notificacao-tarefas-vencidas" author="andre.baroni">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="16"/>
+            <column name="DESCRICAO" value="Notificação de tarefas vencidas"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,132 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- Insere as permissões dos arquivos do cadastro de pessoa -->
+    <changeSet id="permissoes-pessoa-arquivos" author="thiago.castro">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="631"/>
+            <column name="DESCRICAO" value="Arquivos"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="3"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="65"/>
+            <column name="ORDEM" valueNumeric="13"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:pessoas:arquivos"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="632"/>
+            <column name="DESCRICAO" value="Salvar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="631"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:pessoas:arquivos:salvar"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="633"/>
+            <column name="DESCRICAO" value="Excluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="631"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:pessoas:arquivos:excluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="634"/>
+            <column name="DESCRICAO" value="Enviar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="631"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:pessoas:arquivos:enviar"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-table-LOG_ATENDIMENTO_TAREFA_FILA_USUARIO">
+        <createTable tableName="LOG_ATENDIMENTO_TAREFA_FILA_USUARIO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO"/>
+            </column>
+            <column name="DATA_INICIO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_ENCERRAMENTO" type="TIMESTAMP"/>
+            <column name="FK_ACAO" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_DADOSBASICOSTAREFA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_USUARIO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_FILA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="add-fk-FK_DADOSBASICOSTAREFA">
+        <addForeignKeyConstraint baseColumnNames="FK_DADOSBASICOSTAREFA" baseTableName="LOG_ATENDIMENTO_TAREFA_FILA_USUARIO"
+                                 constraintName="FK_DBT_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO" referencedColumnNames="ID"
+                                 referencedTableName="DADOSBASICOSTAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="add-fk-FK_USUARIO">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO" baseTableName="LOG_ATENDIMENTO_TAREFA_FILA_USUARIO"
+                                 constraintName="FK_USU_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO" referencedColumnNames="ID"
+                                 referencedTableName="USUARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="add-fk-FK_FILA">
+        <addForeignKeyConstraint baseColumnNames="FK_FILA" baseTableName="LOG_ATENDIMENTO_TAREFA_FILA_USUARIO"
+                                 constraintName="FK_FILA_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO" referencedColumnNames="ID"
+                                 referencedTableName="FILA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-table-LOG_ATENDIMENTO_TAREFA_FILA_USUARIO_AUD">
+        <createTable tableName="LOG_ATENDIMENTO_TAREFA_FILA_USUARIO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="DATA_INICIO" type="TIMESTAMP"/>
+            <column name="DATA_ENCERRAMENTO" type="TIMESTAMP"/>
+            <column name="FK_ACAO" type="INTEGER"/>
+            <column name="FK_DADOSBASICOSTAREFA" type="BIGINT"/>
+            <column name="FK_USUARIO" type="BIGINT"/>
+            <column name="FK_FILA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-fk-FK_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO_AUD">
+        <addForeignKeyConstraint baseTableName="LOG_ATENDIMENTO_TAREFA_FILA_USUARIO_AUD" baseColumnNames="ID_AUD" constraintName="FK_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="addColum_JURISDICAO-SOLICITACAO_LOG">
+        <addColumn tableName="SOLICITACAO_LOG">
+            <column name="NUMERO_VARA" type="VARCHAR(100)"/>
+            <column name="DESC_VARA" type="VARCHAR(255)"/>
+            <column name="DESC_REPARTICAO" type="VARCHAR(255)"/>
+            <column name="DESC_JUSTICA" type="VARCHAR(255)"/>
+            <column name="DESC_FORO" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="addColum_JURISDICAO-SOLICITACAO_LOG_AUD">
+        <addColumn tableName="SOLICITACAO_LOG_AUD">
+            <column name="NUMERO_VARA" type="VARCHAR(100)"/>
+            <column name="DESC_VARA" type="VARCHAR(255)"/>
+            <column name="DESC_REPARTICAO" type="VARCHAR(255)"/>
+            <column name="DESC_JUSTICA" type="VARCHAR(255)"/>
+            <column name="DESC_FORO" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

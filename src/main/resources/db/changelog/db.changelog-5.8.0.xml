@@ -1,0 +1,54 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="drop-constraint-FK_DBT_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO" author="raphael.moreira">
+        <dropForeignKeyConstraint baseTableName="LOG_ATENDIMENTO_TAREFA_FILA_USUARIO" constraintName="FK_DBT_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO"/>
+    </changeSet>
+
+    <changeSet id="drop-constraint-FK_USU_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO" author="raphael.moreira">
+        <dropForeignKeyConstraint baseTableName="LOG_ATENDIMENTO_TAREFA_FILA_USUARIO" constraintName="FK_USU_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO"/>
+    </changeSet>
+
+    <changeSet id="drop-constraint-FK_FILA_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO" author="raphael.moreira">
+        <dropForeignKeyConstraint baseTableName="LOG_ATENDIMENTO_TAREFA_FILA_USUARIO" constraintName="FK_FILA_LOG_ATENDIMENTO_TAREFA_FILA_USUARIO"/>
+    </changeSet>
+
+    <changeSet author="bruno.silva" id="delete-perfil-permissao-aud-posicao-partes-duplicar">
+        <delete tableName="PERFIL_PERMISSAO_AUD">
+            <where>ID_PERMISSAO = 184</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="bruno.silva" id="delete-perfil-permissao-posicao-partes-duplicar">
+        <delete tableName="PERFIL_PERMISSAO">
+            <where>ID_PERMISSAO = 184</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="bruno.silva" id="delete-permissao-posicao-partes-duplicar">
+        <delete tableName="PERMISSAO">
+            <where>ID = 184</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="addColumn-DESC_SISTEMAVIRTUAL-SOLICITACAO_LOG">
+        <addColumn tableName="SOLICITACAO_LOG">
+            <column name="DESC_SISTEMAVIRTUAL" type="VARCHAR(300)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="addColum-DESC_SISTEMAVIRTUAL-SOLICITACAO_LOG_AUD">
+        <addColumn tableName="SOLICITACAO_LOG_AUD">
+            <column name="DESC_SISTEMAVIRTUAL" type="VARCHAR(300)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="reinaldo.locatelli" id="addUniqueConstraint-FK_DADOSBASICOSTAREFA-ATENDIMENTO_FILA_PESSOA">
+        <addUniqueConstraint columnNames="FK_DADOSBASICOSTAREFA" constraintName="UK_ATENDFILAPES_DADOSBASTAR"
+                             tableName="ATENDIMENTO_FILA_PESSOA"/>
+    </changeSet>
+
+</databaseChangeLog>
