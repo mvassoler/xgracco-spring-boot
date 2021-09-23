@@ -2,6 +2,9 @@ package br.com.finchsolucoes.xgracco.domain.entity;
 
 import br.com.finchsolucoes.xgracco.legacy.beans.listeners.LogAuditoriaListener;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
@@ -18,6 +21,9 @@ import java.util.Objects;
 
 @Entity(name = "LOG_AUDITORIA")
 @RevisionEntity(LogAuditoriaListener.class)
+@Data
+@Builder
+@AllArgsConstructor
 public class LogAuditoria implements Serializable {
 
     @Id
@@ -47,46 +53,6 @@ public class LogAuditoria implements Serializable {
 
     public LogAuditoria(int id) {
         this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public Date getDataAlteracao() {
-        return dataAlteracao;
-    }
-
-    public void setDataAlteracao(Date dataAlteracao) {
-        this.dataAlteracao = dataAlteracao;
-    }
-
-    public RevisionType getRevision() {
-        return revision;
-    }
-
-    public void setRevision(RevisionType revision) {
-        this.revision = revision;
-    }
-
-    public String getDataFormatada() {
-        return dataFormatada;
-    }
-
-    public void setDataFormatada(String dataFormatada) {
-        this.dataFormatada = dataFormatada;
     }
 
     @Override

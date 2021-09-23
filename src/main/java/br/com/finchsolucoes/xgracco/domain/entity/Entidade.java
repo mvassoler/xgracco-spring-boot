@@ -1,5 +1,14 @@
 package br.com.finchsolucoes.xgracco.domain.entity;
 
+import br.com.finchsolucoes.xgracco.legacy.beans.views.RetornoMetodo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.Set;
+
 /**
  * @author Marcelo Aguiar | Maicon Carraro
  *         <p>
@@ -7,7 +16,7 @@ package br.com.finchsolucoes.xgracco.domain.entity;
  */
 public abstract class Entidade {
 
-    /*public abstract Long getId();
+    public abstract Long getId();
 
     @JsonIgnore
     public boolean isEmpty() {
@@ -28,5 +37,5 @@ public abstract class Entidade {
         retorno.setSucesso(true);
 
         return retorno;
-    }*/
+    }
 }

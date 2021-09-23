@@ -5,6 +5,9 @@ import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
+/**
+ * Created by felipiberdun on 29/12/2016.
+ */
 @Converter(autoApply = true)
 public class EnumInstanciaConverter implements AttributeConverter<EnumInstancia, Integer> {
 

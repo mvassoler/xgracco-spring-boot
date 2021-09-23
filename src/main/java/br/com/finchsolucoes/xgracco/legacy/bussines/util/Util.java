@@ -41,6 +41,8 @@ import java.util.stream.Collectors;
 @Controller
 public class Util implements Serializable {
 
+    //TODO - ACERTAR ESTA CLASSE
+
     private static final long serialVersionUID = 6882457008176861274L;
 
     public static final String REGEX_ACCENTS = "[^\\p{ASCII}]";
