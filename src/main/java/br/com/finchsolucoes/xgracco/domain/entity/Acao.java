@@ -6,6 +6,8 @@ import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.EntidadeAuditada;
 import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.RelatorioInterface;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -22,13 +24,16 @@ import java.util.Objects;
 /**
  * @author rianmachado
  */
-@Data
+
 @Entity
 @Relation(collectionRelation = "acoes")
 @Table(name = "ACAO", uniqueConstraints = {@UniqueConstraint(columnNames = {"descricao"}, name = "acaoDescricao")})
 @SequenceGenerator(allocationSize = 1, name = "seqAcao", sequenceName = "SEQ_ACAO")
 @RelatorioInterface(titulo = "Ações")
 @Audited
+@Data
+@Builder
+@AllArgsConstructor
 public class Acao implements EntidadeAuditada {
 
     private static final long serialVersionUID = 1L;
