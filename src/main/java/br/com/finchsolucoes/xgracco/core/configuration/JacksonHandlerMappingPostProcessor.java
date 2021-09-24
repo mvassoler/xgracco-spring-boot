@@ -1,6 +1,7 @@
 package br.com.finchsolucoes.xgracco.core.configuration;
 
-import com.google.common.collect.Lists;
+
+import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
