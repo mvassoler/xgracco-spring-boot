@@ -1,39 +1,53 @@
 package br.com.finchsolucoes.xgracco.infra.ws;
 
-import br.com.finchsolucoes.xgracco.domain.entity.Acao;
-import br.com.finchsolucoes.xgracco.domain.query.Query;
-import br.com.finchsolucoes.xgracco.domain.query.Sorter;
-import br.com.finchsolucoes.xgracco.domain.query.impl.AcaoFilter;
+import br.com.finchsolucoes.xgracco.domain.entity.UsuarioDashboard;
 import br.com.finchsolucoes.xgracco.domain.repository.AcaoRepository;
+import br.com.finchsolucoes.xgracco.domain.repository.UsuarioRepository;
+import br.com.finchsolucoes.xgracco.domain.repository.VaraRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
-import java.util.Optional;
 
 @Component
 public class TesteAcao {
 
     private final AcaoRepository acaoRepository;
 
-    public TesteAcao(AcaoRepository acaoRepository) {
+    private final VaraRepository varaRepository;
+
+    private final UsuarioRepository usuarioRepository;
+
+
+
+
+    public TesteAcao(AcaoRepository acaoRepository, VaraRepository varaRepository, UsuarioRepository usuarioRepository) {
         this.acaoRepository = acaoRepository;
+        this.varaRepository = varaRepository;
+        this.usuarioRepository = usuarioRepository;
+
+
     }
 
     @PostConstruct
     public void testar(){
 
-        acaoRepository.save(Acao.builder().descricao("test").build());
-        Query<Acao> query = Query.<Acao>builder()
-                .filter(new AcaoFilter(null, null, null))
-                .sort(Sorter.<Acao>by("descricao").direction(Sorter.Direction.ASC))
-                .page(1l)
-                .build();
 
-        Optional<Acao> acao = acaoRepository.findById(1l);
-        List<Acao> listAcao = acaoRepository.find(query);
 
-        System.out.println(listAcao);
+        //usuarioRepository.save(Usuario.builder().login("test").id(1l).build());
+
+
+
+//        Query<UsuarioEscritorio> query = Query.<UsuarioEscritorio>builder()
+//                .filter(new UsuarioEscritorioFilter(null,null))
+//                .sort(Sorter.<UsuarioEscritorio>by("login").direction(Sorter.Direction.ASC))
+//                .page(1l)
+//                .build();
+
+        //Optional<Vara> vara = varaRepository.findById(1l);
+
+
+//        Optional<UsuarioEscritorio> listUsuario = usuarioEscritorioRepository.findById(1l);
+//        System.out.println(listUsuario);
         System.out.println("Teste");
 
 
