@@ -1,10 +1,11 @@
-package br.com.finchsolucoes.xgracco.domain.repository.persistences;
+package br.com.finchsolucoes.xgracco.infra.repository;
 
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.entity.QAcao;
 import br.com.finchsolucoes.xgracco.domain.entity.QPratica;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.impl.AcaoFilter;
+import br.com.finchsolucoes.xgracco.domain.repository.AcaoJpaRepository;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,7 +19,8 @@ import java.util.Optional;
  * Created by felipiberdun on 29/12/2016.
  */
 @Repository
-public class AcaoJpaRepository extends AbstractJpaRepository<Acao, Long>  {
+public class AcaoRepositoryImpl extends AbstractJpaRepository<Acao, Long> implements AcaoJpaRepository {
+
 
     @Override
     public List<Acao> find(Query<Acao> query) {
@@ -44,6 +46,7 @@ public class AcaoJpaRepository extends AbstractJpaRepository<Acao, Long>  {
         return jpaQuery.fetch();
     }
 
+    @Override
     public List<Acao> findAllCache() {
 
         final QAcao qAcao = QAcao.acao;
@@ -56,7 +59,6 @@ public class AcaoJpaRepository extends AbstractJpaRepository<Acao, Long>  {
 
         return jpaQuery.fetch();
     }
-
 
     @Override
     public long count(Query<Acao> query) {

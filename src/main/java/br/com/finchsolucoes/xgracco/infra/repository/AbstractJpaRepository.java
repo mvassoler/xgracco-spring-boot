@@ -1,11 +1,7 @@
-package br.com.finchsolucoes.xgracco.domain.repository.persistences;
+package br.com.finchsolucoes.xgracco.infra.repository;
 
-import br.com.finchsolucoes.xgracco.domain.exception.EntityNotFoundException;
-import br.com.finchsolucoes.xgracco.domain.exception.IdNotNullException;
-import br.com.finchsolucoes.xgracco.domain.exception.IdNullException;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.Sorter;
-import br.com.finchsolucoes.xgracco.domain.repository.interfaces.Repository;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +22,7 @@ import java.util.Optional;
  * @since 2.1
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractJpaRepository<T, ID> implements Repository<T, ID> {
+public abstract class AbstractJpaRepository<T, ID> {
 
     protected final Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 
@@ -42,67 +38,6 @@ public abstract class AbstractJpaRepository<T, ID> implements Repository<T, ID> 
         return Arrays.stream(entityClass.getDeclaredFields()).anyMatch(field -> field.isAnnotationPresent(GeneratedValue.class));
     }
 
-    /**
-     * Consulta uma entidade através do ID.
-     *
-     * @param id
-     * @return
-     */
-    @Override
-    public Optional<T> findById(ID id) {
-        return Optional.ofNullable(entityManager.find(entityClass, id));
-    }
-
-    /**
-     * Insere uma nova entidade.
-     *
-     * @param entity
-     */
-    @Override
-    public void create(T entity) {
-        Optional<ID> id = getIdentifier(entity);
-        if (isGeneratedId() && id.isPresent()) {
-            throw new IdNotNullException();
-        } else if (!isGeneratedId() && !id.isPresent()) {
-            throw new IdNullException();
-        } else {
-            entityManager.persist(entity);
-            entityManager.flush();
-        }
-    }
-
-    /**
-     * Altera uma entidade.
-     *
-     * @param entity
-     */
-    @Override
-    public void update(T entity) {
-        this.findById(this.getIdentifier(entity).orElseThrow(IdNullException::new)).orElseThrow(EntityNotFoundException::new);
-        entityManager.merge(entity);
-        entityManager.flush();
-    }
-
-    /**
-     * Remove uma entidade.
-     *
-     * @param entity
-     */
-    @Override
-    public void remove(T entity) {
-        removeById(getIdentifier(entity).orElseThrow(IdNullException::new));
-    }
-
-    /**
-     * Remove uma entidade através do ID.
-     *
-     * @param id
-     */
-    @Override
-    public void removeById(ID id) {
-        entityManager.remove(Optional.ofNullable(entityManager.find(entityClass, id)).orElseThrow(EntityNotFoundException::new));
-        entityManager.flush();
-    }
 
     /**
      * Retorna o ID da entidade.
