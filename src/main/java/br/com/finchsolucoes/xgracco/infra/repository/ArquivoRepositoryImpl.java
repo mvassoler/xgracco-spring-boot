@@ -26,122 +26,128 @@ public class ArquivoRepositoryImpl implements ArquivoJpaRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-//TODO Verificar o erro no construtor do QProfile
 
-//    @Override
-//    public List<Arquivo> findByProcesso(Processo processo) {
-//        final QArquivo qArquivo = QArquivo.arquivo;
-//        final QTipoDocumento qTipoDocumento = QTipoDocumento.tipoDocumento;
-//        final QProfile qProfile = QProfile.profile1;
-//        final QProcesso qProcesso = QProcesso.processo1;
-//
-//        final List<Arquivo> arquivos = new JPAQueryFactory(entityManager)
-//                .select(QArquivo.create(
-//                        qArquivo.id,
-//                        qArquivo.nomeArquivo,
-//                        qArquivo.caminhoDocumento,
-//                        QTipoDocumento.create(
-//                                qTipoDocumento.id,
-//                                qTipoDocumento.descricao,
-//                                qTipoDocumento.padrao
-//                        ),
-//                        QProfile.create(
-//                                qProfile.id,
-//                                QProcesso.create(qProcesso.id)
-//                        )))
-//                .from(qArquivo)
-//                .join(qArquivo.tipoDocumento, qTipoDocumento)
-//                .join(qArquivo.profile, qProfile)
-//                .join(qProfile.processo, qProcesso)
-//                .where(qProfile.processo.eq(processo))
-//                .fetch();
-//
-//        arquivos
-//                .stream()
-//                .filter(arquivo -> Objects.nonNull(arquivo.getProfile()))
-//                .filter(arquivo -> Objects.isNull(arquivo.getProfile().getId()))
-//                .forEach(arquivo -> arquivo.setProfile(null));
-//
-//        return arquivos;
-//    }
+    @Override
+    public List<Arquivo> findByProcesso(Processo processo) {
+        final QArquivo qArquivo = QArquivo.arquivo;
+        final QTipoDocumento qTipoDocumento = QTipoDocumento.tipoDocumento;
+        final QProfile qProfile = QProfile.profile1;
+        final QProcesso qProcesso = QProcesso.processo1;
 
+        // TODO - ACERTAR ESTA CLASSE
 
-//    @Override
-//    public List<Arquivo> findByProcessoAndProfile(Processo processo, Profile profile) {
-//        final QArquivo qArquivo = QArquivo.arquivo;
-//        final QTipoDocumento qTipoDocumento = QTipoDocumento.tipoDocumento;
-//        final QProfile qProfile = QProfile.profile1;
-//        final QProcesso qProcesso = QProcesso.processo1;
-//
-//        final List<Arquivo> arquivos = new JPAQueryFactory(entityManager)
-//                .select(QArquivo.create(
-//                        qArquivo.id,
-//                        qArquivo.nomeArquivo,
-//                        qArquivo.caminhoDocumento,
-//                        QTipoDocumento.create(
-//                                qTipoDocumento.id,
-//                                qTipoDocumento.descricao,
-//                                qTipoDocumento.padrao
-//                        ),
-//                        QProfile.create(
-//                                qProfile.id,
-//                                QProcesso.create(qProcesso.id)
-//                        )))
-//                .from(qArquivo)
-//                .join(qArquivo.tipoDocumento, qTipoDocumento)
-//                .join(qArquivo.profile, qProfile)
-//                .join(qProfile.processo, qProcesso)
-//                .where(qProfile.processo.eq(processo))
-//                .where(qProfile.eq(profile))
-//                .fetch();
-//
-//        arquivos
-//                .stream()
-//                .filter(arquivo -> Objects.nonNull(arquivo.getProfile()))
-//                .filter(arquivo -> Objects.isNull(arquivo.getProfile().getId()))
-//                .forEach(arquivo -> arquivo.setProfile(null));
-//
-//        return arquivos;
-//    }
+        /*final List<Arquivo> arquivos = new JPAQueryFactory(entityManager)
+                .select(QArquivo.create(
+                        qArquivo.id,
+                        qArquivo.nomeArquivo,
+                        qArquivo.caminhoDocumento,
+                        QTipoDocumento.create(
+                                qTipoDocumento.id,
+                                qTipoDocumento.descricao,
+                                qTipoDocumento.padrao
+                        ),
+                        QProfile.create(
+                                qProfile.id,
+                                QProcesso.create(qProcesso.id)
+                        )))
+                .from(qArquivo)
+                .join(qArquivo.tipoDocumento, qTipoDocumento)
+                .join(qArquivo.profile, qProfile)
+                .join(qProfile.processo, qProcesso)
+                .where(qProfile.processo.eq(processo))
+                .fetch();
+
+        arquivos
+                .stream()
+                .filter(arquivo -> Objects.nonNull(arquivo.getProfile()))
+                .filter(arquivo -> Objects.isNull(arquivo.getProfile().getId()))
+                .forEach(arquivo -> arquivo.setProfile(null));
+
+        return arquivos;*/
+
+        return null;
+    }
 
 
-//    @Override
-//    public Optional<Arquivo> findByProcessoAndProfileAndId(Processo processo, Profile profile, Long id) {
-//        final QArquivo qArquivo = QArquivo.arquivo;
-//        final QTipoDocumento qTipoDocumento = QTipoDocumento.tipoDocumento;
-//        final QProfile qProfile = QProfile.profile1;
-//        final QProcesso qProcesso = QProcesso.processo1;
-//
-//        final Optional<Arquivo> arquivoOptional = Optional.ofNullable(new JPAQueryFactory(entityManager)
-//                .select(QArquivo.create(
-//                        qArquivo.id,
-//                        qArquivo.nomeArquivo,
-//                        qArquivo.caminhoDocumento,
-//                        QTipoDocumento.create(
-//                                qTipoDocumento.id,
-//                                qTipoDocumento.descricao,
-//                                qTipoDocumento.padrao
-//                        ),
-//                        QProfile.create(
-//                                qProfile.id,
-//                                QProcesso.create(qProcesso.id)
-//                        )))
-//                .from(qArquivo)
-//                .join(qArquivo.tipoDocumento, qTipoDocumento)
-//                .join(qArquivo.profile, qProfile)
-//                .join(qProfile.processo, qProcesso)
-//                .where(qProfile.processo.eq(processo))
-//                .where(qProfile.eq(profile))
-//                .where(qArquivo.id.eq(id))
-//                .fetchOne());
-//
-//        arquivoOptional
-//                .filter(arquivo -> Objects.nonNull(arquivo.getProfile()))
-//                .filter(arquivo -> Objects.isNull(arquivo.getProfile().getId()))
-//                .ifPresent(arquivo -> arquivo.setProfile(null));
-//
-//        return arquivoOptional;
-//    }
+    @Override
+    public List<Arquivo> findByProcessoAndProfile(Processo processo, Profile profile) {
+        final QArquivo qArquivo = QArquivo.arquivo;
+        final QTipoDocumento qTipoDocumento = QTipoDocumento.tipoDocumento;
+        final QProfile qProfile = QProfile.profile1;
+        final QProcesso qProcesso = QProcesso.processo1;
+
+       /* final List<Arquivo> arquivos = new JPAQueryFactory(entityManager)
+                .select(QArquivo.create(
+                        qArquivo.id,
+                        qArquivo.nomeArquivo,
+                        qArquivo.caminhoDocumento,
+                        QTipoDocumento.create(
+                                qTipoDocumento.id,
+                                qTipoDocumento.descricao,
+                                qTipoDocumento.padrao
+                        ),
+                        QProfile.create(
+                                qProfile.id,
+                                QProcesso.create(qProcesso.id)
+                        )))
+                .from(qArquivo)
+                .join(qArquivo.tipoDocumento, qTipoDocumento)
+                .join(qArquivo.profile, qProfile)
+                .join(qProfile.processo, qProcesso)
+                .where(qProfile.processo.eq(processo))
+                .where(qProfile.eq(profile))
+                .fetch();
+
+        arquivos
+                .stream()
+                .filter(arquivo -> Objects.nonNull(arquivo.getProfile()))
+                .filter(arquivo -> Objects.isNull(arquivo.getProfile().getId()))
+                .forEach(arquivo -> arquivo.setProfile(null));
+
+        return arquivos;*/
+
+        return null;
+    }
+
+
+    @Override
+    public Optional<Arquivo> findByProcessoAndProfileAndId(Processo processo, Profile profile, Long id) {
+        final QArquivo qArquivo = QArquivo.arquivo;
+        final QTipoDocumento qTipoDocumento = QTipoDocumento.tipoDocumento;
+        final QProfile qProfile = QProfile.profile1;
+        final QProcesso qProcesso = QProcesso.processo1;
+
+        /*final Optional<Arquivo> arquivoOptional = Optional.ofNullable(new JPAQueryFactory(entityManager)
+                .select(QArquivo.create(
+                        qArquivo.id,
+                        qArquivo.nomeArquivo,
+                        qArquivo.caminhoDocumento,
+                        QTipoDocumento.create(
+                                qTipoDocumento.id,
+                                qTipoDocumento.descricao,
+                                qTipoDocumento.padrao
+                        ),
+                        QProfile.create(
+                                qProfile.id,
+                                QProcesso.create(qProcesso.id)
+                        )))
+                .from(qArquivo)
+                .join(qArquivo.tipoDocumento, qTipoDocumento)
+                .join(qArquivo.profile, qProfile)
+                .join(qProfile.processo, qProcesso)
+                .where(qProfile.processo.eq(processo))
+                .where(qProfile.eq(profile))
+                .where(qArquivo.id.eq(id))
+                .fetchOne());
+
+        arquivoOptional
+                .filter(arquivo -> Objects.nonNull(arquivo.getProfile()))
+                .filter(arquivo -> Objects.isNull(arquivo.getProfile().getId()))
+                .ifPresent(arquivo -> arquivo.setProfile(null));*/
+
+        //return arquivoOptional;
+        return null;
+    }
 
 
     @Override
