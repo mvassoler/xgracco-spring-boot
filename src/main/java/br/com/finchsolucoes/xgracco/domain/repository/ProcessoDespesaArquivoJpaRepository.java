@@ -1,0 +1,11 @@
+package br.com.finchsolucoes.xgracco.domain.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface ProcessoDespesaArquivoJpaRepository {
+
+    Optional<List<Long>> findCaminhosArquivosByIdsProcessosDespesas(List<Long> idsProcessosDespesas);
+
+    Optional<List<String>> findCaminhosArquivosByIds(List<Long> idsProcessoDespesaArquivo);
+}
