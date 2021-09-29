@@ -12,9 +12,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>xgracco</name>
 	<description>API do sistema jurídico XGRACCO</description>
-	<properties>
-		<java.version>17</java.version>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -188,6 +185,14 @@
 			<artifactId>thymeleaf-spring4</artifactId>
 			<version>3.0.12.RELEASE</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>31.0.1-jre</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

@@ -1,5 +1,8 @@
 package br.com.finchsolucoes.xgracco.legacy.bussines.util;
 
+import br.com.finchsolucoes.xgracco.domain.entity.Authentication;
+import br.com.finchsolucoes.xgracco.domain.entity.Pessoa;
+import br.com.finchsolucoes.xgracco.domain.entity.Usuario;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -174,24 +177,24 @@ public class Util implements Serializable {
         return retornaMensagem("mensagem.excluir.multiplo", msgSucesso, msgErro);
     }
 
-    /*public static Usuario getUsuarioAtual() {
-        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                .map(Authentication::getPrincipal)
-                .map(Usuario.class::cast)
-                .orElse(null);
-    }
+//    public static Usuario getUsuarioAtual() {
+//        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+//                .map(Authentication::getPrincipal)
+//                .map(Usuario.class::cast)
+//                .orElse(null);
+//    }
+//
+//    public static Pessoa getUsuarioLogado() {
+//        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+//                .map(Authentication::getPrincipal)
+//                .map(Usuario.class::cast)
+//                .map(Usuario::getPessoa)
+//                .orElse(null);
+//    }
 
-    public static Pessoa getUsuarioLogado() {
-        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                .map(Authentication::getPrincipal)
-                .map(Usuario.class::cast)
-                .map(Usuario::getPessoa)
-                .orElse(null);
-    }
-
-    public static Pessoa recuperarUsuario() {
-        return Util.getUsuarioLogado();
-    }*/
+//    public static Pessoa recuperarUsuario() {
+//        return Util.getUsuarioLogado();
+//    }
 
     public static Calendar getStringToDate(String value, String format) {
         if (format == null || StringUtils.isBlank(value)) {
