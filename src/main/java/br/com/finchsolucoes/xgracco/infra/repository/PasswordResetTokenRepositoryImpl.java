@@ -6,7 +6,6 @@ import br.com.finchsolucoes.xgracco.domain.entity.QUsuario;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.Sorter;
 import br.com.finchsolucoes.xgracco.domain.repository.PasswordResetTokenJpaRepository;
-import br.com.finchsolucoes.xgracco.domain.repository.PasswordResetTokenRepository;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class PasswordResetTokenRepositoryImpl extends AbstractJpaRepository<PasswordResetToken, Long> implements PasswordResetTokenRepository, PasswordResetTokenJpaRepository {
+public class PasswordResetTokenRepositoryImpl extends AbstractJpaRepository<PasswordResetToken, Long> implements PasswordResetTokenJpaRepository {
     @Override
     public Optional<PasswordResetToken> findByToken(String token) {
         final QPasswordResetToken qPasswordResetToken = QPasswordResetToken.passwordResetToken;

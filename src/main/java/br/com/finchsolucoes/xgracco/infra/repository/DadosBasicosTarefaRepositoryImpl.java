@@ -484,7 +484,9 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
 
     private void where(JPAQuery<DadosBasicosTarefa> jpaQuery, DadosBasicosTarefaFilter filter) {
 
-        if (filter.getFila() != null) {
+        //TODO - ACERTAR ESTA CLASSE
+
+        /*if (filter.getFila() != null) {
             if (filter.getFila().isFilaDevolucao()) {
                 jpaQuery.where(QFila.fila.esteira.eq(filter.getFila().getEsteira()));
             } else {
@@ -588,7 +590,7 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
                             .from(QProcesso.processo1)
                             .where(QProcesso.processo1.eq(QDadosBasicosTarefa.dadosBasicosTarefa.processo))
             ));
-        }
+        }*/
     }
 
 
@@ -1018,7 +1020,7 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
 
         QDadosBasicosTarefa qDadosBasicosTarefa = QDadosBasicosTarefa.dadosBasicosTarefa;
 
-        if (fila.getVisualizarTarefasVencidas() == null || !fila.getVisualizarTarefasVencidas()) {
+        /*if (fila.getVisualizarTarefasVencidas() == null || !fila.getVisualizarTarefasVencidas()) {
             query.where(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().isNull()
                     .or(qDadosBasicosTarefa.dataAgendamento.between(Calendar.getInstance(), getDataTempoVisao(fila.getTempoVisao(), false))));
         } else {
@@ -1030,7 +1032,7 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
                         .or(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().between(getDataTempoVisao(fila.getTempoVisaoVencidas() * -1, true),
                                 getDataTempoVisao(fila.getTempoVisao(), false))));
             }
-        }
+        }*/
     }
 
     private Calendar getDataTempoVisao(Integer tempoVisao, Boolean inicioDia) {
@@ -1134,14 +1136,14 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
 
         this.restringirVisualizacaoUsuarioLogado(jpaQuery);
 
-        jpaQuery.where(Expressions.dateTimeOperation(Date.class,
+       /* jpaQuery.where(Expressions.dateTimeOperation(Date.class,
                         Ops.DateTimeOps.ADD_DAYS,
                         qDadosBasicosTarefa.dataAgendamento,
                         Expressions.asNumber(
                                 qFluxoTrabalhoTarefa.notificacaoIntervalo.coalesce(0).asNumber().multiply(-1)
                         )).lt(Date.valueOf(LocalDate.now().plusDays(1)))
                         .and(qFluxoTrabalhoTarefa.notificacaoVencimento.eq(true)))
-                .where(qDadosBasicosTarefa.dataConclusao.isNull());
+                .where(qDadosBasicosTarefa.dataConclusao.isNull());*/
 
         if (Objects.nonNull(query.getFilter())) {
             final DadosBasicosTarefaFilter filter = (DadosBasicosTarefaFilter) query.getFilter();

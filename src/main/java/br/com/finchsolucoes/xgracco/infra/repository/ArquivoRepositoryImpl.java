@@ -34,7 +34,9 @@ public class ArquivoRepositoryImpl implements ArquivoJpaRepository {
         final QProfile qProfile = QProfile.profile1;
         final QProcesso qProcesso = QProcesso.processo1;
 
-        final List<Arquivo> arquivos = new JPAQueryFactory(entityManager)
+        // TODO - ACERTAR ESTA CLASSE
+
+        /*final List<Arquivo> arquivos = new JPAQueryFactory(entityManager)
                 .select(QArquivo.create(
                         qArquivo.id,
                         qArquivo.nomeArquivo,
@@ -61,7 +63,9 @@ public class ArquivoRepositoryImpl implements ArquivoJpaRepository {
                 .filter(arquivo -> Objects.isNull(arquivo.getProfile().getId()))
                 .forEach(arquivo -> arquivo.setProfile(null));
 
-        return arquivos;
+        return arquivos;*/
+
+        return null;
     }
 
 
@@ -72,7 +76,7 @@ public class ArquivoRepositoryImpl implements ArquivoJpaRepository {
         final QProfile qProfile = QProfile.profile1;
         final QProcesso qProcesso = QProcesso.processo1;
 
-        final List<Arquivo> arquivos = new JPAQueryFactory(entityManager)
+       /* final List<Arquivo> arquivos = new JPAQueryFactory(entityManager)
                 .select(QArquivo.create(
                         qArquivo.id,
                         qArquivo.nomeArquivo,
@@ -100,7 +104,9 @@ public class ArquivoRepositoryImpl implements ArquivoJpaRepository {
                 .filter(arquivo -> Objects.isNull(arquivo.getProfile().getId()))
                 .forEach(arquivo -> arquivo.setProfile(null));
 
-        return arquivos;
+        return arquivos;*/
+
+        return null;
     }
 
 
@@ -111,7 +117,7 @@ public class ArquivoRepositoryImpl implements ArquivoJpaRepository {
         final QProfile qProfile = QProfile.profile1;
         final QProcesso qProcesso = QProcesso.processo1;
 
-        final Optional<Arquivo> arquivoOptional = Optional.ofNullable(new JPAQueryFactory(entityManager)
+        /*final Optional<Arquivo> arquivoOptional = Optional.ofNullable(new JPAQueryFactory(entityManager)
                 .select(QArquivo.create(
                         qArquivo.id,
                         qArquivo.nomeArquivo,
@@ -137,9 +143,10 @@ public class ArquivoRepositoryImpl implements ArquivoJpaRepository {
         arquivoOptional
                 .filter(arquivo -> Objects.nonNull(arquivo.getProfile()))
                 .filter(arquivo -> Objects.isNull(arquivo.getProfile().getId()))
-                .ifPresent(arquivo -> arquivo.setProfile(null));
+                .ifPresent(arquivo -> arquivo.setProfile(null));*/
 
-        return arquivoOptional;
+        //return arquivoOptional;
+        return null;
     }
 
 

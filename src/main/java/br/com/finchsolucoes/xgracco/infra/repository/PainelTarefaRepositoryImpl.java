@@ -83,7 +83,10 @@ public class PainelTarefaRepositoryImpl implements PainelTarefaJpaRepository {
         final QFormulario qFormulario = QFormulario.formulario;
         final QFluxoTrabalhoTarefa qFluxoTrabalhoTarefa = QFluxoTrabalhoTarefa.fluxoTrabalhoTarefa;
 
-        return new JPAQueryFactory(entityManager)
+        return  null;
+        // TODO - ACERTAR ESTA CLASSE
+
+        /*return new JPAQueryFactory(entityManager)
                 .select(QPainelTarefa.create(
                         qPainelTarefa.id,
                         qPainelTarefa.tipoDataSla,
@@ -124,7 +127,7 @@ public class PainelTarefaRepositoryImpl implements PainelTarefaJpaRepository {
                 .leftJoin(qPainelTarefa.campoData, qCampoData)
                 .leftJoin(qCampoData.formulario, qFormulario)
                 .where(qPainel.eq(painel))
-                .fetch();
+                .fetch();*/
     }
 
     @Override

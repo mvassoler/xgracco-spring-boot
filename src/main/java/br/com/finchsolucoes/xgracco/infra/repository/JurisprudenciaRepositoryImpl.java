@@ -32,7 +32,9 @@ public class JurisprudenciaRepositoryImpl extends AbstractJpaRepository<Jurispru
         QMateria qMateria = QMateria.materia;
         QPratica qPratica = QPratica.pratica;
 
-        JPAQuery<Jurisprudencia> jpaQuery = new JPAQueryFactory(entityManager)
+        // TODO - ACERTAR ESTA CLASSE
+
+        /*JPAQuery<Jurisprudencia> jpaQuery = new JPAQueryFactory(entityManager)
                 .select(
                         QJurisprudencia.create(
                                 qJurisprudencia.id,
@@ -105,9 +107,10 @@ public class JurisprudenciaRepositoryImpl extends AbstractJpaRepository<Jurispru
                     jpaQuery.where(qProcesso.pratica.eq(filter.getProcesso().getPratica()));
                 }
             }
-        }
+        }*/
 
-        return jpaQuery;
+        //return jpaQuery;
+        return null;
     }
 
     @Override
