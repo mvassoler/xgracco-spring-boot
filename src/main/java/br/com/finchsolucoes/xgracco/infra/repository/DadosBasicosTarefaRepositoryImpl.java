@@ -484,112 +484,112 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
 
     private void where(JPAQuery<DadosBasicosTarefa> jpaQuery, DadosBasicosTarefaFilter filter) {
 
-        if (filter.getFila() != null) {
-            if (filter.getFila().isFilaDevolucao()) {
-                jpaQuery.where(QFila.fila.esteira.eq(filter.getFila().getEsteira()));
-            } else {
-                jpaQuery.where(QFila.fila.eq(filter.getFila()));
-            }
-
-            jpaQuery.where(QProcesso.processo1.carteira.eq(QFilaTarefa.filaTarefa.carteira));
-
-            if (!filter.getConsiderarFilasInativas()) {
-                jpaQuery.where(QFila.fila.ativo.eq(true));
-            }
-
-            if (!filter.getRetornarTarefasEmAtendimento()) {
-                jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.responsavel.isNull());
-            }
-
-            if (Objects.nonNull(filter.getFila().getExpressao())) {
-                jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.memo.contains(filter.getFila().getExpressao()));
-            }
-
-            if (Objects.nonNull(filter.getFila().getDataRecebimentoInicial())) {
-                jpaQuery.where(QProcesso.processo1.dataRecebimento.goe(filter.getFila().getDataRecebimentoInicial()));
-            }
-
-            if (Objects.nonNull(filter.getFila().getDataRecebimentoFinal())) {
-                jpaQuery.where(QProcesso.processo1.dataRecebimento.loe(filter.getFila().getDataRecebimentoFinal()));
-            }
-
-            whereTag(jpaQuery, filter.getFila(), filter.getTags());
-        }
-
-        if (Objects.nonNull(filter.getListFluxoTrabalhoTarefa())) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.fluxoTrabalhoTarefa.in(filter.getListFluxoTrabalhoTarefa()));
-        }
-        var type = com.querydsl.core.types.dsl.Expressions.asDate();
-        if (filter.getDataAgendamentoInicial() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
-                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
-                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
-                    .asDate().goe(DateUtils.setInicioDeDia(filter.getDataAgendamentoInicial())));
-        }
-
-        if (filter.getDataAgendamentoFinal() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
-                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
-                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
-                    .asDate().loe(DateUtils.setFimDeDia(filter.getDataAgendamentoFinal())));
-        }
-
-        if (filter.getDataConclusaoInicial() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
-                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
-                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
-                    .asDate().goe(filter.getDataConclusaoInicial()));
-        }
-
-        if (filter.getDataConclusaoFinal() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
-                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
-                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
-                    .asDate().loe(filter.getDataConclusaoFinal()));
-        }
-
-        if (filter.getResponsavel() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.responsavel.eq(filter.getResponsavel()));
-        }
-
-        if (filter.getAgendadoPara() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.agendadoPara.eq(filter.getAgendadoPara()));
-        }
-
-        if (filter.getRealizadoPor() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.realizadoPor.eq(filter.getRealizadoPor()));
-        }
-
-        if (filter.getStatusTarefa() != null) {
-
-            jpaQuery.where(filter.getStatusTarefa()
-                    .stream()
-                    .map(QDadosBasicosTarefa.dadosBasicosTarefa.status::eq)
-                    .reduce(BooleanExpression::or)
-                    .get());
-
-            if (filter.getStatusTarefa().contains(EnumStatusTarefa.CUMPRIDO) || filter.getStatusTarefa().contains(EnumStatusTarefa.NAO_CUMPRIDO)) {
-                jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataConclusao.isNotNull());
-            } else {
-                jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataConclusao.isNull());
-            }
-        }
-
-        //Se não foram passadas as datas como parâmetro, valida configuração da fila por tempo de visão
-        if ((filter.getDesconsiderarConfigDatasFila() == null || !filter.getDesconsiderarConfigDatasFila())
-                && filter.getDataAgendamentoInicial() == null && filter.getDataAgendamentoFinal() == null) {
-            whereDueDate(jpaQuery, filter.getFila());
-        }
-
-        //Filtra as tarefas dos processos de acordo com o operacional parametrizado na fila
-        if (!Objects.isNull(filter.getFila().getOperacional()) && !Objects.isNull(filter.getFila().getOperacional().getId())) {
-            jpaQuery.where(QFila.fila.operacional.id.in(
-                    JPAExpressions
-                            .select(QProcesso.processo1.operacional.id)
-                            .from(QProcesso.processo1)
-                            .where(QProcesso.processo1.eq(QDadosBasicosTarefa.dadosBasicosTarefa.processo))
-            ));
-        }
+//        if (filter.getFila() != null) {
+//            if (filter.getFila().isFilaDevolucao()) {
+//                jpaQuery.where(QFila.fila.esteira.eq(filter.getFila().getEsteira()));
+//            } else {
+//                jpaQuery.where(QFila.fila.eq(filter.getFila()));
+//            }
+//
+//            jpaQuery.where(QProcesso.processo1.carteira.eq(QFilaTarefa.filaTarefa.carteira));
+//
+//            if (!filter.getConsiderarFilasInativas()) {
+//                jpaQuery.where(QFila.fila.ativo.eq(true));
+//            }
+//
+//            if (!filter.getRetornarTarefasEmAtendimento()) {
+//                jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.responsavel.isNull());
+//            }
+//
+//            if (Objects.nonNull(filter.getFila().getExpressao())) {
+//                jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.memo.contains(filter.getFila().getExpressao()));
+//            }
+//
+//            if (Objects.nonNull(filter.getFila().getDataRecebimentoInicial())) {
+//                jpaQuery.where(QProcesso.processo1.dataRecebimento.goe(filter.getFila().getDataRecebimentoInicial()));
+//            }
+//
+//            if (Objects.nonNull(filter.getFila().getDataRecebimentoFinal())) {
+//                jpaQuery.where(QProcesso.processo1.dataRecebimento.loe(filter.getFila().getDataRecebimentoFinal()));
+//            }
+//
+//            whereTag(jpaQuery, filter.getFila(), filter.getTags());
+//        }
+//
+//        if (Objects.nonNull(filter.getListFluxoTrabalhoTarefa())) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.fluxoTrabalhoTarefa.in(filter.getListFluxoTrabalhoTarefa()));
+//        }
+//        var type = Expressions.asDate();
+//        if (filter.getDataAgendamentoInicial() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
+//                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
+//                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
+//                    .asDate().goe(DateUtils.setInicioDeDia(filter.getDataAgendamentoInicial())));
+//        }
+//
+//        if (filter.getDataAgendamentoFinal() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
+//                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
+//                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
+//                    .asDate().loe(DateUtils.setFimDeDia(filter.getDataAgendamentoFinal())));
+//        }
+//
+//        if (filter.getDataConclusaoInicial() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
+//                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
+//                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
+//                    .asDate().goe(filter.getDataConclusaoInicial()));
+//        }
+//
+//        if (filter.getDataConclusaoFinal() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
+//                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
+//                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
+//                    .asDate().loe(filter.getDataConclusaoFinal()));
+//        }
+//
+//        if (filter.getResponsavel() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.responsavel.eq(filter.getResponsavel()));
+//        }
+//
+//        if (filter.getAgendadoPara() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.agendadoPara.eq(filter.getAgendadoPara()));
+//        }
+//
+//        if (filter.getRealizadoPor() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.realizadoPor.eq(filter.getRealizadoPor()));
+//        }
+//
+//        if (filter.getStatusTarefa() != null) {
+//
+//            jpaQuery.where(filter.getStatusTarefa()
+//                    .stream()
+//                    .map(QDadosBasicosTarefa.dadosBasicosTarefa.status::eq)
+//                    .reduce(BooleanExpression::or)
+//                    .get());
+//
+//            if (filter.getStatusTarefa().contains(EnumStatusTarefa.CUMPRIDO) || filter.getStatusTarefa().contains(EnumStatusTarefa.NAO_CUMPRIDO)) {
+//                jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataConclusao.isNotNull());
+//            } else {
+//                jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataConclusao.isNull());
+//            }
+//        }
+//
+//        //Se não foram passadas as datas como parâmetro, valida configuração da fila por tempo de visão
+//        if ((filter.getDesconsiderarConfigDatasFila() == null || !filter.getDesconsiderarConfigDatasFila())
+//                && filter.getDataAgendamentoInicial() == null && filter.getDataAgendamentoFinal() == null) {
+//            whereDueDate(jpaQuery, filter.getFila());
+//        }
+//
+//        //Filtra as tarefas dos processos de acordo com o operacional parametrizado na fila
+//        if (!Objects.isNull(filter.getFila().getOperacional()) && !Objects.isNull(filter.getFila().getOperacional().getId())) {
+//            jpaQuery.where(QFila.fila.operacional.id.in(
+//                    JPAExpressions
+//                            .select(QProcesso.processo1.operacional.id)
+//                            .from(QProcesso.processo1)
+//                            .where(QProcesso.processo1.eq(QDadosBasicosTarefa.dadosBasicosTarefa.processo))
+//            ));
+//        }
     }
 
 
@@ -1013,25 +1013,25 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
     }
 
     private void whereDueDate(JPAQuery query, Fila fila) {
-        if (fila == null) {
-            return;
-        }
-
-        QDadosBasicosTarefa qDadosBasicosTarefa = QDadosBasicosTarefa.dadosBasicosTarefa;
-
-        if (fila.getVisualizarTarefasVencidas() == null || !fila.getVisualizarTarefasVencidas()) {
-            query.where(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().isNull()
-                    .or(qDadosBasicosTarefa.dataAgendamento.between(Calendar.getInstance(), getDataTempoVisao(fila.getTempoVisao(), false))));
-        } else {
-            if (Objects.equals(fila.getTempoVisaoVencidas(), 0L) || fila.getTempoVisaoVencidas() == null) {
-                query.where(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().isNull()
-                        .or(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().loe(getDataTempoVisao(fila.getTempoVisao(), false))));
-            } else {
-                query.where(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().isNull()
-                        .or(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().between(getDataTempoVisao(fila.getTempoVisaoVencidas() * -1, true),
-                                getDataTempoVisao(fila.getTempoVisao(), false))));
-            }
-        }
+//        if (fila == null) {
+//            return;
+//        }
+//
+//        QDadosBasicosTarefa qDadosBasicosTarefa = QDadosBasicosTarefa.dadosBasicosTarefa;
+//
+//        if (fila.getVisualizarTarefasVencidas() == null || !fila.getVisualizarTarefasVencidas()) {
+//            query.where(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().isNull()
+//                    .or(qDadosBasicosTarefa.dataAgendamento.between(Calendar.getInstance(), getDataTempoVisao(fila.getTempoVisao(), false))));
+//        } else {
+//            if (Objects.equals(fila.getTempoVisaoVencidas(), 0L) || fila.getTempoVisaoVencidas() == null) {
+//                query.where(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().isNull()
+//                        .or(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().loe(getDataTempoVisao(fila.getTempoVisao(), false))));
+//            } else {
+//                query.where(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().isNull()
+//                        .or(qDadosBasicosTarefa.dataAgendamento.coalesce(qDadosBasicosTarefa.dataInicio).asDate().between(getDataTempoVisao(fila.getTempoVisaoVencidas() * -1, true),
+//                                getDataTempoVisao(fila.getTempoVisao(), false))));
+//            }
+//        }
     }
 
     private Calendar getDataTempoVisao(Integer tempoVisao, Boolean inicioDia) {
@@ -1115,62 +1115,63 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
     }
 
     private JPAQuery<DadosBasicosTarefa> createQueryVencendoPorNotificacaoFluxo(final Query<DadosBasicosTarefa> query) {
-        final QDadosBasicosTarefa qDadosBasicosTarefa = QDadosBasicosTarefa.dadosBasicosTarefa;
-        final QFluxoTrabalhoTarefa qFluxoTrabalhoTarefa = QFluxoTrabalhoTarefa.fluxoTrabalhoTarefa;
-        final QProcesso qProcesso = QProcesso.processo1;
-        final QTarefa qTarefa = QTarefa.tarefa;
-        final QPessoa qResponsavelTarefa = QPessoa.pessoa;
-        final QUsuario qUsuarioNotificacao = new QUsuario("usuarioNotificacao");
-        final QCarteira qCarteira = QCarteira.carteira;
-
-        final JPAQuery<DadosBasicosTarefa> jpaQuery = new JPAQueryFactory(entityManager)
-                .select(qDadosBasicosTarefa)
-                .from(qDadosBasicosTarefa)
-                .join(qDadosBasicosTarefa.processo, qProcesso).fetchJoin()
-                .join(qProcesso.carteira, qCarteira).fetchJoin()
-                .join(qDadosBasicosTarefa.fluxoTrabalhoTarefa, qFluxoTrabalhoTarefa).fetchJoin()
-                .join(qFluxoTrabalhoTarefa.tarefa, qTarefa).fetchJoin()
-                .leftJoin(qFluxoTrabalhoTarefa.usuario, qUsuarioNotificacao).fetchJoin()
-                .leftJoin(qDadosBasicosTarefa.responsavel, qResponsavelTarefa).fetchJoin();
-
-        this.restringirVisualizacaoUsuarioLogado(jpaQuery);
-
-        jpaQuery.where(Expressions.dateTimeOperation(Date.class,
-                        Ops.DateTimeOps.ADD_DAYS,
-                        qDadosBasicosTarefa.dataAgendamento,
-                        Expressions.asNumber(
-                                qFluxoTrabalhoTarefa.notificacaoIntervalo.coalesce(0).asNumber().multiply(-1)
-                        )).lt(Date.valueOf(LocalDate.now().plusDays(1)))
-                        .and(qFluxoTrabalhoTarefa.notificacaoVencimento.eq(true)))
-                .where(qDadosBasicosTarefa.dataConclusao.isNull());
-
-        if (Objects.nonNull(query.getFilter())) {
-            final DadosBasicosTarefaFilter filter = (DadosBasicosTarefaFilter) query.getFilter();
-
-            if (StringUtils.isNotEmpty(filter.getProcessoUnico())) {
-                jpaQuery.where(qProcesso.processoUnico.eq(filter.getProcessoUnico()));
-            }
-
-            if (!CollectionUtils.isEmpty(filter.getNome())) {
-                jpaQuery.where(filter.getNome()
-                        .stream()
-                        .map(nome -> "%" + nome + "%")
-                        .map(qTarefa.nome::likeIgnoreCase)
-                        .reduce(BooleanExpression::or)
-                        .get());
-            }
-
-            if (Objects.nonNull(filter.getIdCarteira())) {
-                jpaQuery.where(qCarteira.id.eq(filter.getIdCarteira()));
-            }
-
-            aplicarFiltroDataAgendamentoEStatus(jpaQuery, filter);
-        }
-
-        applyPagination(jpaQuery, query.getPage(), query.getLimit());
-        applySorter(jpaQuery, query.getSorter());
-
-        return jpaQuery;
+//        final QDadosBasicosTarefa qDadosBasicosTarefa = QDadosBasicosTarefa.dadosBasicosTarefa;
+//        final QFluxoTrabalhoTarefa qFluxoTrabalhoTarefa = QFluxoTrabalhoTarefa.fluxoTrabalhoTarefa;
+//        final QProcesso qProcesso = QProcesso.processo1;
+//        final QTarefa qTarefa = QTarefa.tarefa;
+//        final QPessoa qResponsavelTarefa = QPessoa.pessoa;
+//        final QUsuario qUsuarioNotificacao = new QUsuario("usuarioNotificacao");
+//        final QCarteira qCarteira = QCarteira.carteira;
+//
+//        final JPAQuery<DadosBasicosTarefa> jpaQuery = new JPAQueryFactory(entityManager)
+//                .select(qDadosBasicosTarefa)
+//                .from(qDadosBasicosTarefa)
+//                .join(qDadosBasicosTarefa.processo, qProcesso).fetchJoin()
+//                .join(qProcesso.carteira, qCarteira).fetchJoin()
+//                .join(qDadosBasicosTarefa.fluxoTrabalhoTarefa, qFluxoTrabalhoTarefa).fetchJoin()
+//                .join(qFluxoTrabalhoTarefa.tarefa, qTarefa).fetchJoin()
+//                .leftJoin(qFluxoTrabalhoTarefa.usuario, qUsuarioNotificacao).fetchJoin()
+//                .leftJoin(qDadosBasicosTarefa.responsavel, qResponsavelTarefa).fetchJoin();
+//
+//        this.restringirVisualizacaoUsuarioLogado(jpaQuery);
+//
+//        jpaQuery.where(Expressions.dateTimeOperation(Date.class,
+//                        Ops.DateTimeOps.ADD_DAYS,
+//                        qDadosBasicosTarefa.dataAgendamento,
+//                        Expressions.asNumber(
+//                                qFluxoTrabalhoTarefa.notificacaoIntervalo.coalesce(0).asNumber().multiply(-1)
+//                        )).lt(Date.valueOf(LocalDate.now().plusDays(1)))
+//                        .and(qFluxoTrabalhoTarefa.notificacaoVencimento.eq(true)))
+//                .where(qDadosBasicosTarefa.dataConclusao.isNull());
+//
+//        if (Objects.nonNull(query.getFilter())) {
+//            final DadosBasicosTarefaFilter filter = (DadosBasicosTarefaFilter) query.getFilter();
+//
+//            if (StringUtils.isNotEmpty(filter.getProcessoUnico())) {
+//                jpaQuery.where(qProcesso.processoUnico.eq(filter.getProcessoUnico()));
+//            }
+//
+//            if (!CollectionUtils.isEmpty(filter.getNome())) {
+//                jpaQuery.where(filter.getNome()
+//                        .stream()
+//                        .map(nome -> "%" + nome + "%")
+//                        .map(qTarefa.nome::likeIgnoreCase)
+//                        .reduce(BooleanExpression::or)
+//                        .get());
+//            }
+//
+//            if (Objects.nonNull(filter.getIdCarteira())) {
+//                jpaQuery.where(qCarteira.id.eq(filter.getIdCarteira()));
+//            }
+//
+//            aplicarFiltroDataAgendamentoEStatus(jpaQuery, filter);
+//        }
+//
+//        applyPagination(jpaQuery, query.getPage(), query.getLimit());
+//        applySorter(jpaQuery, query.getSorter());
+//
+//        return jpaQuery;
+        return null;
     }
 
     private void restringirVisualizacaoUsuarioLogado(final JPAQuery<DadosBasicosTarefa> jpaQuery) {

@@ -26,88 +26,89 @@ public class JurisprudenciaRepositoryImpl extends AbstractJpaRepository<Jurispru
     }
 
     private JPAQuery<Jurisprudencia> createQuery(Query<Jurisprudencia> query) {
-        QProcesso qProcesso = QProcesso.processo1;
-        QJurisprudencia qJurisprudencia = QJurisprudencia.jurisprudencia;
-        QAcao qAcao = QAcao.acao;
-        QMateria qMateria = QMateria.materia;
-        QPratica qPratica = QPratica.pratica;
-
-        JPAQuery<Jurisprudencia> jpaQuery = new JPAQueryFactory(entityManager)
-                .select(
-                        QJurisprudencia.create(
-                                qJurisprudencia.id,
-                                qJurisprudencia.numeroProcesso,
-                                qJurisprudencia.link,
-                                qJurisprudencia.descricao,
-                                QProcesso.create(
-                                        qProcesso.id,
-                                        qProcesso.numero,
-                                        qProcesso.processoUnico,
-                                        QAcao.create(
-                                                qAcao.id,
-                                                qAcao.descricao
-                                        ),
-                                        QMateria.create(
-                                                qMateria.id,
-                                                qMateria.descricao
-                                        ),
-                                        QPratica.create(
-                                                qPratica.id,
-                                                qPratica.descricao
-                                        )
-                                )
-                        )
-
-                )
-                .from(qJurisprudencia)
-                .join(qJurisprudencia.processo, qProcesso)
-                .join(qProcesso.acao,qAcao)
-                .join(qProcesso.materia,qMateria)
-                .join(qProcesso.pratica,qPratica);
-
-        if (Objects.nonNull(query.getFilter()) && query.getFilter() instanceof JurisprudenciaFilter) {
-            final JurisprudenciaFilter filter = (JurisprudenciaFilter) query.getFilter();
-
-            if(Objects.nonNull(filter.getId())){
-                jpaQuery.where(qJurisprudencia.id.eq(filter.getId()));
-            }
-
-            if(StringUtils.isNotBlank(filter.getNumeroProcesso())){
-                jpaQuery.where(qJurisprudencia.numeroProcesso.equalsIgnoreCase(filter.getNumeroProcesso()));
-            }
-
-            if(StringUtils.isNotBlank(filter.getLink())){
-                jpaQuery.where(qJurisprudencia.link.equalsIgnoreCase(filter.getLink()));
-            }
-
-            if(StringUtils.isNotBlank(filter.getDescricao())){
-                jpaQuery.where(qJurisprudencia.descricao.equalsIgnoreCase(filter.getDescricao()));
-            }
-
-            if(Objects.nonNull(filter.getIdProcesso())){
-                jpaQuery.where(qProcesso.id.eq(filter.getIdProcesso()));
-            }
-
-            if(Objects.nonNull(filter.getProcesso())) {
-                if (Objects.nonNull(filter.getProcesso().getId()) && Objects.isNull(filter.getIdProcesso())) {
-                    jpaQuery.where(qProcesso.id.eq(filter.getProcesso().getId()));
-                }
-
-                if (Objects.nonNull(filter.getProcesso().getMateria())){
-                    jpaQuery.where(qProcesso.materia.eq(filter.getProcesso().getMateria()));
-                }
-
-                if (Objects.nonNull(filter.getProcesso().getAcao())){
-                    jpaQuery.where(qProcesso.acao.eq(filter.getProcesso().getAcao()));
-                }
-
-                if (Objects.nonNull(filter.getProcesso().getPratica())){
-                    jpaQuery.where(qProcesso.pratica.eq(filter.getProcesso().getPratica()));
-                }
-            }
-        }
-
-        return jpaQuery;
+//        QProcesso qProcesso = QProcesso.processo1;
+//        QJurisprudencia qJurisprudencia = QJurisprudencia.jurisprudencia;
+//        QAcao qAcao = QAcao.acao;
+//        QMateria qMateria = QMateria.materia;
+//        QPratica qPratica = QPratica.pratica;
+//
+//        JPAQuery<Jurisprudencia> jpaQuery = new JPAQueryFactory(entityManager)
+//                .select(
+//                        QJurisprudencia.create(
+//                                qJurisprudencia.id,
+//                                qJurisprudencia.numeroProcesso,
+//                                qJurisprudencia.link,
+//                                qJurisprudencia.descricao,
+//                                QProcesso.create(
+//                                        qProcesso.id,
+//                                        qProcesso.numero,
+//                                        qProcesso.processoUnico,
+//                                        QAcao.create(
+//                                                qAcao.id,
+//                                                qAcao.descricao
+//                                        ),
+//                                        QMateria.create(
+//                                                qMateria.id,
+//                                                qMateria.descricao
+//                                        ),
+//                                        QPratica.create(
+//                                                qPratica.id,
+//                                                qPratica.descricao
+//                                        )
+//                                )
+//                        )
+//
+//                )
+//                .from(qJurisprudencia)
+//                .join(qJurisprudencia.processo, qProcesso)
+//                .join(qProcesso.acao,qAcao)
+//                .join(qProcesso.materia,qMateria)
+//                .join(qProcesso.pratica,qPratica);
+//
+//        if (Objects.nonNull(query.getFilter()) && query.getFilter() instanceof JurisprudenciaFilter) {
+//            final JurisprudenciaFilter filter = (JurisprudenciaFilter) query.getFilter();
+//
+//            if(Objects.nonNull(filter.getId())){
+//                jpaQuery.where(qJurisprudencia.id.eq(filter.getId()));
+//            }
+//
+//            if(StringUtils.isNotBlank(filter.getNumeroProcesso())){
+//                jpaQuery.where(qJurisprudencia.numeroProcesso.equalsIgnoreCase(filter.getNumeroProcesso()));
+//            }
+//
+//            if(StringUtils.isNotBlank(filter.getLink())){
+//                jpaQuery.where(qJurisprudencia.link.equalsIgnoreCase(filter.getLink()));
+//            }
+//
+//            if(StringUtils.isNotBlank(filter.getDescricao())){
+//                jpaQuery.where(qJurisprudencia.descricao.equalsIgnoreCase(filter.getDescricao()));
+//            }
+//
+//            if(Objects.nonNull(filter.getIdProcesso())){
+//                jpaQuery.where(qProcesso.id.eq(filter.getIdProcesso()));
+//            }
+//
+//            if(Objects.nonNull(filter.getProcesso())) {
+//                if (Objects.nonNull(filter.getProcesso().getId()) && Objects.isNull(filter.getIdProcesso())) {
+//                    jpaQuery.where(qProcesso.id.eq(filter.getProcesso().getId()));
+//                }
+//
+//                if (Objects.nonNull(filter.getProcesso().getMateria())){
+//                    jpaQuery.where(qProcesso.materia.eq(filter.getProcesso().getMateria()));
+//                }
+//
+//                if (Objects.nonNull(filter.getProcesso().getAcao())){
+//                    jpaQuery.where(qProcesso.acao.eq(filter.getProcesso().getAcao()));
+//                }
+//
+//                if (Objects.nonNull(filter.getProcesso().getPratica())){
+//                    jpaQuery.where(qProcesso.pratica.eq(filter.getProcesso().getPratica()));
+//                }
+//            }
+//        }
+//
+//        return jpaQuery;
+        return null;
     }
 
     @Override

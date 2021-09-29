@@ -13,6 +13,7 @@ import java.util.Objects;
 @Table(name = "PROCESSO_USUARIO")
 @Data
 @Builder
+@IdClass(ProcessoUsuario.class)
 public class ProcessoUsuario implements Serializable {
 
     @Id

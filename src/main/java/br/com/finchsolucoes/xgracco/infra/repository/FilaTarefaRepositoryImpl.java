@@ -15,10 +15,9 @@ import java.util.List;
  * @since 2.1
  */
 @Repository
-public class FilaTarefaRepositoryImpl implements FilaTarefaJpaRepository {
+public class FilaTarefaRepositoryImpl extends AbstractJpaRepository<FilaTarefa,Long> implements FilaTarefaJpaRepository {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+
 
     @Override
     public List<FilaTarefa> findByFila(Fila fila) {

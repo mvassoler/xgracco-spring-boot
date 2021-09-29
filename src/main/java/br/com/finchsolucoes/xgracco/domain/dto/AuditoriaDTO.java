@@ -1,4 +1,4 @@
-package br.com.finchsolucoes.xgracco.legacy.beans.dto;
+package br.com.finchsolucoes.xgracco.domain.dto;
 
 import br.com.finchsolucoes.xgracco.domain.entity.Usuario;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.Calendar;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Auditoria implements Serializable {
+public class AuditoriaDTO{
 
     private Usuario usuario;
     private Calendar dataInicio;

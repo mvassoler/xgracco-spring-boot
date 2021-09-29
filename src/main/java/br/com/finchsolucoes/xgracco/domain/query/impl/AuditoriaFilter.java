@@ -2,7 +2,7 @@ package br.com.finchsolucoes.xgracco.domain.query.impl;
 
 import br.com.finchsolucoes.xgracco.domain.entity.Usuario;
 import br.com.finchsolucoes.xgracco.domain.query.Filter;
-import br.com.finchsolucoes.xgracco.legacy.beans.dto.Auditoria;
+import br.com.finchsolucoes.xgracco.domain.dto.AuditoriaDTO;
 
 import java.util.Calendar;
 
@@ -12,7 +12,7 @@ import java.util.Calendar;
  * @author Jordano
  * @since 2.1
  */
-public class AuditoriaFilter implements Filter<Auditoria> {
+public class AuditoriaFilter implements Filter<AuditoriaDTO> {
 
     private Usuario usuario;
 

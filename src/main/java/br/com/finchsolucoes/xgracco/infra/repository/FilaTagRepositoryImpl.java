@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class FilaTagRepositoryImpl extends AbstractJpaRepository<FilaTag, Long> implements FilaTagJpaRepository {
 
-    @Override
+
     public List<FilaTag> find(Query<FilaTag> query) {
         JPAQuery<FilaTag> jpaQuery = this.createQuery(query);
 
@@ -22,7 +22,7 @@ public class FilaTagRepositoryImpl extends AbstractJpaRepository<FilaTag, Long> 
         return jpaQuery.fetch();
     }
 
-    @Override
+
     public long count(Query<FilaTag> query) {
         return this.createQuery(query).fetchCount();
     }
@@ -54,7 +54,7 @@ public class FilaTagRepositoryImpl extends AbstractJpaRepository<FilaTag, Long> 
         return jpaQuery;
     }
 
-    @Override
+
     public Long countFilaByTag(Tag tag) {
 
         QFilaTag qFilaTag = QFilaTag.filaTag;

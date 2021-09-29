@@ -9,11 +9,11 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface ArquivoJpaRepository {
-    List<Arquivo> findByProcesso(Processo processo);
+    //List<Arquivo> findByProcesso(Processo processo);
 
-    List<Arquivo> findByProcessoAndProfile(Processo processo, Profile profile);
+    //List<Arquivo> findByProcessoAndProfile(Processo processo, Profile profile);
 
-    Optional<Arquivo> findByProcessoAndProfileAndId(Processo processo, Profile profile, Long id);
+    //Optional<Arquivo> findByProcessoAndProfileAndId(Processo processo, Profile profile, Long id);
 
     Optional<Arquivo> findByProfileAndNome(Profile profile, String nomeArquivo);
 
