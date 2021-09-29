@@ -519,7 +519,6 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
         if (Objects.nonNull(filter.getListFluxoTrabalhoTarefa())) {
             jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.fluxoTrabalhoTarefa.in(filter.getListFluxoTrabalhoTarefa()));
         }
-        var type = com.querydsl.core.types.dsl.Expressions.asDate();
         if (filter.getDataAgendamentoInicial() != null) {
             jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
                     .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
