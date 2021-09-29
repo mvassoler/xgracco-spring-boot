@@ -14,6 +14,7 @@ import java.util.Optional;
 @Component
 public class TesteAcao {
 
+
     private final AcaoRepository acaoRepository;
 
     public TesteAcao(AcaoRepository acaoRepository) {
@@ -35,8 +36,6 @@ public class TesteAcao {
 
         System.out.println(listAcao);
         System.out.println("Teste");
-
-
 
     }
 
