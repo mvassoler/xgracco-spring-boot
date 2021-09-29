@@ -14,3 +14,4 @@ public interface ProcessoGarantiaJpaRepository {
 
     Optional<ProcessoGarantia> findById(Processo processo, Long id);
 }
+

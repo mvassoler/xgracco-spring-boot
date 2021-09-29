@@ -10,8 +10,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.List;
 import java.util.Optional;
+
 
 /**
  * Implementação JPA do repositório da entidade ProcessoGarantia.
@@ -19,7 +21,6 @@ import java.util.Optional;
  * @author Jordano
  * @since 2.2
  */
-
 
 @Repository
 public class ProcessoGarantiaRepositoryImpl extends AbstractJpaRepository<ProcessoGarantia, Long> implements ProcessoGarantiaJpaRepository {
@@ -41,16 +42,14 @@ public class ProcessoGarantiaRepositoryImpl extends AbstractJpaRepository<Proces
             jpaQuery.orderBy(path.getString("id").asc());
         }
 
-        // page
         if (Optional.ofNullable(query.getPage()).orElse(0L) > 0L) {
             jpaQuery.offset(((query.getPage() - 1L) * query.getLimit()));
         }
-
         // limit
         jpaQuery.limit(query.getLimit());
-
         return jpaQuery.fetch();
     }
+
 
 
     @Override
@@ -58,11 +57,13 @@ public class ProcessoGarantiaRepositoryImpl extends AbstractJpaRepository<Proces
         return createQuery(processo, query).fetchCount();
     }
 
+
     private JPAQuery createQuery(Processo processo, Query<ProcessoGarantia> query) {
         final QProcessoGarantia qProcessoGarantia = QProcessoGarantia.processoGarantia;
         final QTipoGarantia qTipoGarantia = QTipoGarantia.tipoGarantia;
         final QInformacoesAdicionais qInformacoesAdicionais = QInformacoesAdicionais.informacoesAdicionais;
         final QProcesso qProcesso = QProcesso.processo1;
+
 
         final JPAQuery<ProcessoGarantia> jpaQuery = new JPAQueryFactory(entityManager)
                 .select(QProcessoGarantia.create(
@@ -81,12 +82,14 @@ public class ProcessoGarantiaRepositoryImpl extends AbstractJpaRepository<Proces
                                 qProcesso.id,
                                 qProcesso.numero),
                         qProcessoGarantia.dataAvaliacaoJudicial
+
                         )
                 )
                 .from(qProcessoGarantia)
                 .join(qProcessoGarantia.tipoGarantia, qTipoGarantia)
                 .join(qProcessoGarantia.processo, qProcesso)
                 .where(qProcessoGarantia.processo.eq(processo));
+
 
         // filter
         if (query.getFilter() != null && query.getFilter() instanceof ProcessoGarantiaFilter) {
@@ -100,16 +103,20 @@ public class ProcessoGarantiaRepositoryImpl extends AbstractJpaRepository<Proces
                 jpaQuery.where(qInformacoesAdicionais.id.eq(filter.getIdInformacoesAdicionais()));
             }
 
+
         }
         return jpaQuery;
     }
 
 
+
     @Override
+
     public Optional<ProcessoGarantia> findById(Processo processo, Long id) {
         final QProcessoGarantia qProcessoGarantia = QProcessoGarantia.processoGarantia;
         final QTipoGarantia qTipoGarantia = QTipoGarantia.tipoGarantia;
         final QProcesso qProcesso = QProcesso.processo1;
+
 
         return Optional.ofNullable(new JPAQueryFactory(entityManager)
                 .selectDistinct(QProcessoGarantia.create(
@@ -127,6 +134,7 @@ public class ProcessoGarantiaRepositoryImpl extends AbstractJpaRepository<Proces
                         QProcesso.create(
                                 qProcesso.id),
                         qProcessoGarantia.dataAvaliacaoJudicial
+
                         )
                 )
                 .from(qProcessoGarantia)
@@ -136,4 +144,6 @@ public class ProcessoGarantiaRepositoryImpl extends AbstractJpaRepository<Proces
                 .where(qProcessoGarantia.id.eq(id))
                 .fetchOne());
     }
+
 }
+
