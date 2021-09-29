@@ -27,7 +27,7 @@ public class ArquivoRepositoryImpl implements ArquivoJpaRepository {
     private EntityManager entityManager;
 
 
-    @Override
+
     public List<Arquivo> findByProcesso(Processo processo) {
         final QArquivo qArquivo = QArquivo.arquivo;
         final QTipoDocumento qTipoDocumento = QTipoDocumento.tipoDocumento;
@@ -69,7 +69,7 @@ public class ArquivoRepositoryImpl implements ArquivoJpaRepository {
     }
 
 
-    @Override
+
     public List<Arquivo> findByProcessoAndProfile(Processo processo, Profile profile) {
         final QArquivo qArquivo = QArquivo.arquivo;
         final QTipoDocumento qTipoDocumento = QTipoDocumento.tipoDocumento;
@@ -110,7 +110,7 @@ public class ArquivoRepositoryImpl implements ArquivoJpaRepository {
     }
 
 
-    @Override
+
     public Optional<Arquivo> findByProcessoAndProfileAndId(Processo processo, Profile profile, Long id) {
         final QArquivo qArquivo = QArquivo.arquivo;
         final QTipoDocumento qTipoDocumento = QTipoDocumento.tipoDocumento;
