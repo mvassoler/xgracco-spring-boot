@@ -45,8 +45,6 @@ public class Acao implements EntidadeAuditada {
 
     @RelatorioInterface(titulo = "Descrição", padrao = true)
     @Column(name = "DESCRICAO", length = 100, nullable = false)
-    //@NotBlank(message = "cadastroAcao.mensagem.erro1")
-    //@Size(min = 1, max = 100)
     private String descricao;
 
     @ElementCollection(fetch = FetchType.EAGER, targetClass = EnumInstancia.class)
