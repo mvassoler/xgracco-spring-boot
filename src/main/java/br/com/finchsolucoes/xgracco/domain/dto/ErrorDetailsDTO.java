@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorDetailsDTO implements Serializable {
+public class ErrorDetailsDTO{
 
     private static final long serialVersionUID = -3448636400238178910L;
     private String field;

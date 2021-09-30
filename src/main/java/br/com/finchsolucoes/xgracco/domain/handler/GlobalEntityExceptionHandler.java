@@ -1,5 +1,6 @@
 package br.com.finchsolucoes.xgracco.domain.handler;
 
+import br.com.finchsolucoes.xgracco.core.constants.TitleValidationConstants;
 import br.com.finchsolucoes.xgracco.core.locale.MessageLocaleComponent;
 import br.com.finchsolucoes.xgracco.domain.dto.ErrorDetailsDTO;
 import br.com.finchsolucoes.xgracco.domain.exception.*;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -330,6 +332,55 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
                 .message(ex.getMessage())
                 .build();
         return ResponseEntity.status(GATEWAY_TIMEOUT).body(Arrays.asList(error));
+    }
+
+    @ExceptionHandler(EntidadeEmUsoException.class)
+    public ResponseEntity<?> handleEntidadeEmUso(final EntidadeEmUsoException ex,WebRequest request) {
+
+        HttpStatus status = HttpStatus.CONFLICT;
+
+
+        ErrorDetailsDTO errorDetailsDTO = createProblemBuilder(status, TitleValidationConstants.ENTIDATE_EM_USO, ex.getMessage(), request.getContextPath())
+                .userMessage(ex.getMessage())
+                .build();
+
+        return handleExceptionInternal(ex, errorDetailsDTO, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<?> handleEntidadeNaoEncontrada(EntidadeNaoEncontradaException ex,
+                                                         WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ErrorDetailsDTO errorDetailsDTO = createProblemBuilder(status, TitleValidationConstants.ENTIDADE_NAO_ENCONTRADA, ex.getMessage(), request.getContextPath())
+                .userMessage(ex.getMessage())
+                .build();
+
+        return handleExceptionInternal(ex, errorDetailsDTO, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<?> handleNegocio(NegocioException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        String detail = ex.getMessage();
+
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(), request.getContextPath())
+                .userMessage(detail)
+                .build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    private ErrorDetailsDTO.ErrorDetailsDTOBuilder createProblemBuilder(HttpStatus status,
+                                                        String title, String detail, String contextPath) {
+
+        return ErrorDetailsDTO.builder()
+                .timestamp(OffsetDateTime.now())
+                .status(status.value())
+                .type(contextPath)
+                .title(title)
+                .detail(detail);
     }
 
     @Override
