@@ -48,7 +48,7 @@ public class QuartzConfiguration implements Serializable {
         properties.setProperty("org.quartz.jobStore.isClustered", "true");
         properties.setProperty("org.quartz.jobStore.useProperties", "false");
         properties.setProperty("org.quartz.jobStore.tablePrefix", "QRTZ_");
-        properties.setProperty("org.quartz.jobStore.driverDelegateClass", driverClasses.get(environment.getRequiredProperty("jdbc.driverClass")));
+        properties.setProperty("org.quartz.jobStore.driverDelegateClass", driverClasses.get(environment.getRequiredProperty("spring.datasource.driver-class-name")));
         schedulerFactoryBean.setQuartzProperties(properties);
 
         return schedulerFactoryBean;
