@@ -1,0 +1,613 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!--PERMISSAO PRE CADASTRO-->
+    <changeSet id="inserePermissaoPesquisaPreCadastroProcesso" author="andre.baroni">
+        <insert tableName="permissao">
+            <column name="id" value="645" />
+            <column name="descricao" value="Pré Cadastro Processo" />
+            <column name="id_tipo_permissao" value="2" />
+            <column name="id_permissao_pai" value="289" />
+            <column name="ordem" value="6" />
+            <column name="codigo" value="gestao-processos:notificacoes:pre-cadastro-processo" />
+        </insert>
+
+        <insert tableName="permissao">
+            <column name="id" value="646" />
+            <column name="descricao" value="Incluir" />
+            <column name="id_tipo_permissao" value="4" />
+            <column name="id_permissao_pai" value="645" />
+            <column name="ordem" value="1" />
+            <column name="codigo" value="gestao-processos:notificacoes:pre-cadastro-processo:incluir" />
+        </insert>
+
+        <insert tableName="permissao">
+            <column name="id" value="647" />
+            <column name="descricao" value="Editar" />
+            <column name="id_tipo_permissao" value="4" />
+            <column name="id_permissao_pai" value="645" />
+            <column name="ordem" value="2" />
+            <column name="codigo" value="gestao-processos:notificacoes:pre-cadastro-processo:editar" />
+        </insert>
+
+        <insert tableName="permissao">
+            <column name="id" value="648" />
+            <column name="descricao" value="Validar" />
+            <column name="id_tipo_permissao" value="4" />
+            <column name="id_permissao_pai" value="645" />
+            <column name="ordem" value="3" />
+            <column name="codigo" value="gestao-processos:notificacoes:pre-cadastro-processo:validar" />
+        </insert>
+    </changeSet>
+
+    <!--TABELA PRE_CADASTRO_PROCESSO-->
+    <changeSet author="raphael.moreira" id="create-table-PRE_CADASTRO_PROCESSO">
+        <createTable tableName="PRE_CADASTRO_PROCESSO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_PROCESSO"/>
+            </column>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="ANOTACAO" type="CLOB"/>
+            <column name="CERTIFICADO" type="BOOLEAN"/>
+            <column name="CLASSIFICACAO" type="VARCHAR(255)"/>
+            <column name="CONTROLECLIENTE" type="VARCHAR(255)"/>
+            <column name="DATACADASTRO" type="DATETIME"/>
+            <column name="DATA_DECISAO" type="DATETIME"/>
+            <column name="DATADISTRIBUICAO" type="DATETIME"/>
+            <column name="DATAENCERRAMENTO" type="DATETIME"/>
+            <column name="DATARECEBIMENTO" type="DATETIME"/>
+            <column name="ULTIMA_ATUALIZACAO" type="DATETIME"/>
+            <column name="ESTRATEGIA" type="CLOB"/>
+            <column name="NUMERO" type="VARCHAR(255)"/>
+            <column name="NUMEROANTIGO" type="VARCHAR(255)"/>
+            <column name="NUMERORDEM" type="VARCHAR(255)"/>
+            <column name="NUMERO_VARA" type="VARCHAR(255)"/>
+            <column name="ORDINAL" type="INTEGER"/>
+            <column name="PASTA" type="VARCHAR(255)"/>
+            <column name="PROCESSO_ELETRONICO" type="BOOLEAN"/>
+            <column name="PROCESSOUNICO" type="VARCHAR(255)"/>
+            <column name="PROCESSO_VIRTUAL" type="BOOLEAN"/>
+            <column name="PROJUDI" type="BOOLEAN"/>
+            <column name="STATUS" type="INTEGER"/>
+            <column name="SUMARIO" type="CLOB"/>
+            <column name="SUPERESPECIAL" type="BOOLEAN"/>
+            <column name="VALORCAUSA" type="DECIMAL(12, 4)"/>
+            <column name="VALORSENTENCA" type="DECIMAL(12, 4)"/>
+            <column name="VALORTOTALPEDIDO" type="DECIMAL(12, 4)"/>
+            <column name="VALORTOTALPROVISIONAMENTO" type="DECIMAL(12, 4)"/>
+            <column name="VIRTUALHABILITADO" type="BOOLEAN"/>
+            <column name="FK_ACAO" type="BIGINT"/>
+            <column name="FK_PESADV" type="BIGINT"/>
+            <column name="FK_PESADVRESP" type="BIGINT"/>
+            <column name="FK_AREA" type="BIGINT"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+            <column name="FK_CLIENTE" type="BIGINT"/>
+            <column name="FK_COMARCA" type="BIGINT"/>
+            <column name="FK_DECISAO" type="BIGINT"/>
+            <column name="FK_DIVISAO" type="BIGINT"/>
+            <column name="FK_ESCRITORIO" type="BIGINT"/>
+            <column name="FK_FORO" type="BIGINT"/>
+            <column name="FK_INSTANCIA" type="BIGINT"/>
+            <column name="FK_MATERIA" type="BIGINT"/>
+            <column name="FK_OPERACIONAL" type="BIGINT"/>
+            <column name="FK_PESPARTECONT" type="BIGINT"/>
+            <column name="FK_PESPARTEINT" type="BIGINT"/>
+            <column name="FK_PEDIDORESUMO" type="BIGINT"/>
+            <column name="FK_POSICAOPARTE" type="BIGINT"/>
+            <column name="FK_PRATICA" type="BIGINT"/>
+            <column name="FK_PROCESSO_AUDITORIA" type="BIGINT"/>
+            <column name="FK_REPARTICAO" type="BIGINT"/>
+            <column name="FK_TIPOJUSTICA" type="BIGINT"/>
+            <column name="FK_TIPOPROCESSO" type="BIGINT"/>
+            <column name="FK_UF" type="BIGINT"/>
+            <column name="FK_USUARIO" type="BIGINT"/>
+            <column name="FK_VARA" type="BIGINT"/>
+            <column name="FK_SISTEMAVIRTUAL" type="BIGINT"/>
+            <column name="PROCESSO_JUDICIAL_ANTIGO" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <!--TABELA PRE_CADASTRO_PROCESSO_AUD-->
+    <changeSet author="raphael.moreira" id="create-table-PRE_CADASTRO_PROCESSO_AUD">
+        <createTable tableName="PRE_CADASTRO_PROCESSO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_PROCESSO_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_PROCESSO_AUD"/>
+            </column>
+
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="ANOTACAO" type="CLOB"/>
+            <column name="CERTIFICADO" type="BOOLEAN"/>
+            <column name="CLASSIFICACAO" type="VARCHAR(255)"/>
+            <column name="CONTROLECLIENTE" type="VARCHAR(255)"/>
+            <column name="DATACADASTRO" type="DATETIME"/>
+            <column name="DATA_DECISAO" type="DATETIME"/>
+            <column name="DATADISTRIBUICAO" type="DATETIME"/>
+            <column name="DATAENCERRAMENTO" type="DATETIME"/>
+            <column name="DATARECEBIMENTO" type="DATETIME"/>
+            <column name="ULTIMA_ATUALIZACAO" type="DATETIME"/>
+            <column name="ESTRATEGIA" type="CLOB"/>
+            <column name="NUMERO" type="VARCHAR(255)"/>
+            <column name="NUMEROANTIGO" type="VARCHAR(255)"/>
+            <column name="NUMERORDEM" type="VARCHAR(255)"/>
+            <column name="NUMERO_VARA" type="VARCHAR(255)"/>
+            <column name="ORDINAL" type="INTEGER"/>
+            <column name="PASTA" type="VARCHAR(255)"/>
+            <column name="PROCESSO_ELETRONICO" type="BOOLEAN"/>
+            <column name="PROCESSOUNICO" type="VARCHAR(255)"/>
+            <column name="PROCESSO_VIRTUAL" type="BOOLEAN"/>
+            <column name="PROJUDI" type="BOOLEAN"/>
+            <column name="STATUS" type="INTEGER"/>
+            <column name="SUMARIO" type="CLOB"/>
+            <column name="SUPERESPECIAL" type="BOOLEAN"/>
+            <column name="VALORCAUSA" type="DECIMAL(12, 4)"/>
+            <column name="PERCENTUAL" type="DECIMAL(12, 4)"/>
+            <column name="VALORSENTENCA" type="DECIMAL(12, 4)"/>
+            <column name="VALORTOTALPEDIDO" type="DECIMAL(12, 4)"/>
+            <column name="VALORTOTALPROVISIONAMENTO" type="DECIMAL(12, 4)"/>
+            <column name="VIRTUALHABILITADO" type="BOOLEAN"/>
+            <column name="FK_ACAO" type="BIGINT"/>
+            <column name="FK_PESADV" type="BIGINT"/>
+            <column name="FK_PESADVRESP" type="BIGINT"/>
+            <column name="FK_AREA" type="BIGINT"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+            <column name="FK_CLIENTE" type="BIGINT"/>
+            <column name="FK_COMARCA" type="BIGINT"/>
+            <column name="FK_DECISAO" type="BIGINT"/>
+            <column name="FK_DIVISAO" type="BIGINT"/>
+            <column name="FK_ESCRITORIO" type="BIGINT"/>
+            <column name="FK_FORO" type="BIGINT"/>
+            <column name="FK_INSTANCIA" type="BIGINT"/>
+            <column name="FK_MATERIA" type="BIGINT"/>
+            <column name="FK_OPERACIONAL" type="BIGINT"/>
+            <column name="FK_PESPARTECONT" type="BIGINT"/>
+            <column name="FK_PESPARTEINT" type="BIGINT"/>
+            <column name="FK_PEDIDORESUMO" type="BIGINT"/>
+            <column name="FK_POSICAOPARTE" type="BIGINT"/>
+            <column name="FK_PRATICA" type="BIGINT"/>
+            <column name="FK_PROCESSO_AUDITORIA" type="BIGINT"/>
+            <column name="FK_REPARTICAO" type="BIGINT"/>
+            <column name="FK_TIPOJUSTICA" type="BIGINT"/>
+            <column name="FK_TIPOPROCESSO" type="BIGINT"/>
+            <column name="FK_UF" type="BIGINT"/>
+            <column name="FK_USUARIO" type="BIGINT"/>
+            <column name="FK_VARA" type="BIGINT"/>
+            <column name="FK_SISTEMAVIRTUAL" type="BIGINT"/>
+            <column name="PROCESSO_JUDICIAL_ANTIGO" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <!--TABELA PRE_CADASTRO_PARTE-->
+    <changeSet author="raphael.moreira" id="create-table-PRE_CADASTRO_PARTE">
+        <createTable tableName="PRE_CADASTRO_PARTE">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_PARTE"/>
+            </column>
+
+            <column name="FK_PRE_CADASTRO_PROCESSO" type="BIGINT"/>
+            <column name="FK_TIPO_PARTE" type="BIGINT"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!--TABELA PRE_CADASTRO_PARTE_AUD-->
+    <changeSet author="raphael.moreira" id="create-table-PRE_CADASTRO_PARTE_AUD">
+        <createTable tableName="PRE_CADASTRO_PARTE_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_PARTE_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_PARTE_AUD"/>
+            </column>
+
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="FK_PRE_CADASTRO_PROCESSO" type="BIGINT"/>
+            <column name="FK_TIPO_PARTE" type="BIGINT"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!--TABELA PRE_CADASTRO_INFO_ADICIONAL-->
+    <changeSet author="raphael.moreira" id="create-table-PRE_CADASTRO_INFO_ADICIONAL">
+        <createTable tableName="PRE_CADASTRO_INFO_ADICIONAL">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_INFO_ADICIONAL"/>
+            </column>
+            <column name="CONTEUDO" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_CAMPO" type="BIGINT"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="FK_PRE_CADASTRO_PROCESSO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!--TABELA PRE_CADASTRO_INFO_ADICIONAL_AUD-->
+    <changeSet author="raphael.moreira" id="create-table-PRE_CADASTRO_INFO_ADICIONAL_AUD">
+        <createTable tableName="PRE_CADASTRO_INFO_ADICIONAL_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_INFO_ADICIONAL_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_INFO_ADICIONAL_AUD"/>
+            </column>
+
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="CONTEUDO" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_CAMPO" type="BIGINT"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="FK_PRE_CADASTRO_PROCESSO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!--TABELA PRE_CADASTRO_PROCESSO_TAG-->
+    <changeSet author="raphael.moreira" id="create-table-PRE_CADASTRO_PROCESSO_TAG">
+        <createTable tableName="PRE_CADASTRO_PROCESSO_TAG">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_PROCESSO_TAG"/>
+            </column>
+            <column name="FK_PRE_CADASTRO_PROCESSO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_TAG" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!--TABELA PRE_CADASTRO_PROCESSO_TAG_AUD-->
+    <changeSet author="raphael.moreira" id="create-table-PRE_CADASTRO_PROCESSO_TAG_AUD">
+        <createTable tableName="PRE_CADASTRO_PROCESSO_TAG_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_PROCESSO_TAG_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRE_CADASTRO_PROCESSO_TAG_AUD"/>
+            </column>
+
+            <column name="TIPO_AUD" type="BIGINT"/>
+
+            <column name="FK_PRE_CADASTRO_PROCESSO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_TAG" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_PROCESSO">
+        <addForeignKeyConstraint baseColumnNames="FK_PROCESSO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_PROCESSO"
+                                 referencedColumnNames="ID" referencedTableName="PROCESSO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_ACAO">
+        <addForeignKeyConstraint baseColumnNames="FK_ACAO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_ACAO"
+                                 referencedColumnNames="ID" referencedTableName="ACAO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_PESADV">
+        <addForeignKeyConstraint baseColumnNames="FK_PESADV" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_PESADV"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_PESADVRESP">
+        <addForeignKeyConstraint baseColumnNames="FK_PESADVRESP" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_PESADVRESP"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_AREA">
+        <addForeignKeyConstraint baseColumnNames="FK_AREA" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_AREA"
+                                 referencedColumnNames="ID" referencedTableName="AREA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_CARTEIRA">
+        <addForeignKeyConstraint baseColumnNames="FK_CARTEIRA" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_CARTEIRA"
+                                 referencedColumnNames="ID" referencedTableName="CARTEIRA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_CLIENTE">
+        <addForeignKeyConstraint baseColumnNames="FK_CLIENTE" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_CLIENTE"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_COMARCA">
+        <addForeignKeyConstraint baseColumnNames="FK_COMARCA" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_COMARCA"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_DECISAO">
+        <addForeignKeyConstraint baseColumnNames="FK_DECISAO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_DECISAO"
+                                 referencedColumnNames="ID" referencedTableName="DECISAO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_DIVISAO">
+        <addForeignKeyConstraint baseColumnNames="FK_DIVISAO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_DIVISAO"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA_DIVISAO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_ESCRITORIO">
+        <addForeignKeyConstraint baseColumnNames="FK_ESCRITORIO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_ESCRITORIO"
+                                 referencedColumnNames="ID" referencedTableName="ESCRITORIO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_FORO">
+        <addForeignKeyConstraint baseColumnNames="FK_FORO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_FORO"
+                                 referencedColumnNames="ID" referencedTableName="FORO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_INSTANCIA">
+        <addForeignKeyConstraint baseColumnNames="FK_INSTANCIA" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_INSTANCIA"
+                                 referencedColumnNames="ID" referencedTableName="INSTANCIA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_MATERIA">
+        <addForeignKeyConstraint baseColumnNames="FK_MATERIA" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_MATERIA"
+                                 referencedColumnNames="ID" referencedTableName="MATERIA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_OPERACIONAL">
+        <addForeignKeyConstraint baseColumnNames="FK_OPERACIONAL" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_OPERACIONAL"
+                                 referencedColumnNames="ID" referencedTableName="USUARIO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_PESPARTECONT">
+        <addForeignKeyConstraint baseColumnNames="FK_PESPARTECONT" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_PESPARTECONT"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_PESPARTEINT">
+        <addForeignKeyConstraint baseColumnNames="FK_PESPARTEINT" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_PESPARTEINT"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_PEDIDORESUMO">
+        <addForeignKeyConstraint baseColumnNames="FK_PEDIDORESUMO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_PEDIDORESUMO"
+                                 referencedColumnNames="ID" referencedTableName="PEDIDORESUMO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_POSICAOPARTE">
+        <addForeignKeyConstraint baseColumnNames="FK_POSICAOPARTE" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_POSICAOPARTE"
+                                 referencedColumnNames="ID" referencedTableName="POSICAO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_PRATICA">
+        <addForeignKeyConstraint baseColumnNames="FK_PRATICA" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_PRATICA"
+                                 referencedColumnNames="ID" referencedTableName="PRATICA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_PROCESSO_AUDITORIA">
+        <addForeignKeyConstraint baseColumnNames="FK_PROCESSO_AUDITORIA" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_PROCESSO_AUDITORIA"
+                                 referencedColumnNames="ID" referencedTableName="PROCESSOAUDITORIA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_REPARTICAO">
+        <addForeignKeyConstraint baseColumnNames="FK_REPARTICAO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_REPARTICAO"
+                                 referencedColumnNames="ID" referencedTableName="REPARTICAO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_TIPOJUSTICA">
+        <addForeignKeyConstraint baseColumnNames="FK_TIPOJUSTICA" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_TIPOJUSTICA"
+                                 referencedColumnNames="ID" referencedTableName="TIPOJUSTICA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_TIPOPROCESSO">
+        <addForeignKeyConstraint baseColumnNames="FK_TIPOPROCESSO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_TIPOPROCESSO"
+                                 referencedColumnNames="ID" referencedTableName="TIPOPROCESSO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_UF">
+        <addForeignKeyConstraint baseColumnNames="FK_UF" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_UF"
+                                 referencedColumnNames="ID" referencedTableName="UF" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_PESSOA_USUARIO">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_PESSOA_USUARIO"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_VARA">
+        <addForeignKeyConstraint baseColumnNames="FK_VARA" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_VARA"
+                                 referencedColumnNames="ID" referencedTableName="VARA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_SISTEMAVIRTUAL">
+        <addForeignKeyConstraint baseColumnNames="FK_SISTEMAVIRTUAL" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_SISTEMAVIRTUAL"
+                                 referencedColumnNames="ID" referencedTableName="SISTEMAVIRTUAL" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PARTE_PESSOA">
+        <addForeignKeyConstraint baseColumnNames="FK_PESSOA" baseTableName="PRE_CADASTRO_PARTE"
+                                 constraintName="FK_PRE_CADASTRO_PARTE_PESSOA"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PARTE_TIPOPARTE">
+        <addForeignKeyConstraint baseColumnNames="FK_TIPO_PARTE" baseTableName="PRE_CADASTRO_PARTE"
+                                 constraintName="FK_PRE_CADASTRO_PARTE_TIPOPARTE"
+                                 referencedColumnNames="ID" referencedTableName="TIPOPARTE" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PARTE_PRE_CADASTRO_PROCESSO">
+        <addForeignKeyConstraint baseColumnNames="FK_PRE_CADASTRO_PROCESSO" baseTableName="PRE_CADASTRO_PARTE"
+                                 constraintName="FK_PRE_CADASTRO_PARTE_PRE_CADASTRO_PROCESSO"
+                                 referencedColumnNames="ID" referencedTableName="PRE_CADASTRO_PROCESSO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_INFO_ADICIONAL_CAMPO">
+        <addForeignKeyConstraint baseColumnNames="FK_CAMPO" baseTableName="PRE_CADASTRO_INFO_ADICIONAL"
+                                 constraintName="FK_PRE_CADASTRO_INFO_ADICIONAL_CAMPO"
+                                 referencedColumnNames="ID" referencedTableName="CAMPO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_INFO_ADICIONAL_PESSOA">
+        <addForeignKeyConstraint baseColumnNames="FK_PESSOA" baseTableName="PRE_CADASTRO_INFO_ADICIONAL"
+                                 constraintName="FK_PRE_CADASTRO_INFO_ADICIONAL_PESSOA"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_INFO_ADICIONAL_PRE_CADASTRO_PROCESSO">
+        <addForeignKeyConstraint baseColumnNames="FK_PRE_CADASTRO_PROCESSO" baseTableName="PRE_CADASTRO_INFO_ADICIONAL"
+                                 constraintName="FK_PRE_CADASTRO_INFO_ADICIONAL_PRE_CADASTRO_PROCESSO"
+                                 referencedColumnNames="ID" referencedTableName="PRE_CADASTRO_PROCESSO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_TAG_PRE_CADASTRO_PROCESSO">
+        <addForeignKeyConstraint baseColumnNames="FK_PRE_CADASTRO_PROCESSO" baseTableName="PRE_CADASTRO_PROCESSO_TAG"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_TAG_PRE_CADASTRO_PROCESSO"
+                                 referencedColumnNames="ID" referencedTableName="PRE_CADASTRO_PROCESSO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_TAG_TAG">
+        <addForeignKeyConstraint baseColumnNames="FK_TAG" baseTableName="PRE_CADASTRO_PROCESSO_TAG"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_TAG_TAG"
+                                 referencedColumnNames="ID" referencedTableName="TAG" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!--Sequences-->
+    <changeSet author="raphael.moreira" id="create-sequence-5.19.0" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PRE_CADASTRO_PROCESSO"/>
+        <createSequence sequenceName="SEQ_PRE_CADASTRO_PARTE"/>
+        <createSequence sequenceName="SEQ_PRE_CADASTRO_INFO_ADICIONAL"/>
+        <createSequence sequenceName="SEQ_PRE_CADASTRO_PROCESSO_TAG"/>
+    </changeSet>
+
+    <changeSet id="inserePermissaoPesquisaPreCadastroProcesso" author="felipe.costa">
+    <insert tableName="permissao">
+        <column name="id" value="649" />
+        <column name="descricao" value="Visualizar" />
+        <column name="id_tipo_permissao" value="4" />
+        <column name="id_permissao_pai" value="645" />
+        <column name="ordem" value="4" />
+        <column name="codigo" value="gestao-processos:notificacoes:pre-cadastro-processo:visualizar" />
+    </insert>
+    </changeSet>
+
+    <changeSet id="create-column-RESUMO-PRE_CADASTRO_PROCESSO" author="raphael.moreira">
+        <addColumn tableName="PRE_CADASTRO_PROCESSO">
+            <column name="RESUMO" type="VARCHAR(2000)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-column-RESUMO-PRE_CADASTRO_PROCESSO_AUD" author="raphael.moreira">
+        <addColumn tableName="PRE_CADASTRO_PROCESSO_AUD">
+            <column name="RESUMO" type="VARCHAR(2000)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-columns-PRE_CADASTRO_PROCESSO" author="raphael.moreira">
+        <addColumn tableName="PRE_CADASTRO_PROCESSO">
+            <column name="PROCESSO_SEM_NUMERO" type="BOOLEAN" defaultValue="false"/>
+            <column name="FK_FASE" type="BIGINT"/>
+            <column name="VALOR_CONDENACAO" type="DECIMAL(12,4)"/>
+            <column name="DATAINATIVACAO" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-columns-PRE_CADASTRO_PROCESSO_AUD" author="raphael.moreira">
+        <addColumn tableName="PRE_CADASTRO_PROCESSO_AUD">
+            <column name="PROCESSO_SEM_NUMERO" type="BOOLEAN" defaultValue="false"/>
+            <column name="FK_FASE" type="BIGINT"/>
+            <column name="VALOR_CONDENACAO" type="DECIMAL(12,4)"/>
+            <column name="DATAINATIVACAO" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="updatePermissao" author="felipe.costa">
+        <update tableName="permissao">
+            <column name="descricao" value="Pré-Cadastro Processo" type="VARCHAR(255)"/>
+            <where>
+                id = 645
+            </where>
+        </update>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="dropForeignKeyConstraint-FK_PRE_CADASTRO_PROCESSO_COMARCA">
+        <dropForeignKeyConstraint baseTableName="PRE_CADASTRO_PROCESSO"
+                                  constraintName="FK_PRE_CADASTRO_PROCESSO_COMARCA"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-fk-FK_PRE_CADASTRO_PROCESSO_COMARCA_CORRETO">
+        <addForeignKeyConstraint baseColumnNames="FK_COMARCA" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_PRE_CADASTRO_PROCESSO_COMARCA"
+                                 referencedColumnNames="ID" referencedTableName="COMARCA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>

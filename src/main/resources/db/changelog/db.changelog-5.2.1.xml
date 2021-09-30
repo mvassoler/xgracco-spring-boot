@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="andre.baroni" id="addColumn-ID-FILA-TAREFA-AUD">
+        <addColumn tableName="FILA_TAREFA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="addColumn-CARTEIRA-FILA-TAREFA-AUD">
+        <addColumn tableName="FILA_TAREFA_AUD">
+            <column name="CARTEIRA_ID" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="addColumn-FK-FLUXOTRABALHOTAREFA-FILA-TAREFA-AUD">
+        <addColumn tableName="FILA_TAREFA_AUD">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="dropPrimaryKey-FILA_TAREFA_AUD">
+        <dropPrimaryKey tableName="FILA_TAREFA_AUD" constraintName="PK_FILA_TAREFA_AUD"/>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="addPrimaryKey-FILA_TAREFA_AUD">
+        <addPrimaryKey tableName="FILA_TAREFA_AUD"
+                       constraintName="PK_FILA_TAREFA_AID"
+                       columnNames="ID, ID_AUD"/>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="dropNotNullConstraint-TAREFA-ID-FILA-TAREFA-AUD">
+        <dropNotNullConstraint tableName="FILA_TAREFA_AUD" columnName="TAREFA_ID" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="andre.baroni" id="dropNotNullConstraint-FILA-ID-FILA-TAREFA-AUD">
+        <dropNotNullConstraint tableName="FILA_TAREFA_AUD" columnName="FILA_ID" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet id="delete-FILA_PROCESSO" author="paulo.marcon">
+        <delete tableName="FILA_PROCESSO">
+            <where>ENUM_ID = 29</where>
+        </delete>
+    </changeSet>
+
+</databaseChangeLog>

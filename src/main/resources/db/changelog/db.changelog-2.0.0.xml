@@ -1,0 +1,609 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="renan.gigliotti" id="1">
+        <dropColumn columnName="DATAPAGAMENTO" tableName="HONORARIO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="2">
+        <dropColumn columnName="PAGAMENTO" tableName="HONORARIO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="3">
+        <dropForeignKeyConstraint baseTableName="HONORARIO" constraintName="FK_HONORARIO_TIPOPAGHONO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="4">
+        <dropColumn columnName="FK_TIPO_PAGA_HO" tableName="HONORARIO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="5">
+        <dropColumn columnName="PAGO" tableName="HONORARIO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="6">
+        <dropColumn columnName="OBSERVACAO" tableName="HONORARIO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="7">
+        <dropForeignKeyConstraint baseTableName="HONORARIO" constraintName="FK_HONORARIO_PESSOA"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="8">
+        <dropColumn columnName="FK_ADVOGADO" tableName="HONORARIO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="9">
+        <dropColumn columnName="PERCENTUAL" tableName="HONORARIO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="10">
+        <addColumn tableName="HONORARIO">
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="11">
+        <update tableName="HONORARIO">
+            <column name="DESCRICAO" type="VARCHAR(255)" value="HONORÁRIO"></column>
+        </update>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="12">
+        <addNotNullConstraint columnName="DESCRICAO" tableName="HONORARIO" columnDataType="VARCHAR(255)"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="13">
+        <addColumn tableName="HONORARIO">
+            <column name="VALOR" type="DECIMAL(12, 4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="14">
+        <addColumn tableName="HONORARIO">
+            <column name="FK_RESPONSAVEL" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="15">
+        <addForeignKeyConstraint baseColumnNames="FK_RESPONSAVEL" baseTableName="HONORARIO"
+                                 constraintName="FK_HONORARIO_PESSOA_RESP" referencedColumnNames="ID"
+                                 referencedTableName="PESSOA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="16">
+        <addNotNullConstraint columnName="DATAVENCIMENTO" tableName="HONORARIO" columnDataType="DATETIME"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="17">
+        <update tableName="HONORARIO">
+            <column name="VALOR" type="DECIMAL(12, 4)" valueNumeric="0"></column>
+        </update>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="18">
+        <addNotNullConstraint columnName="VALOR" tableName="HONORARIO" columnDataType="DECIMAL(12, 4)"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="19">
+        <createTable tableName="CONTRATOCLAUSULA_TAREFA">
+            <column name="ID_CONTRATO_CLAUSULA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATO_CLAUSULA_TAREFA"/>
+            </column>
+            <column name="ID_TAREFA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATO_CLAUSULA_TAREFA"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="20">
+        <addForeignKeyConstraint baseTableName="CONTRATOCLAUSULA_TAREFA" baseColumnNames="ID_TAREFA"
+                                 constraintName="FKCLAUSULA_TAREFA_TAREFA" referencedTableName="TAREFA"
+                                 referencedColumnNames="ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="21">
+        <addForeignKeyConstraint baseTableName="CONTRATOCLAUSULA_TAREFA" baseColumnNames="ID_CONTRATO_CLAUSULA"
+                                 constraintName="FKCLAUSULA_TAREFA_CLAUSULA" referencedTableName="CONTRATO_CLAUSULA"
+                                 referencedColumnNames="ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="22">
+        <addColumn tableName="PROCESSODESPESASTIPO">
+            <column name="REEMBOLSAVEL" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="23">
+        <dropForeignKeyConstraint baseTableName="HONORARIO" constraintName="FK_HONORARIO_TIPOPAGAMHONORAR"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="24">
+        <dropTable tableName="TIPOPAGAMENTOHONORARIO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="25">
+        <dropColumn columnName="OBS" tableName="PROCESSODESPESAS"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="26">
+        <dropColumn columnName="PRE_APROVADO" tableName="PROCESSODESPESAS"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="27">
+        <dropColumn columnName="SALDO" tableName="PROCESSODESPESAS"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="28">
+        <addColumn tableName="PROCESSODESPESAS">
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="29">
+        <update tableName="PROCESSODESPESAS">
+            <column name="DESCRICAO" type="VARCHAR(255)" value="DESPESA"></column>
+        </update>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="30">
+        <addColumn tableName="PROCESSODESPESAS">
+            <column name="FATURAVEL" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="31">
+        <addNotNullConstraint columnName="DESCRICAO" tableName="PROCESSODESPESAS" columnDataType="VARCHAR(255)"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="32">
+        <dropForeignKeyConstraint baseTableName="CONTRATO"
+                                  constraintName="FK_CONTRATO_PESSOA_RESP"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="33">
+        <dropColumn columnName="FK_RESPONSAVEL" tableName="CONTRATO"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="34">
+        <dropColumn columnName="CONTA_RECEBIMENTO" tableName="CONTRATO"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="35">
+        <dropColumn columnName="TIPO" tableName="CONTRATO"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="36">
+        <createTable tableName="TIPOCONTRATOCLAUSULA">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOCONTRATOCLAUSULA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="37">
+        <insert tableName="TIPOCONTRATOCLAUSULA">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Processo encerrado"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="38">
+        <insert tableName="TIPOCONTRATOCLAUSULA">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Processo em andamento"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="39">
+        <insert tableName="TIPOCONTRATOCLAUSULA">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Processo cadastrado"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="40">
+        <insert tableName="TIPOCONTRATOCLAUSULA">
+            <column name="ID" valueNumeric="4"/>
+            <column name="DESCRICAO" value="Tarefa concluída"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="41">
+        <insert tableName="TIPOCONTRATOCLAUSULA">
+            <column name="ID" valueNumeric="5"/>
+            <column name="DESCRICAO" value="Reembolso de despesas"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="42">
+        <insert tableName="TIPOCONTRATOCLAUSULA">
+            <column name="ID" valueNumeric="6"/>
+            <column name="DESCRICAO" value="Apontamento de horas"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="43">
+        <addForeignKeyConstraint baseTableName="CONTRATO_CLAUSULA" baseColumnNames="TIPO_CLAUSULA"
+                                 constraintName="FK_CLAUSULA_TIPOCLAUSULA"
+                                 referencedTableName="TIPOCONTRATOCLAUSULA" referencedColumnNames="id"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="44">
+        <createTable tableName="CLAUSULAVALORSOBRE">
+            <column name="ID" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="PK_CLAUSULAVALORSOBRE" nullable="false"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="45">
+        <insert tableName="CLAUSULAVALORSOBRE">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Valor Causa"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="46">
+        <insert tableName="CLAUSULAVALORSOBRE">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Valor Condenação/Sentença"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="47">
+        <insert tableName="CLAUSULAVALORSOBRE">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Valor Pago"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="48">
+        <addForeignKeyConstraint baseTableName="CONTRATO_CLAUSULA" baseColumnNames="VALOR_SOBRE"
+                                 constraintName="FK_CLAUSULA_VALORSOBRE"
+                                 referencedTableName="CLAUSULAVALORSOBRE" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="49">
+        <createTable tableName="TIPODATAVALIDACAO">
+            <column name="ID" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="PK_TIPODATAVALIDACAO" nullable="false"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="50">
+        <insert tableName="TIPODATAVALIDACAO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Data Cadastro"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="51">
+        <insert tableName="TIPODATAVALIDACAO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Data Recebimento"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="52">
+        <insert tableName="TIPODATAVALIDACAO">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Data Encerramento"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="53">
+        <addForeignKeyConstraint baseTableName="CONTRATO_CLAUSULA" baseColumnNames="TIPO_DATA_VERIFICACAO"
+                                 constraintName="FK_CLAUSULA_DATAVALIDACAO"
+                                 referencedTableName="TIPODATAVALIDACAO" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onUpdate="NO ACTION" onDelete="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="54">
+        <createTable tableName="SERVICO_STATUS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SERVICO_STATUS"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="55">
+        <insert tableName="SERVICO_STATUS">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Aberto"/>
+        </insert>
+        <insert tableName="SERVICO_STATUS">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Encerrado"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="56">
+        <createTable tableName="SERVICO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SERVICO"/>
+            </column>
+            <column name="DATACADASTRO" type="DATETIME"/>
+            <column name="ASSUNTO" type="VARCHAR(255)"/>
+            <column name="ID_CLIENTE" type="BIGINT"/>
+            <column name="ID_SERVICO_STATUS" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="57" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_SERVICO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="58">
+        <addForeignKeyConstraint baseColumnNames="ID_CLIENTE" baseTableName="SERVICO"
+                                 constraintName="FK_SERVICO_CLIENTE" referencedColumnNames="ID"
+                                 referencedTableName="PESSOA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="59">
+        <addForeignKeyConstraint baseColumnNames="ID_SERVICO_STATUS" baseTableName="SERVICO"
+                                 constraintName="FK_SERVICO_SERVICOSTATUS" referencedColumnNames="ID"
+                                 referencedTableName="SERVICO_STATUS" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="60">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="89"/>
+            <column name="DESCRICAO" value="Permissão para Serviço"/>
+            <column name="EXIBE" valueBoolean="true"/>
+            <column name="FEATURE" value="servico"/>
+            <column name="REDIRECT" value="/servico/lista"/>
+            <column name="TIPO" value="CADASTROFERRAMENTA"/>
+            <column name="CODIGO" value="Ferramentas | Timesheet | Serviços"/>
+            <column name="DIRETORIOVIEW" value="/servico"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="61">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="89"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="89"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="62" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="89"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="89"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="63" dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="89"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="89"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="64">
+        <createTable tableName="APONTAMENTO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_APONTAMENTO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="ID_SERVICO" type="BIGINT"/>
+            <column name="ID_RESPONSAVEL" type="BIGINT"/>
+            <column name="DATALANCAMENTO" type="DATETIME"/>
+            <column name="QUANTIDADEHORAS" type="DECIMAL(19, 2)"/>
+            <column name="ID_PROCESSO" type="BIGINT"/>
+            <column name="FATURAVEL" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="65">
+        <addForeignKeyConstraint baseTableName="APONTAMENTO" baseColumnNames="ID_SERVICO"
+                                 constraintName="FK_APONTAMENTO_SERVICO" referencedTableName="SERVICO"
+                                 referencedColumnNames="ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="66">
+        <addForeignKeyConstraint baseTableName="APONTAMENTO" baseColumnNames="ID_RESPONSAVEL"
+                                 constraintName="FK_APONTAMENTO_RESPONSAVEL" referencedTableName="PESSOA"
+                                 referencedColumnNames="ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="67">
+        <addForeignKeyConstraint baseTableName="APONTAMENTO" baseColumnNames="ID_PROCESSO"
+                                 constraintName="FK_APONTAMENTO_PROCESSO" referencedTableName="PROCESSO"
+                                 referencedColumnNames="ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="68" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_APONTAMENTO"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="69">
+        <createTable tableName="CONTRATOCLAUSULA_DESPESA">
+            <column name="ID_CONTRATO_CLAUSULA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATO_CLAUSULA_DESPESA"/>
+            </column>
+            <column name="ID_DESPESATIPO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONTRATO_CLAUSULA_DESPESA"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="70">
+        <addForeignKeyConstraint baseTableName="CONTRATOCLAUSULA_DESPESA" baseColumnNames="ID_DESPESATIPO"
+                                 constraintName="FKCLAUSULA_DESPESA_DESPESATIPO"
+                                 referencedTableName="PROCESSODESPESASTIPO"
+                                 referencedColumnNames="ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="71">
+        <addForeignKeyConstraint baseTableName="CONTRATOCLAUSULA_DESPESA" baseColumnNames="ID_CONTRATO_CLAUSULA"
+                                 constraintName="FKCLAUSULA_DESPESA_CLAUSULA" referencedTableName="CONTRATO_CLAUSULA"
+                                 referencedColumnNames="ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="72">
+        <addColumn tableName="CONTRATO_CLAUSULA">
+            <column name="FK_PAPEL" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="73">
+        <addForeignKeyConstraint baseTableName="CONTRATO_CLAUSULA" baseColumnNames="FK_PAPEL"
+                                 constraintName="FK_CONTRATOCLAUSULA_PAPEL" referencedTableName="PAPEL"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="74">
+        <createTable tableName="SERVICO_ARQUIVO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SERVICO_ARQUIVO"/>
+            </column>
+            <column name="ID_SERVICO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CAMINHO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="DATA_CADASTRO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="75">
+        <addForeignKeyConstraint baseColumnNames="ID_SERVICO" baseTableName="SERVICO_ARQUIVO"
+                                 constraintName="FK_SERVICOARQUIVO_SERVICO" referencedColumnNames="ID"
+                                 referencedTableName="SERVICO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="76" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_SERVICO_ARQUIVO"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="78">
+        <dropColumn columnName="DATA" tableName="PROCESSODESPESAS"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="79">
+        <insert tableName="PARAMETROGLOBAL">
+            <column name="ID" valueNumeric="23"/>
+            <column name="CHAVE" value="ParametrosFaturamento.dataBloqueio"/>
+            <column name="CLASSE" value="br.com.finchsolucoes.xgracco.beans.parametros.ParametrosFaturamento"/>
+            <column name="DESCRICAO" value="Data de Bloqueio"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="80">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="90"/>
+            <column name="DESCRICAO" value="Permissão para Configuração da Data Bloqueio Faturamento"/>
+            <column name="EXIBE" valueBoolean="true"/>
+            <column name="FEATURE" value="parametrosfaturamento"/>
+            <column name="REDIRECT" value="/parametrosfaturamento/pesquisa"/>
+            <column name="TIPO" value="CADASTROSISTEMA"/>
+            <column name="CODIGO" value="Sistema | Data Bloqueio Faturamento"/>
+            <column name="DIRETORIOVIEW" value="/parametrosfaturamento"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="81">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="90"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="82" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="90"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="83" dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="90"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="84">
+        <insert tableName="TIPOCONTRATOCLAUSULA">
+            <column name="ID" valueNumeric="7"/>
+            <column name="DESCRICAO" value="Reembolso de Honorários"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="85">
+        <createTable tableName="ESCRITORIO_ACEITE_AUTOMATICO">
+            <column name="ID_CARTEIRA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ESCRITORIO_ACEITE_AUTO"/>
+            </column>
+            <column name="ID_PESSOA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ESCRITORIO_ACEITE_AUTO"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Jordano" id="86">
+        <addForeignKeyConstraint baseColumnNames="ID_CARTEIRA" baseTableName="ESCRITORIO_ACEITE_AUTOMATICO"
+                                 constraintName="FK_ESCRITORIO_ACEITE_CARTEIRA" referencedColumnNames="ID"
+                                 referencedTableName="CARTEIRA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="87">
+        <addForeignKeyConstraint baseColumnNames="ID_PESSOA" baseTableName="ESCRITORIO_ACEITE_AUTOMATICO"
+                                 constraintName="FK_ESCRITORIO_ACEITE_PESSOA" referencedColumnNames="ID"
+                                 referencedTableName="PESSOA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+</databaseChangeLog>

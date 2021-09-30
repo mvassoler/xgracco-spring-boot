@@ -1,0 +1,186 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="insert-rotina-captura-novos-andamentos-com-gateway-http" author="andre.baroni">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="15"/>
+            <column name="DESCRICAO" value="Captura de Novos Andamentos Gateway HTTP"/>
+        </insert>
+    </changeSet>
+
+    <!--CRIAÇÃO TABELA URGENCIA-->
+    <changeSet author="deivy.spaulonci" id="create-table-URGENCIA">
+        <createTable tableName="URGENCIA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_URGENCIA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <!--TABELA URGENCIA_AUD-->
+    <changeSet author="deivy.spaulonci" id="create-table-URGENCIA_AUD">
+        <createTable tableName="URGENCIA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_URGENCIA_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_URGENCIA_AUD"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <!--PROCESSO CONSULTIVO-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-CONSULTIVO" >
+        <addColumn tableName="PROCESSO">
+            <column name="CONSULTIVO" type="BOOLEAN">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO CONSULTIVO TITULO-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-TITULO" >
+        <addColumn tableName="PROCESSO">
+            <column name="TITULO" type="VARCHAR(200)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO CONSULTIVO DESCRICAO-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-DESCRICAO" >
+        <addColumn tableName="PROCESSO">
+            <column name="DESCRICAO" type="VARCHAR(2000)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO CONSULTIVO PRAZO-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-PRAZO" >
+        <addColumn tableName="PROCESSO">
+            <column name="PRAZO" type="DATETIME">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO CONSULTIVO FK_URGENCIA-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-FK_URGENCIA" >
+        <addColumn tableName="PROCESSO">
+            <column name="FK_URGENCIA" type="BIGINT">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO AUD CONSULTIVO-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-CONSULTIVO_AUD" >
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="CONSULTIVO" type="BOOLEAN">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO AUD CONSULTIVO TITULO-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-TITULO_AUD" >
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="TITULO" type="VARCHAR(200)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO AUD CONSULTIVO DESCRICAO-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-DESCRICAO_AUD" >
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="DESCRICAO" type="VARCHAR(2000)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO AUD CONSULTIVO PRAZO-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-PRAZO_AUD" >
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="PRAZO" type="DATETIME">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO AUD CONSULTIVO FK_URGENCIA-->
+    <changeSet author="deivy.spaulonci" id="ADD-COLUMN-FK_URGENCIA_AUD" >
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="FK_URGENCIA" type="BIGINT">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet author="deivy.spaulonci" id="create-fk-FK_PROCESSO_URGENCIA">
+        <addForeignKeyConstraint baseColumnNames="FK_URGENCIA" baseTableName="PROCESSO"
+                                 constraintName="FK_PROCESSO_URGENCIA"
+                                 referencedColumnNames="ID" referencedTableName="URGENCIA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- ADICAO DA PERMISSAO DE PROCESSO CONSULTIVO -->
+    <changeSet author="deivy.spaulonci" id="insert-PERMISSAO_PROCESSO_CONSULTIVO" >
+        <insert tableName="permissao">
+            <column name="id" value="650" />
+            <column name="descricao" value="Processo Consultivo" />
+            <column name="id_tipo_permissao" value="2" />
+            <column name="id_permissao_pai" value="1" />
+            <column name="ordem" value="11" />
+            <column name="codigo" value="gestao-processos:processo-consultivo" />
+        </insert>
+    </changeSet>
+
+    <!--CRIAÇÃO DA SEQUENCE URGENCIA-->
+    <changeSet author="deivy.spaulonci" id="createSequence-URGENCIA" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_URGENCIA"/>
+    </changeSet>
+
+    <!-- ADICAO DE VALORES PADROES NA TABELA URGENCIA -->
+    <changeSet author="deivy.spaulonci" id="insert-VALORES_URGENCIA" dbms="${dbmsSequence}">
+        <insert tableName="URGENCIA">
+            <column name="ID" valueSequenceNext="SEQ_URGENCIA"/>
+            <column name="descricao" value="Emergência" />
+        </insert>
+        <insert tableName="URGENCIA">
+            <column name="ID" valueSequenceNext="SEQ_URGENCIA"/>
+            <column name="descricao" value="Muita Urgência" />
+        </insert>
+        <insert tableName="URGENCIA">
+            <column name="ID" valueSequenceNext="SEQ_URGENCIA"/>
+            <column name="descricao" value="Urgência" />
+        </insert>
+        <insert tableName="URGENCIA">
+            <column name="ID" valueSequenceNext="SEQ_URGENCIA"/>
+            <column name="descricao" value="Pouca Urgência" />
+        </insert>
+        <insert tableName="URGENCIA">
+            <column name="ID" valueSequenceNext="SEQ_URGENCIA"/>
+            <column name="descricao" value="Não Urgente" />
+        </insert>
+    </changeSet>
+
+    <!-- ADICAO DE VALORES PADROES NA TABELA URGENCIA -->
+    <changeSet author="deivy.spaulonci" id="insert-VALORES_URGENCIA" dbms="${dbmsAutoIncrement}">
+        <insert tableName="URGENCIA">
+            <column name="descricao" value="Emergência" />
+        </insert>
+        <insert tableName="URGENCIA">
+            <column name="descricao" value="Muita Urgência" />
+        </insert>
+        <insert tableName="URGENCIA">
+            <column name="descricao" value="Urgência" />
+        </insert>
+        <insert tableName="URGENCIA">
+            <column name="descricao" value="Pouca Urgência" />
+        </insert>
+        <insert tableName="URGENCIA">
+            <column name="descricao" value="Não Urgente" />
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

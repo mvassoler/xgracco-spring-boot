@@ -1,0 +1,225 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <changeSet author="Jordano" id="add-field-FERIADO-COMARCA">
+        <addColumn tableName="FERIADO">
+            <column name="COMARCA_ID" type="BIGINT"></column>
+            <column name="AREA_ID" type="BIGINT"></column>
+
+        </addColumn>
+
+        <addForeignKeyConstraint constraintName="FK_COMARCA_FERIADO"
+                                 baseTableName="FERIADO" baseColumnNames="COMARCA_ID"
+                                 referencedTableName="COMARCA" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="FK_AREA_FERIADO"
+                                 baseTableName="FERIADO" baseColumnNames="AREA_ID"
+                                 referencedTableName="AREA" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="add-field-FERIADO_AUD">
+        <addColumn tableName="FERIADO_AUD">
+            <column name="COMARCA_ID" type="BIGINT"></column>
+            <column name="AREA_ID" type="BIGINT"></column>
+
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add-STATUS-TAREFA" author="thiago.fogar">
+        <insert tableName="STATUS_TAREFA">
+            <column name="ID" value="3"></column>
+            <column name="DESCRICAO" value="Pendente"></column>
+        </insert>
+
+        <insert tableName="STATUS_TAREFA">
+            <column name="ID" value="4"></column>
+            <column name="DESCRICAO" value="Hibernada"></column>
+        </insert>
+
+        <insert tableName="STATUS_TAREFA">
+            <column name="ID" value="5"></column>
+            <column name="DESCRICAO" value="Devolvida"></column>
+        </insert>
+
+        <insert tableName="STATUS_TAREFA">
+            <column name="ID" value="6"></column>
+            <column name="DESCRICAO" value="Concluida"></column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="update-DADOSBASICOSTAREFA-set-HIBERNADO" author="thiago.fogar">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA SET STATUS = 4
+            WHERE ID IN (SELECT FK_DADOSBASICOSTAREFA
+            FROM HISTORICO_FILA_DEVOLUCAO
+            WHERE DATAHIBERNACAO is not null
+            AND CONCLUIDO is null)
+        </sql>
+    </changeSet>
+
+    <changeSet id="update-DADOSBASICOSTAREFA-set-DEVOLVIDA" author="thiago.fogar">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA
+            SET STATUS = 5
+            WHERE ID IN (
+            SELECT FK_DADOSBASICOSTAREFA
+            FROM HISTORICO_FILA_DEVOLUCAO
+            WHERE DATAHIBERNACAO IS NULL
+            AND DATATRATAMENTO IS NULL
+            AND DATALIBERACAO IS NULL)
+        </sql>
+    </changeSet>
+
+    <changeSet id="update-DADOSBASICOSTAREFA-set-PENDENTE" author="thiago.fogar">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA
+            SET STATUS = 3
+            WHERE DATA_CONCLUSAO IS NULL
+            AND FK_RESPONSAVEL IS NULL
+            AND STATUS IS NULL
+        </sql>
+    </changeSet>
+
+    <changeSet id="insert-rotina-tarefas-hibernadas" author="thiago.fogar">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="14"/>
+            <column name="DESCRICAO" value="Tarefas Hibernadas"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="ALTER-COLUMN-DADOSBASICOSTAREFACAMPOS-DESCRICAO-CLOB" author="bruno.thiago">
+        <modifyDataType tableName="DADOSBASICOSTAREFACAMPOS" columnName="DESCRICAO" newDataType="CLOB"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-CAIXA-LOTE-DESPESAS">
+        <createTable tableName="CAIXA_LOTE_DESPESAS">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAIXA_LOTE_DESPESAS"/>
+            </column>
+
+            <column name="FK_CAIXA_LOTE_CUSTAS" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="FK_PROCESSODESPESAS" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK-CAIXA_LOTE_DESPESAS">
+        <addForeignKeyConstraint baseColumnNames="FK_CAIXA_LOTE_CUSTAS" baseTableName="CAIXA_LOTE_DESPESAS"
+                                 constraintName="FK_CAIXA_LOTE_CUSTAS_DESPESAS" referencedColumnNames="ID"
+                                 referencedTableName="CAIXA_LOTE_CUSTAS" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK-CAIXA_LOTE_DESPESAS_PROCESSODESPESAS">
+        <addForeignKeyConstraint baseColumnNames="FK_PROCESSODESPESAS" baseTableName="CAIXA_LOTE_DESPESAS"
+                                 constraintName="FK_CAIXA_LOTE_DESPESAS_PROCESSODESPESAS_CUSTAS"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="PROCESSODESPESAS" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-table-CAIXA-LOTE-DESPESAS_AUD">
+        <createTable tableName="CAIXA_LOTE_DESPESAS_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAIXA_LOTE_DESPESAS_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAIXA_LOTE_DESPESAS_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+
+            <column name="FK_CAIXA_LOTE_CUSTAS" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="FK_PROCESSODESPESAS" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-FK_CAIXA_LOTE_DESPESAS_AUD">
+        <addForeignKeyConstraint baseTableName="CAIXA_LOTE_DESPESAS_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_CAIXA_LOTE_DESPESAS_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="add-columns-descricao-table-CAIXA-LOTE-CUSTAS">
+        <addColumn tableName="CAIXA_LOTE_CUSTAS">
+            <column name="DESCRICAO" type="VARCHAR(8000)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="add-columns-descricao-table-CAIXA-LOTE-CUSTAS-AUD">
+        <addColumn tableName="CAIXA_LOTE_CUSTAS_AUD">
+            <column name="DESCRICAO" type="VARCHAR(8000)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="add-columns-datalancamento-table-CAIXA-LOTE-CUSTAS">
+        <addColumn tableName="CAIXA_LOTE_CUSTAS">
+            <column name="DATA_LANCAMENTO" type="DATETIME">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="add-columns-datalancamento-table-CAIXA-LOTE-CUSTAS-AUD">
+        <addColumn tableName="CAIXA_LOTE_CUSTAS_AUD">
+            <column name="DATA_LANCAMENTO" type="DATETIME">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="create-SEQUENCE-CHANGELOG-4.0.5" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CAIXA_LOTE_DESPESAS"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="add-field-CONFIGURACAO_CLIENTE-TIPO_AGENDAMENTO_DIAS">
+        <addColumn tableName="CONFIGURACAO_CLIENTE">
+            <column name="TIPO_AGENDAMENTO_DIAS" type="INTEGER"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="add-field-CONFIGURACAO_CLIENTE_AUD-TIPO_AGENDAMENTO_DIAS">
+        <addColumn tableName="CONFIGURACAO_CLIENTE_AUD">
+            <column name="TIPO_AGENDAMENTO_DIAS" type="INTEGER"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="ALTER-COLUMN-HISTORICO_FILA_PESSOA-DESCRICAODEVOLUCAO-CLOB" author="bruno.thiago">
+        <modifyDataType tableName="HISTORICO_FILA_PESSOA" columnName="DESCRICAODEVOLUCAO" newDataType="CLOB"/>
+    </changeSet>
+
+    <changeSet id="ALTER-COLUMN-HISTORICO_FILA_DEVOLUCAO-DESCRICAO-CLOB" author="bruno.thiago">
+        <modifyDataType tableName="HISTORICO_FILA_DEVOLUCAO" columnName="DESCRICAO" newDataType="CLOB"/>
+    </changeSet>
+
+    <changeSet id="update-CONFIGURACAO_CLIENTE-tipo-dias" author="Jordano">
+        <update tableName="CONFIGURACAO_CLIENTE">
+            <column name="OPERACIONAL_OBRIGATORIO" value="0"/>
+            <where>OPERACIONAL_OBRIGATORIO is null</where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,255 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="add-columns-publicacao" author="jordano">
+        <addColumn tableName="PUBLICACAO">
+            <column name="DATA_COLAGEM" type="TIMESTAMP">
+            </column>
+            <column name="DATA_PUBLICACAO" type="TIMESTAMP">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="updata-colomns-data-publicacao" author="Jordano" dbms="${dbmsSequence}">
+        <sql>
+            update publicacao set
+            data_colagem = to_timestamp(datacolagem, 'dd-MM-yyyy'),
+            data_publicacao = to_timestamp(datapublicacao, 'dd-MM-yyyy');
+        </sql>
+    </changeSet>
+
+    <changeSet id="updata-colomns-data-publicacao" author="Jordano" dbms="${dbmsAutoIncrement}">
+        <sql>
+            update publicacao set
+            data_colagem = cast(datacolagem as datetime),
+            data_publicacao = cast(datapublicacao as datetime);
+        </sql>
+    </changeSet>
+
+    <changeSet id="add-columns-publicacao-AUD" author="jordano">
+        <addColumn tableName="PUBLICACAO_AUD">
+            <column name="DATA_COLAGEM" type="TIMESTAMP">
+            </column>
+            <column name="DATA_PUBLICACAO" type="TIMESTAMP">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="dropNotNullConstraint-data-publicacao">
+        <dropNotNullConstraint columnName="DATACOLAGEM"
+                               tableName="PUBLICACAO"
+                               columnDataType="VARCHAR(255)"/>
+        <dropNotNullConstraint columnName="DATAPUBLICACAO"
+                               tableName="PUBLICACAO"
+                               columnDataType="VARCHAR(255)"/>
+
+    </changeSet>
+
+    <changeSet author="Jordano" id="addColumn-FK_DADOSBASICOSTAREFA-PUBLICACAO_AUD">
+        <addColumn tableName="PUBLICACAO_AUD">
+            <column name="FK_DADOSBASICOSTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="update-dadosbasicostarefacampos-publicacao-integracao" author="guilherme.camargo">
+        <sql>
+            UPDATE DADOSBASICOSTAREFACAMPOS
+                SET DESCRICAO = 'Gracco'
+                    WHERE ID IN
+                        (SELECT
+                        DBTC.ID
+                        FROM DADOSBASICOSTAREFACAMPOS DBTC
+                        INNER JOIN DADOSBASICOSTAREFA DBT ON DBTC.FK_DADOSBASICOSTAREFA = DBT.ID
+                        INNER JOIN PUBLICACAO PUB ON PUB.FK_DADOSBASICOSTAREFA = DBT.ID
+                        WHERE DBTC.FK_CAMPO = 7
+                        AND PUB.ORIGEMINTEGRACAO = 0
+                        AND DBTC.DESCRICAO = 'INTEGRACAO_GRACCO'
+                        AND DBT.DATA_CONCLUSAO IS NULL)
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-sequence-SEQ_PESSOA_DIRETORIO" author="guilherme.camargo" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PESSOA_DIRETORIO"/>
+    </changeSet>
+
+    <changeSet id="create-table-PESSOADIRETORIO" author="guilherme.camargo">
+        <createTable tableName="PESSOA_DIRETORIO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PESSOADIRETORIO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PESSOA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PESSOADIRETORIO_PAI" type="BIGINT"/>
+            <column name="DATA_CADASTRO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-PESSOADIRETORIO_AUD" author="guilherme.camargo">
+        <createTable tableName="PESSOA_DIRETORIO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PESSOADIRETORIO_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PESSOADIRETORIO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="FK_PESSOADIRETORIO_PAI" type="BIGINT"/>
+            <column name="DATA_CADASTRO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-sequence-SEQ_PESSOA_DOCUMENTO" author="guilherme.camargo" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PESSOA_DOCUMENTO"/>
+    </changeSet>
+
+    <changeSet id="create-table-PESSOADOCUMENTO" author="guilherme.camargo">
+        <createTable tableName="PESSOA_DOCUMENTO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PESSOADOCUMENTO"/>
+            </column>
+            <column name="NOME_ARQUIVO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CAMINHO_DOCUMENTO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_TIPO_DOCUMENTO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PESSOADIRETORIO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_CADASTRO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-PESSOADOCUMENTO_AUD" author="guilherme.camargo">
+        <createTable tableName="PESSOA_DOCUMENTO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PESSOADOCUMENTO_AUD"/>
+            </column>
+
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PESSOADOCUMENTO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="FK_PESSOADIRETORIO_PAI" type="BIGINT"/>
+            <column name="DATA_CADASTRO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <!-- INSERT TIPOS DE INDICES ECONOMICOS -->
+    <changeSet id="insert-TIPOINDICEECONOMICO-tjinverso" author="guilherme.camargo">
+        <insert tableName="TIPOINDICEECONOMICO">
+            <column name="ID" valueNumeric="7"/>
+            <column name="DESCRICAO" value="TJ - Acumulativo Inverso"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="add-columns-config-cliente-escritorio" author="guilherme.camargo">
+        <addColumn tableName="CONFIGURACAO_CLIENTE">
+            <column name="FK_ESCRITORIO_PLANO_ECONOMICO" type="BIGINT"/>
+            <column name="FK_ESCRITORIO_A" type="BIGINT"/>
+            <column name="FK_ESCRITORIO_B" type="BIGINT"/>
+            <column name="FK_ESCRITORIO_C" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add-columns-config-cliente-escritorio-aud" author="guilherme.camargo">
+        <addColumn tableName="CONFIGURACAO_CLIENTE_AUD">
+            <column name="FK_ESCRITORIO_PLANO_ECONOMICO" type="BIGINT"/>
+            <column name="FK_ESCRITORIO_A" type="BIGINT"/>
+            <column name="FK_ESCRITORIO_B" type="BIGINT"/>
+            <column name="FK_ESCRITORIO_C" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-FKS_CONFIGURACAO_CLIENTE_ESCRITORIO" author="guilherme.camargo">
+        <addForeignKeyConstraint baseColumnNames="FK_ESCRITORIO_PLANO_ECONOMICO" baseTableName="CONFIGURACAO_CLIENTE"
+                                 constraintName="FK_CONF_ESCRITORIO_PLANO_ECONOMICO" referencedColumnNames="ID"
+                                 referencedTableName="ESCRITORIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint baseColumnNames="FK_ESCRITORIO_A" baseTableName="CONFIGURACAO_CLIENTE"
+                                 constraintName="FK_CONF_ESCRITORIO_A" referencedColumnNames="ID"
+                                 referencedTableName="ESCRITORIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint baseColumnNames="FK_ESCRITORIO_B" baseTableName="CONFIGURACAO_CLIENTE"
+                                 constraintName="FK_CONF_ESCRITORIO_B" referencedColumnNames="ID"
+                                 referencedTableName="ESCRITORIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint baseColumnNames="FK_ESCRITORIO_C" baseTableName="CONFIGURACAO_CLIENTE"
+                                 constraintName="FK_CONF_ESCRITORIO_C" referencedColumnNames="ID"
+                                 referencedTableName="ESCRITORIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="add-permissao-escritoriospublicacoesnaocoladas-configuracaocliente" author="guilherme.camargo">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="628"/>
+            <column name="DESCRICAO" value="Escritórios - Publicações não coladas"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="613"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:sistema:configuracao-cliente:escritorios-pubncoladas"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-TIPOINDICEECONOMICO-variacaomensal" author="guilherme.camargo">
+        <insert tableName="TIPOINDICEECONOMICO">
+            <column name="ID" valueNumeric="8"/>
+            <column name="DESCRICAO" value="Variação Mensal"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="update-tipoindice-variacaomensal" author="guilherme.camargo">
+        <update tableName="INDICEECONOMICO">
+            <column name="FK_TIPO_IND_ECO" valueNumeric="7"/>
+            <where>DESCRICAO in ('TJRJ', 'TJMG', 'TJES', 'TJDF')</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="update-tipoindice-tjinverno" author="guilherme.camargo">
+        <update tableName="INDICEECONOMICO">
+            <column name="FK_TIPO_IND_ECO" valueNumeric="8"/>
+            <where>DESCRICAO in ('TJBA', 'TJSC', 'TJPR', 'TJRS')</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="create-column-origem_criacao-processo" author="guilherme.camargo">
+        <addColumn tableName="PROCESSO">
+            <column name="ORIGEM_CRIACAO" type="INTEGER"/>
+        </addColumn>
+        <update tableName="PROCESSO">
+            <column name="ORIGEM_CRIACAO" valueNumeric="0"/>
+        </update>
+    </changeSet>
+
+    <changeSet id="add-constraint-notnull-origem_criacao-processo" author="guilherme.camargo">
+        <addNotNullConstraint tableName="PROCESSO" columnName="ORIGEM_CRIACAO" columnDataType="INTEGER"/>
+    </changeSet>
+
+    <changeSet id="create-column-origem_criacao-processo-aud" author="guilherme.camargo">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="ORIGEM_CRIACAO" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-unique-constraint-INDICEECONOMICO">
+        <dropUniqueConstraint tableName="INDICEECONOMICO" constraintName="UK_INDICEECONOMICO_DESCRICAO"/>
+    </changeSet>
+</databaseChangeLog>

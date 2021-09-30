@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="drop-column-job_data-from-qrtz_job_details" author="andre.baroni" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT count(1)
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME = 'qrtz_job_details'
+                AND COLUMN_NAME = 'job_data'
+                AND DATA_TYPE = 'oid'
+            </sqlCheck>
+        </preConditions>
+
+        <dropColumn tableName="qrtz_job_details" columnName="job_data"/>
+    </changeSet>
+
+    <changeSet id="recreate-column-job_data-in-qrtz_job_details-as-bytea" author="andre.baroni" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="qrtz_job_details" columnName="job_data"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="qrtz_job_details">
+            <column name="job_data" type="bytea"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

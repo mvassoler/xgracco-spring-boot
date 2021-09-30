@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!--ID_SISTEMA_EXTERNO USUARIO-->
+    <changeSet author="raphael.moreira" id="ADD-COLUMN-USUARIO-ID_SISTEMA_EXTERNO" >
+        <addColumn tableName="USUARIO">
+            <column name="ID_SISTEMA_EXTERNO" type="INTEGER">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--ID_SISTEMA_EXTERNO USUARIO_AUD-->
+    <changeSet author="raphael.moreira" id="ADD-COLUMN-USUARIO_AUD-ID_SISTEMA_EXTERNO" >
+        <addColumn tableName="USUARIO_AUD">
+            <column name="ID_SISTEMA_EXTERNO" type="INTEGER">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- DROP UK_USUARIO_LOGIN -->
+    <changeSet  author="raphael.moreira"  id="DROP_UNIQUE-UK_USUARIO_LOGIN">
+        <dropUniqueConstraint  constraintName="UK_USUARIO_LOGIN" tableName="USUARIO" uniqueColumns="LOGIN"/>
+    </changeSet>
+
+    <!-- Add UK_USUARIO_LOGIN_ID_SISTEMA_EXTERNO -->
+    <changeSet author="raphael.moreira" id="ADD-UNIQUE-UK_USUARIO_LOGIN_ID_SISTEMA_EXTERNO">
+        <addUniqueConstraint tableName="USUARIO" columnNames="LOGIN, ID_SISTEMA_EXTERNO" constraintName="UK_USUARIO_LOGIN_ID_SISTEMA_EXTERNO"/>
+    </changeSet>
+
+</databaseChangeLog>

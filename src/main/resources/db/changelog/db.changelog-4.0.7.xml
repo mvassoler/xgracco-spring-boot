@@ -1,0 +1,89 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <changeSet author="raphael.moreira" id="alter-LOTE_CUSTAS-remove-nullable">
+        <dropNotNullConstraint tableName="LOTE_CUSTAS" columnName="INTEGRADO" columnDataType="BOOLEAN"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="alter-LOTE_CUSTAS_AUD-remove-nullable">
+        <dropNotNullConstraint tableName="LOTE_CUSTAS_AUD" columnName="INTEGRADO" columnDataType="BOOLEAN"/>
+    </changeSet>
+
+    <changeSet id="update-DADOSBASICOSTAREFA-set-STATUS" author="thiago.fogar" dbms="${dbmsAutoIncrement}">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA
+            SET STATUS = TSF.ID_STATUS
+            FROM DADOSBASICOSTAREFA DBT
+            INNER JOIN TAREFA_STATUS_FINAL TSF ON TSF.ID_STATUS_FINAL = DBT.ID_STATUS_FINAL AND TSF.ID_TAREFA = DBT.FK_TAREFA
+            WHERE DBT.STATUS = 6
+        </sql>
+    </changeSet>
+
+    <changeSet id="update-DADOSBASICOSTAREFA-set-STATUS" author="thiago.fogar" dbms="${dbmsSequence}">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA DBT
+            SET STATUS = ID_STATUS
+            FROM TAREFA_STATUS_FINAL TSF
+            WHERE TSF.ID_STATUS_FINAL = DBT.ID_STATUS_FINAL AND TSF.ID_TAREFA = DBT.FK_TAREFA
+            AND DBT.STATUS = 6
+        </sql>
+    </changeSet>
+
+    <changeSet id="add-column-indicesE-moeda" author="guilherme.camargo">
+        <addColumn tableName="INDICEECONOMICO">
+            <column name="CONTEMPLA_ALTERACAO_MOEDA" type="BOOLEAN" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="update-alteracao-moeda-indices" author="guilherme.camargo">
+        <update tableName="INDICEECONOMICO">
+            <column name="CONTEMPLA_ALTERACAO_MOEDA" valueBoolean="true"/>
+            <where>DESCRICAO in ('TJRJ', 'TJMG', 'TJES', 'TJDF', 'TRT', 'TJSP', 'TABELA ENCOGE', 'JUSTIÇA FEDERAL')</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="add-column-indicesE-moeda-aud" author="guilherme.camargo">
+        <addColumn tableName="INDICEECONOMICO_AUD">
+            <column name="CONTEMPLA_ALTERACAO_MOEDA" type="BOOLEAN" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="update-descricao-permissao-cenarios" author="guilherme.camargo">
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Habilitar cenários"/>
+            <where>id = 611</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="add-permissao-dadosbasicosprocesso" author="guilherme.camargo">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="627"/>
+            <column name="DESCRICAO" value="Dados básicos do processo através da publicação"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="3"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="136"/>
+            <column name="ORDEM" valueNumeric="27"/>
+            <column name="CODIGO" value="gestao-processos:processos:dadosbasicosprocesso"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="add-boolean-planoconomico-publicacao-nao-colada" author="guilherme.camargo">
+        <addColumn tableName="PUBLICACAO_NAO_COLADA">
+            <column name="PLANO_ECONOMICO" type="BOOLEAN"/>
+        </addColumn>
+        <addColumn tableName="PUBLICACAO_NAO_COLADA_AUD">
+            <column name="PLANO_ECONOMICO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="update-campo-planoeconomico-pubnaocolada" author="guilherme.camargo">
+        <update tableName="PUBLICACAO_NAO_COLADA">
+            <column name="PLANO_ECONOMICO" valueBoolean="false"/>
+        </update>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,439 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="thiago.fogar" id="dadosbasicostarefa-NOVOS_CAMPOS">
+        <addColumn tableName="DADOSBASICOSTAREFA">
+            <column name="FK_TAREFA" type="BIGINT"></column>
+            <column name="FK_RESPONSAVEL" type="BIGINT"></column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="FK_TAREFA" baseTableName="DADOSBASICOSTAREFA"
+                                 constraintName="FK_TAREFA_DADOSBASICOSTAREFA"
+                                 referencedColumnNames="ID" referencedTableName="TAREFA"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint baseColumnNames="FK_RESPONSAVEL" baseTableName="DADOSBASICOSTAREFA"
+                                 constraintName="FK_RESPONSAVEL_DADOSBASICOSTAREFA"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosbasicostarefa-MIGRAR-RESPONSAVEL">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA SET FK_RESPONSAVEL = FK_REALIZADO_POR
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosbasicostarefa-MIGRAR-TAREFA">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA
+            SET FK_TAREFA = T.ID
+            FROM ACT_HI_TASKINST TASK
+            INNER JOIN PROCESSO_CASE_INSTANCE PCI ON PCI.ID_CASE_INSTANCE = TASK.CASE_INST_ID_
+            INNER JOIN PROCESSO P ON P.ID = PCI.ID_PROCESSO
+            INNER JOIN CARTEIRA C ON C.ID = P.FK_CARTEIRA
+            INNER JOIN TAREFA T ON T.ID_TAREFA = TASK.TASK_DEF_KEY_ AND C.ID_FLUXO_TRABALHO = T.ID_FLUXO_TRABALHO
+            WHERE DADOSBASICOSTAREFA.CASE_EXECUTION_ID = TASK.CASE_EXECUTION_ID_
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="atendimentofilapessoa-fk-dadosbasicos">
+        <addColumn tableName="ATENDIMENTO_FILA_PESSOA">
+            <column name="FK_DADOSBASICOSTAREFA" type="BIGINT"></column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="FK_DADOSBASICOSTAREFA" baseTableName="ATENDIMENTO_FILA_PESSOA"
+                                 constraintName="FK_ATENDIMENTO_DADOSBASICOS"
+                                 referencedColumnNames="ID" referencedTableName="DADOSBASICOSTAREFA"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="historicofilapessoa-fk-dadosbasicos">
+        <addColumn tableName="HISTORICO_FILA_PESSOA">
+            <column name="FK_DADOSBASICOSTAREFA" type="BIGINT"></column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="FK_DADOSBASICOSTAREFA" baseTableName="HISTORICO_FILA_PESSOA"
+                                 constraintName="FK_HISTORICO_DADOSBASICOS"
+                                 referencedColumnNames="ID" referencedTableName="DADOSBASICOSTAREFA"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <changeSet author="thiago.fogar" id="atendimentofilapessoa-MIGRAR-TAREFA">
+        <sql>
+            UPDATE ATENDIMENTO_FILA_PESSOA
+            SET FK_DADOSBASICOSTAREFA = DBT.ID
+            FROM DADOSBASICOSTAREFA DBT
+            WHERE DBT.CASE_EXECUTION_ID = ATENDIMENTO_FILA_PESSOA.CASEEXECUTIONID
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="historicofilapessoa-MIGRAR-TAREFA">
+        <sql>
+            UPDATE HISTORICO_FILA_PESSOA
+            SET FK_DADOSBASICOSTAREFA = DBT.ID
+            FROM DADOSBASICOSTAREFA DBT
+            WHERE DBT.CASE_EXECUTION_ID = HISTORICO_FILA_PESSOA.CASEEXECUTIONID
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosBasicosTarefa-execid-null">
+        <dropNotNullConstraint columnDataType="VARCHAR(200)"
+                               columnName="CASE_EXECUTION_ID"
+                               tableName="DADOSBASICOSTAREFA"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosBasicosTarefa-instid-null">
+        <dropNotNullConstraint columnDataType="VARCHAR(200)"
+                               columnName="CASE_INSTANCE_ID"
+                               tableName="DADOSBASICOSTAREFA"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosBasicosTarefaCampos">
+        <createTable tableName="DADOSBASICOSTAREFACAMPOS">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DBT_CAMPOS"/>
+            </column>
+            <column name="FK_DADOSBASICOSTAREFA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_CAMPO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PESSOA" type="BIGINT"/>
+            <column name="FK_CAMPOLISTA" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(4000)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-fk-dadosBasicosTarefaCampos-dbt">
+        <addForeignKeyConstraint baseColumnNames="FK_DADOSBASICOSTAREFA" baseTableName="DADOSBASICOSTAREFACAMPOS"
+                                 constraintName="FK_DBTC_DBT" referencedColumnNames="ID"
+                                 referencedTableName="DADOSBASICOSTAREFA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-fk-dadosBasicosTarefaCampos-campo">
+        <addForeignKeyConstraint baseColumnNames="FK_CAMPO" baseTableName="DADOSBASICOSTAREFACAMPOS"
+                                 constraintName="FK_DBTC_CAMPO" referencedColumnNames="ID"
+                                 referencedTableName="CAMPO" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-fk-dadosBasicosTarefaCampos-pessoa">
+        <addForeignKeyConstraint baseColumnNames="FK_PESSOA" baseTableName="DADOSBASICOSTAREFACAMPOS"
+                                 constraintName="FK_DBTC_PESSOA" referencedColumnNames="ID"
+                                 referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-fk-dadosBasicosTarefaCampos-campolista">
+        <addForeignKeyConstraint baseColumnNames="FK_CAMPOLISTA" baseTableName="DADOSBASICOSTAREFACAMPOS"
+                                 constraintName="FK_DBTC_CAMPOLISTA" referencedColumnNames="ID"
+                                 referencedTableName="CAMPOLISTA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="create-sequence-SEQ_DADOSBASICOSTAREFACAMPOS" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_DADOSBASICOSTAREFACAMPOS"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosBasicosTarefaCampos-pessoas-seq" dbms="${dbmsSequence}">
+        <sql>
+            INSERT INTO DADOSBASICOSTAREFACAMPOS (ID, FK_DADOSBASICOSTAREFA, FK_CAMPO, FK_PESSOA)
+            SELECT
+            nextval('seq_dadosbasicostarefacampos'),
+            (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) AS
+            FK_DADOSBASICOSTAREFA,
+            CAST(VAR.NAME_ AS BIGINT) AS FK_CAMPO,
+            CAST(VAR.TEXT_ AS BIGINT) AS VALOR
+            FROM ACT_HI_VARINST VAR
+            INNER JOIN CAMPO C ON C.ID = CAST(VAR.NAME_ AS BIGINT)
+            INNER JOIN TIPOCAMPO TC ON TC.ID = C.TIPO_CAMPO
+            WHERE (VAR.NAME_ != 'userEvent' AND VAR.NAME_ != 'Tarefas agendadas')
+            AND TC.ID = 8
+            AND (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) IS NOT NULL
+            AND COALESCE(VAR.TEXT_ , '') != ''
+            AND COALESCE(VAR.NAME_, '') != ''
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosBasicosTarefaCampos-campolista-seq" dbms="${dbmsSequence}">
+        <sql>
+            INSERT INTO DADOSBASICOSTAREFACAMPOS (ID, FK_DADOSBASICOSTAREFA, FK_CAMPO, FK_CAMPOLISTA)
+            SELECT
+            nextval('seq_dadosbasicostarefacampos'),
+            (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) AS
+            FK_DADOSBASICOSTAREFA,
+            CAST(VAR.NAME_ AS BIGINT) AS FK_CAMPO,
+            (select id from CAMPOLISTA CL where CL.DESCRICAO = var.TEXT_ and FK_CAMPO = CAST(var.NAME_ AS BIGINT)) as
+            idCampoLista
+            FROM ACT_HI_VARINST VAR
+            INNER JOIN CAMPO C ON C.ID = CAST(VAR.NAME_ AS BIGINT)
+            INNER JOIN TIPOCAMPO TC ON TC.ID = C.TIPO_CAMPO
+            WHERE (VAR.NAME_ != 'userEvent' AND VAR.NAME_ != 'Tarefas agendadas')
+            AND TC.ID = 2
+            AND (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) IS NOT NULL
+            AND COALESCE(VAR.TEXT_ , '') != ''
+            AND COALESCE(VAR.NAME_, '') != ''
+            AND VAR.TEXT_ != '0'
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosBasicosTarefaCampos-descricao-seq" dbms="${dbmsSequence}">
+        <sql>
+            INSERT INTO DADOSBASICOSTAREFACAMPOS (ID, FK_DADOSBASICOSTAREFA, FK_CAMPO, DESCRICAO)
+            SELECT
+            nextval('seq_dadosbasicostarefacampos'),
+            (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) AS
+            FK_DADOSBASICOSTAREFA,
+            CAST(VAR.NAME_ AS BIGINT) AS FK_CAMPO,
+            var.TEXT_ as VALOR
+            FROM ACT_HI_VARINST VAR
+            INNER JOIN CAMPO C ON C.ID = CAST(VAR.NAME_ AS BIGINT)
+            INNER JOIN TIPOCAMPO TC ON TC.ID = C.TIPO_CAMPO
+            WHERE (VAR.NAME_ != 'userEvent' AND VAR.NAME_ != 'Tarefas agendadas')
+            AND TC.ID != 2 AND TC.ID != 8
+            AND (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) IS NOT NULL
+            AND COALESCE(VAR.TEXT_ , '') != ''
+            AND COALESCE(VAR.NAME_, '') != ''
+        </sql>
+    </changeSet>
+
+
+    <changeSet author="thiago.fogar" id="dadosBasicosTarefaCampos-pessoas" dbms="${dbmsAutoIncrement}">
+        <sql>
+            INSERT INTO DADOSBASICOSTAREFACAMPOS (FK_DADOSBASICOSTAREFA, FK_CAMPO, FK_PESSOA)
+            SELECT
+            (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) AS
+            FK_DADOSBASICOSTAREFA,
+            CAST(VAR.NAME_ AS BIGINT) AS FK_CAMPO,
+            CAST(VAR.TEXT_ AS BIGINT) AS VALOR
+            FROM ACT_HI_VARINST VAR
+            INNER JOIN CAMPO C ON C.ID = CAST(VAR.NAME_ AS BIGINT)
+            INNER JOIN TIPOCAMPO TC ON TC.ID = C.TIPO_CAMPO
+            WHERE (VAR.NAME_ != 'userEvent' AND VAR.NAME_ != 'Tarefas agendadas')
+            AND TC.ID = 8
+            AND (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) IS NOT NULL
+            AND COALESCE(VAR.TEXT_ , '') != ''
+            AND COALESCE(VAR.NAME_, '') != ''
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosBasicosTarefaCampos-campolista" dbms="${dbmsAutoIncrement}">
+        <sql>
+            INSERT INTO DADOSBASICOSTAREFACAMPOS (FK_DADOSBASICOSTAREFA, FK_CAMPO, FK_CAMPOLISTA)
+            SELECT
+            (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) AS
+            FK_DADOSBASICOSTAREFA,
+            CAST(VAR.NAME_ AS BIGINT) AS FK_CAMPO,
+            (select id from CAMPOLISTA CL where CL.DESCRICAO = var.TEXT_ and FK_CAMPO = CAST(var.NAME_ AS BIGINT)) as
+            idCampoLista
+            FROM ACT_HI_VARINST VAR
+            INNER JOIN CAMPO C ON C.ID = CAST(VAR.NAME_ AS BIGINT)
+            INNER JOIN TIPOCAMPO TC ON TC.ID = C.TIPO_CAMPO
+            WHERE (VAR.NAME_ != 'userEvent' AND VAR.NAME_ != 'Tarefas agendadas')
+            AND TC.ID = 2
+            AND (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) IS NOT NULL
+            AND COALESCE(VAR.TEXT_ , '') != ''
+            AND COALESCE(VAR.NAME_, '') != ''
+            AND VAR.TEXT_ != '0'
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosBasicosTarefaCampos-descricao" dbms="${dbmsAutoIncrement}">
+        <sql>
+            INSERT INTO DADOSBASICOSTAREFACAMPOS (FK_DADOSBASICOSTAREFA, FK_CAMPO, DESCRICAO)
+            SELECT
+            (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) AS
+            FK_DADOSBASICOSTAREFA,
+            CAST(VAR.NAME_ AS BIGINT) AS FK_CAMPO,
+            var.TEXT_ as VALOR
+            FROM ACT_HI_VARINST VAR
+            INNER JOIN CAMPO C ON C.ID = CAST(VAR.NAME_ AS BIGINT)
+            INNER JOIN TIPOCAMPO TC ON TC.ID = C.TIPO_CAMPO
+            WHERE (VAR.NAME_ != 'userEvent' AND VAR.NAME_ != 'Tarefas agendadas')
+            AND TC.ID != 2 AND TC.ID != 8
+            AND (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) IS NOT NULL
+            AND COALESCE(VAR.TEXT_ , '') != ''
+            AND COALESCE(VAR.NAME_, '') != ''
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="">
+        <addColumn tableName="AGENDAMENTO">
+            <column name="FK_DADOSBASICOSTAREFA" type="BIGINT"></column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="FK_DADOSBASICOSTAREFA" baseTableName="AGENDAMENTO"
+                                 constraintName="FK_AGENDAMENTO_DADOSBASICOS"
+                                 referencedColumnNames="ID" referencedTableName="DADOSBASICOSTAREFA"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="agendamento-MIGRAR-TAREFA">
+        <sql>
+            UPDATE AGENDAMENTO
+            SET FK_DADOSBASICOSTAREFA = DBT.ID
+            FROM DADOSBASICOSTAREFA DBT
+            WHERE DBT.CASE_EXECUTION_ID = AGENDAMENTO.FK_CASEEXECUTION
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosbasicostarefa-add-fk-pai">
+        <addColumn tableName="DADOSBASICOSTAREFA">
+            <column name="FK_DADOSBASICOSTAREFA_PAI" type="BIGINT"></column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="FK_DADOSBASICOSTAREFA_PAI" baseTableName="DADOSBASICOSTAREFA"
+                                 constraintName="FK_DADOSBASICOS_DBTPAI"
+                                 referencedColumnNames="ID" referencedTableName="DADOSBASICOSTAREFA"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="historicoFilaDevolucao-ADD_DADOSBASICOSTAREFA">
+        <addColumn tableName="HISTORICO_FILA_DEVOLUCAO">
+            <column name="FK_DADOSBASICOSTAREFA" type="BIGINT"></column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="FK_DADOSBASICOSTAREFA" baseTableName="HISTORICO_FILA_DEVOLUCAO"
+                                 constraintName="FK_DADOSBASICOSTAREFA"
+                                 referencedColumnNames="ID" referencedTableName="DADOSBASICOSTAREFA"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="dadosbasicostarefacampo-ADD_TEXTO_PUBLICACAO" dbms="${dbmsAutoIncrement}">
+        <addColumn tableName="DADOSBASICOSTAREFACAMPOS">
+            <column name="TEXTO_PUBLICACAO" type="IMAGE"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="historicoFilaDevolucao-MIGRAR-TAREFA">
+        <sql>
+            UPDATE HISTORICO_FILA_DEVOLUCAO
+            SET FK_DADOSBASICOSTAREFA = DBT.ID
+            FROM DADOSBASICOSTAREFA DBT
+            WHERE DBT.CASE_EXECUTION_ID = HISTORICO_FILA_DEVOLUCAO.CASEEXECUTIONID
+        </sql>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="dadosBasicosTarefaCampos-bytearray" dbms="${dbmsAutoIncrement}">
+        <sql>
+            INSERT INTO DADOSBASICOSTAREFACAMPOS (FK_DADOSBASICOSTAREFA, FK_CAMPO, TEXTO_PUBLICACAO)
+            SELECT
+            (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) AS
+            FK_DADOSBASICOSTAREFA,
+            CAST(VAR.NAME_ AS BIGINT) AS FK_CAMPO,
+            AGB.BYTES_ as VALOR
+            FROM ACT_HI_VARINST VAR
+            INNER JOIN CAMPO C ON C.ID = CAST(VAR.NAME_ AS BIGINT)
+            INNER JOIN TIPOCAMPO TC ON TC.ID = C.TIPO_CAMPO
+            INNER JOIN ACT_GE_BYTEARRAY AGB ON AGB.ID_ = VAR.BYTEARRAY_ID_
+            WHERE (VAR.NAME_ != 'userEvent' AND VAR.NAME_ != 'Tarefas agendadas')
+            AND TC.ID = 4
+            AND (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) IS NOT NULL
+        </sql>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="PUBLICACAO-ADD-FK_DADOSBASICOSTAREFA">
+        <addColumn tableName="PUBLICACAO">
+            <column name="FK_DADOSBASICOSTAREFA" type="BIGINT"></column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="FK_DADOSBASICOSTAREFA" baseTableName="PUBLICACAO"
+                                 constraintName="FK_DADOSBASICOSTAREFA_PUBLICACAO"
+                                 referencedColumnNames="ID" referencedTableName="DADOSBASICOSTAREFA"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="PUBLICACAO-MIGRAR-TAREFA">
+        <sql>
+            UPDATE PUBLICACAO
+            SET FK_DADOSBASICOSTAREFA = DBT.ID
+            FROM DADOSBASICOSTAREFA DBT
+            WHERE DBT.CASE_EXECUTION_ID = PUBLICACAO.CASEEXECUTIONID
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="dadosbasicostarefacampo-ADD_TEXTO_PUBLICACAO" dbms="${dbmsSequence}">
+        <addColumn tableName="DADOSBASICOSTAREFACAMPOS">
+            <column name="TEXTO_PUBLICACAO" type="BYTEA"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="dadosbasicostarefa-MIGRAR-RESPONSAVEL_CORRETO">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA SET FK_RESPONSAVEL = FK_AGENDAR_PARA
+        </sql>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="dadosbasicostarefa-MIGRAR-CASE_EXECUTION_PAI" dbms="${dbmsAutoIncrement}">
+        <sql>
+            UPDATE DBT
+            SET DBT.FK_DADOSBASICOSTAREFA_PAI = DBT_PAI.ID
+            FROM DADOSBASICOSTAREFA DBT_PAI
+            INNER JOIN DADOSBASICOSTAREFA DBT ON (DBT.CASE_EXECUTION_ID_ORIGEM = DBT_PAI.CASE_EXECUTION_ID AND
+            DBT.FK_DADOSBASICOSTAREFA_PAI IS NULL)
+        </sql>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="dadosbasicostarefa-MIGRAR-CASE_EXECUTION_PAI" dbms="${dbmsSequence}">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA
+            SET FK_DADOSBASICOSTAREFA_PAI = DBT_PAI.ID
+            FROM DADOSBASICOSTAREFA DBT_PAI
+            WHERE (DADOSBASICOSTAREFA.CASE_EXECUTION_ID_ORIGEM = DBT_PAI.CASE_EXECUTION_ID)
+        </sql>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="ATENDIMENTO_FILA_PESSOA_UK_CE">
+        <dropUniqueConstraint tableName="ATENDIMENTO_FILA_PESSOA" constraintName="UK_CASEEXECUTION"
+                              uniqueColumns="ID_PERMISSAO_PAI, ORDEM"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="DADOSBASICOSTAREFA-">
+        <sql>
+            UPDATE DADOSBASICOSTAREFA
+            SET FK_RESPONSAVEL = CAST(TSK.ASSIGNEE_ AS BIGINT)
+            FROM ACT_HI_TASKINST TSK WHERE TSK.CASE_EXECUTION_ID_ = DADOSBASICOSTAREFA.CASE_EXECUTION_ID
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-publicacao-dadosbasicostarefacampos" dbms="${dbmsSequence}">
+        <sql>
+            INSERT INTO DADOSBASICOSTAREFACAMPOS (ID, FK_DADOSBASICOSTAREFA, FK_CAMPO, TEXTO_PUBLICACAO)
+            SELECT nextval('SEQ_DADOSBASICOSTAREFACAMPOS'),
+            (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) AS
+            FK_DADOSBASICOSTAREFA,
+            CAST(VAR.NAME_ AS BIGINT) AS FK_CAMPO,
+            AGB.BYTES_ as VALOR
+            FROM ACT_HI_VARINST VAR
+            INNER JOIN CAMPO C ON C.ID = CAST(VAR.NAME_ AS BIGINT)
+            INNER JOIN TIPOCAMPO TC ON TC.ID = C.TIPO_CAMPO
+            INNER JOIN ACT_GE_BYTEARRAY AGB ON AGB.ID_ = VAR.BYTEARRAY_ID_
+            WHERE (VAR.NAME_ != 'userEvent' AND VAR.NAME_ != 'Tarefas agendadas')
+            AND TC.ID = 4
+            AND (SELECT ID FROM DADOSBASICOSTAREFA DBT WHERE DBT.CASE_EXECUTION_ID = VAR.CASE_EXECUTION_ID_) IS NOT NULL
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

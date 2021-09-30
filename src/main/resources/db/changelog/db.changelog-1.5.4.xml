@@ -1,0 +1,1867 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="marcelo.aguiar" id="1">
+        <dropForeignKeyConstraint baseTableName="PROCESSO" constraintName="FK_PROCESSO_PESSOA_ESCR"/>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="2">
+        <addForeignKeyConstraint baseColumnNames="FK_ESCRITORIO" baseTableName="PROCESSO"
+                                 constraintName="FK_PROCESSO_ESCRITORIO" referencedColumnNames="ID"
+                                 referencedTableName="ESCRITORIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="3">
+        <dropForeignKeyConstraint baseTableName="PROCESSO" constraintName="FK_PROCESSO_PESSOA_OPER"/>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="4">
+        <addForeignKeyConstraint baseColumnNames="FK_OPERACIONAL" baseTableName="PROCESSO"
+                                 constraintName="FK_PROCESSO_OPERACIONAL" referencedColumnNames="ID"
+                                 referencedTableName="USUARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="5">
+        <dropForeignKeyConstraint baseTableName="PROCESSO" constraintName="FK_PROCESSO_PESSOA_USU"/>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="6">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO" baseTableName="PROCESSO"
+                                 constraintName="FK_PROCESSO_USUARIO" referencedColumnNames="ID"
+                                 referencedTableName="USUARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="7">
+        <dropColumn tableName="PARTE" columnName="DESCRICAO"/>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="8">
+        <addColumn tableName="PARTE">
+            <column name="FK_PESSOA" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="9">
+        <addForeignKeyConstraint baseColumnNames="FK_PESSOA" baseTableName="PARTE"
+                                 constraintName="FK_PARTE_PESSOA" referencedColumnNames="ID"
+                                 referencedTableName="PESSOA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- PAPEL -->
+    <changeSet author="rodolpho.couto" id="10">
+        <update tableName="PAPEL">
+            <column name="DESCRICAO" value="Administrativo"/>
+            <where>ID = 16</where>
+        </update>
+    </changeSet>
+
+    <!-- AREA -->
+    <changeSet author="rodolpho.couto" id="11">
+        <insert tableName="AREA">
+            <column name="ID" valueNumeric="5"/>
+            <column name="DESCRICAO" value="Ambiental"/>
+        </insert>
+        <insert tableName="AREA">
+            <column name="ID" valueNumeric="6"/>
+            <column name="DESCRICAO" value="Consumidor"/>
+        </insert>
+        <insert tableName="AREA">
+            <column name="ID" valueNumeric="7"/>
+            <column name="DESCRICAO" value="Regulatório"/>
+        </insert>
+    </changeSet>
+
+    <!-- JUSTICA_AREA -->
+    <changeSet author="rodolpho.couto" id="12">
+        <!-- Ambiental -->
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="5"/>
+            <column name="JUSTICA_ID" valueNumeric="1"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="5"/>
+            <column name="JUSTICA_ID" valueNumeric="2"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="5"/>
+            <column name="JUSTICA_ID" valueNumeric="3"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="5"/>
+            <column name="JUSTICA_ID" valueNumeric="4"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="5"/>
+            <column name="JUSTICA_ID" valueNumeric="5"/>
+        </insert>
+
+        <!-- Consumidor -->
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="6"/>
+            <column name="JUSTICA_ID" valueNumeric="1"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="6"/>
+            <column name="JUSTICA_ID" valueNumeric="2"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="6"/>
+            <column name="JUSTICA_ID" valueNumeric="3"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="6"/>
+            <column name="JUSTICA_ID" valueNumeric="4"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="6"/>
+            <column name="JUSTICA_ID" valueNumeric="5"/>
+        </insert>
+
+        <!-- Regulatório -->
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="7"/>
+            <column name="JUSTICA_ID" valueNumeric="1"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="7"/>
+            <column name="JUSTICA_ID" valueNumeric="2"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="7"/>
+            <column name="JUSTICA_ID" valueNumeric="3"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="7"/>
+            <column name="JUSTICA_ID" valueNumeric="4"/>
+        </insert>
+        <insert tableName="JUSTICA_AREA">
+            <column name="AREA_ID" valueNumeric="7"/>
+            <column name="JUSTICA_ID" valueNumeric="5"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="13">
+        <addColumn tableName="PROCESSO">
+            <column name="DATASINCRONISMO" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="14">
+        <addColumn tableName="PROCESSO">
+            <column name="SINCRONIZADO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="15">
+        <dropColumn columnName="DESCRICAO" tableName="INFORMACOESADICIONAIS"/>
+        <addColumn tableName="INFORMACOESADICIONAIS">
+            <column name="DESCRICAO" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="16">
+        <dropForeignKeyConstraint baseTableName="DECISAO" constraintName="FK_DECISAO_GRUPOENCERRAMENTO"/>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="17">
+        <dropForeignKeyConstraint baseTableName="DECISAO" constraintName="FK_GRUPOENCEPASSIVO_GRUPOENCE"/>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="18">
+        <dropColumn tableName="DECISAO" columnName="FK_GRUPOENCERRAMENTOATIVO"/>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="19">
+        <dropColumn tableName="DECISAO" columnName="FK_GRUPOENCERRAMENTOPASSIVO"/>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="20">
+        <createTable tableName="DECISAO_POLO">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DECISAO_POLO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(200)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="21">
+        <addColumn tableName="DECISAO">
+            <column name="FK_POLO_ATIVO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="22">
+        <addColumn tableName="DECISAO">
+            <column name="FK_POLO_PASSIVO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="23">
+        <addForeignKeyConstraint baseColumnNames="FK_POLO_ATIVO" baseTableName="DECISAO"
+                                 constraintName="FK_DECISAO_POLO_ATIVO" referencedColumnNames="ID"
+                                 referencedTableName="DECISAO_POLO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="24">
+        <addForeignKeyConstraint baseColumnNames="FK_POLO_PASSIVO" baseTableName="DECISAO"
+                                 constraintName="FK_DECISAO_POLO_PASSIVO" referencedColumnNames="ID"
+                                 referencedTableName="DECISAO_POLO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="25">
+        <insert tableName="DECISAO_POLO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Favorável"/>
+        </insert>
+        <insert tableName="DECISAO_POLO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Desfavorável"/>
+        </insert>
+        <insert tableName="DECISAO_POLO">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Parcialmente Favorável"/>
+        </insert>
+        <insert tableName="DECISAO_POLO">
+            <column name="ID" valueNumeric="4"/>
+            <column name="DESCRICAO" value="Neutro"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="26">
+        <addColumn tableName="AGENDAMENTO">
+            <column name="MEMO" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="27">
+        <addColumn tableName="DADOSBASICOSTAREFA">
+            <column name="MEMO" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="28" dbms="${dbmsSequence}">
+        <dropSequence sequenceName="SEQ_NOTIFICACAO"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="29">
+        <dropForeignKeyConstraint baseTableName="NOTIFICACAO" constraintName="FK_NOTIFICACAO_PROCESSO"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="30">
+        <dropForeignKeyConstraint baseTableName="NOTIFICACAO" constraintName="FK_NOTIFICACAO_USUARIO"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="31">
+        <dropTable tableName="NOTIFICACAO"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="32">
+        <addColumn tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="33">
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="1"/>
+            <where>id = 26</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="34">
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="19"/>
+            <where>id = 1</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="26"/>
+            <where>id = 2</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="25"/>
+            <where>id = 4</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="24"/>
+            <where>id = 3</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="15"/>
+            <where>id = 5</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="27"/>
+            <where>id = 6</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="21"/>
+            <where>id = 7</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="22"/>
+            <where>id = 8</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="6"/>
+            <where>id = 9</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="10"/>
+            <where>id = 10</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="16"/>
+            <where>id = 13</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="20"/>
+            <where>id = 12</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="13"/>
+            <where>id = 11</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="14"/>
+            <where>id = 18</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="9"/>
+            <where>id = 15</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="12"/>
+            <where>id = 14</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="23"/>
+            <where>id = 16</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="11"/>
+            <where>id = 17</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="8"/>
+            <where>id = 20</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="7"/>
+            <where>id = 23</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="2"/>
+            <where>id = 19</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="4"/>
+            <where>id = 21</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="3"/>
+            <where>id = 22</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="17"/>
+            <where>id = 24</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="18"/>
+            <where>id = 25</where>
+        </update>
+
+        <update tableName="UF">
+            <column name="CODIGO_EXTERNO" type="BIGINT" value="5"/>
+            <where>id = 27</where>
+        </update>
+    </changeSet>
+
+
+    <changeSet author="Jordano" id="35">
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="19"/>
+        </insert>
+
+        <insert tableName="SISTEMAVIRTUAL_UF">
+            <column name="SISTEMAVIRTUAL_ID" valueNumeric="6"/>
+            <column name="UF_ID" valueNumeric="23"/>
+        </insert>
+    </changeSet>
+
+    <!--GARANTIA-->
+    <changeSet author="paulomarcon" id="36">
+        <dropColumn tableName="GARANTIA" columnName="VALOR"/>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="37">
+        <addColumn tableName="GARANTIA">
+            <column name="VALOR" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <!--GARANTIA HISTORICO-->
+    <changeSet author="paulomarcon" id="38">
+        <dropColumn tableName="GARANTIAHISTORICO" columnName="VALOR"/>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="39">
+        <addColumn tableName="GARANTIAHISTORICO">
+            <column name="VALOR" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <!--HONORARIO-->
+    <changeSet author="paulomarcon" id="40">
+        <dropColumn tableName="HONORARIO" columnName="PERCENTUAL"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="41">
+        <dropColumn tableName="HONORARIO" columnName="PAGAMENTO"/>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="42">
+        <addColumn tableName="HONORARIO">
+            <column name="PERCENTUAL" type="DECIMAL(19, 4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="43">
+        <addColumn tableName="HONORARIO">
+            <column name="PAGAMENTO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO AUDITORIA-->
+    <changeSet author="paulomarcon" id="44">
+        <dropColumn tableName="PROCESSOAUDITORIA" columnName="VALOR"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="45">
+        <dropColumn tableName="PROCESSOAUDITORIA" columnName="PROVISAO"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="46">
+        <dropColumn tableName="PROCESSOAUDITORIA" columnName="VALORATUALIZADO"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="47">
+        <dropColumn tableName="PROCESSOAUDITORIA" columnName="PROVISAOATUALIZADO"/>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="48">
+        <addColumn tableName="PROCESSOAUDITORIA">
+            <column name="VALOR" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="paulomarcon" id="49">
+        <addColumn tableName="PROCESSOAUDITORIA">
+            <column name="PROVISAO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="paulomarcon" id="50">
+        <addColumn tableName="PROCESSOAUDITORIA">
+            <column name="VALORATUALIZADO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="paulomarcon" id="51">
+        <addColumn tableName="PROCESSOAUDITORIA">
+            <column name="PROVISAOATUALIZADO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <!--PROVISAO-->
+    <changeSet author="paulomarcon" id="52">
+        <dropColumn tableName="PROVISAO" columnName="VALOR"/>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="53">
+        <addColumn tableName="PROVISAO">
+            <column name="VALOR" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <!--PROCESSO-->
+    <changeSet author="paulomarcon" id="54">
+        <dropColumn tableName="PROCESSO" columnName="PERCENTUAL"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="55">
+        <dropColumn tableName="PROCESSO" columnName="VALORCAUSA"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="56">
+        <dropColumn tableName="PROCESSO" columnName="VALORSENTENCA"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="57">
+        <dropColumn tableName="PROCESSO" columnName="VALORTOTALPROVISIONAMENTO"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="58">
+        <dropColumn tableName="PROCESSO" columnName="VALORTOTALPEDIDO"/>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="59">
+        <addColumn tableName="PROCESSO">
+            <column name="PERCENTUAL" type="DECIMAL(19, 4)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="paulomarcon" id="60">
+        <addColumn tableName="PROCESSO">
+            <column name="VALORCAUSA" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="paulomarcon" id="61">
+        <addColumn tableName="PROCESSO">
+            <column name="VALORSENTENCA" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="paulomarcon" id="62">
+        <addColumn tableName="PROCESSO">
+            <column name="VALORTOTALPROVISIONAMENTO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="paulomarcon" id="63">
+        <addColumn tableName="PROCESSO">
+            <column name="VALORTOTALPEDIDO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <!--PEDIDO-->
+    <changeSet author="paulomarcon" id="64">
+        <dropColumn tableName="PEDIDO" columnName="VALOR"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="65">
+        <dropColumn tableName="PEDIDO" columnName="CORRECAOVALORFIXO"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="66">
+        <dropColumn tableName="PEDIDO" columnName="JUROSVALORFIXO"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="67">
+        <dropColumn tableName="PEDIDO" columnName="MULTAVALOR"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="68">
+        <dropColumn tableName="PEDIDO" columnName="PERCENTUALJUROSMANUAL"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="69">
+        <dropColumn tableName="PEDIDO" columnName="PERCENTUALMULTA"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="70">
+        <dropColumn tableName="PEDIDO" columnName="POSSIBILIDADEPERDA"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="71">
+        <dropColumn tableName="PEDIDO" columnName="VALORPROVISAO"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="72">
+        <dropColumn tableName="PEDIDO" columnName="MULTAVALORFIXO"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="73">
+        <dropColumn tableName="PEDIDO" columnName="VALOR_ATUALIZADO"/>
+    </changeSet>
+    <changeSet author="paulomarcon" id="74">
+        <dropColumn tableName="PEDIDO" columnName="PROVISAO_ATUALIZADO"/>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="75">
+        <addColumn tableName="PEDIDO">
+            <column name="VALOR" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="76">
+        <addColumn tableName="PEDIDO">
+            <column name="CORRECAOVALORFIXO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="77">
+        <addColumn tableName="PEDIDO">
+            <column name="JUROSVALORFIXO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="78">
+        <addColumn tableName="PEDIDO">
+            <column name="MULTAVALOR" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="79">
+        <addColumn tableName="PEDIDO">
+            <column name="PERCENTUALJUROSMANUAL" type="DECIMAL(19, 4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="80">
+        <addColumn tableName="PEDIDO">
+            <column name="PERCENTUALMULTA" type="DECIMAL(19, 4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="81">
+        <addColumn tableName="PEDIDO">
+            <column name="POSSIBILIDADEPERDA" type="DECIMAL(19, 4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="82">
+        <addColumn tableName="PEDIDO">
+            <column name="VALORPROVISAO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="83">
+        <addColumn tableName="PEDIDO">
+            <column name="MULTAVALORFIXO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="84">
+        <addColumn tableName="PEDIDO">
+            <column name="VALOR_ATUALIZADO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="85">
+        <addColumn tableName="PEDIDO">
+            <column name="PROVISAO_ATUALIZADO" type="DECIMAL(19, 2)"/>
+        </addColumn>
+    </changeSet>
+
+    <!--JUROS-->
+    <changeSet author="paulomarcon" id="86">
+        <dropColumn tableName="JUROS" columnName="PERCENTUAL"/>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="87">
+        <addColumn tableName="JUROS">
+            <column name="PERCENTUAL" type="DECIMAL(19, 4)"/>
+        </addColumn>
+    </changeSet>
+
+    <!--RISCO CAUSA-->
+    <changeSet author="paulomarcon" id="88">
+        <dropColumn tableName="RISCOCAUSA" columnName="PROBABILIDADE"/>
+    </changeSet>
+
+    <changeSet author="paulomarcon" id="89">
+        <addColumn tableName="RISCOCAUSA">
+            <column name="PROBABILIDADE" type="DECIMAL(19, 4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="90">
+        <createTable tableName="MOTIVOSTATUSFINAL_TAREFA">
+            <column name="ID_MOTIVOSTATUSFINAL" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MOTIVOSTATUSFINAL_TAREFA"/>
+            </column>
+            <column name="ID_TAREFA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MOTIVOSTATUSFINAL_TAREFA"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="91">
+        <addForeignKeyConstraint baseColumnNames="ID_MOTIVOSTATUSFINAL" baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_MOT" referencedColumnNames="ID"
+                                 referencedTableName="MOTIVOSTATUSFINAL" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="92">
+        <addForeignKeyConstraint baseColumnNames="ID_TAREFA" baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_TAR" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="93">
+        <addColumn tableName="DECISAO">
+            <column name="BLOQUEAR_REATIVACAO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="94">
+        <update tableName="DECISAO">
+            <column name="BLOQUEAR_REATIVACAO" valueBoolean="false"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="95">
+        <addNotNullConstraint tableName="DECISAO" columnName="BLOQUEAR_REATIVACAO" columnDataType="BOOLEAN"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="96" dbms="${dbmsSequence}">
+        <insert tableName="TIPODOCUMENTO">
+            <column name="ID" valueSequenceNext="SEQ_TIPODOCUMENTO"/>
+            <column name="DESCRICAO" value="PADRÃO"/>
+            <column name="COD_INT" valueNumeric="1"/>
+            <column name="CONSTANTE" valueBoolean="TRUE"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="97" dbms="${dbmsAutoIncrement}">
+        <insert tableName="TIPODOCUMENTO">
+            <column name="DESCRICAO" value="PADRÃO"/>
+            <column name="COD_INT" valueNumeric="1"/>
+            <column name="CONSTANTE" valueBoolean="TRUE"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="98">
+        <addNotNullConstraint tableName="TAREFA" columnName="ID_TAREFA" columnDataType="VARCHAR(255)"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="99">
+        <addNotNullConstraint tableName="TAREFA" columnName="FK_CARTEIRA" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="100">
+        <addUniqueConstraint tableName="TAREFA" constraintName="UK_TAREFA" columnNames="ID_TAREFA,FK_CARTEIRA"/>
+    </changeSet>
+
+    <!-- Permissão para reativar processo -->
+
+    <changeSet author="laerte.pereira" id="101">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="85"/>
+            <column name="DESCRICAO" value="Permissão para reativar processo"/>
+            <column name="EXIBE" valueBoolean="false"/>
+            <column name="FEATURE" value="processocadastro"/>
+            <column name="REDIRECT" value=""/>
+            <column name="TIPO" value="CADASTROPROCESSO"/>
+            <column name="CODIGO" value="Processo | Reativação de Processo"/>
+            <column name="DIRETORIOVIEW" value=""/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="102">
+        <insert tableName="OPERACAO">
+            <column name="ID" valueNumeric="30"/>
+            <column name="DESCRICAO" value="Operação | Reativar Processo"/>
+            <column name="CODIGO" value="Reativar Processo"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="103">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="85"/>
+            <column name="ID_OPERACAO" valueNumeric="30"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="104">
+        <delete tableName="RELPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 85 AND ID_OPERACAO = 30</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="105">
+        <delete tableName="REL_PERFILPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 85 AND ID_OPERACAO = 30</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="106">
+        <delete tableName="PERMISSAO">
+            <where>ID = 85</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="laerte.pereira" id="107">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="51"/>
+            <column name="ID_OPERACAO" valueNumeric="30"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="108">
+        <insert tableName="FUNCAO">
+            <column name="ID" valueNumeric="6"/>
+            <column name="DESCRICAO" value="Audiencista"/>
+            <column name="COD_INT" valueNumeric="5"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="109">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="85"/>
+            <column name="DESCRICAO" value="Permissão para Tutela do Processo"/>
+            <column name="EXIBE" valueBoolean="false"/>
+            <column name="FEATURE" value="tutela"/>
+            <column name="TIPO" value="CADASTROPROCESSO"/>
+            <column name="CODIGO" value="Processo | Tutela"/>
+        </insert>
+
+        <insert tableName="OPERACAO">
+            <column name="ID" valueNumeric="31"/>
+            <column name="DESCRICAO" value="Operação | Abrir Tarefa"/>
+            <column name="CODIGO" value="Abrir Tarefa"/>
+        </insert>
+
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="85"/>
+            <column name="ID_OPERACAO" valueNumeric="31"/>
+        </insert>
+
+        <insert tableName="OPERACAO">
+            <column name="ID" valueNumeric="32"/>
+            <column name="DESCRICAO" value="Operação | Exibir Tarefa"/>
+            <column name="CODIGO" value="Exibir Tarefa"/>
+        </insert>
+
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="85"/>
+            <column name="ID_OPERACAO" valueNumeric="32"/>
+        </insert>
+
+        <insert tableName="OPERACAO">
+            <column name="ID" valueNumeric="33"/>
+            <column name="DESCRICAO" value="Operação | Exibir Milestone"/>
+            <column name="CODIGO" value="Milestone"/>
+        </insert>
+
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="85"/>
+            <column name="ID_OPERACAO" valueNumeric="33"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="110">
+        <dropForeignKeyConstraint baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                  constraintName="FK_MOTIVOSTATUSFINAL_TAR_MOT"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="111">
+        <dropForeignKeyConstraint baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                  constraintName="FK_MOTIVOSTATUSFINAL_TAR_TAR"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="112">
+        <dropTable tableName="MOTIVOSTATUSFINAL_TAREFA"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="113">
+        <createTable tableName="TIPO_DATA_AGENDAMENTO">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPO_DATA_AGENDAMENTO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="114">
+        <createTable tableName="TIPO_RESPONSAVEL_AGENDAMENTO">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPO_RESPONSAVEL_AGENDA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="115">
+        <createTable tableName="TIPO_INTERVALO_AGENDAMENTO">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPO_INTERVALO_AGENDAMENTO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="116">
+        <createTable tableName="MOTIVOSTATUSFINAL_TAREFA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MOTIVOSTATUSFINAL_TAREFA"/>
+            </column>
+            <column name="ID_MOTIVOSTATUSFINAL" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TAREFA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TIPO_DATA" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TIPO_RESPONSAVEL" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_TIPO_INTERVALO" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INTERVALO" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DIAS_UTEIS" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_CAMPO_DATA" type="BIGINT"/>
+            <column name="ID_CAMPO_RESPONSAVEL" type="BIGINT"/>
+            <column name="ID_RESPONSAVEL" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="117">
+        <addForeignKeyConstraint baseColumnNames="ID_MOTIVOSTATUSFINAL" baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_MOT" referencedColumnNames="ID"
+                                 referencedTableName="MOTIVOSTATUSFINAL" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="118">
+        <addForeignKeyConstraint baseColumnNames="ID_TAREFA" baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_TAR" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="119">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_DATA" baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_TDATA" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_DATA_AGENDAMENTO" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="120">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_RESPONSAVEL" baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_TRESP" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_RESPONSAVEL_AGENDAMENTO" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="121">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_INTERVALO" baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_TINT" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_INTERVALO_AGENDAMENTO" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="122">
+        <addForeignKeyConstraint baseColumnNames="ID_RESPONSAVEL" baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_RESP" referencedColumnNames="ID"
+                                 referencedTableName="USUARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="123">
+        <addForeignKeyConstraint baseColumnNames="ID_CAMPO_DATA" baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_CDATA" referencedColumnNames="ID"
+                                 referencedTableName="CAMPO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="124">
+        <addForeignKeyConstraint baseColumnNames="ID_CAMPO_RESPONSAVEL" baseTableName="MOTIVOSTATUSFINAL_TAREFA"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_TAR_CRESP" referencedColumnNames="ID"
+                                 referencedTableName="CAMPO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="125" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_MOTIVOSTATUSFINAL_TAREFA"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="126">
+        <insert tableName="TIPO_DATA_AGENDAMENTO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Data Atual"/>
+        </insert>
+        <insert tableName="TIPO_DATA_AGENDAMENTO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Data de Conclusão"/>
+        </insert>
+        <insert tableName="TIPO_DATA_AGENDAMENTO">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Campo do Formulário"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="127">
+        <insert tableName="TIPO_RESPONSAVEL_AGENDAMENTO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Operação"/>
+        </insert>
+        <insert tableName="TIPO_RESPONSAVEL_AGENDAMENTO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Específico"/>
+        </insert>
+        <insert tableName="TIPO_RESPONSAVEL_AGENDAMENTO">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Campo do Formulário"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="128">
+        <insert tableName="TIPO_INTERVALO_AGENDAMENTO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Minutos"/>
+        </insert>
+        <insert tableName="TIPO_INTERVALO_AGENDAMENTO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Horas"/>
+        </insert>
+        <insert tableName="TIPO_INTERVALO_AGENDAMENTO">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Dias"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="129">
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Permissão para cadastro de Motivo Status Final"/>
+            <column name="FEATURE" value="motivostatusfinal"/>
+            <column name="REDIRECT" value="/motivostatusfinal/lista"/>
+            <column name="CODIGO" value="Processo | Motivo Status Final"/>
+            <column name="DIRETORIOVIEW" value="/motivostatusfinal"/>
+            <where>ID = 37</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="130">
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Permissão para Cadastro de Grupo Motivo Status Final"/>
+            <column name="FEATURE" value="grupomotivostatusfinal"/>
+            <column name="REDIRECT" value="/grupomotivostatusfinal/lista"/>
+            <column name="CODIGO" value="Processo | Grupo Motivo Status Final"/>
+            <column name="DIRETORIOVIEW" value="/grupomotivostatusfinal"/>
+            <where>ID = 80</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="131">
+        <delete tableName="REL_PERFILPERMISSAOOPERACAO">
+            <where>ID_OPERACAO = 33</where>
+        </delete>
+        <delete tableName="RELPERMISSAOOPERACAO">
+            <where>ID_OPERACAO = 33</where>
+        </delete>
+        <delete tableName="OPERACAO">
+            <where>ID = 33</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="Jordano" id="132" dbms="${dbmsSequence}">
+        <insert tableName="PAPEL">
+            <column name="ID" valueSequenceNext="SEQ_PAPEL"/>
+            <column name="DESCRICAO" value="Subsídios"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="COD_INT" valueNumeric="20"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="133" dbms="${dbmsAutoIncrement}">
+        <insert tableName="PAPEL">
+            <column name="DESCRICAO" value="Subsídios"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="COD_INT" valueNumeric="20"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="134">
+        <createTable tableName="RELPESSOACOMARCA">
+            <column name="ID_COMARCA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_RELPESSOACOMARCA"/>
+            </column>
+            <column name="ID_PESSOA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_RELPESSOACOMARCA"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Jordano" id="135">
+        <addForeignKeyConstraint baseColumnNames="ID_PESSOA" baseTableName="RELPESSOACOMARCA"
+                                 constraintName="FK_RELPESSOACOMARCA_PESSOA" referencedColumnNames="ID"
+                                 referencedTableName="PESSOA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+    <changeSet author="Jordano" id="136">
+        <addForeignKeyConstraint baseColumnNames="ID_COMARCA" baseTableName="RELPESSOACOMARCA"
+                                 constraintName="FK_RELPESSOACOMARCA_CARTEIRA" referencedColumnNames="ID"
+                                 referencedTableName="COMARCA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+    <changeSet author="Jordano" id="137">
+        <update tableName="PAPEL">
+            <column name="DESCRICAO" value="Analista de Subsídios"/>
+            <where>COD_INT = 20</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="138">
+        <update tableName="TIPO_RESPONSAVEL_AGENDAMENTO">
+            <column name="DESCRICAO" value="Operacional"/>
+            <where>ID = 1</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="139">
+        <update tableName="TIPO_DATA_AGENDAMENTO">
+            <column name="DESCRICAO" value="Campo do Formulário"/>
+            <where>ID = 2</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="140">
+        <delete tableName="TIPO_DATA_AGENDAMENTO">
+            <where>ID = 3</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="141">
+        <insert tableName="TIPOCAMPO">
+            <column name="ID" valueNumeric="9"/>
+            <column name="DESCRICAO" value="Área de Texto"/>
+        </insert>
+        <insert tableName="TIPOCAMPO">
+            <column name="ID" valueNumeric="10"/>
+            <column name="DESCRICAO" value="Consulta SQL"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="142">
+        <createTable tableName="CAMPO_VARIAVEL">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CAMPO_VARIAVEL"/>
+            </column>
+            <column name="VARIAVEL" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="143">
+        <insert tableName="CAMPO_VARIAVEL">
+            <column name="ID" valueNumeric="1"/>
+            <column name="VARIAVEL" value="PROCESSO_NUMERO"/>
+            <column name="DESCRICAO" value="Número do Processo"/>
+        </insert>
+        <insert tableName="CAMPO_VARIAVEL">
+            <column name="ID" valueNumeric="2"/>
+            <column name="VARIAVEL" value="PROCESSO_NUMERO_UNICO"/>
+            <column name="DESCRICAO" value="Número Único do Processo"/>
+        </insert>
+        <insert tableName="CAMPO_VARIAVEL">
+            <column name="ID" valueNumeric="3"/>
+            <column name="VARIAVEL" value="PROCESSO_OPERACIONAL_ID"/>
+            <column name="DESCRICAO" value="ID do Operacional do Processo"/>
+        </insert>
+        <insert tableName="CAMPO_VARIAVEL">
+            <column name="ID" valueNumeric="4"/>
+            <column name="VARIAVEL" value="PROCESSO_COMARCA_ID"/>
+            <column name="DESCRICAO" value="ID da Comarca do Processo"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="144">
+        <addColumn tableName="CAMPO">
+            <column name="CONSULTA_SQL" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="145">
+        <createTable tableName="PAINEL">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PAINEL"/>
+            </column>
+            <column name="NOME" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="146">
+        <createTable tableName="PAINEL_TAREFA">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PAINEL_TAREFA"/>
+            </column>
+            <column name="SLA" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRINCIPAL" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PAINEL" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_TAREFA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="147">
+        <addForeignKeyConstraint baseColumnNames="FK_PAINEL" baseTableName="PAINEL_TAREFA"
+                                 constraintName="FK_PAINEL_PAI_TAR" referencedColumnNames="ID"
+                                 referencedTableName="PAINEL" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="148">
+        <addForeignKeyConstraint baseColumnNames="FK_TAREFA" baseTableName="PAINEL_TAREFA"
+                                 constraintName="FK_TAREFA_PAI_TAR" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="149" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PAINEL"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="150" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PAINEL_TAREFA"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="151">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="86"/>
+            <column name="DESCRICAO" value="Permissão para cadastro de Painéis"/>
+            <column name="EXIBE" valueBoolean="true"/>
+            <column name="FEATURE" value="painel"/>
+            <column name="REDIRECT" value="/painel/lista"/>
+            <column name="TIPO" value="CADASTROSISTEMA"/>
+            <column name="CODIGO" value="Sistema | Painéis"/>
+            <column name="DIRETORIOVIEW" value="/painel"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="152">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="86"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="153">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="86"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="154">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="86"/>
+            <column name="ID_OPERACAO" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Jordano" id="155">
+        <createView viewName="VW_CAMPO">
+            SELECT
+            ID,
+            ATIVO,
+            DESCRICAO,
+            EXTENSAO,
+            OBRIGATORIO,
+            ORDEM,
+            SISTEMA,
+            TAMANHO,
+            TAMANHOMAXIMO,
+            TIPO_CAMPO,
+            TIPO_CAMPO_SISTEMA,
+            VISIVEL,
+            FK_FORMULARIO,
+            FK_GRUPOCAMPO,
+            CAST(ID AS CHAR) AS ID_NAME
+            FROM CAMPO
+        </createView>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="156">
+        <addColumn tableName="PAINEL">
+            <column name="FK_CARTEIRA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="157">
+        <addColumn tableName="FORMULARIO">
+            <column name="ID_FORMULARIO_PAI" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="158">
+        <addForeignKeyConstraint baseColumnNames="ID_FORMULARIO_PAI" baseTableName="FORMULARIO"
+                                 constraintName="FK_FORMULARIO_FORMULARIO" referencedColumnNames="ID"
+                                 referencedTableName="FORMULARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="159">
+        <createTable tableName="TIPO_EXIBICAO_CAMPO">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPO_EXIBICAO_CAMPO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="160">
+        <addColumn tableName="FORMULARIO">
+            <column name="ID_TIPO_EXIBICAO_PAI" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="161">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_EXIBICAO_PAI" baseTableName="FORMULARIO"
+                                 constraintName="FK_FORMULARIO_TIPO_EXIBICAO" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_EXIBICAO_CAMPO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="162">
+        <insert tableName="TIPO_EXIBICAO_CAMPO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Invisível"/>
+        </insert>
+        <insert tableName="TIPO_EXIBICAO_CAMPO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Somente Leitura"/>
+        </insert>
+        <insert tableName="TIPO_EXIBICAO_CAMPO">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Leitura e Escrita"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="163">
+        <insert tableName="FUNCAO">
+            <column name="ID" valueNumeric="7"/>
+            <column name="DESCRICAO" value="Audiencista Externo"/>
+            <column name="COD_INT" valueNumeric="6"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="164">
+        <update tableName="PERMISSAO">
+            <column name="FEATURE" value="concluirtarefas"/>
+            <where>ID = 81</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="165">
+        <insert tableName="CAMPO_VARIAVEL">
+            <column name="ID" valueNumeric="5"/>
+            <column name="VARIAVEL" value="USUARIO_LOGADO_ID"/>
+            <column name="DESCRICAO" value="ID do Usuário Logado"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="166">
+        <createTable tableName="TIPO_DATA_SLA">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPO_DATA_SLA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="167">
+        <insert tableName="TIPO_DATA_SLA">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Data do Agendamento"/>
+        </insert>
+        <insert tableName="TIPO_DATA_SLA">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Campo do Formulário"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="168">
+        <createTable tableName="TIPO_INTERVALO_SLA">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPO_INTERVALO_SLA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="169">
+        <insert tableName="TIPO_INTERVALO_SLA">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Minutos"/>
+        </insert>
+        <insert tableName="TIPO_INTERVALO_SLA">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Horas"/>
+        </insert>
+        <insert tableName="TIPO_INTERVALO_SLA">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Dias"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="170">
+        <addColumn tableName="PAINEL_TAREFA">
+            <column name="ID_TIPO_DATA" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="171">
+        <addColumn tableName="PAINEL_TAREFA">
+            <column name="ID_TIPO_INTERVALO" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="172">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_DATA" baseTableName="PAINEL_TAREFA"
+                                 constraintName="FK_PAINEL_TAREFA_TIPO_DATA_SLA" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_DATA_SLA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="173">
+        <addForeignKeyConstraint baseColumnNames="ID_TIPO_INTERVALO" baseTableName="PAINEL_TAREFA"
+                                 constraintName="FK_PAINEL_TAREFA_TIPO_INT_SLA" referencedColumnNames="ID"
+                                 referencedTableName="TIPO_INTERVALO_SLA" deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="174">
+        <update tableName="PAINEL_TAREFA">
+            <column name="ID_TIPO_DATA" valueNumeric="2"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="175">
+        <update tableName="PAINEL_TAREFA">
+            <column name="ID_TIPO_INTERVALO" valueNumeric="3"/>
+        </update>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="176">
+        <addNotNullConstraint tableName="PAINEL_TAREFA" columnName="ID_TIPO_DATA" columnDataType="INTEGER"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="177">
+        <addNotNullConstraint tableName="PAINEL_TAREFA" columnName="ID_TIPO_INTERVALO" columnDataType="INTEGER"/>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="178">
+        <addColumn tableName="PAINEL_TAREFA">
+            <column name="ID_CAMPO_DATA" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rodolpho.couto" id="179">
+        <addForeignKeyConstraint baseColumnNames="ID_CAMPO_DATA" baseTableName="PAINEL_TAREFA"
+                                 constraintName="FK_PAINEL_TAREFA_CAMPO" referencedColumnNames="ID"
+                                 referencedTableName="CAMPO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="180">
+        <insert tableName="TIPO_RESPONSAVEL_AGENDAMENTO">
+            <column name="ID" valueNumeric="4"/>
+            <column name="DESCRICAO" value="Fila"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="181">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para incluir e alterar registros"/>
+            <where>ID = 1</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="182">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para excluir registros"/>
+            <where>ID = 2</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="183">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para duplicar registros"/>
+            <where>ID = 3</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="184">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para exportar registros em PDF ou Excel"/>
+            <where>ID = 4</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="185">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para visualizar o histórico de ações de um registro"/>
+            <where>ID = 5</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="186">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para exportar e imprimir registros"/>
+            <where>ID = 6</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="187">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para enviar dados de um registro por e-mail"/>
+            <where>ID = 7</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="188">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para editar registros"/>
+            <where>ID = 8</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="189">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para recalcular os índices econômicos registrados"/>
+            <where>ID = 9</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="190">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para tutelar processos"/>
+            <where>ID = 10</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="191">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para importar arquivos para o sistema"/>
+            <where>ID = 11</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="192">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para realizar download de arquivos do sistema"/>
+            <where>ID = 12</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="193">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para acessar o item de menu 'Gerenciamento de Esteiras'"/>
+            <where>ID = 13</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="194">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para acessar o item de menu 'Favoritos'"/>
+            <where>ID = 14</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="195">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para acessar o item de menu 'Processos Recentes'"/>
+            <where>ID = 15</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="196">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para acessar o item de menu 'Publicações'"/>
+            <where>ID = 16</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="197">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para acessar o item de menu 'Agenda'"/>
+            <where>ID = 17</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="198">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para acessar o item de menu 'Atendimento de Fila'"/>
+            <where>ID = 18</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="199">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para acessar o item de menu 'Processos'"/>
+            <where>ID = 19</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="200">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para acessar o item de menu 'Notificações - Solicitações'"/>
+            <where>ID = 20</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="201">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para incluir novas solicitações em um processo"/>
+            <where>ID = 21</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="202">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para concluir solicitações em andamento"/>
+            <where>ID = 22</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="203">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para incluir e atualizar follow up em uma solicitação"/>
+            <where>ID = 23</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="204">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para incluir custas em uma solicitação"/>
+            <where>ID = 24</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="205">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para realizar upload e download de arquivos em uma solicitação"/>
+            <where>ID = 25</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="206">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para concluir qualquer tarefa iniciada na tutela de um processo"/>
+            <where>ID = 26</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="207">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para pesquisar registros"/>
+            <where>ID = 27</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="208">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para acessar o item de menu 'Notificações - Novas Ações'"/>
+            <where>ID = 28</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="209">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para acessar o item de menu 'Notificações - Novos Andamentos'"/>
+            <where>ID = 29</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="210">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para reativar processos com status encerrado"/>
+            <where>ID = 30</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="211">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para iniciar novas tarefas na tutela de um processo"/>
+            <where>ID = 31</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="212">
+        <update tableName="OPERACAO">
+            <column name="CODIGO"
+                    value="Permissão para visualizar lista de tarefas disponíveis na tutela de um processo"/>
+            <where>ID = 32</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="213">
+        <delete tableName="OPERACAO">
+            <where>ID = 33</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="214">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Tipo de Despesa do Processo"/>
+            <where>ID = 60</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="215">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Sistema | Painéis de Monitoramento de SLA"/>
+            <where>ID = 86</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="216">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Sistema | Atualizar Autenticação"/>
+            <where>ID = 45</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="217">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Menu | Solicitações"/>
+            <where>ID = 68</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="218">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Distribuição de Processo em Lote"/>
+            <where>ID = 69</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="219">
+        <insert tableName="OPERACAO">
+            <column name="ID" valueNumeric="33"/>
+            <column name="DESCRICAO" value="Operação | Data retroativa"/>
+            <column name="CODIGO" value="Permissão para inclusão de data reatroativa em uma tarefa realizada"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="220">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="85"/>
+            <column name="ID_OPERACAO" valueNumeric="33"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="221">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Ferramentas | Config. Gerador de Planilha"/>
+            <where>ID = 15</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="222">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Ferramentas | Gerador de Planilha"/>
+            <where>ID = 16</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="223">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Geral | Cadastro de Dados Bancários de Pessoa"/>
+            <where>ID = 14</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="224">
+        <delete tableName="REL_PERFILPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 39</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="225">
+        <delete tableName="RELPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 39</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="226">
+        <delete tableName="PERMISSAO">
+            <where>ID = 39</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="Jordano" id="227">
+        <addColumn tableName="USUARIO">
+            <column name="TEMPO_SESSAO" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="228">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="87"/>
+            <column name="DESCRICAO" value="Permissão para Monitoramento de Rotinas Agendadas"/>
+            <column name="EXIBE" valueBoolean="true"/>
+            <column name="FEATURE" value="monitoramento"/>
+            <column name="REDIRECT" value="/monitoramento/lista"/>
+            <column name="TIPO" value="CADASTROFERRAMENTA"/>
+            <column name="CODIGO" value="Ferramentas | Monitoramento de Rotinas Agendadas"/>
+            <column name="DIRETORIOVIEW" value="/monitoramento"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="229">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="87"/>
+            <column name="ID_OPERACAO" valueNumeric="27"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="230" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="87"/>
+            <column name="ID_OPERACAO" valueNumeric="27"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="231" dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="87"/>
+            <column name="ID_OPERACAO" valueNumeric="27"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

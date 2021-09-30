@@ -1,0 +1,45 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="add-column-ENVIA_PUBLICACAO_GRACCO" author="raphael.moreira">
+        <addColumn tableName="DECISAO">
+            <column name="ENVIA_PUBLICACAO_GRACCO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add-column-RECEBE_PUBLICACAO_GRACCO" author="raphael.moreira">
+        <addColumn tableName="DECISAO">
+            <column name="RECEBE_PUBLICACAO_GRACCO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="raphael.moreira" id="update-envia_recebe_publicacao_gracco">
+        <update tableName="DECISAO">
+            <column name="ENVIA_PUBLICACAO_GRACCO" value="1"/>
+            <column name="RECEBE_PUBLICACAO_GRACCO" value="1"/>
+        </update>
+    </changeSet>
+
+    <changeSet id="add-columnfk-dbt-apontamento" author="guilherme.camargo">
+        <addColumn tableName="APONTAMENTO">
+            <column type="BIGINT" name="FK_DADOSBASICOSTAREFA" />
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="FK_DADOSBASICOSTAREFA" baseTableName="APONTAMENTO"
+                                 constraintName="FK_APONTAMENTO_DADOSBASICOSTAREFA"
+                                 referencedColumnNames="ID" referencedTableName="DADOSBASICOSTAREFA"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="add-columnfk-dbt-apontamento_aud" author="guilherme.camargo">
+        <addColumn tableName="APONTAMENTO_AUD">
+            <column type="BIGINT" name="FK_DADOSBASICOSTAREFA"/>
+        </addColumn>
+    </changeSet>
+
+
+</databaseChangeLog>

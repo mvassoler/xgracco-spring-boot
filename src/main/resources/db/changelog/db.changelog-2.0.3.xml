@@ -1,0 +1,1450 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="felipi.berdun" id="create-table-TIPO_DEPOSITOJUIZO">
+        <createTable tableName="TIPO_DEPOSITOJUIZO">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKeyName="PK_TIPO_DEPOSITOJUIZO" primaryKey="true"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-TIPO_DEPOSITOJUIZO">
+        <insert tableName="TIPO_DEPOSITOJUIZO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" type="VARCHAR(60)" value="Entrada"/>
+        </insert>
+        <insert tableName="TIPO_DEPOSITOJUIZO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" type="VARCHAR(60)" value="Saída"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-PROCESSODEPOSITO">
+        <createTable tableName="PROCESSODEPOSITO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKeyName="PF_PROCESSODEPOSITO" primaryKey="true"/>
+            </column>
+            <column name="ID_PROCESSO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="ID_TIPO_DEPOSITOJUIZO" type="INTEGER"/>
+            <column name="DATA" type="DATETIME"/>
+            <column name="VALOR" type="DECIMAL(19, 2)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-sequence-SEQ_DEPOSITOJUIZO" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_DEPOSITOJUIZO"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_DEPOSITO_TIPODEPOSITO">
+        <addForeignKeyConstraint baseTableName="PROCESSODEPOSITO" baseColumnNames="ID_TIPO_DEPOSITOJUIZO"
+                                 constraintName="FK_DEPOSITO_TIPODEPOSITO"
+                                 referencedTableName="TIPO_DEPOSITOJUIZO"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_PROCESSODEPOSITO_PROCESSO">
+        <addForeignKeyConstraint baseTableName="PROCESSODEPOSITO" baseColumnNames="ID_PROCESSO"
+                                 constraintName="FK_PROCESSODEPOSITO_PROCESSO"
+                                 referencedTableName="PROCESSO"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-PROCESSODEPOSITOARQUIVO">
+        <createTable tableName="PROCESSODEPOSITOARQUIVO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKeyName="PK_PROCESSODEPOSITOARQUIVO" primaryKey="true"/>
+            </column>
+            <column name="ID_PROCESSODEPOSITO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CAMINHO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_CADASTRO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_DEPOSITOARQUIVO_DEPOSITO">
+        <addForeignKeyConstraint baseTableName="PROCESSODEPOSITOARQUIVO" baseColumnNames="ID_PROCESSODEPOSITO"
+                                 constraintName="FK_DEPOSITOARQUIVO_DEPOSITO"
+                                 referencedTableName="PROCESSODEPOSITO"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-sequence-SEQ_PROCESSODEPOSITOARQUIVO" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_PROCESSODEPOSITOARQUIVO"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-PERMISSAO-92">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="92"/>
+            <column name="DESCRICAO" value="Permissão para Cadastro de Depositos"/>
+            <column name="EXIBE" valueBoolean="true"/>
+            <column name="FEATURE" value="processo{idProcesso}depositos"/>
+            <column name="REDIRECT" value="/depositos/lista"/>
+            <column name="ID_TIPO_PERMISSAO" type="INTEGER" value="2"/>
+            <column name="CODIGO" value="Processo | Deposito"/>
+            <column name="DIRETORIOVIEW" value="/depositojuizo"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-PERMISSAOOPERACAO-92">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="92"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="92"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="92"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="create-column-PROCESSO.FK_INDICEECONOMICO" author="felipi.berdun">
+        <addColumn tableName="PROCESSO">
+            <column name="FK_INDICE_ECONOMICO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_PROCESSO_INDICEECONOMICO">
+        <addForeignKeyConstraint baseColumnNames="FK_INDICE_ECONOMICO" baseTableName="PROCESSO"
+                                 constraintName="FK_PROCESSO_INDICEECONOMICO" referencedColumnNames="ID"
+                                 referencedTableName="INDICEECONOMICO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="create-column-PROCESSO_AUD.FK_INDICEECONOMICO" author="felipi.berdun">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="FK_INDICE_ECONOMICO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-PROCESSODEPOSITO.VALORATUALIZADO">
+        <addColumn tableName="PROCESSODEPOSITO">
+            <column name="VALORATUALIZADO" type="DECIMAL(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-PROCESSODEPOSITO.DATAATUALIZACAOVALOR">
+        <addColumn tableName="PROCESSODEPOSITO">
+            <column name="DATAATUALIZACAOVALOR" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-PEDIDORESUMO.VALORDEPOSITO">
+        <addColumn tableName="PEDIDORESUMO">
+            <column name="VALORDEPOSITO" type="DECIMAL(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-PEDIDORESUMO_AUD.VALORDEPOSITO">
+        <addColumn tableName="PEDIDORESUMO_AUD">
+            <column name="VALORDEPOSITO" type="DECIMAL(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-VALOR-PROVISAO">
+        <dropColumn columnName="VALOR" tableName="PROVISAO"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-constraint-FK_PROVISAO_CARTEIRA">
+        <dropForeignKeyConstraint baseTableName="PROVISAO" constraintName="FK_PROVISAO_CARTEIRA"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-CARTEIRA">
+        <dropColumn columnName="FK_CARTEIRA" tableName="PROVISAO"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-column-VALOR-PROVISAO">
+        <addColumn tableName="PROVISAO">
+            <column name="VALOR_PROVISAO" type="DECIMAL(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-column-VALOR-PEDIDO">
+        <addColumn tableName="PROVISAO">
+            <column name="VALOR_PEDIDO" type="DECIMAL(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-table-PROVISAO_AUD">
+        <dropTable tableName="PROVISAO_AUD"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-PROVISAO_AUD">
+        <createTable tableName="PROVISAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROVISAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROVISAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DATA" type="DATETIME"/>
+            <column name="VALOR_PROVISAO" type="DECIMAL(19, 2)"/>
+            <column name="VALOR_PEDIDO" type="DECIMAL(19, 2)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-PROVISAO_AUD">
+        <sql>INSERT INTO PROVISAO_AUD (ID, DATA, VALOR_PROVISAO, VALOR_PEDIDO, ID_AUD, TIPO_AUD)
+            SELECT ID, DATA, VALOR_PROVISAO, VALOR_PEDIDO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM
+            PROVISAO
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_PROVISAO_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PROVISAO_AUD"
+                                 constraintName="FK_PROVISAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-PROCESSODEPOSITO_AUD">
+        <createTable tableName="PROCESSODEPOSITO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSODEPOSITO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSODEPOSITO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="ID_PROCESSO" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="ID_TIPO_DEPOSITOJUIZO" type="INTEGER"/>
+            <column name="DATA" type="DATETIME"/>
+            <column name="VALOR" type="DECIMAL(19, 2)"/>
+            <column name="VALORATUALIZADO" type="DECIMAL(19, 2)"/>
+            <column name="DATAATUALIZACAOVALOR" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-PROCESSODEPOSITO_AUD">
+        <sql>INSERT INTO PROCESSODEPOSITO_AUD (ID, ID_PROCESSO, DESCRICAO, ID_TIPO_DEPOSITOJUIZO, DATA, VALOR,
+            VALORATUALIZADO, DATAATUALIZACAOVALOR, ID_AUD, TIPO_AUD)
+            SELECT ID, ID_PROCESSO, DESCRICAO, ID_TIPO_DEPOSITOJUIZO, DATA, VALOR, VALORATUALIZADO,
+            DATAATUALIZACAOVALOR, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM PROCESSODEPOSITO
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_PROCESSODEPOSITO_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PROCESSODEPOSITO_AUD"
+                                 constraintName="FK_PROCESSODEPOSITO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-PROCESSODEPOSITOARQUIVO_AUD">
+        <createTable tableName="PROCESSODEPOSITOARQUIVO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSODEPOSITOARQUIVO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PROCESSODEPOSITOARQUIVO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="ID_PROCESSODEPOSITO" type="BIGINT"/>
+            <column name="CAMINHO" type="VARCHAR(255)"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="DATA_CADASTRO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-PROCESSODEPOSITOARQUIVO_AUD">
+        <sql>INSERT INTO PROCESSODEPOSITOARQUIVO_AUD (ID, ID_PROCESSODEPOSITO, CAMINHO, DESCRICAO, DATA_CADASTRO,
+            ID_AUD, TIPO_AUD)
+            SELECT ID, ID_PROCESSODEPOSITO, CAMINHO, DESCRICAO, DATA_CADASTRO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS
+            TIPO_AUD FROM PROCESSODEPOSITOARQUIVO
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_PROCESSODEPOSITOARQUIVO_AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="PROCESSODEPOSITOARQUIVO_AUD"
+                                 constraintName="FK_PROCESSODEPOSITOARQUIVO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="create-column-SUCUMBENCIA" author="paulo.marcon">
+        <addColumn tableName="PEDIDO">
+            <column name="SUCUMBENCIA" type="DECIMAL(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-column-ENCARGOS" author="paulo.marcon">
+        <addColumn tableName="PEDIDO">
+            <column name="ENCARGOS" type="DECIMAL(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-column-SUCUMBENCIA_AUD" author="paulo.marcon">
+        <addColumn tableName="PEDIDO_AUD">
+            <column name="SUCUMBENCIA" type="DECIMAL(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-column-ENCARGOS_AUD" author="paulo.marcon">
+        <addColumn tableName="PEDIDO_AUD">
+            <column name="ENCARGOS" type="DECIMAL(19,2)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="create-table-REGIAO_UF" author="Jordano"> 
+        <createTable tableName="REGIAO_UF"> 
+            <column autoIncrement="false" name="ID" type="BIGINT"> 
+                <constraints nullable="false" primaryKey="true"></constraints>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(100)"> <constraints nullable="false"/> 
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="insert-REGIAO_UF" author="Jordano"> 
+        <insert tableName="REGIAO_UF">
+             <column name="ID" valueNumeric="1"/> 
+            <column name="DESCRICAO" value="Norte"/> 
+        </insert>
+
+        <insert tableName="REGIAO_UF">
+             <column name="ID" valueNumeric="2"/> 
+            <column name="DESCRICAO" value="Nordeste"/> 
+        </insert>
+
+        <insert tableName="REGIAO_UF">
+             <column name="ID" valueNumeric="3"/> 
+            <column name="DESCRICAO" value="Centro-Oeste"/> 
+        </insert>
+
+        <insert tableName="REGIAO_UF">
+             <column name="ID" valueNumeric="4"/> 
+            <column name="DESCRICAO" value="Sudeste"/> 
+        </insert>
+
+        <insert tableName="REGIAO_UF">
+             <column name="ID" valueNumeric="5"/> 
+            <column name="DESCRICAO" value="Sul"/> 
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-CAMPO_VARIAVEL" author="renan.gigliotti">
+        <insert tableName="CAMPO_VARIAVEL">
+            <column name="ID" valueNumeric="6"/>
+            <column name="VARIAVEL" value="CRITERIO_PESQUISA"/>
+            <column name="DESCRICAO" value="Critério de Pesquisa"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-OPERACAO-RelatorioSql">
+        <insert tableName="OPERACAO">
+            <column name="ID" valueNumeric="36"/>
+            <column name="DESCRICAO" value="Operação | Consulta SQL"/>
+            <column name="CODIGO" value="Permissão para criação de consulta SQL"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-RELPERMISSAOOPERACAO-RelatorioSQL">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="36"/>
+            <column name="ID_PERMISSAO" valueNumeric="15"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-RELPERMISSAOOPERACAO-FormularioSQL">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="36"/>
+            <column name="ID_PERMISSAO" valueNumeric="52"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-RELPERMISSAOOPERACAO-GrupoCampoSQL">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="36"/>
+            <column name="ID_PERMISSAO" valueNumeric="13"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="create-column-SENHA-RELATORIO" author="paulo.marcon">
+        <addColumn tableName="RELATORIOPERFIL">
+            <column name="SENHA" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoProcesso">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="51"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoProcessoSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="51"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoProcessoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="51"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoTimeSheet">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="89"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTimeSheetSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="89"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTimeSheetAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="89"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoBanco">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="10"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoBancoSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="10"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoBancoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="10"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoCarteira">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoCarteiraSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="3"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoCarteiraAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="3"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoDadosBancariosPessoa">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="14"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoDadosBancariosPessoaSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="14"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoDadosBancariosPessoaAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="14"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoEscritorio">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="73"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoEscritorioSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="73"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoEscritorioAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="73"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoGrupoCampos">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="13"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoGrupoCamposSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="13"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoGrupoCamposAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="13"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoIndiceEconomico">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="53"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoIndiceEconomicoSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="53"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoIndiceEconomicoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="53"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoJuros">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="5"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoJurosSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="5"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoJurosoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="5"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoPapel">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="6"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPapelSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="6"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPapelAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="6"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoPerfil">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPerfilSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPerfilAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoPessoa">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="12"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPessoaSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="12"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPessoaAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="12"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoReferenciaHonorario">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="11"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoReferenciaHonorarioSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="11"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoReferenciaHonorarioAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="11"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoTese">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="4"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTeseSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTeseAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoLogradouro">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="9"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoLogradouroSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="9"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoLogradouroAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="9"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoTipoPagamentoHono">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTipoPagamentoHonoSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="1"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTipoPagamentoHonoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="1"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoTipoDocumento">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="7"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTipoDocumentoSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="7"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTipoDocumentoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="7"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoUsuario">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="74"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoUsuarioSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="74"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoUsuarioAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="74"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoAcao">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="19"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoAcaoSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="19"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoAcaoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="19"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoComarca">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="17"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoComarcaSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="17"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoComarcaAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="17"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoDecisao">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="18"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoDecisaoSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="18"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoDecisaoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="18"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoFase">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="30"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoFaseSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="30"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoFaseAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="30"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoAcm">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="31"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoAcmSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="31"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoAcmAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="31"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoForo">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="21"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoForoSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="21"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoForoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="21"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoMateria">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="22"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoMateriaSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="22"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoMateriaAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="22"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoParte">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="23"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoParteSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="23"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoParteAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="23"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoPosicaoParte">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="20"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPosicaoParteSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="20"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPosicaoParteAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="20"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoReparticao">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="24"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoReparticaoSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="24"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoReparticaoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="24"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoRiscoCausa">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="25"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoRiscoCausaSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="25"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoRiscoCausaAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="25"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoTipoGarantia">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="26"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTipoGarantiaSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="26"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTipoGarantiaAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="26"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoTipoPedido">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="27"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTipoPedidoSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="27"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTipoPedidoAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="27"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoVara">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="29"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoVaraSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="29"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoVaraAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="29"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoVara">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="29"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoVaraSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="29"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoVaraAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="29"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoEsteira">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="32"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoEsteiraSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="32"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoEsteiraAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="32"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoGrupoMotivoStatusFinal">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="80"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoGrupoMotivoStatusFinalSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="80"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoGrupoMotivoStatusFinalAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="80"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoPossibilidadePerda">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="88"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPossibilidadePerdaSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="88"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPossibilidadePerdaAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="88"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoMotivoStatusFinal">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoMotivoStatusFinalSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="37"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoMotivoStatusFinalAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="37"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoTemplateDiretorio">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="43"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTemplateDiretorioSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="43"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoTemplateDiretorioAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="43"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoPaines">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="86"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPainesSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="86"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoPainesAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="86"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoParametros">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="44"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoParametrosSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="44"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoParametrosAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="44"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EdicaoRotinas">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="46"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoRotinasSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="46"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-EdicaoRotinasAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="46"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-ExcluirRotinas">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO" valueNumeric="46"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}" id="insert-REL_PERFILPERMISSAOOPERACAO-ExcluirRotinasSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="46"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}" id="insert-REL_PERFILPERMISSAOOPERACAO-ExcluirRotinasAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="46"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="update-OPERACAO-IncluirRegistro">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Permissão para incluir registros"/>
+            <where>ID = 1</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-EditarConfigurarGeradorPlanilhas">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+            <column name="ID_PERMISSAO" valueNumeric="15"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsSequence}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EditarConfigurarGeradorPlanilhasSeq">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="15"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" dbms="${dbmsAutoIncrement}"
+               id="insert-REL_PERFILPERMISSAOOPERACAO-EditarConfigurarGeradorPlanilhasAI">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="15"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

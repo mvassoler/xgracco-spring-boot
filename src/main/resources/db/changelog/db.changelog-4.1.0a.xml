@@ -1,0 +1,305 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="tarefa-drop-unique-UK_TAREFA" author="thiago.fogar">
+        <dropUniqueConstraint tableName="TAREFA" constraintName="UK_TAREFA"
+                              uniqueColumns="ID_TAREFA,ID_FLUXO_TRABALHO"/>
+    </changeSet>
+
+    <!-- Remove as constraints da tabela TAREFA -->
+    <changeSet author="thiago.fogar" id="tarefa-drop-NOT-NULL-CONSTRAINT">
+
+
+        <dropNotNullConstraint columnDataType="VARCHAR(37)"
+                               columnName="ID_TAREFA"
+                               tableName="TAREFA"/>
+
+        <dropNotNullConstraint columnDataType="BIGINT"
+                               columnName="ID_FLUXO_TRABALHO"
+                               tableName="TAREFA"/>
+    </changeSet>
+
+    <!-- Cria a tabela FLUXO_TRABALHO_TAREFA -->
+    <changeSet id="create-table-FLUXO_TRABALHO_TAREFA" author="thiago.fogar">
+        <createTable tableName="FLUXO_TRABALHO_TAREFA">
+            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FLUXOTRABALHOTAREFA"/>
+            </column>
+            <column name="FK_FLUXOTRABALHO" type="BIGINT"/>
+            <column name="FK_TAREFA" type="BIGINT"/>
+            <column name="ATIVO" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Cria a tabela FLUXO_TRABALHO_TAREFA_AUD -->
+    <changeSet id="create-table-FLUXO_TRABALHO_TAREFA-AUD" author="thiago.fogar">
+        <createTable tableName="FLUXO_TRABALHO_TAREFA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FLUXOTRABALHOTAREFA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FLUXOTRABALHOTAREFA_AUD"/>
+            </column>
+
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="FK_FLUXOTRABALHO" type="BIGINT"/>
+            <column name="FK_TAREFA" type="BIGINT"/>
+            <column name="ATIVO" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em DADOSBASICOSTAREFA -->
+    <changeSet id="alter-table-DADOSBASICOSTAREFA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="DADOSBASICOSTAREFA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona FK_FLUXOTRABALHOTAREFA em DADOSBASICOSTAREFA -->
+    <changeSet id="add-fk_ftt-DADOSBASICOSTAREFA" author="thiago.fogar">
+        <addForeignKeyConstraint baseTableName="DADOSBASICOSTAREFA" constraintName="FK_DBT_FLUXOTRABALHOTAREFA"
+                                 baseColumnNames="FK_FLUXOTRABALHOTAREFA"
+                                 referencedTableName="FLUXO_TRABALHO_TAREFA" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em DADOSBASICOSTAREFA_AUD -->
+    <changeSet id="alter-table-DADOSBASICOSTAREFA_AUD-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="DADOSBASICOSTAREFA_AUD">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em ATENDIMENTO_FILA_PESSOA -->
+    <changeSet id="alter-table-ATENDIMENTOFILAPESSOA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="ATENDIMENTO_FILA_PESSOA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em HISTORICO_FILA_DEVOLUCAO -->
+    <changeSet id="alter-table-HISTORICO_FILA_DEVOLUCAO-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="HISTORICO_FILA_DEVOLUCAO">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em HISTORICO_FILA_PESSOA -->
+    <changeSet id="alter-table-HISTORICO_FILA_PESSOA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="HISTORICO_FILA_PESSOA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em CONCLUSAOAUTOMATICA -->
+    <changeSet id="alter-table-CONCLUSAOAUTOMATICA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="CONCLUSAOAUTOMATICA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em CONCLUSAOAUTOMATICATAREFA -->
+    <changeSet id="alter-table-CONCLUSAOAUTOMATICATAREFA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="CONCLUSAOAUTOMATICATAREFA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em FILA_TAREFA -->
+    <changeSet id="alter-table-FILA_TAREFA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="FILA_TAREFA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em ESTEIRA_TAREFA -->
+    <changeSet id="alter-table-ESTEIRA_TAREFA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="ESTEIRA_TAREFA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em TAREFA_STATUS_FINAL -->
+    <changeSet id="alter-table-TAREFA_STATUS_FINAL-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="TAREFA_STATUS_FINAL">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Remove FK da TAREFA em TAREFA_STATUS_FINAL -->
+    <changeSet id="remove-fk_tarefa-TAREFA_STATUS_FINAL" author="thiago.fogar">
+        <dropForeignKeyConstraint baseTableName="TAREFA_STATUS_FINAL" constraintName="FK_TAREFA_MOTIVO_TAREFA"/>
+    </changeSet>
+
+    <!-- Adiciona FK da FLUXO_TRABALHO_TAREFA em TAREFA_STATUS_FINAL -->
+    <changeSet id="add-fk_ftt-TAREFA_STATUS_FINAL" author="thiago.fogar">
+        <addForeignKeyConstraint baseTableName="TAREFA_STATUS_FINAL" constraintName="FK_TSF_FLUXOTRABALHOTAREFA"
+                                 baseColumnNames="FK_FLUXOTRABALHOTAREFA"
+                                 referencedTableName="FLUXO_TRABALHO_TAREFA" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em TAREFA_STATUS_FINAL_AGENDA -->
+    <changeSet id="alter-table-TAREFA_STATUS_FINAL_AGENDA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="TAREFA_STATUS_FINAL_AGENDA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Remove FK da TAREFA em TAREFA_STATUS_FINAL_AGENDA -->
+    <changeSet id="remove-fk_tarefa-TAREFA_STATUS_FINAL_AGENDA" author="thiago.fogar">
+        <dropForeignKeyConstraint baseTableName="TAREFA_STATUS_FINAL_AGENDA" constraintName="FK_TAREFA_MOT_AGE_TAREFA"/>
+    </changeSet>
+
+    <!-- Adiciona FK da FLUXO_TRABALHO_TAREFA em TAREFA_STATUS_FINAL_AGENDA -->
+    <changeSet id="add-fk_ftt-TAREFA_STATUS_FINAL_AGENDA" author="thiago.fogar">
+        <addForeignKeyConstraint baseTableName="TAREFA_STATUS_FINAL_AGENDA" constraintName="FK_TSFA_FLUXOTRABALHOTAREFA"
+                                 baseColumnNames="FK_FLUXOTRABALHOTAREFA"
+                                 referencedTableName="FLUXO_TRABALHO_TAREFA" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em CARTEIRA_EVENTO_TAREFA -->
+    <changeSet id="alter-table-CARTEIRA_EVENTO_TAREFA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="CARTEIRA_EVENTO_TAREFA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em CONTRATOCLAUSULA_TAREFA -->
+    <changeSet id="alter-table-CONTRATOCLAUSULA_TAREFA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="CONTRATOCLAUSULA_TAREFA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em PAINEL_TAREFA -->
+    <changeSet id="alter-table-PAINEL_TAREFA-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="PAINEL_TAREFA">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em TAREFA_STATUS_FINAL_AUD -->
+    <changeSet id="alter-table-TAREFA_STATUS_FINAL_AUD-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="TAREFA_STATUS_FINAL_AUD">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em TAREFA_STATUS_FINAL_AGENDA_AUD -->
+    <changeSet id="alter-table-TAREFA_STATUS_FINAL_AGENDA_AUD-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="TAREFA_STATUS_FINAL_AGENDA_AUD">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Adiciona coluna FK_FLUXOTRABALHOTAREFA em MODELOGENDAMENTO -->
+    <changeSet id="alter-table-MODELOGENDAMENTO-add-FK_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <addColumn tableName="MODELOGENDAMENTO">
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Remove Not-Null constraint da tabela TAREFA_STATUS_FINAL -->
+    <changeSet author="thiago.fogar" id="drop-not-null-TAREFA_STATUS_FINAL-ID-TAREFA">
+        <dropNotNullConstraint columnDataType="BIGINT"
+                               columnName="ID_TAREFA"
+                               tableName="TAREFA_STATUS_FINAL"/>
+    </changeSet>
+
+    <!-- Remove Not-Null constraint da tabela TAREFA_STATUS_FINAL_AGENDA -->
+    <changeSet author="thiago.fogar" id="drop-not-null-TAREFA_STATUS_FINAL-AGENDA-ID-TAREFA">
+        <dropNotNullConstraint columnDataType="BIGINT"
+                               columnName="ID_TAREFA"
+                               tableName="TAREFA_STATUS_FINAL_AGENDA"/>
+    </changeSet>
+
+    <!-- Remove Unique Constraint da tabela TAREFA_STATUS_FINAL -->
+    <changeSet author="thiago.fogar" id="drop-unique-TAREFA_STATUS_FINAL">
+        <dropUniqueConstraint tableName="TAREFA_STATUS_FINAL" constraintName="UK_TAREFA_MOTIVO"/>
+    </changeSet>
+
+
+    <!-- Remove Not-Null constraint da tabela CARTEIRA_EVENTO_TAREFA -->
+    <changeSet author="thiago.fogar" id="drop-not-null-CARTEIRA_EVENTO_TAREFA-ID_TAREFA">
+        <dropNotNullConstraint columnDataType="BIGINT"
+                               columnName="ID_TAREFA"
+                               tableName="CARTEIRA_EVENTO_TAREFA"/>
+    </changeSet>
+
+    <!-- Remove Not-Null constraint da tabela ESTEIRA_TAREFA -->
+    <changeSet author="thiago.fogar" id="drop-not-null-ESTEIRA_TAREFA-ID_TAREFA">
+        <dropNotNullConstraint columnDataType="BIGINT"
+                               columnName="ID_TAREFA"
+                               tableName="ESTEIRA_TAREFA"/>
+    </changeSet>
+
+    <!-- Remove Not-Null constraint da tabela FILA_TAREFA -->
+    <changeSet author="thiago.fogar" id="drop-not-null-FILA_TAREFA-ID_TAREFA">
+        <dropNotNullConstraint columnDataType="BIGINT"
+                               columnName="TAREFA_ID"
+                               tableName="FILA_TAREFA"/>
+    </changeSet>
+
+    <!-- Cria Sequence SEQ_FLUXOTRABALHOTAREFA  -->
+    <changeSet id="create-sequence-SEQ_FLUXOTRABALHOTAREFA" author="thiago.fogar">
+        <createSequence sequenceName="SEQ_FLUXOTRABALHOTAREFA" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="processo-PROCESSO_SEM_NUMERO-not-null" author="thiago.fogar">
+        <addNotNullConstraint tableName="PROCESSO" columnName="PROCESSO_SEM_NUMERO" columnDataType="BOOLEAN"/>
+    </changeSet>
+
+    <!-- Insere as permissões do cadastro de tarefas -->
+    <changeSet id="permissoes-tarefa" author="thiago.fogar">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="622"/>
+            <column name="DESCRICAO" value="Tarefas"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="5"/>
+            <column name="ORDEM" valueNumeric="23"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:tarefas"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="623"/>
+            <column name="DESCRICAO" value="Incluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="622"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:tarefas:incluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="624"/>
+            <column name="DESCRICAO" value="Editar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="622"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:tarefas:editar"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="625"/>
+            <column name="DESCRICAO" value="Excluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="622"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:tarefas:excluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="626"/>
+            <column name="DESCRICAO" value="Duplicar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="622"/>
+            <column name="ORDEM" valueNumeric="4"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:geral:tarefas:duplicar"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

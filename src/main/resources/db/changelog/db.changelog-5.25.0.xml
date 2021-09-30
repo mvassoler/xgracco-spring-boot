@@ -1,0 +1,192 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!--DATA DISTRIBUICAO PUBLICACAO-->
+    <changeSet author="henrique.oliveira" id="add-colum-publicacao-distribuicao" >
+        <addColumn tableName="PUBLICACAO">
+            <column name="DATA_DISTRIBUICAO" type="DATETIME">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--DATA DISTRIBUICAO PUBLICACAO_AUD-->
+    <changeSet author="henrique.oliveira" id="add-colum-publicacao_aud-distribuicao" >
+        <addColumn tableName="PUBLICACAO_AUD">
+            <column name="DATA_DISTRIBUICAO" type="DATETIME">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- DATA DISTRIBUICAO CAMPO -->
+    <changeSet author="henrique.oliveira" id="add-campo-data-distribuicao-increment" dbms="${dbmsAutoIncrement}">
+        <insert tableName="CAMPO">
+            <column name="DESCRICAO" value="Data Distribuição"/>
+            <column name="TAMANHO" valueNumeric="255"/>
+            <column name="TIPO_CAMPO" valueNumeric="1"/>
+            <column name="ATIVO" valueBoolean="true"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="false"/>
+            <column name="PAI_LISTA_DINAMICA" valueBoolean="false"/>
+            <column name="VISIVEL" valueBoolean="true"/>
+            <column name="FK_FORMULARIO" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <!-- DATA DISTRIBUICAO CAMPO -->
+    <changeSet author="henrique.oliveira" id="add-campo-data-distribuicao-sequence" dbms="${dbmsSequence}">
+        <insert tableName="CAMPO">
+            <column name="ID" valueSequenceNext="SEQ_CAMPO"/>
+            <column name="DESCRICAO" value="Data Distribuição"/>
+            <column name="TAMANHO" valueNumeric="255"/>
+            <column name="TIPO_CAMPO" valueNumeric="1"/>
+            <column name="ATIVO" valueBoolean="true"/>
+            <column name="OBRIGATORIO" valueBoolean="false"/>
+            <column name="SISTEMA" valueBoolean="false"/>
+            <column name="PAI_LISTA_DINAMICA" valueBoolean="false"/>
+            <column name="VISIVEL" valueBoolean="true"/>
+            <column name="FK_FORMULARIO" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <!--DATA DISTRIBUICAO CAMPO_AUD -->
+    <changeSet author="henrique.oliveira" id="add-campo-data-distribuicao-aud-sequence" dbms="${dbmsSequence}">
+        <insert tableName="LOG_AUDITORIA">
+            <column name="ID" valueSequenceNext="SEQ_LOG_AUDITORIA"/>
+            <column name="DATA_ALTERACAO" valueDate="NOW()"/>
+            <column name="USUARIO" value="admin"/>
+        </insert>
+
+        <sql>INSERT INTO CAMPO_AUD (ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO,
+            TIPO_CAMPO, SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, ID_AUD, TIPO_AUD)
+            SELECT CAMPO.ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO, TIPO_CAMPO,
+            CAMPO.SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, (SELECT MAX(ID) FROM
+            LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM CAMPO
+            INNER JOIN FORMULARIO ON CAMPO.FK_FORMULARIO = FORMULARIO.ID
+            WHERE CAMPO.DESCRICAO = 'Data Distribuicao' AND FORMULARIO.NOME = 'Formulário Publicação'
+        </sql>
+    </changeSet>
+
+    <!--DATA DISTRIBUICAO CAMPO_AUD -->
+    <changeSet author="henrique.oliveira" id="add-campo-data-distribuicao-aud-increment" dbms="${dbmsAutoIncrement}">
+        <insert tableName="LOG_AUDITORIA">
+            <column name="DATA_ALTERACAO" valueDate="GETDATE()"/>
+            <column name="USUARIO" value="admin"/>
+        </insert>
+
+        <sql>INSERT INTO CAMPO_AUD (ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO,
+            TIPO_CAMPO, SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, ID_AUD, TIPO_AUD)
+            SELECT TOP 1 CAMPO.ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO, TIPO_CAMPO,
+            CAMPO.SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, (SELECT MAX(ID) FROM
+            LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM CAMPO
+            INNER JOIN FORMULARIO FML ON CAMPO.FK_FORMULARIO = FML.ID
+            WHERE CAMPO.DESCRICAO = 'Data Distribuicao' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+    </changeSet>
+
+    <!-- ATUALIZA DATA E HORA COLAGEM CAMPO -->
+    <changeSet author="henrique.oliveira" id="altera-campo-data-colagem-increment" dbms="${dbmsAutoIncrement}">
+        <sql>
+            UPDATE CAMPO
+            SET DESCRICAO = 'Data Colagem'
+            FROM CAMPO
+            INNER JOIN FORMULARIO FML ON CAMPO.FK_FORMULARIO = FML.ID
+            WHERE CAMPO.DESCRICAO = 'Data' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+
+        <sql>
+            UPDATE CAMPO
+            SET DESCRICAO = 'Hora Colagem'
+            FROM CAMPO
+            INNER JOIN FORMULARIO FML ON CAMPO.FK_FORMULARIO = FML.ID
+            WHERE CAMPO.DESCRICAO = 'Hora' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+    </changeSet>
+
+    <!-- ATUALIZA DATA E HORA COLAGEM CAMPO -->
+    <changeSet author="henrique.oliveira" id="altera-campo-data-colagem-sequence" dbms="${dbmsSequence}">
+        <sql>
+            UPDATE CAMPO
+            SET DESCRICAO = 'Data Colagem'
+            FROM FORMULARIO FML
+            WHERE CAMPO.fk_formulario = FML.ID AND
+            CAMPO.DESCRICAO = 'Data' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+
+        <sql>
+            UPDATE CAMPO
+            SET DESCRICAO = 'Hora Colagem'
+            FROM FORMULARIO FML
+            WHERE CAMPO.fk_formulario = FML.ID AND
+            CAMPO.DESCRICAO = 'Hora' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+    </changeSet>
+
+    <!-- DATA HORA COLAGEM CAMPO_AUD -->
+    <changeSet author="henrique.oliveira" id="altera-campo-data-colagem-aud-sequence-increment" dbms="${dbmsAutoIncrement}">
+        <insert tableName="LOG_AUDITORIA">
+            <column name="DATA_ALTERACAO" valueDate="GETDATE()"/>
+            <column name="USUARIO" value="admin"/>
+        </insert>
+        <sql>INSERT INTO CAMPO_AUD (ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO,
+            TIPO_CAMPO, SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, ID_AUD, TIPO_AUD)
+            SELECT CAMPO.ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO, TIPO_CAMPO,
+            CAMPO.SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, (SELECT MAX(ID) FROM
+            LOG_AUDITORIA), 1 AS TIPO_AUD
+            FROM CAMPO
+            INNER JOIN FORMULARIO FML ON CAMPO.FK_FORMULARIO = FML.ID
+            WHERE CAMPO.DESCRICAO = 'Data Colagem' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+
+        <sql>
+            INSERT INTO LOG_AUDITORIA (DATA_ALTERACAO, USUARIO) VALUES (GETDATE(), 'admin')
+        </sql>
+        <sql>INSERT INTO CAMPO_AUD (ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO,
+            TIPO_CAMPO, SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, ID_AUD, TIPO_AUD)
+            SELECT CAMPO.ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO, TIPO_CAMPO,
+            CAMPO.SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, (SELECT MAX(ID) FROM
+            LOG_AUDITORIA), 1 AS TIPO_AUD
+            FROM CAMPO
+            INNER JOIN FORMULARIO FML ON CAMPO.FK_FORMULARIO = FML.ID
+            WHERE CAMPO.DESCRICAO = 'Hora Colagem' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+    </changeSet>
+
+    <!-- DATA HORA COLAGEM CAMPO_AUD -->
+    <changeSet author="henrique.oliveira" id="altera-campo-data-colagem-aud-sequence" dbms="${dbmsSequence}">
+        <insert tableName="LOG_AUDITORIA">
+            <column name="ID" valueSequenceNext="SEQ_LOG_AUDITORIA"/>
+            <column name="DATA_ALTERACAO" valueDate="NOW()"/>
+            <column name="USUARIO" value="admin"/>
+        </insert>
+        <sql>INSERT INTO CAMPO_AUD (ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO,
+            TIPO_CAMPO, SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, ID_AUD, TIPO_AUD)
+            SELECT CAMPO.ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO, TIPO_CAMPO,
+            CAMPO.SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, (SELECT MAX(ID) FROM
+            LOG_AUDITORIA), 1 AS TIPO_AUD
+            FROM CAMPO
+            INNER JOIN FORMULARIO FML ON CAMPO.FK_FORMULARIO = FML.ID
+            WHERE CAMPO.DESCRICAO = 'Data Colagem' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+
+        <insert tableName="LOG_AUDITORIA">
+            <column name="ID" valueSequenceNext="SEQ_LOG_AUDITORIA"/>
+            <column name="DATA_ALTERACAO" valueDate="NOW()"/>
+            <column name="USUARIO" value="admin"/>
+        </insert>
+        <sql>INSERT INTO CAMPO_AUD (ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO,
+            TIPO_CAMPO, SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, ID_AUD, TIPO_AUD)
+            SELECT CAMPO.ID, DESCRICAO, ORDEM, TAMANHO, VISIVEL, OBRIGATORIO, FK_GRUPOCAMPO, FK_FORMULARIO, TIPO_CAMPO,
+            CAMPO.SISTEMA, TIPO_CAMPO_SISTEMA, TAMANHOMAXIMO, ATIVO, EXTENSAO, CONSULTA_SQL, (SELECT MAX(ID) FROM
+            LOG_AUDITORIA), 1 AS TIPO_AUD
+            FROM CAMPO
+            INNER JOIN FORMULARIO FML ON CAMPO.FK_FORMULARIO = FML.ID
+            WHERE CAMPO.DESCRICAO = 'Hora Colagem' AND FML.NOME = 'Formulário Publicação'
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

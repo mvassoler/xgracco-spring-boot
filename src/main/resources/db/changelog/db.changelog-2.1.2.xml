@@ -1,0 +1,1616 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- Create TAREFA.ID_FLUXO_TRABALHO -->
+    <changeSet author="rodolpho.couto" id="1">
+        <addColumn tableName="TAREFA">
+            <column name="ID_FLUXO_TRABALHO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Create FK_TAREFA_FLUXO_TRABALHO -->
+    <changeSet author="rodolpho.couto" id="2">
+        <addForeignKeyConstraint baseColumnNames="ID_FLUXO_TRABALHO" baseTableName="TAREFA"
+                                 constraintName="FK_TAREFA_FLUXO_TRABALHO" referencedColumnNames="ID"
+                                 referencedTableName="FLUXO_TRABALHO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Update TAREFA.ID_FLUXO_TRABALHO -->
+    <changeSet author="rodolpho.couto" id="3">
+        <sql>
+            UPDATE TAREFA
+            SET ID_FLUXO_TRABALHO = (SELECT CAR.ID_FLUXO_TRABALHO FROM CARTEIRA CAR WHERE CAR.ID = FK_CARTEIRA)
+        </sql>
+    </changeSet>
+
+    <!-- Add NotNull TAREFA.ID_FLUXO_TRABALHO -->
+    <changeSet author="rodolpho.couto" id="4">
+        <addNotNullConstraint tableName="TAREFA" columnName="ID_FLUXO_TRABALHO" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <!-- Drop UK_TAREFA -->
+    <changeSet author="rodolpho.couto" id="5">
+        <dropUniqueConstraint tableName="TAREFA" constraintName="UK_TAREFA" uniqueColumns="ID_TAREFA,FK_CARTEIRA"/>
+    </changeSet>
+
+    <!-- Drop FK_TAREFA_CARTEIRA -->
+    <changeSet author="rodolpho.couto" id="6">
+        <dropForeignKeyConstraint baseTableName="TAREFA" constraintName="FK_TAREFA_CARTEIRA"/>
+    </changeSet>
+
+    <!-- Drop TAREFA.FK_CARTEIRA -->
+    <changeSet author="rodolpho.couto" id="7">
+        <dropColumn tableName="TAREFA" columnName="FK_CARTEIRA"/>
+    </changeSet>
+
+    <!-- Create UK_TAREFA -->
+    <changeSet author="rodolpho.couto" id="8">
+        <addUniqueConstraint tableName="TAREFA" constraintName="UK_TAREFA" columnNames="ID_TAREFA,ID_FLUXO_TRABALHO"/>
+    </changeSet>
+
+    <!-- Create TAREFA.NOME -->
+    <changeSet author="rodolpho.couto" id="9">
+        <addColumn tableName="TAREFA">
+            <column name="NOME" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Update TAREFA.NOME -->
+    <changeSet author="rodolpho.couto" id="10">
+        <update tableName="TAREFA">
+            <column name="NOME" value=""/>
+        </update>
+    </changeSet>
+
+    <!-- Add NotNull TAREFA.NOME-->
+    <changeSet author="rodolpho.couto" id="11">
+        <addNotNullConstraint tableName="TAREFA" columnName="NOME" columnDataType="VARCHAR(255)"/>
+    </changeSet>
+
+    <!-- Create TAREFA.DESCRICAO -->
+    <changeSet author="rodolpho.couto" id="12">
+        <addColumn tableName="TAREFA">
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Create TAREFA.ATIVO -->
+    <changeSet author="rodolpho.couto" id="13">
+        <addColumn tableName="TAREFA">
+            <column name="ATIVO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Update TAREFA.ATIVO -->
+    <changeSet author="rodolpho.couto" id="14">
+        <update tableName="TAREFA">
+            <column name="ATIVO" valueBoolean="true"/>
+        </update>
+    </changeSet>
+
+    <!-- Add NotNull TAREFA.ATIVO -->
+    <changeSet author="rodolpho.couto" id="15">
+        <addNotNullConstraint tableName="TAREFA" columnName="ATIVO" columnDataType="BOOLEAN"/>
+    </changeSet>
+
+    <!-- Create FLUXO_TRABALHO.ATIVO -->
+    <changeSet author="rodolpho.couto" id="16">
+        <addColumn tableName="FLUXO_TRABALHO">
+            <column name="ATIVO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Update FLUXO_TRABALHO.ATIVO -->
+    <changeSet author="rodolpho.couto" id="17">
+        <update tableName="FLUXO_TRABALHO">
+            <column name="ATIVO" valueBoolean="true"/>
+        </update>
+    </changeSet>
+
+    <!-- Add NotNull FLUXO_TRABALHO.ATIVO -->
+    <changeSet author="rodolpho.couto" id="18">
+        <addNotNullConstraint tableName="FLUXO_TRABALHO" columnName="ATIVO" columnDataType="BOOLEAN"/>
+    </changeSet>
+
+    <!-- Create FLUXO_TRABALHO_AUD.ATIVO -->
+    <changeSet author="rodolpho.couto" id="19">
+        <addColumn tableName="FLUXO_TRABALHO_AUD">
+            <column name="ATIVO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Update FLUXO_TRABALHO_AUD.ATIVO -->
+    <changeSet author="rodolpho.couto" id="20">
+        <update tableName="FLUXO_TRABALHO_AUD">
+            <column name="ATIVO" valueBoolean="true"/>
+        </update>
+    </changeSet>
+
+    <!-- Create STATUS_TAREFA -->
+    <changeSet author="rodolpho.couto" id="21">
+        <createTable tableName="STATUS_TAREFA">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_STATUS_TAREFA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- INSERT INTO STATUS_TAREFA -->
+    <changeSet author="rodolpho.couto" id="22">
+        <insert tableName="STATUS_TAREFA">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Cumprido"/>
+        </insert>
+        <insert tableName="STATUS_TAREFA">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Não Cumprido"/>
+        </insert>
+    </changeSet>
+
+    <!-- Create TAREFA_MOTIVO -->
+    <changeSet author="rodolpho.couto" id="23">
+        <createTable tableName="TAREFA_MOTIVO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFA_MOTIVO"/>
+            </column>
+            <column name="ID_TAREFA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_MOTIVO" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_STATUS" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Create FK_TAREFA_MOTIVO_TAREFA -->
+    <changeSet author="rodolpho.couto" id="24">
+        <addForeignKeyConstraint baseColumnNames="ID_TAREFA" baseTableName="TAREFA_MOTIVO"
+                                 constraintName="FK_TAREFA_MOTIVO_TAREFA" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Create FK_TAREFA_MOTIVO_MOTIVO -->
+    <changeSet author="rodolpho.couto" id="25">
+        <addForeignKeyConstraint baseColumnNames="ID_MOTIVO" baseTableName="TAREFA_MOTIVO"
+                                 constraintName="FK_TAREFA_MOTIVO_MOTIVO" referencedColumnNames="ID"
+                                 referencedTableName="MOTIVOSTATUSFINAL" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Create FK_TAREFA_MOTIVO_STATUS -->
+    <changeSet author="rodolpho.couto" id="26">
+        <addForeignKeyConstraint baseColumnNames="ID_STATUS" baseTableName="TAREFA_MOTIVO"
+                                 constraintName="FK_TAREFA_MOTIVO_STATUS" referencedColumnNames="ID"
+                                 referencedTableName="STATUS_TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Create UK_TAREFA_MOTIVO -->
+    <changeSet author="rodolpho.couto" id="27">
+        <addUniqueConstraint tableName="TAREFA_MOTIVO" constraintName="UK_TAREFA_MOTIVO"
+                             columnNames="ID_TAREFA,ID_MOTIVO,ID_STATUS"/>
+    </changeSet>
+
+    <!-- Update MOTIVOSTATUSFINAL.STATUS -->
+    <changeSet author="rodolpho.couto" id="28">
+        <update tableName="MOTIVOSTATUSFINAL">
+            <column name="STATUS" valueNumeric="2"/>
+            <where>STATUS = 1</where>
+        </update>
+        <update tableName="MOTIVOSTATUSFINAL">
+            <column name="STATUS" valueNumeric="1"/>
+            <where>STATUS = 0</where>
+        </update>
+    </changeSet>
+
+    <!-- Update DADOSBASICOSTAREFA.STATUS -->
+    <changeSet author="rodolpho.couto" id="29">
+        <update tableName="DADOSBASICOSTAREFA">
+            <column name="STATUS" valueNumeric="2"/>
+            <where>STATUS = 1</where>
+        </update>
+        <update tableName="DADOSBASICOSTAREFA">
+            <column name="STATUS" valueNumeric="1"/>
+            <where>STATUS = 0</where>
+        </update>
+    </changeSet>
+
+    <!-- Create FK_MOTIVOSTATUSFINAL_STATUS -->
+    <changeSet author="rodolpho.couto" id="30">
+        <addForeignKeyConstraint baseColumnNames="STATUS" baseTableName="MOTIVOSTATUSFINAL"
+                                 constraintName="FK_MOTIVOSTATUSFINAL_STATUS" referencedColumnNames="ID"
+                                 referencedTableName="STATUS_TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Create FK_DADOSBASICOSTAREFA_STATUS -->
+    <changeSet author="rodolpho.couto" id="31">
+        <addForeignKeyConstraint baseColumnNames="STATUS" baseTableName="DADOSBASICOSTAREFA"
+                                 constraintName="FK_DADOSBASICOSTAREFA_STATUS" referencedColumnNames="ID"
+                                 referencedTableName="STATUS_TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Update MOTIVOSTATUSFINAL_AUD.STATUS -->
+    <changeSet author="rodolpho.couto" id="32">
+        <update tableName="MOTIVOSTATUSFINAL_AUD">
+            <column name="STATUS" valueNumeric="2"/>
+            <where>STATUS = 1</where>
+        </update>
+        <update tableName="MOTIVOSTATUSFINAL_AUD">
+            <column name="STATUS" valueNumeric="1"/>
+            <where>STATUS = 0</where>
+        </update>
+    </changeSet>
+
+    <!-- Create SEQ_TAREFA_MOTIVO -->
+    <changeSet author="rodolpho.couto" id="33" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_TAREFA_MOTIVO"/>
+    </changeSet>
+
+    <!-- Create TAREFA_AUD.ID_FLUXO_TRABALHO -->
+    <changeSet author="rodolpho.couto" id="34">
+        <addColumn tableName="TAREFA_AUD">
+            <column name="ID_FLUXO_TRABALHO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Update TAREFA_AUD.ID_FLUXO_TRABALHO -->
+    <changeSet author="rodolpho.couto" id="35">
+        <sql>
+            UPDATE TAREFA_AUD
+            SET ID_FLUXO_TRABALHO = (SELECT CAR.ID_FLUXO_TRABALHO FROM CARTEIRA CAR WHERE CAR.ID = FK_CARTEIRA)
+        </sql>
+    </changeSet>
+
+    <!-- Drop TAREFA_AUD.FK_CARTEIRA -->
+    <changeSet author="rodolpho.couto" id="36">
+        <dropColumn tableName="TAREFA_AUD" columnName="FK_CARTEIRA"/>
+    </changeSet>
+
+    <!-- Create TAREFA_AUD.NOME -->
+    <changeSet author="rodolpho.couto" id="37">
+        <addColumn tableName="TAREFA_AUD">
+            <column name="NOME" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Create TAREFA_AUD.DESCRICAO -->
+    <changeSet author="rodolpho.couto" id="38">
+        <addColumn tableName="TAREFA_AUD">
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Create TAREFA_AUD.ATIVO -->
+    <changeSet author="rodolpho.couto" id="39">
+        <addColumn tableName="TAREFA_AUD">
+            <column name="ATIVO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Create TAREFA_MOTIVO_AUD -->
+    <changeSet author="rodolpho.couto" id="40">
+        <createTable tableName="TAREFA_MOTIVO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFA_MOTIVO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAREFA_MOTIVO_AUD"/>
+            </column>
+            <column name="ID_TAREFA" type="BIGINT"/>
+            <column name="ID_MOTIVO" type="BIGINT"/>
+            <column name="ID_STATUS" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create FK_TAREFA_MOTIVO_AUD -->
+    <changeSet author="rodolpho.couto" id="41">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="TAREFA_MOTIVO_AUD"
+                                 constraintName="FK_TAREFA_MOTIVO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Update TAREFA_AUD.ATIVO -->
+    <changeSet author="rodolpho.couto" id="42">
+        <update tableName="TAREFA_AUD">
+            <column name="ATIVO" valueBoolean="true"/>
+        </update>
+    </changeSet>
+
+    <!-- Create TAREFA_MOTIVO.ID_FORMULARIO -->
+    <changeSet author="rodolpho.couto" id="43">
+        <addColumn tableName="TAREFA_MOTIVO">
+            <column name="ID_FORMULARIO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Create TAREFA_MOTIVO_AUD.ID_FORMULARIO -->
+    <changeSet author="rodolpho.couto" id="44">
+        <addColumn tableName="TAREFA_MOTIVO_AUD">
+            <column name="ID_FORMULARIO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Create FK_TAREFA_MOTIVO_FORMULARIO -->
+    <changeSet author="rodolpho.couto" id="45">
+        <addForeignKeyConstraint baseColumnNames="ID_FORMULARIO" baseTableName="TAREFA_MOTIVO"
+                                 constraintName="FK_TAREFA_MOTIVO_FORMULARIO" referencedColumnNames="ID"
+                                 referencedTableName="FORMULARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Drop FK_MOTIVOSTATUSFINAL_STATUS -->
+    <changeSet author="rodolpho.couto" id="46">
+        <dropForeignKeyConstraint baseTableName="MOTIVOSTATUSFINAL" constraintName="FK_MOTIVOSTATUSFINAL_STATUS"/>
+    </changeSet>
+
+    <!-- Drop MOTIVOSTATUSFINAL.STATUS -->
+    <changeSet author="rodolpho.couto" id="47">
+        <dropColumn tableName="MOTIVOSTATUSFINAL" columnName="STATUS"/>
+    </changeSet>
+
+    <!-- Drop GRUPOMOTIVOSTATUSFINAL_MOTIVO -->
+    <changeSet author="rodolpho.couto" id="48">
+        <dropTable tableName="GRUPOMOTIVOSTATUSFINAL_MOTIVO"/>
+    </changeSet>
+
+    <!-- Drop GRUPOMOTIVOSTATUSFINAL -->
+    <changeSet author="rodolpho.couto" id="49">
+        <dropTable tableName="GRUPOMOTIVOSTATUSFINAL"/>
+    </changeSet>
+
+    <!-- Drop MOTIVOSTATUSFINAL_AUD.STATUS -->
+    <changeSet author="rodolpho.couto" id="50">
+        <dropColumn tableName="MOTIVOSTATUSFINAL_AUD" columnName="STATUS"/>
+    </changeSet>
+
+    <!-- Delete MOTIVOSTATUSFINAL_TAREFA -->
+    <changeSet author="rodolpho.couto" id="51">
+        <delete tableName="MOTIVOSTATUSFINAL_TAREFA"/>
+    </changeSet>
+
+    <!-- Rename MOTIVOSTATUSFINAL_TAREFA - TAREFA_MOTIVO_AGENDAMENTO -->
+    <changeSet author="rodolpho.couto" id="52">
+        <renameTable oldTableName="MOTIVOSTATUSFINAL_TAREFA" newTableName="TAREFA_MOTIVO_AGENDAMENTO"/>
+    </changeSet>
+
+    <!-- Drop FK_MOTIVOSTATUSFINAL_TAR_MOT -->
+    <changeSet author="rodolpho.couto" id="53">
+        <dropForeignKeyConstraint baseTableName="TAREFA_MOTIVO_AGENDAMENTO"
+                                  constraintName="FK_MOTIVOSTATUSFINAL_TAR_MOT"/>
+    </changeSet>
+
+    <!-- Drop FK_MOTIVOSTATUSFINAL_TAR_TAR -->
+    <changeSet author="rodolpho.couto" id="54">
+        <dropForeignKeyConstraint baseTableName="TAREFA_MOTIVO_AGENDAMENTO"
+                                  constraintName="FK_MOTIVOSTATUSFINAL_TAR_TAR"/>
+    </changeSet>
+
+    <!-- Drop TAREFA_MOTIVO_AGENDAMENTO.ID_MOTIVOSTATUSFINAL -->
+    <changeSet author="rodolpho.couto" id="55">
+        <dropColumn tableName="TAREFA_MOTIVO_AGENDAMENTO" columnName="ID_MOTIVOSTATUSFINAL"/>
+    </changeSet>
+
+    <!-- Drop TAREFA_MOTIVO_AGENDAMENTO.ID_TAREFA -->
+    <changeSet author="rodolpho.couto" id="56">
+        <dropColumn tableName="TAREFA_MOTIVO_AGENDAMENTO" columnName="ID_TAREFA"/>
+    </changeSet>
+
+    <!-- Create TAREFA_MOTIVO_AGENDAMENTO.ID_TAREFA_MOTIVO -->
+    <changeSet author="rodolpho.couto" id="57">
+        <addColumn tableName="TAREFA_MOTIVO_AGENDAMENTO">
+            <column name="ID_TAREFA_MOTIVO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Create FK_TAREFA_MOTIVO_AGE_TAR_MOT -->
+    <changeSet author="rodolpho.couto" id="58">
+        <addForeignKeyConstraint baseColumnNames="ID_TAREFA_MOTIVO" baseTableName="TAREFA_MOTIVO_AGENDAMENTO"
+                                 constraintName="FK_TAREFA_MOTIVO_AGE_TAR_MOT" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA_MOTIVO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Delete MOTIVOSTATUSFINAL_TAREFA_AUD -->
+    <changeSet author="rodolpho.couto" id="59">
+        <delete tableName="MOTIVOSTATUSFINAL_TAREFA_AUD"/>
+    </changeSet>
+
+    <!-- Rename MOTIVOSTATUSFINAL_TAREFA_AUD - TAREFA_MOTIVO_AGENDAMENTO_AUD -->
+    <changeSet author="rodolpho.couto" id="60">
+        <renameTable oldTableName="MOTIVOSTATUSFINAL_TAREFA_AUD" newTableName="TAREFA_MOTIVO_AGENDAMENTO_AUD"/>
+    </changeSet>
+
+    <!-- Drop TAREFA_MOTIVO_AGENDAMENTO_AUD.ID_MOTIVOSTATUSFINAL -->
+    <changeSet author="rodolpho.couto" id="61">
+        <dropColumn tableName="TAREFA_MOTIVO_AGENDAMENTO_AUD" columnName="ID_MOTIVOSTATUSFINAL"/>
+    </changeSet>
+
+    <!-- Drop TAREFA_MOTIVO_AGENDAMENTO_AUD.ID_TAREFA -->
+    <changeSet author="rodolpho.couto" id="62">
+        <dropColumn tableName="TAREFA_MOTIVO_AGENDAMENTO_AUD" columnName="ID_TAREFA"/>
+    </changeSet>
+
+    <!-- Create TAREFA_MOTIVO_AGENDAMENTO_AUD.ID_TAREFA_MOTIVO -->
+    <changeSet author="rodolpho.couto" id="63">
+        <addColumn tableName="TAREFA_MOTIVO_AGENDAMENTO_AUD">
+            <column name="ID_TAREFA_MOTIVO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Deleta a permissão 80 -->
+    <changeSet author="rodolpho.couto" id="64">
+        <delete tableName="REL_PERFILPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 80</where>
+        </delete>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="65">
+        <delete tableName="RELPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 80</where>
+        </delete>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="66">
+        <delete tableName="PERMISSAO">
+            <where>ID = 80</where>
+        </delete>
+    </changeSet>
+
+    <!-- Drop SEQ_MOTIVOSTATUSFINAL_TAREFA -->
+    <changeSet author="rodolpho.couto" id="67" dbms="${dbmsSequence}">
+        <dropSequence sequenceName="SEQ_MOTIVOSTATUSFINAL_TAREFA"/>
+    </changeSet>
+
+    <!-- Create SEQ_TAREFA_MOTIVO_AGENDAMENTO -->
+    <changeSet author="rodolpho.couto" id="68" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_TAREFA_MOTIVO_AGENDAMENTO"/>
+    </changeSet>
+
+    <!-- Create MOTIVO_TAREFA_AUD.TIPO_AUD -->
+    <changeSet author="rodolpho.couto" id="69">
+        <addColumn tableName="TAREFA_MOTIVO_AUD">
+            <column name="TIPO_AUD" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Create TAREFA_MOTIVO_AGENDAMENTO.ID_TAREFA -->
+    <changeSet author="rodolpho.couto" id="70">
+        <addColumn tableName="TAREFA_MOTIVO_AGENDAMENTO">
+            <column name="ID_TAREFA" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Create FK_TAREFA_MOT_AGE_TAREFA -->
+    <changeSet author="rodolpho.couto" id="71">
+        <addForeignKeyConstraint baseColumnNames="ID_TAREFA" baseTableName="TAREFA_MOTIVO_AGENDAMENTO"
+                                 constraintName="FK_TAREFA_MOT_AGE_TAREFA" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Create TAREFA_MOTIVO_AGENDAMENTO_AUD.ID_TAREFA -->
+    <changeSet author="rodolpho.couto" id="72">
+        <addColumn tableName="TAREFA_MOTIVO_AGENDAMENTO_AUD">
+            <column name="ID_TAREFA" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- DROP TAREFA_MOTIVO_AGENDAMENTO_AUD -->
+    <changeSet author="rodolpho.couto" id="73">
+        <dropTable tableName="TAREFA_MOTIVO_AGENDAMENTO_AUD"/>
+    </changeSet>
+
+    <!-- DROP TAREFA_MOTIVO_AUD -->
+    <changeSet author="rodolpho.couto" id="74">
+        <dropTable tableName="TAREFA_MOTIVO_AUD"/>
+    </changeSet>
+
+    <!-- DROP TAREFA_AUD -->
+    <changeSet author="rodolpho.couto" id="75">
+        <dropTable tableName="TAREFA_AUD"/>
+    </changeSet>
+
+    <!-- DROP PROCESSO.DEPLOYID -->
+    <changeSet author="rodolpho.couto" id="76">
+        <dropColumn tableName="PROCESSO" columnName="DEPLOYID"/>
+    </changeSet>
+
+    <!-- DROP PROCESSO_AUD.DEPLOYID -->
+    <changeSet author="rodolpho.couto" id="77">
+        <dropColumn tableName="PROCESSO_AUD" columnName="DEPLOYID"/>
+    </changeSet>
+
+    <!-- DROP TAREFA.ATIVO -->
+    <changeSet author="rodolpho.couto" id="78">
+        <dropColumn tableName="TAREFA" columnName="ATIVO"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-sequence-SEQ_ESTEIRA_TAREFA" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_ESTEIRA_TAREFA"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-ESTEIRA_TAREFA.ID_CARTEIRA">
+        <addColumn tableName="ESTEIRA_TAREFA">
+            <column name="ID_CARTEIRA" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-pk-PK_ESTEIRA_TAREFA">
+        <dropPrimaryKey tableName="ESTEIRA_TAREFA"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-ESTEIRA_TAREFA.ID">
+        <addColumn tableName="ESTEIRA_TAREFA">
+            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-notnull-ESTEIRA_TAREFA.ID">
+        <addNotNullConstraint tableName="ESTEIRA_TAREFA" columnName="ID" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-pk-ESTEIRA_TAREFA">
+        <addPrimaryKey tableName="ESTEIRA_TAREFA" columnNames="ID"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-sequence-SEQ_FILA_TAREFA" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_FILA_TAREFA"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-pk-PK_FILA_TAREFA">
+        <dropPrimaryKey tableName="FILA_TAREFA"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-FILA_TAREFA.ID">
+        <addColumn tableName="FILA_TAREFA">
+            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="add-notnull-FILA_TAREFA.ID">
+        <addNotNullConstraint tableName="FILA_TAREFA" columnName="ID" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-pk-FILA_TAREFA">
+        <addPrimaryKey tableName="FILA_TAREFA" columnNames="ID"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-FILA_TAREFA.CARTEIRA_ID">
+        <addColumn tableName="FILA_TAREFA">
+            <column name="CARTEIRA_ID" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-FILA_AUD">
+        <createTable tableName="FILA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="DESCRICAO" type="VARCHAR(100)"/>
+            <column name="FK_ESTEIRA" type="BIGINT"/>
+            <column name="ATIVO" type="BOOLEAN"/>
+            <column name="SELECIONAVEL" type="BOOLEAN"/>
+            <column name="VISUALIZAR_VENCIDAS" type="BOOLEAN"/>
+            <column name="TEMPO_VISAO" type="INTEGER"/>
+            <column name="FILA_DEVOLUCAO" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_FILA_AUD">
+        <addForeignKeyConstraint baseTableName="FILA_AUD" baseColumnNames="ID_AUD" constraintName="FK_FILA_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-FILA_AUD">
+        <sql>
+            INSERT INTO FILA_AUD (ID, ID_AUD, TIPO_AUD, DESCRICAO, FK_ESTEIRA, ATIVO, SELECIONAVEL,
+            VISUALIZAR_VENCIDAS, TEMPO_VISAO, FILA_DEVOLUCAO)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0, DESCRICAO, FK_ESTEIRA, ATIVO, SELECIONAVEL,
+            VISUALIZAR_VENCIDAS, TEMPO_VISAO, FILA_DEVOLUCAO
+            FROM FILA
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-FILA_PESSOA_AUD">
+        <createTable tableName="FILA_PESSOA_AUD">
+            <column name="FILA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_PESSOA_AUD"/>
+            </column>
+            <column name="PESSOA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_PESSOA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_PESSOA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_FILA_PESSOA_AUD">
+        <addForeignKeyConstraint baseTableName="FILA_PESSOA_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_FILA_PESSOA_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-FILA_PESSOA_AUD">
+        <sql>
+            INSERT INTO FILA_PESSOA_AUD (FILA_ID, PESSOA_ID, ID_AUD, TIPO_AUD)
+            SELECT FILA_ID, PESSOA_ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0
+            FROM FILA_PESSOA
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-FILA_TAREFA_AUD">
+        <createTable tableName="FILA_TAREFA_AUD">
+            <column name="FILA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_TAREFA_AUD"/>
+            </column>
+            <column name="TAREFA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_TAREFA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_TAREFA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_FILA_TAREFA_AUD">
+        <addForeignKeyConstraint baseTableName="FILA_TAREFA_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_FILA_TAREFA_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-FILA_TAREFA_AUD">
+        <sql>
+            INSERT INTO FILA_TAREFA_AUD (FILA_ID, TAREFA_ID, ID_AUD, TIPO_AUD)
+            SELECT FILA_ID, TAREFA_ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0
+            FROM FILA_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-FILA_PROCESSO_AUD">
+        <createTable tableName="FILA_PROCESSO_AUD">
+            <column name="FILA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_PROCESSO_AUD"/>
+            </column>
+            <column name="ENUM_ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_PROCESSO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_PROCESSO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_FILA_PROCESSO_AUD">
+        <addForeignKeyConstraint baseTableName="FILA_PROCESSO_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_FILA_PROCESSO_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-FILA_PROCESSO_AUD">
+        <sql>
+            INSERT INTO FILA_PROCESSO_AUD (FILA_ID, ENUM_ID, ID_AUD, TIPO_AUD)
+            SELECT FILA_ID, ENUM_ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0
+            FROM FILA_PROCESSO
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-FILA_TAG_AUD">
+        <createTable tableName="FILA_TAG_AUD">
+            <column name="FK_FILA" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_TAG_AUD"/>
+            </column>
+            <column name="FK_TAG" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_TAG_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILA_TAG_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_FILA_TAG_AUD">
+        <addForeignKeyConstraint baseTableName="FILA_TAG_AUD" baseColumnNames="ID_AUD" constraintName="FK_FILA_TAG_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-FILA_TAG_AUD">
+        <sql>
+            INSERT INTO FILA_TAG_AUD (FK_FILA, FK_TAG, ID_AUD, TIPO_AUD)
+            SELECT FK_FILA, FK_TAG, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0
+            FROM FILA_TAG
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-FILA.TEMPO_VISAO_VENCIDAS">
+        <addColumn tableName="FILA">
+            <column name="TEMPO_VISAO_VENCIDAS" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-FILA_AUD.TEMPO_VISAO_VENCIDAS">
+        <addColumn tableName="FILA_AUD">
+            <column name="TEMPO_VISAO_VENCIDAS" type="INTEGER"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Rename MOTIVOSTATUSFINAL - STATUS_FINAL -->
+    <changeSet author="rodolpho.couto" id="rename-MOTIVOSTATUSFINAL-STATUS_FINAL">
+        <renameTable oldTableName="MOTIVOSTATUSFINAL" newTableName="STATUS_FINAL"/>
+    </changeSet>
+
+    <!-- Rename MOTIVOSTATUSFINAL_AUD - STATUS_FINAL_AUD -->
+    <changeSet author="rodolpho.couto" id="rename-MOTIVOSTATUSFINAL_AUD-STATUS_FINAL_AUD">
+        <renameTable oldTableName="MOTIVOSTATUSFINAL_AUD" newTableName="STATUS_FINAL_AUD"/>
+    </changeSet>
+
+    <!-- Rename STATUS_FINAL.MOTIVO - STATUS_FINAL.DESCRICAO -->
+    <changeSet author="rodolpho.couto" id="rename-STATUS_FINAL.MOTIVO-STATUS_FINAL.DESCRICAO">
+        <renameColumn tableName="STATUS_FINAL"
+                      oldColumnName="MOTIVO"
+                      newColumnName="DESCRICAO"
+                      columnDataType="VARCHAR(100)"/>
+    </changeSet>
+
+    <!-- Rename STATUS_FINAL_AUD.MOTIVO - STATUS_FINAL_AUD.DESCRICAO -->
+    <changeSet author="rodolpho.couto" id="rename-STATUS_FINAL_AUD.MOTIVO-STATUS_FINAL_AUD.DESCRICAO">
+        <renameColumn tableName="STATUS_FINAL_AUD"
+                      oldColumnName="MOTIVO"
+                      newColumnName="DESCRICAO"
+                      columnDataType="VARCHAR(100)"/>
+    </changeSet>
+
+    <!-- Rename STATUS_FINAL.FK_FORMULARIO - STATUS_FINAL.ID_FORMULARIO -->
+    <changeSet author="rodolpho.couto" id="rename-STATUS_FINAL.FK_FORMULARIO-STATUS_FINAL.ID_FORMULARIO">
+        <renameColumn tableName="STATUS_FINAL"
+                      oldColumnName="FK_FORMULARIO"
+                      newColumnName="ID_FORMULARIO"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+
+    <!-- Rename STATUS_FINAL_AUD.FK_FORMULARIO - STATUS_FINAL_AUD.ID_FORMULARIO -->
+    <changeSet author="rodolpho.couto" id="rename-STATUS_FINAL_AUD.FK_FORMULARIO-STATUS_FINAL_AUD.ID_FORMULARIO">
+        <renameColumn tableName="STATUS_FINAL_AUD"
+                      oldColumnName="FK_FORMULARIO"
+                      newColumnName="ID_FORMULARIO"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+
+    <!-- Rename SEQ_MOTIVOSTATUSFINAL - SEQ_STATUS_FINAL -->
+    <changeSet author="rodolpho.couto" id="rename-SEQ_MOTIVOSTATUSFINAL-SEQ_STATUS_FINAL" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_MOTIVOSTATUSFINAL" newSequenceName="SEQ_STATUS_FINAL"/>
+    </changeSet>
+
+    <!-- Rename TAREFA_MOTIVO - TAREFA_STATUS_FINAL -->
+    <changeSet author="rodolpho.couto" id="rename-TAREFA_MOTIVO-TAREFA_STATUS_FINAL">
+        <renameTable oldTableName="TAREFA_MOTIVO" newTableName="TAREFA_STATUS_FINAL"/>
+    </changeSet>
+
+    <!-- Rename TAREFA_MOTIVO_AGENDAMENTO - TAREFA_STATUS_FINAL_AGENDA -->
+    <changeSet author="rodolpho.couto" id="rename-TAREFA_MOTIVO_AGENDAMENTO-TAREFA_STATUS_FINAL_AGENDA">
+        <renameTable oldTableName="TAREFA_MOTIVO_AGENDAMENTO" newTableName="TAREFA_STATUS_FINAL_AGENDA"/>
+    </changeSet>
+
+    <!-- Rename TAREFA_STATUS_FINAL.ID_MOTIVO - TAREFA_STATUS_FINAL.ID_STATUS_FINAL -->
+    <changeSet author="rodolpho.couto" id="rename-TAREFA_STATUS_FINAL.ID_MOTIVO-TAREFA_STATUS_FINAL.ID_STATUS_FINAL">
+        <renameColumn tableName="TAREFA_STATUS_FINAL"
+                      oldColumnName="ID_MOTIVO"
+                      newColumnName="ID_STATUS_FINAL"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+
+    <!-- Rename TAREFA_STATUS_FINAL_AGENDA.ID_TAREFA_MOTIVO - TAREFA_STATUS_FINAL.ID_TAREFA_STATUS_FINAL -->
+    <changeSet author="rodolpho.couto"
+               id="rename-TAREFA_STATUS_FINAL_AGENDA.ID_TAREFA_MOTIVO-TAREFA_STATUS_FINAL_AGENDA.ID_TAREFA_STATUS_FINAL">
+        <renameColumn tableName="TAREFA_STATUS_FINAL_AGENDA"
+                      oldColumnName="ID_TAREFA_MOTIVO"
+                      newColumnName="ID_TAREFA_STATUS_FINAL"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+
+    <!-- Rename SEQ_TAREFA_MOTIVO - SEQ_TAREFA_STATUS_FINAL -->
+    <changeSet author="rodolpho.couto" id="rename-SEQ_TAREFA_MOTIVO-SEQ_TAREFA_STATUS_FINAL" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_TAREFA_MOTIVO" newSequenceName="SEQ_TAREFA_STATUS_FINAL"/>
+    </changeSet>
+
+    <!-- Rename SEQ_TAREFA_MOTIVO_AGENDAMENTO - SEQ_TAREFA_STATUS_FINAL_AGENDA -->
+    <changeSet author="rodolpho.couto" id="rename-SEQ_TAREFA_MOTIVO_AGENDAMENTO-SEQ_TAREFA_STATUS_FINAL_AGENDA"
+               dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_TAREFA_MOTIVO_AGENDAMENTO"
+                        newSequenceName="SEQ_TAREFA_STATUS_FINAL_AGENDA"/>
+    </changeSet>
+
+    <!-- Update PERMISSAO.37 -->
+    <changeSet author="rodolpho.couto" id="update-PERMISSAO-37">
+        <update tableName="PERMISSAO">
+            <column name="DESCRICAO" value="Permissão para cadastro de Status Final"/>
+            <column name="FEATURE" value="statusfinal"/>
+            <column name="REDIRECT" value="/statusfinal/lista"/>
+            <column name="CODIGO" value="Processo | Status Final"/>
+            <column name="DIRETORIOVIEW" value="/statusfinal"/>
+            <where>ID = 37</where>
+        </update>
+    </changeSet>
+
+    <!-- Rename DADOSBASICOSTAREFA.FK_MOTIVOSTATUSFINAL - DADOSBASICOSTAREFA.ID_STATUS_FINAL -->
+    <changeSet author="rodolpho.couto"
+               id="rename-DADOSBASICOSTAREFA.FK_MOTIVOSTATUSFINAL - DADOSBASICOSTAREFA.ID_STATUS_FINAL">
+        <renameColumn tableName="DADOSBASICOSTAREFA"
+                      oldColumnName="FK_MOTIVOSTATUSFINAL"
+                      newColumnName="ID_STATUS_FINAL"
+                      columnDataType="BIGINT"/>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-RELPERMISSAOOPERACAO.EXCLUIR CUSTAS">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="78"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO.EXCLUIR CUSTAS" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="78"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-PAINEL_AUD">
+        <createTable tableName="PAINEL_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PAINEL_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PAINEL_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="NOME" type="VARCHAR(100)"/>
+            <column name="FK_CARTEIRA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_PAINEL_AUD">
+        <addForeignKeyConstraint baseTableName="PAINEL_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_PAINEL_AUD" referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-PAINEL_AUD">
+        <sql>
+            INSERT INTO PAINEL_AUD (ID, ID_AUD, TIPO_AUD, NOME, FK_CARTEIRA)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0, NOME, FK_CARTEIRA
+            FROM PAINEL
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-PAINEL_TAREFA_AUD">
+        <createTable tableName="PAINEL_TAREFA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PAINEL_TAREFA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PAINEL_TAREFA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="ID_TIPO_DATA" type="INTEGER"/>
+            <column name="ID_TIPO_INTERVALO" type="INTEGER"/>
+            <column name="SLA" type="INTEGER"/>
+            <column name="PRINCIPAL" type="BOOLEAN"/>
+            <column name="FK_PAINEL" type="BIGINT"/>
+            <column name="FK_TAREFA" type="BIGINT"/>
+            <column name="ID_CAMPO_DATA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk_FK_PAINEL_TAREFA_AUD">
+        <addForeignKeyConstraint baseTableName="PAINEL_TAREFA_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_PAINEL_TAREFA_AUD"
+                                 referencedTableName="LOG_AUDITORIA" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-PAINEL_TAREFA_AUD">
+        <sql>
+            INSERT INTO PAINEL_TAREFA_AUD (ID, ID_AUD, TIPO_AUD, ID_TIPO_DATA, ID_TIPO_INTERVALO, SLA, PRINCIPAL,
+            FK_PAINEL, FK_TAREFA, ID_CAMPO_DATA)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0, ID_TIPO_DATA, ID_TIPO_INTERVALO, SLA, PRINCIPAL,
+            FK_PAINEL, FK_TAREFA, ID_CAMPO_DATA
+            FROM PAINEL_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-OPERACAO-VISUALIZAR-37">
+        <insert tableName="OPERACAO">
+            <column name="ID" valueNumeric="37"/>
+            <column name="DESCRICAO" value="Operação | Visualizar cadastro"/>
+            <column name="CODIGO" value="Visualizar Cadastro"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="update-PERMISSAO-34-UID">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Cadastro | Parte"/>
+            <where>ID = 34</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-VISUALIZAR-34">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="34"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-34"
+               dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="34"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-34" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="34"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="update-PERMISSAO-54-UID">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Cadastro | Garantia"/>
+            <where>ID = 54</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-VISUALIZAR-54">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="54"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-54"
+               dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="54"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-54" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="54"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="update-PERMISSAO-35-UID">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Cadastro | Pedido"/>
+            <where>ID = 35</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-VISUALIZAR-35">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="35"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-35"
+               dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="35"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-35" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="35"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="update-PERMISSAO-33-UID">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Cadastro | Jurisprudência"/>
+            <where>ID = 33</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-VISUALIZAR-33">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="33"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-33"
+               dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="33"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-33" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="33"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="update-PERMISSAO-38-UID">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Cadastro | Honorário"/>
+            <where>ID = 38</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-VISUALIZAR-38">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="38"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-38"
+               dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="38"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-38" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="38"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="update-PERMISSAO-36-UID">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Cadastro | Despesa"/>
+            <where>ID = 36</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-VISUALIZAR-36">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="36"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-36"
+               dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="36"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-36" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="36"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="update-PERMISSAO-40-UID">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Cadastro | Complementares"/>
+            <where>ID = 40</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-VISUALIZAR-40">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="40"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-40"
+               dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="40"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-40" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="40"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="update-PERMISSAO-42-UID">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Cadastro | Arquivos"/>
+            <where>ID = 42</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-VISUALIZAR-42">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="42"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-42"
+               dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="42"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-42" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="42"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="update-PERMISSAO-43-UID">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Cadastro | Impressão de Modelo"/>
+            <where>ID = 43</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-VISUALIZAR-43">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="43"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-43"
+               dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="43"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-43" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="43"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="update-PERMISSAO-41-UID">
+        <update tableName="PERMISSAO">
+            <column name="CODIGO" value="Processo | Cadastro | Relacionamentos"/>
+            <where>ID = 41</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-PERMISSAOOPERACAO-VISUALIZAR-41">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="41"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-41"
+               dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="41"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="marcelo.aguiar" id="insert-REL_PERFILPERMISSAOOPERACAO-VISUALIZAR-41" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="41"/>
+            <column name="ID_OPERACAO" valueNumeric="37"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="add-column-INDICEECONOMICOVAR.VALOR_AUX">
+        <addColumn tableName="INDICEECONOMICOVAR">
+            <column name="VALOR_AUX" type="DECIMAL(19,4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-column-INDICEECONOMICOVAR.VALOR_AUX">
+        <sql>UPDATE INDICEECONOMICOVAR SET VALOR_AUX = VALOR</sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-INDICEECONOMICOVAR.VALOR">
+        <dropColumn tableName="INDICEECONOMICOVAR" columnName="VALOR"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="add-column-INDICEECONOMICOVAR.VALOR">
+        <addColumn tableName="INDICEECONOMICOVAR">
+            <column name="VALOR" type="DECIMAL(24,12)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-column-INDICEECONOMICOVAR.VALOR">
+        <sql>UPDATE INDICEECONOMICOVAR SET VALOR = VALOR_AUX</sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-INDICEECONOMICOVAR.VALOR_AUX">
+        <dropColumn tableName="INDICEECONOMICOVAR" columnName="VALOR_AUX"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="add-column-INDICEECONOMICOVAR_AUD.VALOR_AUX">
+        <addColumn tableName="INDICEECONOMICOVAR_AUD">
+            <column name="VALOR_AUX" type="DECIMAL(19,4)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-column-INDICEECONOMICOVAR_AUD.VALOR_AUX">
+        <sql>UPDATE INDICEECONOMICOVAR_AUD SET VALOR_AUX = VALOR</sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-INDICEECONOMICOVAR_AUD.VALOR">
+        <dropColumn tableName="INDICEECONOMICOVAR_AUD" columnName="VALOR"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="add-column-INDICEECONOMICOVAR_AUD.VALOR">
+        <addColumn tableName="INDICEECONOMICOVAR_AUD">
+            <column name="VALOR" type="DECIMAL(24,12)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-column-INDICEECONOMICOVAR_AUD.VALOR">
+        <sql>UPDATE INDICEECONOMICOVAR_AUD SET VALOR = VALOR_AUX</sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="drop-column-INDICEECONOMICOVAR_AUD.VALOR_AUX">
+        <dropColumn tableName="INDICEECONOMICOVAR_AUD" columnName="VALOR_AUX"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="add-column-CATEIRA.DATAPEDIDO">
+        <addColumn tableName="CARTEIRA">
+            <column name="DATA_PEDIDO" type="DATETIME">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="add-column-CATEIRA.FK_INDICEECONOMICO">
+        <addColumn tableName="CARTEIRA">
+            <column name="FK_INDICEECONOMICO" type="BIGINT">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="add-FK-CATEIRA.FK_INDICEECONOMICO">
+        <addForeignKeyConstraint baseColumnNames="FK_INDICEECONOMICO" baseTableName="CARTEIRA"
+                                 constraintName="FK_CARTEIRA_INDICEECONOMICO" referencedColumnNames="ID"
+                                 referencedTableName="INDICEECONOMICO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="add-column-CARTEIRA_AUD.DATAPEDIDO">
+        <addColumn tableName="CARTEIRA_AUD">
+            <column name="DATA_PEDIDO" type="DATETIME">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="add-column-CARTEIRA_AUD.FK_INDICEECONOMICO">
+        <addColumn tableName="CARTEIRA_AUD">
+            <column name="FK_INDICEECONOMICO" type="BIGINT">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-column-RELATORIOPERFIL.PROCEDURE_NAME">
+        <addColumn tableName="RELATORIOPERFIL">
+            <column name="PROCEDURE_NAME" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="Jordano" id="dropUniqueConstraint-PROCESSO_RELACIONADO_AUD">
+        <dropPrimaryKey
+                constraintName="PK_PROCESSO_RELACIONADO_AUD"
+                tableName="PROCESSO_RELACIONADO_AUD"
+        />
+    </changeSet>
+
+    <changeSet author="Jordano" id="addNotNullConstraint-PROCESSO_RELACIONADO_AUD-FK_PROCESSO">
+        <addNotNullConstraint
+                columnName="FK_PROCESSO"
+                tableName="PROCESSO_RELACIONADO_AUD"
+                columnDataType="BIGINT"
+        />
+
+    </changeSet>
+
+    <changeSet author="Jordano" id="addNotNullConstraint-PROCESSO_RELACIONADO_AUD-FK_PROCESSO_RELACIONADO">
+        <addNotNullConstraint
+                columnName="FK_PROCESSO_RELACIONADO"
+                tableName="PROCESSO_RELACIONADO_AUD"
+                columnDataType="BIGINT"
+        />
+    </changeSet>
+
+    <changeSet author="Jordano" id="addPrimaryKey-PROCESSO_RELACIONADO_AUD">
+        <addPrimaryKey columnNames="ID_AUD, FK_PROCESSO, FK_PROCESSO_RELACIONADO"
+                       constraintName="PK_PROCESSO_RELACIONADO_AUD"
+                       tableName="PROCESSO_RELACIONADO_AUD"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-OPERACAO-InserirTag">
+        <insert tableName="OPERACAO">
+            <column name="ID" valueNumeric="38"/>
+            <column name="DESCRICAO" value="Operação | Inserir Tag"/>
+            <column name="CODIGO" value="Permissão para inserção de Tag no processo"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-InserirTag">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="38"/>
+            <column name="ID_PERMISSAO" valueNumeric="51"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-OPERACAO-RemoverTag">
+        <insert tableName="OPERACAO">
+            <column name="ID" valueNumeric="39"/>
+            <column name="DESCRICAO" value="Operação | Remover Tag"/>
+            <column name="CODIGO" value="Permissão para remover de Tag no processo"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-RELPERMISSAOOPERACAO-RemoverTag">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_OPERACAO" valueNumeric="39"/>
+            <column name="ID_PERMISSAO" valueNumeric="51"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-REL_PERFILPERMISSAOOPERACAO-inserirTag" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="51"/>
+            <column name="ID_OPERACAO" valueNumeric="38"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Jordano" id="insert-REL_PERFILPERMISSAOOPERACAO-inserirTag" dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="51"/>
+            <column name="ID_OPERACAO" valueNumeric="38"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-REL_PERFILPERMISSAOOPERACAO-removerTag" dbms="${dbmsSequence}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID" valueSequenceNext="SEQ_PERFILPERMISSAOOPERACAO"/>
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="51"/>
+            <column name="ID_OPERACAO" valueNumeric="39"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Jordano" id="insert-REL_PERFILPERMISSAOOPERACAO-removerTag" dbms="${dbmsAutoIncrement}">
+        <insert tableName="REL_PERFILPERMISSAOOPERACAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="51"/>
+            <column name="ID_OPERACAO" valueNumeric="39"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="update-TIPOINDICEECONOMICO-tj">
+        <update tableName="TIPOINDICEECONOMICO">
+            <column name="DESCRICAO" type="VARCHAR(100)" value="TJ"/>
+            <where>id = 1</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-TIPOINDICEECONOMICO-trt">
+        <insert tableName="TIPOINDICEECONOMICO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="TRT"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-sequence-SEQ_RELPESSOAEMPRESA" dbms="${dbmsSequence}">
+        <dropSequence sequenceName="SEQ_RELPESSOAEMPRESA"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-sequence-SEQ_EMPRESA_COLIGADA" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_EMPRESA_COLIGADA"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="rename-table-RELPESSOAEMPRESA">
+        <renameTable oldTableName="RELPESSOAEMPRESA" newTableName="EMPRESA_COLIGADA"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-EMPRESA_COLIGADA_AUD">
+        <createTable tableName="EMPRESA_COLIGADA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_EMPRESA_COLIGADA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_EMPRESA_COLIGADA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="HOLDING" type="BOOLEAN"/>
+            <column name="FK_EMPRESA" type="BIGINT"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-EMPRESA_COLIGADA_AUD">
+        <addForeignKeyConstraint baseTableName="EMPRESA_COLIGADA_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_EMPRESA_COLIGADA_AUD"
+                                 referencedTableName="LOG_AUDITORIA"
+                                 referencedColumnNames="ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-EMPRESA_COLIGADA_AUD">
+        <sql>
+            INSERT INTO EMPRESA_COLIGADA_AUD (ID, ID_AUD, TIPO_AUD, HOLDING, FK_EMPRESA, FK_PESSOA)
+            SELECT ID, (SELECT MIN(ID) FROM EMPRESA_COLIGADA), 0, HOLDING, FK_EMPRESA, FK_PESSOA
+            FROM EMPRESA_COLIGADA
+        </sql>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="drop-sequence-SEQ_RELPESSOAPESSOA" dbms="${dbmsSequence}">
+        <dropSequence sequenceName="SEQ_RELPESSOAPESSOA"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-sequence-SEQ_EMPRESA_COLABORADOR" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_EMPRESA_COLABORADOR"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="rename-table-RELPESSOAPESSOA">
+        <renameTable oldTableName="RELPESSOAPESSOA" newTableName="EMPRESA_COLABORADOR"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-table-EMPRESA_COLABORADOR_AUD">
+        <createTable tableName="EMPRESA_COLABORADOR_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_EMPRESA_COLABORADOR_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_EMPRESA_COLABORADOR_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="CIVEL" type="BOOLEAN"/>
+            <column name="CRIMINAL" type="BOOLEAN"/>
+            <column name="DATAENTRADA" type="DATETIME"/>
+            <column name="DATASAIDA" type="DATETIME"/>
+            <column name="TRABALHISTA" type="BOOLEAN"/>
+            <column name="TRIBUTARIO" type="BOOLEAN"/>
+            <column name="FK_EMPRESA" type="BIGINT"/>
+            <column name="FK_PESSOA" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="create-fk-FK_EMPRESA_COLABORADOR_AUD">
+        <addForeignKeyConstraint baseTableName="EMPRESA_COLABORADOR_AUD" baseColumnNames="ID_AUD"
+                                 constraintName="FK_EMPRESA_COLABORADOR_AUD"
+                                 referencedTableName="LOG_AUDITORIA" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="felipi.berdun" id="insert-into-EMPRESA_COLABORADOR_AUD">
+        <sql>
+            INSERT INTO EMPRESA_COLABORADOR_AUD (ID, ID_AUD, TIPO_AUD, CIVEL, CRIMINAL, DATAENTRADA, DATASAIDA,
+            TRABALHISTA, TRIBUTARIO, FK_EMPRESA, FK_PESSOA)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0, CIVEL, CRIMINAL, DATAENTRADA, DATASAIDA,
+            TRABALHISTA, TRIBUTARIO, FK_EMPRESA, FK_PESSOA
+            FROM EMPRESA_COLABORADOR
+        </sql>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-PERMISSAO-94">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="94"/>
+            <column name="DESCRICAO" value="Permissão para Cadastro de Tags"/>
+            <column name="EXIBE" valueBoolean="true"/>
+            <column name="FEATURE" value="tag"/>
+            <column name="REDIRECT" value="/tag/lista"/>
+            <column name="ID_TIPO_PERMISSAO" type="INTEGER" value="2"/>
+            <column name="CODIGO" value="Processo | Tag"/>
+            <column name="DIRETORIOVIEW" value="/tag"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-PERMISSAOOPERACAO-94">
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="94"/>
+            <column name="ID_OPERACAO" valueNumeric="1"/>
+        </insert>
+
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="94"/>
+            <column name="ID_OPERACAO" valueNumeric="2"/>
+        </insert>
+
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="94"/>
+            <column name="ID_OPERACAO" valueNumeric="8"/>
+        </insert>
+
+        <insert tableName="RELPERMISSAOOPERACAO">
+            <column name="ID_PERMISSAO" valueNumeric="94"/>
+            <column name="ID_OPERACAO" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

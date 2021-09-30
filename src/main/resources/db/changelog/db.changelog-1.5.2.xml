@@ -1,0 +1,216 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- Adicionando o campo DADOSBASICOSTAREFA.CASE_EXECUTION_ID_ORIGEM -->
+    <changeSet author="Marcelo" id="1">
+        <addColumn tableName="DADOSBASICOSTAREFA">
+            <column name="CASE_EXECUTION_ID_ORIGEM" type="VARCHAR(200)"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Dropando o campo GRUPOMOTIVOSTATUSFINAL.FK_FORMULARIO -->
+    <changeSet author="rodolpho.couto" id="2">
+        <dropColumn tableName="GRUPOMOTIVOSTATUSFINAL" columnName="FK_FORMULARIO"/>
+    </changeSet>
+
+    <!-- Corrigindo Gerenciamento de Esteira -->
+    <changeSet author="rodolpho.couto" id="3">
+        <update tableName="OPERACAO">
+            <column name="CODIGO" value="Gerenciamento de Esteira"/>
+            <where>ID = 13</where>
+        </update>
+    </changeSet>
+
+    <!-- Adicionando DATASOLICITACAO e STATUS em SOLICITACAO_LOG -->
+    <changeSet author="paulo.marcon" id="4">
+        <addColumn tableName="SOLICITACAO_LOG">
+            <column name="DATASOLICITACAO" type="DATETIME"/>
+            <column name="STATUS" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Criando tabela NOTIFICACAO -->
+    <changeSet author="Jordano" id="5">
+        <createTable tableName="NOTIFICACAO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_NOTIFICACAO"/>
+            </column>
+            <column name="FK_USUARIO" type="BIGINT"/>
+            <column name="FK_PROCESSO" type="BIGINT"/>
+            <column name="TIPO" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Adicionando FK_NOTIFICACAO_PROCESSO -->
+    <changeSet author="Jordano" id="6">
+        <addForeignKeyConstraint baseColumnNames="FK_PROCESSO" baseTableName="NOTIFICACAO"
+                                 constraintName="FK_NOTIFICACAO_PROCESSO" referencedColumnNames="ID"
+                                 referencedTableName="PROCESSO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Adicionando FK_NOTIFICACAO_USUARIO -->
+    <changeSet author="Jordano" id="7">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO" baseTableName="NOTIFICACAO"
+                                 constraintName="FK_NOTIFICACAO_USUARIO" referencedColumnNames="ID"
+                                 referencedTableName="USUARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- Criando SEQ_NOTIFICACAO -->
+    <changeSet author="Jordano" id="8" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_NOTIFICACAO"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="9">
+        <addColumn tableName="SOLICITACAO_LOG">
+            <column name="DESCRICAO_TIPO" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Removendo a permissão Processos | Novas Ações -->
+    <changeSet author="rodolpho.couto" id="10">
+        <delete tableName="REL_PERFILPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 59</where>
+        </delete>
+        <delete tableName="RELPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 59</where>
+        </delete>
+        <delete tableName="PERMISSAO">
+            <where>ID = 59</where>
+        </delete>
+    </changeSet>
+
+    <!-- Removendo a permissão Tipo de Endereço -->
+    <changeSet author="rodolpho.couto" id="11">
+        <delete tableName="REL_PERFILPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 8</where>
+        </delete>
+        <delete tableName="RELPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 8</where>
+        </delete>
+        <delete tableName="PERMISSAO">
+            <where>ID = 8</where>
+        </delete>
+    </changeSet>
+
+    <!-- Dropando FK_RELPESSOAFUNCAO_PESSOA -->
+    <changeSet author="rodolpho.couto" id="12">
+        <dropForeignKeyConstraint baseTableName="RELPESSOAFUNCAO" constraintName="FK_RELPESSOAFUNCAO_PESSOA"/>
+    </changeSet>
+
+    <!-- Dropando FK_RELPESSOAFUNCAO_FUNCAO -->
+    <changeSet author="rodolpho.couto" id="13">
+        <dropForeignKeyConstraint baseTableName="RELPESSOAFUNCAO" constraintName="FK_RELPESSOAFUNCAO_FUNCAO"/>
+    </changeSet>
+
+    <!-- Dropando RELPESSOAFUNCAO -->
+    <changeSet author="rodolpho.couto" id="14">
+        <dropTable tableName="RELPESSOAFUNCAO"/>
+    </changeSet>
+
+    <!-- Dropando FK_RELPESSOAESCR_PESSOA -->
+    <changeSet author="rodolpho.couto" id="15">
+        <dropForeignKeyConstraint baseTableName="RELPESSOAESCRITORIO" constraintName="FK_RELPESSOAESCR_PESSOA"/>
+    </changeSet>
+
+    <!-- Dropando FK_RELPESSOAESCR_PESSOA_ESCR -->
+    <changeSet author="rodolpho.couto" id="16">
+        <dropForeignKeyConstraint baseTableName="RELPESSOAESCRITORIO" constraintName="FK_RELPESSOAESCR_PESSOA_ESCR"/>
+    </changeSet>
+
+    <!-- Dropando RELPESSOAESCRITORIO -->
+    <changeSet author="rodolpho.couto" id="17">
+        <dropTable tableName="RELPESSOAESCRITORIO"/>
+    </changeSet>
+
+    <!-- Dropando FK_PESSOA_PERFIL -->
+    <changeSet author="rodolpho.couto" id="18">
+        <dropForeignKeyConstraint baseTableName="PESSOA" constraintName="FK_PESSOA_PERFIL"/>
+    </changeSet>
+
+    <!-- Dropando campos de PESSOA -->
+    <changeSet author="rodolpho.couto" id="19">
+        <dropColumn tableName="PESSOA" columnName="USUARIO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="20">
+        <dropColumn tableName="PESSOA" columnName="LOGIN"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="21">
+        <dropColumn tableName="PESSOA" columnName="SENHA"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="22">
+        <dropColumn tableName="PESSOA" columnName="JORNADA_TRABALHO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="23">
+        <dropColumn tableName="PESSOA" columnName="PERFIL_FK"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="24">
+        <dropColumn tableName="PESSOA" columnName="ESCRITORIO"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="25">
+        <dropColumn tableName="PESSOA" columnName="RAZAOSOCIAL"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="26">
+        <dropColumn tableName="PESSOA" columnName="FANTASIA"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="27">
+        <dropColumn tableName="PESSOA" columnName="CPF"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="28">
+        <dropColumn tableName="PESSOA" columnName="CPF_ND"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="29">
+        <dropColumn tableName="PESSOA" columnName="INSCRCAOESTADUAL"/>
+    </changeSet>
+
+    <!-- Renomeando campos de PESSOA -->
+    <changeSet author="rodolpho.couto" id="30">
+        <renameColumn tableName="PESSOA" oldColumnName="NOME" newColumnName="NOME_RAZAOSOCIAL"
+                      columnDataType="VARCHAR(200)"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="31">
+        <renameColumn tableName="PESSOA" oldColumnName="APELIDO" newColumnName="APELIDO_FANTASIA"
+                      columnDataType="VARCHAR(200)"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="32">
+        <renameColumn tableName="PESSOA" oldColumnName="CNPJ" newColumnName="CPF_CNPJ" columnDataType="VARCHAR(30)"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="33">
+        <renameColumn tableName="PESSOA" oldColumnName="CNPJ_ND" newColumnName="CPF_CNPJ_ND" columnDataType="BOOLEAN"/>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="34">
+        <renameColumn tableName="PESSOA" oldColumnName="RG" newColumnName="RG_INSCRICAOESTADUAL"
+                      columnDataType="VARCHAR(30)"/>
+    </changeSet>
+
+    <!-- Adicionando NotNull no campo NOME_RAZAOSOCIAL -->
+    <changeSet author="rodolpho.couto" id="35">
+        <addNotNullConstraint tableName="PESSOA" columnName="NOME_RAZAOSOCIAL" columnDataType="VARCHAR(200)"/>
+    </changeSet>
+
+    <!-- Adicionando NotNull no campo TIPOPESSOA -->
+    <changeSet author="rodolpho.couto" id="36">
+        <addNotNullConstraint tableName="PESSOA" columnName="TIPOPESSOA" columnDataType="INTEGER"/>
+    </changeSet>
+
+    <!-- PAPEL -->
+    <changeSet author="rodolpho.couto" id="37" dbms="${dbmsSequence}">
+        <insert tableName="PAPEL">
+            <column name="ID" valueSequenceNext="SEQ_PAPEL"/>
+            <column name="DESCRICAO" value="Administrador"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="COD_INT" valueNumeric="16"/>
+        </insert>
+    </changeSet>
+    <changeSet author="rodolpho.couto" id="38" dbms="${dbmsAutoIncrement}">
+        <insert tableName="PAPEL">
+            <column name="DESCRICAO" value="Administrador"/>
+            <column name="SISTEMA" valueBoolean="true"/>
+            <column name="COD_INT" valueNumeric="16"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

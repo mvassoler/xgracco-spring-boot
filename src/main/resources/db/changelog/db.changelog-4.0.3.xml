@@ -1,0 +1,501 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="insert-rotina-importacao-publicacao-enforce" author="thiago.fogar">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="12"/>
+            <column name="DESCRICAO" value="Publicação (Enforce)"/>
+        </insert>
+    </changeSet>
+
+    <!-- INSERT INTO EVENTO -->
+    <changeSet author="bruno.silva" id="insert-rotina_job-provisionamentos">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="11"/>
+            <column name="DESCRICAO" value="Provisionamentos"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-SALARIO_MINIMO" dbms="${dbmsSequence}" author="Jordano">
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="1994"/>
+            <column name="VALOR" valueNumeric="70.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="1995"/>
+            <column name="VALOR" valueNumeric="100.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="1996"/>
+            <column name="VALOR" valueNumeric="112.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="1997"/>
+            <column name="VALOR" valueNumeric="120.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="1998"/>
+            <column name="VALOR" valueNumeric="130.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="1999"/>
+            <column name="VALOR" valueNumeric="136.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2000"/>
+            <column name="VALOR" valueNumeric="131.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2001"/>
+            <column name="VALOR" valueNumeric="180.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2002"/>
+            <column name="VALOR" valueNumeric="200.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2003"/>
+            <column name="VALOR" valueNumeric="240.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2004"/>
+            <column name="VALOR" valueNumeric="260.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2005"/>
+            <column name="VALOR" valueNumeric="300.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2006"/>
+            <column name="VALOR" valueNumeric="350.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2007"/>
+            <column name="VALOR" valueNumeric="380.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2008"/>
+            <column name="VALOR" valueNumeric="415.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2009"/>
+            <column name="VALOR" valueNumeric="465.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2010"/>
+            <column name="VALOR" valueNumeric="510.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2011"/>
+            <column name="VALOR" valueNumeric="545.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2012"/>
+            <column name="VALOR" valueNumeric="622.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2013"/>
+            <column name="VALOR" valueNumeric="678.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2014"/>
+            <column name="VALOR" valueNumeric="724.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2015"/>
+            <column name="VALOR" valueNumeric="788.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2016"/>
+            <column name="VALOR" valueNumeric="880.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2017"/>
+            <column name="VALOR" valueNumeric="937.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ID" valueSequenceNext="SEQ_SALARIO_MINIMO"/>
+            <column name="ANO" valueNumeric="2018"/>
+            <column name="VALOR" valueNumeric="954.00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-SALARIO_MINIMO-auto-increment" dbms="${dbmsAutoIncrement}" author="Jordano">
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="1994"/>
+            <column name="VALOR" valueNumeric="70.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="1995"/>
+            <column name="VALOR" valueNumeric="100.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="1996"/>
+            <column name="VALOR" valueNumeric="112.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="1997"/>
+            <column name="VALOR" valueNumeric="120.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="1998"/>
+            <column name="VALOR" valueNumeric="130.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="1999"/>
+            <column name="VALOR" valueNumeric="136.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2000"/>
+            <column name="VALOR" valueNumeric="131.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2001"/>
+            <column name="VALOR" valueNumeric="180.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2002"/>
+            <column name="VALOR" valueNumeric="200.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2003"/>
+            <column name="VALOR" valueNumeric="240.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2004"/>
+            <column name="VALOR" valueNumeric="260.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2005"/>
+            <column name="VALOR" valueNumeric="300.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2006"/>
+            <column name="VALOR" valueNumeric="350.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2007"/>
+            <column name="VALOR" valueNumeric="380.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2008"/>
+            <column name="VALOR" valueNumeric="415.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2009"/>
+            <column name="VALOR" valueNumeric="465.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2010"/>
+            <column name="VALOR" valueNumeric="510.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2011"/>
+            <column name="VALOR" valueNumeric="545.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2012"/>
+            <column name="VALOR" valueNumeric="622.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2013"/>
+            <column name="VALOR" valueNumeric="678.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2014"/>
+            <column name="VALOR" valueNumeric="724.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2015"/>
+            <column name="VALOR" valueNumeric="788.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2016"/>
+            <column name="VALOR" valueNumeric="880.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2017"/>
+            <column name="VALOR" valueNumeric="937.00"/>
+        </insert>
+        <insert tableName="SALARIO_MINIMO">
+            <column name="ANO" valueNumeric="2018"/>
+            <column name="VALOR" valueNumeric="954.00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="addUniqueConstraint-SALARIO_MINIMO-ANO">
+        <addUniqueConstraint tableName="SALARIO_MINIMO" constraintName="UK_ANO" columnNames="ANO"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-PERMISSAO-Provisao-Processo">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="604"/>
+            <column name="DESCRICAO" value="Provisão"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="301"/>
+            <column name="ORDEM" valueNumeric="11"/>
+            <column name="CODIGO" value="gestao-processos:processos:dados-basicos:provisao"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="122">
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="604"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="permissoes-conclusao-automatica" author="thiago.fogar">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="605"/>
+            <column name="DESCRICAO" value="Conclusão Automática de Tarefas"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="248"/>
+            <column name="ORDEM" valueNumeric="9"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:sistema:conclusao-automatica"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="606"/>
+            <column name="DESCRICAO" value="Incluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="605"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:sistema:conclusao-automatica:incluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="607"/>
+            <column name="DESCRICAO" value="Editar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="605"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:sistema:conclusao-automatica:editar"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="608"/>
+            <column name="DESCRICAO" value="Excluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="605"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:sistema:conclusao-automatica:excluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="609"/>
+            <column name="DESCRICAO" value="Duplicar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="605"/>
+            <column name="ORDEM" valueNumeric="4"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:sistema:conclusao-automatica:duplicar"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="610"/>
+            <column name="DESCRICAO" value="Pode concluir automaticamente"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="605"/>
+            <column name="ORDEM" valueNumeric="5"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:sistema:conclusao-automatica:pode-concluir"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="create-table-CONCLUSAO-AUTOMATICA">
+        <createTable tableName="CONCLUSAOAUTOMATICA">
+            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONCLUSAOAUTOMATICA"/>
+            </column>
+            <column name="FK_TAREFA" type="BIGINT"></column>
+            <column name="FK_TAREFASTATUSFINAL" type="BIGINT"></column>
+            <column name="FK_STATUSFINAL" type="BIGINT"></column>
+            <column name="STATUS" type="BIGINT"></column>
+            <column name="ATIVO" type="BOOLEAN"></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="create-sequence-SEQ_CONCLUSAOAUTOMATICA" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CONCLUSAOAUTOMATICA"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-fk-FK_CONCLUSAOAUTOMATICA_TAREFA">
+        <addForeignKeyConstraint baseTableName="CONCLUSAOAUTOMATICA" baseColumnNames="FK_TAREFA"
+                                 constraintName="FK_CONCLUSAOAUTOMATICA_TAREFA" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-fk-FK_CONCLUSAOAUTOMATICA_TAREFA_STATUSFINAL">
+        <addForeignKeyConstraint baseTableName="CONCLUSAOAUTOMATICA" baseColumnNames="FK_TAREFASTATUSFINAL"
+                                 constraintName="FK_CONCLUSAOAUTOMATICA_TSF" referencedColumnNames="ID"
+                                 referencedTableName="TAREFA_STATUS_FINAL" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-fk-FK_CONCLUSAOAUTOMATICA_TAREFA_SF">
+        <addForeignKeyConstraint baseTableName="CONCLUSAOAUTOMATICA" baseColumnNames="FK_STATUSFINAL"
+                                 constraintName="FK_CONCLUSAOAUTOMATICA_SFT" referencedColumnNames="ID"
+                                 referencedTableName="STATUS_FINAL" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="create-table-CONCLUSAO-AUTOMATICA-TAREFA">
+        <createTable tableName="CONCLUSAOAUTOMATICATAREFA">
+            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONCLUSAOAUTOMATICATAREFA"/>
+            </column>
+            <column name="FK_CONCLUSAOAUTOMATICA" type="BIGINT"></column>
+            <column name="FK_TAREFA" type="BIGINT"></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="create-sequence-SEQ_CONCLUSAOAUTOMATICATAREFA" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_CONCLUSAOAUTOMATICATAREFA"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-fk-FK_CONCLUSAOAUTOMATICATAREFA_CONCLUSAO">
+        <addForeignKeyConstraint constraintName="FK_CONCLUSAOAUTOMATICA"
+                                 baseTableName="CONCLUSAOAUTOMATICATAREFA" baseColumnNames="FK_CONCLUSAOAUTOMATICA"
+                                 referencedTableName="CONCLUSAOAUTOMATICA" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-field-CONCLUSAOAUTOMATICA-FK_FLUXO">
+        <addColumn tableName="CONCLUSAOAUTOMATICA">
+            <column name="FK_FLUXOTRABALHO" type="BIGINT"></column>
+        </addColumn>
+
+        <addForeignKeyConstraint constraintName="FK_CONCLUSAOAUTOMATICA_FLUXO"
+                                 baseTableName="CONCLUSAOAUTOMATICA" baseColumnNames="FK_FLUXOTRABALHO"
+                                 referencedTableName="FLUXO_TRABALHO" referencedColumnNames="ID"
+                                 deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="thiago.fogar" id="add-field-CONCLUSAOAUTOMATICA-STATUS_TAREFA">
+        <addColumn tableName="CONCLUSAOAUTOMATICA">
+            <column name="STATUS_TAREFA" type="BIGINT"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add-field-DADOSBASICOSTAREFA-CONCLUSAOAUTOMATICA" author="thiago.fogar">
+        <addColumn tableName="DADOSBASICOSTAREFA">
+            <column name="CONCLUSAOAUTOMATICA" type="BOOLEAN"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="add-field-DADOSBASICOSTAREFA-CONCLUSAOAUTOMATICA-AUD" author="thiago.fogar">
+        <addColumn tableName="DADOSBASICOSTAREFA_AUD">
+            <column name="CONCLUSAOAUTOMATICA" type="BOOLEAN"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="update-ativo-tarefas" author="Jordano">
+        <update tableName="TAREFA">
+            <column name="ATIVO" value="FALSE"/>
+            <where>ATIVO is NULL</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="add-campo-DADOSBASICOSTAREFA-ORIGEM-CONCLUSAO" author="guilherme.camargo">
+        <addColumn tableName="DADOSBASICOSTAREFA">
+            <column name="ORIGEM_CONCLUSAO" type="BIGINT"/>
+        </addColumn>
+        <addColumn tableName="DADOSBASICOSTAREFA_AUD">
+            <column name="ORIGEM_CONCLUSAO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="update-origem-conclusao-DADOSBASICOSTAREFA" author="guilherme.camargo">
+        <update tableName="DADOSBASICOSTAREFA">
+            <column name="ORIGEM_CONCLUSAO" valueNumeric="0"/>
+            <where>DATA_CONCLUSAO is not NULL</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="delete-campo-conclusao-automatica-DADOSBASICOSTAREFA" id="guilherme.camargo">
+        <dropColumn tableName="DADOSBASICOSTAREFA" columnName="CONCLUSAOAUTOMATICA"/>
+        <dropColumn tableName="DADOSBASICOSTAREFA_AUD" columnName="CONCLUSAOAUTOMATICA"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="createTable-CONFIGURACAO_CLIENTE">
+        <createTable tableName="CONFIGURACAO_CLIENTE">
+            <column name="ID" type="BIGINT"/>
+            <column name="OPERACIONAL_OBRIGATORIO" type="BOOLEAN" defaultValue="FALSE"></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Jordano" id="create-table-CONFIGURACAO_CLIENTE_AUD">
+        <createTable tableName="CONFIGURACAO_CLIENTE_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONFIGURACAO_CLIENTE_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONFIGURACAO_CLIENTE_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="OPERACIONAL_OBRIGATORIO" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="permissoes-CONFIGURACAO_CLIENTE" author="Jordano">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="613"/>
+            <column name="DESCRICAO" value="Configurações do Cliente"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="248"/>
+            <column name="ORDEM" valueNumeric="10"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:sistema:configuracao-cliente"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="614"/>
+            <column name="DESCRICAO" value="Editar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="613"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:sistema:configuracao-cliente:editar"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-PERFIL_PERMISSAO-CONFIGURACAO_CLIENTE">
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="613"/>
+        </insert>
+        <insert tableName="PERFIL_PERMISSAO">
+            <column name="ID_PERFIL" valueNumeric="1"/>
+            <column name="ID_PERMISSAO" valueNumeric="614"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-CONFIGURACAO_CLIENTE">
+        <insert tableName="CONFIGURACAO_CLIENTE">
+            <column name="ID" valueNumeric="1"/>
+            <column name="OPERACIONAL_OBRIGATORIO" valueBoolean="false"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

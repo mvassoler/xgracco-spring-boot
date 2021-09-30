@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+
+    <changeSet author="reinaldo.locatelli" id="addColumn-ATIVO-OBRIGATORIO-CAMPO_LOG">
+        <addColumn tableName="CAMPO_LOG">
+            <column name="ATIVO" type="BOOLEAN"/>
+            <column name="OBRIGATORIO" type="BOOLEAN"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnDataRecebimentoInicialFila" author="andre.baroni">
+        <addColumn tableName="fila">
+            <column name="data_recebimento_inicial" type="timestamp" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnDataRecebimentoFinalFila" author="andre.baroni">
+        <addColumn tableName="fila">
+            <column name="data_recebimento_final" type="timestamp" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnExpressaoFila" author="andre.baroni">
+        <addColumn tableName="fila">
+            <column name="expressao" type="varchar(255)" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnDataRecebimentoInicialFilaAud" author="andre.baroni">
+        <addColumn tableName="fila_aud">
+            <column name="data_recebimento_inicial" type="timestamp" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnDataRecebimentoFinalFilaAud" author="andre.baroni">
+        <addColumn tableName="fila_aud">
+            <column name="data_recebimento_final" type="timestamp" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="createColumnExpressaoFilaAud" author="andre.baroni">
+        <addColumn tableName="fila_aud">
+            <column name="expressao" type="varchar(255)" />
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,1143 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- CREATE ROTINA_STATUS -->
+    <changeSet author="renan.gigliotti" id="create-ROTINA_STATUS">
+        <createTable tableName="ROTINA_STATUS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_STATUS"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- INSERT ROTINA_STATUS -->
+    <changeSet author="renan.gigliotti" id="insert-ROTINA_STATUS">
+        <insert tableName="ROTINA_STATUS">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Sucesso"/>
+        </insert>
+        <insert tableName="ROTINA_STATUS">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Erro"/>
+        </insert>
+        <insert tableName="ROTINA_STATUS">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Informação"/>
+        </insert>
+    </changeSet>
+
+    <!-- CREATE ROTINA_TIPO_REPETICAO -->
+    <changeSet author="renan.gigliotti" id="create-ROTINA_TIPO_REPETICAO">
+        <createTable tableName="ROTINA_TIPO_REPETICAO">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_TIPO_REPETICAO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- INSERT ROTINA_TIPO_REPETICAO -->
+    <changeSet author="renan.gigliotti" id="insert-ROTINA_TIPO_REPETICAO">
+        <insert tableName="ROTINA_TIPO_REPETICAO">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Segundos"/>
+        </insert>
+        <insert tableName="ROTINA_TIPO_REPETICAO">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Minutos"/>
+        </insert>
+        <insert tableName="ROTINA_TIPO_REPETICAO">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Horas"/>
+        </insert>
+    </changeSet>
+
+    <!-- CREATE ROTINA_JOB -->
+    <changeSet author="renan.gigliotti" id="create-ROTINA_JOB">
+        <createTable tableName="ROTINA_JOB">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_JOB"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- INSERT ROTINA_JOB -->
+    <changeSet author="renan.gigliotti" id="insert-ROTINA_JOB">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Solicitações (Boomerang)"/>
+        </insert>
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Publicações (DIG)"/>
+        </insert>
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Atualizar Valores Pedidos"/>
+        </insert>
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="4"/>
+            <column name="DESCRICAO" value="Sincronismo Gracco"/>
+        </insert>
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="5"/>
+            <column name="DESCRICAO" value="Concluir Publicações"/>
+        </insert>
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="6"/>
+            <column name="DESCRICAO" value="Novas Ações"/>
+        </insert>
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="7"/>
+            <column name="DESCRICAO" value="Novos Andamentos"/>
+        </insert>
+    </changeSet>
+
+    <!-- RENAME ROTINALOG -->
+    <changeSet author="renan.gigliotti" id="drop-constraint-ROTINA">
+        <dropAllForeignKeyConstraints baseTableName="ROTINA"/>
+    </changeSet>
+
+    <!-- ADD COLUMN ROTINA -->
+    <changeSet author="renan.gigliotti" id="add-column-ROTINA">
+        <addColumn tableName="ROTINA">
+            <column name="JOB_ID" type="BIGINT"/>
+            <column name="ATIVO" type="BOOLEAN"/>
+            <column name="TIPO_REPETICAO_ID" type="BIGINT"/>
+            <column name="REPETICAO" type="INTEGER"/>
+            <column name="DATA_VIGENCIA_INICIO" type="DATETIME"/>
+            <column name="DATA_VIGENCIA_FIM" type="DATETIME"/>
+            <column name="HORA_VIGENCIA_INICIO" type="TIME"/>
+            <column name="HORA_VIGENCIA_FIM" type="TIME"/>
+            <column name="EMAIL" type="VARCHAR(255)"/>
+            <column name="STATUS_EMAIL_ID" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- UPDATE COLUMN ROTINA -->
+    <changeSet author="renan.gigliotti" id="update-ROTINA">
+        <update tableName="ROTINA">
+            <column name="ATIVO" type="BOOLEAN" valueBoolean="false"/>
+            <column name="TIPO_REPETICAO_ID" type="BIGINT" valueNumeric="2"/>
+            <column name="REPETICAO" type="INTEGER" valueNumeric="60"/>
+        </update>
+    </changeSet>
+
+    <!-- DROP COLUMN ROTINA -->
+    <changeSet author="renan.gigliotti" id="drop-column-ROTINA">
+        <dropColumn tableName="ROTINA" columnName="DATAULTIMAATUALIZACAO"/>
+        <dropColumn tableName="ROTINA" columnName="INTERVALOMINUTOS"/>
+        <dropColumn tableName="ROTINA" columnName="JSON"/>
+        <dropColumn tableName="ROTINA" columnName="ROBO"/>
+        <dropColumn tableName="ROTINA" columnName="STATUS"/>
+        <dropColumn tableName="ROTINA" columnName="VERSAO"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINA_JOB -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_JOB">
+        <addForeignKeyConstraint baseTableName="ROTINA" constraintName="FK_ROTINA_JOB" baseColumnNames="JOB_ID"
+                                 referencedTableName="ROTINA_JOB" referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINA_STATUSEMAIL -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_STATUSEMAIL">
+        <addForeignKeyConstraint baseTableName="ROTINA" constraintName="FK_ROTINA_STATUSEMAIL"
+                                 baseColumnNames="STATUS_EMAIL_ID"
+                                 referencedTableName="ROTINA_STATUS" referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINA_TIPO_REPETICAO -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_TIPO_REPETICAO">
+        <addForeignKeyConstraint baseTableName="ROTINA" constraintName="FK_ROTINA_TIPO_REPETICAO"
+                                 baseColumnNames="TIPO_REPETICAO_ID" referencedTableName="ROTINA_TIPO_REPETICAO"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE ROTINA_PARAMETRO -->
+    <changeSet author="renan.gigliotti" id="create-ROTINA_PARAMETRO">
+        <createTable tableName="ROTINA_PARAMETRO">
+            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_PARAMETRO"/>
+            </column>
+            <column name="ROTINA_ID" type="BIGINT"/>
+            <column name="PARAMETRO" type="VARCHAR(255)"/>
+            <column name="VALOR" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINAPARAMETRO_ROTINA -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINAPARAMETRO_ROTINA">
+        <addForeignKeyConstraint baseTableName="ROTINA_PARAMETRO" constraintName="FK_ROTINAPARAMETRO_ROTINA"
+                                 baseColumnNames="ROTINA_ID" referencedTableName="ROTINA"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE SEQ_ROTINA_PARAMETRO -->
+    <changeSet author="renan.gigliotti" id="create-SEQ_ROTINA_PARAMETRO" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_ROTINA_PARAMETRO"/>
+    </changeSet>
+
+    <!-- RENAME ROTINALOG -->
+    <changeSet author="renan.gigliotti" id="rename-ROTINALOG">
+        <dropAllForeignKeyConstraints baseTableName="ROTINALOG"/>
+        <renameTable oldTableName="ROTINALOG" newTableName="ROTINA_EXECUCAO"/>
+    </changeSet>
+
+    <!-- ADD COLUMN ROTINA_EXECUCAO -->
+    <changeSet author="renan.gigliotti" id="add-column-ROTINA_EXECUCAO">
+        <renameColumn tableName="ROTINA_EXECUCAO" oldColumnName="FK_ROTINA" newColumnName="ROTINA_ID"
+                      columnDataType="BIGINT"/>
+
+        <addColumn tableName="ROTINA_EXECUCAO">
+            <column name="ROTINA_JOB_ID" type="BIGINT"/>
+            <column name="ROTINA_STATUS_ID" type="BIGINT"/>
+            <column name="DATA_INICIO_EXECUCAO" type="DATETIME"/>
+            <column name="DATA_FIM_EXECUCAO" type="DATETIME"/>
+            <column name="USUARIO_ID" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- UPDATE COLUMN ROTINA_EXECUCAO -->
+    <changeSet author="renan.gigliotti" id="update-ROTINA_EXECUCAO">
+        <sql>
+            UPDATE ROTINA_EXECUCAO
+            SET USUARIO_ID = FK_PESSOA,
+            ROTINA_STATUS_ID = CASE WHEN TIPO IN (2,3) THEN 2 ELSE 1 END,
+            DATA_INICIO_EXECUCAO = DATAEVENTO,
+            DATA_FIM_EXECUCAO = DATAEVENTO
+        </sql>
+    </changeSet>
+
+    <!-- DROP COLUMN ROTINA_EXECUCAO -->
+    <changeSet author="renan.gigliotti" id="drop-column-ROTINA_EXECUCAO">
+        <dropColumn tableName="ROTINA_EXECUCAO" columnName="DATAEVENTO"/>
+        <dropColumn tableName="ROTINA_EXECUCAO" columnName="DESCRICAOROBO"/>
+        <dropColumn tableName="ROTINA_EXECUCAO" columnName="TIPO"/>
+        <dropColumn tableName="ROTINA_EXECUCAO" columnName="FK_PROCESSO"/>
+        <dropColumn tableName="ROTINA_EXECUCAO" columnName="ID_TIPO_ACAO_ROTINALOG"/>
+        <dropColumn tableName="ROTINA_EXECUCAO" columnName="FK_PESSOA"/>
+        <dropColumn tableName="ROTINA_EXECUCAO" columnName="OBSERVACAO"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINA_EXEC_STATUS -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_EXEC_STATUS">
+        <addForeignKeyConstraint baseTableName="ROTINA_EXECUCAO" constraintName="FK_ROTINA_EXEC_STATUS"
+                                 baseColumnNames="ROTINA_STATUS_ID" referencedTableName="ROTINA_STATUS"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINA_EXECUCAO_JOB -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_EXECUCAO_JOB">
+        <addForeignKeyConstraint baseTableName="ROTINA_EXECUCAO" constraintName="FK_ROTINA_EXEC_JOB"
+                                 baseColumnNames="ROTINA_JOB_ID"
+                                 referencedTableName="ROTINA_JOB" referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINA_EXECUCAO_USUARIO -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_USUARIO">
+        <addForeignKeyConstraint baseTableName="ROTINA_EXECUCAO" constraintName="FK_ROTINA_EXECUCAO_USUARIO"
+                                 baseColumnNames="USUARIO_ID"
+                                 referencedTableName="USUARIO" referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- RENAME SEQ_ROTINALOG -->
+    <changeSet author="renan.gigliotti" id="rename-SEQ_ROTINALOG" dbms="${dbmsSequence}">
+        <renameSequence oldSequenceName="SEQ_ROTINALOG" newSequenceName="SEQ_ROTINA_EXECUCAO"/>
+    </changeSet>
+
+    <!-- CREATE DIA -->
+    <changeSet author="renan.gigliotti" id="create-DIA">
+        <createTable tableName="DIA">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DIA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(40)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- INSERT Dia -->
+    <changeSet author="renan.gigliotti" id="insert-DIA">
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Dia 1"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Dia 2"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Dia 3"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="4"/>
+            <column name="DESCRICAO" value="Dia 4"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="5"/>
+            <column name="DESCRICAO" value="Dia 5"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="6"/>
+            <column name="DESCRICAO" value="Dia 6"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="7"/>
+            <column name="DESCRICAO" value="Dia 7"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="8"/>
+            <column name="DESCRICAO" value="Dia 8"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="9"/>
+            <column name="DESCRICAO" value="Dia 9"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="10"/>
+            <column name="DESCRICAO" value="Dia 10"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="11"/>
+            <column name="DESCRICAO" value="Dia 11"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="12"/>
+            <column name="DESCRICAO" value="Dia 12"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="13"/>
+            <column name="DESCRICAO" value="Dia 13"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="14"/>
+            <column name="DESCRICAO" value="Dia 14"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="15"/>
+            <column name="DESCRICAO" value="Dia 15"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="16"/>
+            <column name="DESCRICAO" value="Dia 16"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="17"/>
+            <column name="DESCRICAO" value="Dia 17"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="18"/>
+            <column name="DESCRICAO" value="Dia 18"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="19"/>
+            <column name="DESCRICAO" value="Dia 19"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="20"/>
+            <column name="DESCRICAO" value="Dia 20"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="21"/>
+            <column name="DESCRICAO" value="Dia 21"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="22"/>
+            <column name="DESCRICAO" value="Dia 22"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="23"/>
+            <column name="DESCRICAO" value="Dia 23"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="24"/>
+            <column name="DESCRICAO" value="Dia 24"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="25"/>
+            <column name="DESCRICAO" value="Dia 25"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="26"/>
+            <column name="DESCRICAO" value="Dia 26"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="27"/>
+            <column name="DESCRICAO" value="Dia 27"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="28"/>
+            <column name="DESCRICAO" value="Dia 28"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="29"/>
+            <column name="DESCRICAO" value="Dia 29"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="30"/>
+            <column name="DESCRICAO" value="Dia 30"/>
+        </insert>
+        <insert tableName="DIA">
+            <column name="ID" valueNumeric="31"/>
+            <column name="DESCRICAO" value="Dia 31"/>
+        </insert>
+    </changeSet>
+
+    <!-- CREATE SEMANA -->
+    <changeSet author="renan.gigliotti" id="create-SEMANA">
+        <createTable tableName="SEMANA">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SEMANA"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(40)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- INSERT SEMANA -->
+    <changeSet author="renan.gigliotti" id="insert-SEMANA">
+        <insert tableName="SEMANA">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Domingo"/>
+        </insert>
+        <insert tableName="SEMANA">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Segunda-feira"/>
+        </insert>
+        <insert tableName="SEMANA">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Terça-feira"/>
+        </insert>
+        <insert tableName="SEMANA">
+            <column name="ID" valueNumeric="4"/>
+            <column name="DESCRICAO" value="Quarta-feira"/>
+        </insert>
+        <insert tableName="SEMANA">
+            <column name="ID" valueNumeric="5"/>
+            <column name="DESCRICAO" value="Quinta-feira"/>
+        </insert>
+        <insert tableName="SEMANA">
+            <column name="ID" valueNumeric="6"/>
+            <column name="DESCRICAO" value="Sexta-feira"/>
+        </insert>
+        <insert tableName="SEMANA">
+            <column name="ID" valueNumeric="7"/>
+            <column name="DESCRICAO" value="Sábado"/>
+        </insert>
+    </changeSet>
+
+    <!-- CREATE MES -->
+    <changeSet author="renan.gigliotti" id="create-MES">
+        <createTable tableName="MES">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MES"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(40)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- INSERT MES -->
+    <changeSet author="renan.gigliotti" id="insert-MES">
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="1"/>
+            <column name="DESCRICAO" value="Janeiro"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="2"/>
+            <column name="DESCRICAO" value="Fevereiro"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="3"/>
+            <column name="DESCRICAO" value="Março"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="4"/>
+            <column name="DESCRICAO" value="Abril"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="5"/>
+            <column name="DESCRICAO" value="Maio"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="6"/>
+            <column name="DESCRICAO" value="Junho"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="7"/>
+            <column name="DESCRICAO" value="Julho"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="8"/>
+            <column name="DESCRICAO" value="Julho"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="9"/>
+            <column name="DESCRICAO" value="Setembro"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="10"/>
+            <column name="DESCRICAO" value="Outubro"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="11"/>
+            <column name="DESCRICAO" value="Novembro"/>
+        </insert>
+        <insert tableName="MES">
+            <column name="ID" valueNumeric="12"/>
+            <column name="DESCRICAO" value="Dezembro"/>
+        </insert>
+    </changeSet>
+
+    <!-- CREATE ROTINA_DIA -->
+    <changeSet author="renan.gigliotti" id="create-ROTINA_DIA">
+        <createTable tableName="ROTINA_DIA">
+            <column name="ROTINA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_DIA"/>
+            </column>
+            <column name="DIA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_DIA"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINADIA_ROTINA -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_DIA_ROTINA">
+        <addForeignKeyConstraint baseTableName="ROTINA_DIA" constraintName="FK_ROTINA_DIA_ROTINA"
+                                 baseColumnNames="ROTINA_ID" referencedTableName="ROTINA"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINADIA_DIA -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_DIA_DIA">
+        <addForeignKeyConstraint baseTableName="ROTINA_DIA" constraintName="FK_ROTINA_DIA_DIA"
+                                 baseColumnNames="DIA_ID" referencedTableName="DIA"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE ROTINA_SEMANA -->
+    <changeSet author="renan.gigliotti" id="create-ROTINA_SEMANA">
+        <createTable tableName="ROTINA_SEMANA">
+            <column name="ROTINA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_SEMANA"/>
+            </column>
+            <column name="SEMANA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_SEMANA"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINASEMANA_SEMANA -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_SEMANA_ROTINA">
+        <addForeignKeyConstraint baseTableName="ROTINA_SEMANA" constraintName="FK_ROTINA_SEMANA_ROTINA"
+                                 baseColumnNames="ROTINA_ID" referencedTableName="ROTINA"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINASEMANA_SEMANA -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_SEMANA_SEMANA">
+        <addForeignKeyConstraint baseTableName="ROTINA_SEMANA" constraintName="FK_ROTINA_SEMANA_SEMANA"
+                                 baseColumnNames="SEMANA_ID" referencedTableName="SEMANA"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE ROTINA_MES -->
+    <changeSet author="renan.gigliotti" id="create-ROTINA_MES">
+        <createTable tableName="ROTINA_MES">
+            <column name="ROTINA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_MES"/>
+            </column>
+            <column name="MES_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_MES"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINAMES_ROTINA -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_MES_ROTINA">
+        <addForeignKeyConstraint baseTableName="ROTINA_MES" constraintName="FK_ROTINA_MES_ROTINA"
+                                 baseColumnNames="ROTINA_ID" referencedTableName="ROTINA"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINAMES_MES -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_MES_MES">
+        <addForeignKeyConstraint baseTableName="ROTINA_MES" constraintName="FK_ROTINA_MES_MES"
+                                 baseColumnNames="MES_ID" referencedTableName="MES"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE ROTINA_EXECUCAO_LOG -->
+    <changeSet author="renan.gigliotti" id="create-ROTINA_EXECUCAO_LOG">
+        <createTable tableName="ROTINA_EXECUCAO_LOG">
+            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_EXECUCAO_LOG"/>
+            </column>
+            <column name="ROTINA_EXECUCAO_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROTINA_STATUS_ID" type="BIGINT"/>
+            <column name="DATA_EXECUCAO" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <!-- CREATE SEQ_ROTINA_EXECUCAO_LOG -->
+    <changeSet author="renan.gigliotti" id="create-SEQ_ROTINA_EXECUCAO_LOG" dbms="${dbmsSequence}">
+        <createSequence sequenceName="SEQ_ROTINA_EXECUCAO_LOG"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINA_EXEC_LOG_LOG -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_EXEC_LOG_LOG">
+        <addForeignKeyConstraint baseTableName="ROTINA_EXECUCAO_LOG" constraintName="FK_ROTINA_EXEC_LOG_LOG"
+                                 baseColumnNames="ROTINA_EXECUCAO_ID" referencedTableName="ROTINA_EXECUCAO"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <!-- CREATE FK_ROTINA_EXEC_LOG_STATUS -->
+    <changeSet author="renan.gigliotti" id="create-FK_ROTINA_EXEC_LOG_STATUS">
+        <addForeignKeyConstraint baseTableName="ROTINA_EXECUCAO_LOG" constraintName="FK_ROTINA_EXEC_LOG_STATUS"
+                                 baseColumnNames="ROTINA_STATUS_ID" referencedTableName="ROTINA_STATUS"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-QRTZ_SCHEDULER_STATE">
+        <createTable tableName="QRTZ_SCHEDULER_STATE">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_SCHEDULER_STATE"/>
+            </column>
+            <column name="INSTANCE_NAME" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_SCHEDULER_STATE"/>
+            </column>
+            <column name="LAST_CHECKIN_TIME" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CHECKIN_INTERVAL" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-QRTZ_JOB_DETAILS">
+        <createTable tableName="QRTZ_JOB_DETAILS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_JOB_DETAILS"/>
+            </column>
+            <column name="JOB_NAME" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_JOB_DETAILS"/>
+            </column>
+            <column name="JOB_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_JOB_DETAILS"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(250)"/>
+            <column name="JOB_CLASS_NAME" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_DURABLE" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_NONCONCURRENT" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_UPDATE_DATA" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REQUESTS_RECOVERY" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="JOB_DATA" type="BLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-QRTZ_TRIGGERS">
+        <createTable tableName="QRTZ_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_TRIGGERS"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_TRIGGERS"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_TRIGGERS"/>
+            </column>
+            <column name="JOB_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="JOB_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(250)"/>
+            <column name="NEXT_FIRE_TIME" type="BIGINT"/>
+            <column name="PREV_FIRE_TIME" type="BIGINT"/>
+            <column name="PRIORITY" type="INTEGER"/>
+            <column name="TRIGGER_STATE" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_TYPE" type="VARCHAR(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="START_TIME" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="END_TIME" type="BIGINT"/>
+            <column name="CALENDAR_NAME" type="VARCHAR(200)"/>
+            <column name="MISFIRE_INSTR" type="INTEGER"/>
+            <column name="JOB_DATA" type="BLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-QRTZ_CRON_TRIGGERS">
+        <createTable tableName="QRTZ_CRON_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_CRON_TRIGGERS"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_CRON_TRIGGERS"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_CRON_TRIGGERS"/>
+            </column>
+            <column name="CRON_EXPRESSION" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIME_ZONE_ID" type="VARCHAR(80)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-QRTZ_LOCKS">
+        <createTable tableName="QRTZ_LOCKS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_LOCKS"/>
+            </column>
+            <column name="LOCK_NAME" type="VARCHAR(40)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_LOCKS"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-QRTZ_CALENDARS">
+        <createTable tableName="QRTZ_CALENDARS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_CALENDARS"/>
+            </column>
+            <column name="CALENDAR_NAME" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_CALENDARS"/>
+            </column>
+            <column name="CALENDAR" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-QRTZ_FIRED_TRIGGERS">
+        <createTable tableName="QRTZ_FIRED_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_FIRED_TRIGGERS"/>
+            </column>
+            <column name="ENTRY_ID" type="VARCHAR(95)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_FIRED_TRIGGERS"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INSTANCE_NAME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SCHED_TIME" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FIRED_TIME" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRIORITY" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATE" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="JOB_NAME" type="VARCHAR(200)"/>
+            <column name="JOB_GROUP" type="VARCHAR(200)"/>
+            <column name="IS_NONCONCURRENT" type="BOOLEAN"/>
+            <column name="REQUESTS_RECOVERY" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-QRTZ_PAUSED_TRIGGER_GRPS">
+        <createTable tableName="QRTZ_PAUSED_TRIGGER_GRPS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_PAUSED_TRIGGER_GRPS"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_PAUSED_TRIGGER_GRPS"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-QRTZ_SIMPLE_TRIGGERS">
+        <createTable tableName="QRTZ_SIMPLE_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_SIMPLE_TRIGGERS"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_SIMPLE_TRIGGERS"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_SIMPLE_TRIGGERS"/>
+            </column>
+            <column name="REPEAT_COUNT" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REPEAT_INTERVAL" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIMES_TRIGGERED" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="create-QRTZ_BLOB_TRIGGERS">
+        <createTable tableName="QRTZ_BLOB_TRIGGERS">
+            <column name="SCHED_NAME" type="VARCHAR(120)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_BLOB_TRIGGERS"/>
+            </column>
+            <column name="TRIGGER_NAME" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_BLOB_TRIGGERS"/>
+            </column>
+            <column name="TRIGGER_GROUP" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_QRTZ_BLOB_TRIGGERS"/>
+            </column>
+            <column name="BLOB_DATA" type="BLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="delete-PERMISSAO-LOG">
+        <delete tableName="REL_PERFILPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 49</where>
+        </delete>
+        <delete tableName="RELPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 49</where>
+        </delete>
+        <delete tableName="PERMISSAO">
+            <where>ID = 49</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="delete-PERMISSAO-MONITORIAMENTO">
+        <delete tableName="REL_PERFILPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 87</where>
+        </delete>
+        <delete tableName="RELPERMISSAOOPERACAO">
+            <where>ID_PERMISSAO = 87</where>
+        </delete>
+        <delete tableName="PERMISSAO">
+            <where>ID = 87</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="delete-PARAMETROGLOBAL">
+        <delete tableName="PARAMETROGLOBAL">
+            <where>ID = 8</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="renan.gigliotti" id="drop-TIPO_ACAO_ROTINALOG">
+        <dropTable tableName="TIPO_ACAO_ROTINALOG"/>
+    </changeSet>
+
+    <!--AUDITORIA TABELAS DE ROTINA-->
+
+    <!-- RENAME ROTINA_AUD -->
+    <changeSet author="paulo.marcon" id="rename-ROTINA_AUD">
+        <dropTable tableName="ROTINA_AUD"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-ROTINA_AUD">
+        <createTable tableName="ROTINA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"/>
+            <column name="JOB_ID" type="BIGINT"/>
+            <column name="ATIVO" type="BOOLEAN"/>
+            <column name="TIPO_REPETICAO_ID" type="BIGINT"/>
+            <column name="REPETICAO" type="INTEGER"/>
+            <column name="DATA_VIGENCIA_INICIO" type="DATETIME"/>
+            <column name="DATA_VIGENCIA_FIM" type="DATETIME"/>
+            <column name="HORA_VIGENCIA_INICIO" type="TIME"/>
+            <column name="HORA_VIGENCIA_FIM" type="TIME"/>
+            <column name="EMAIL" type="VARCHAR(255)"/>
+            <column name="STATUS_EMAIL_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-ROTINA_AUD_FK_CONSTRAINT">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ROTINA_AUD"
+                                 constraintName="FK_ROTINA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-ROTINA_AUD">
+        <sql>INSERT INTO ROTINA_AUD (ID, DESCRICAO, JOB_ID, ATIVO, TIPO_REPETICAO_ID, REPETICAO,
+            DATA_VIGENCIA_INICIO, DATA_VIGENCIA_FIM, HORA_VIGENCIA_INICIO, HORA_VIGENCIA_FIM,
+            EMAIL, STATUS_EMAIL_ID, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, JOB_ID, ATIVO, TIPO_REPETICAO_ID, REPETICAO,
+            DATA_VIGENCIA_INICIO, DATA_VIGENCIA_FIM, HORA_VIGENCIA_INICIO, HORA_VIGENCIA_FIM,
+            EMAIL, STATUS_EMAIL_ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM ROTINA
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-DIA_AUD">
+        <createTable tableName="DIA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DIA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PKDIA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(40)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-DIA_AUD_FK_CONSTRAINT">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="DIA_AUD"
+                                 constraintName="FK_DIA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-DIA_AUD">
+        <sql>INSERT INTO DIA_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM DIA
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-ROTINA_DIA_AUD">
+        <createTable tableName="ROTINA_DIA_AUD">
+            <column name="ROTINA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_DIA_AUD"/>
+            </column>
+            <column name="DIA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_DIA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_DIA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-ROTINA_DIA_AUD_FK_CONSTRAINT">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ROTINA_DIA_AUD"
+                                 constraintName="FK_ROTINA_DIA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-ROTINA_DIA_AUD">
+        <sql>INSERT INTO ROTINA_DIA_AUD (ROTINA_ID, DIA_ID, ID_AUD, TIPO_AUD)
+            SELECT ROTINA_ID, DIA_ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM ROTINA_DIA
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-SEMANA_AUD">
+        <createTable tableName="SEMANA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SEMANA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SEMANA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(40)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-SEMANA_AUD_FK_CONSTRAINT">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="SEMANA_AUD"
+                                 constraintName="FK_SEMANA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-SEMANA_AUD">
+        <sql>INSERT INTO SEMANA_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM SEMANA
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-ROTINA_SEMANA_AUD">
+        <createTable tableName="ROTINA_SEMANA_AUD">
+            <column name="ROTINA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_SEMANA_AUD"/>
+            </column>
+            <column name="SEMANA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_SEMANA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_SEMANA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-ROTINA_SEMANA_AUD_FK_CONSTRAINT">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ROTINA_SEMANA_AUD"
+                                 constraintName="FK_ROTINA_SEMANA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-ROTINA_SEMANA_AUD">
+        <sql>INSERT INTO ROTINA_SEMANA_AUD (ROTINA_ID, SEMANA_ID, ID_AUD, TIPO_AUD)
+            SELECT ROTINA_ID, SEMANA_ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM ROTINA_SEMANA
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-MES_AUD">
+        <createTable tableName="MES_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MES_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MES_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(40)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-MES_AUD_FK_CONSTRAINT">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="MES_AUD"
+                                 constraintName="FK_MES_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-MES_AUD">
+        <sql>INSERT INTO MES_AUD (ID, DESCRICAO, ID_AUD, TIPO_AUD)
+            SELECT ID, DESCRICAO, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM MES
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-ROTINA_MES_AUD">
+        <createTable tableName="ROTINA_MES_AUD">
+            <column name="ROTINA_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_MES_AUD"/>
+            </column>
+            <column name="MES_ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_MES_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_MES_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-ROTINA_MES_AUD_FK_CONSTRAINT">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ROTINA_MES_AUD"
+                                 constraintName="FK_ROTINA_MES_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-ROTINA_MES_AUD">
+        <sql>INSERT INTO ROTINA_MES_AUD (ROTINA_ID, MES_ID, ID_AUD, TIPO_AUD)
+            SELECT ROTINA_ID, MES_ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM ROTINA_MES
+        </sql>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-ROTINA_PARAMETRO_AUD">
+        <createTable tableName="ROTINA_PARAMETRO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_PARAMETRO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROTINA_PARAMETRO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="ROTINA_ID" type="BIGINT"/>
+            <column name="PARAMETRO" type="VARCHAR(255)"/>
+            <column name="VALOR" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="create-ROTINA_PARAMETRO_AUD_FK_CONSTRAINT">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ROTINA_PARAMETRO_AUD"
+                                 constraintName="FK_ROTINA_PARAMETRO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="paulo.marcon" id="insert-ROTINA_PARAMETRO_AUD">
+        <sql>
+            INSERT INTO ROTINA_PARAMETRO_AUD (ID, ROTINA_ID, PARAMETRO, VALOR, ID_AUD, TIPO_AUD)
+            SELECT ID, ROTINA_ID, PARAMETRO, VALOR, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD
+            FROM ROTINA_PARAMETRO
+        </sql>
+    </changeSet>
+
+
+    <changeSet author="Jordano" id="create-TIPOPARTE_AUD">
+        <createTable tableName="TIPOPARTE_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOPARTE_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TIPOPARTE_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="BIGINT"/>
+            <column name="DESCRICAO" type="VARCHAR(200)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Jordano" id="create-TIPOPARTE_AUD_FK_CONSTRAINT">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="TIPOPARTE_AUD"
+                                 constraintName="FK_TIPOPARTE_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="Jordano" id="insert-TIPOPARTE_AUD">
+        <sql>
+            INSERT INTO TIPOPARTE_AUD (ID, ID_AUD, TIPO_AUD, DESCRICAO)
+            SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD, DESCRICAO
+            FROM TIPOPARTE
+        </sql>
+    </changeSet>
+
+    <changeSet author="Jordano" id="rename-MODELOGENDAMENTO.tipoDestinatario.TIPO_DESTINATARIO">
+        <renameColumn tableName="MODELOGENDAMENTO"
+                      oldColumnName="tipoDestinatario"
+                      newColumnName="TIPO_DESTINATARIO"
+                      columnDataType="INTEGER"/>
+    </changeSet>
+
+
+</databaseChangeLog>
