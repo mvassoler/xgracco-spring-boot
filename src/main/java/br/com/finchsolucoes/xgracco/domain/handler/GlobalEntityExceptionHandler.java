@@ -324,16 +324,6 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     @ExceptionHandler(GatewayTimeoutException.class)
     public ResponseEntity<?> gatewayTimeoutException(final GatewayTimeoutException ex,WebRequest request) {
         log.info("M=GatewayTimeoutException", ex);
-//
-//        String exception = ClassUtils.getShortClassName(ex.getClass());
-//        ErrorDetailsDTO error = ErrorDetailsDTO
-//                .builder()
-//                .code(GATEWAY_TIMEOUT)
-//                .exception(exception)
-//                .statusCode(GATEWAY_TIMEOUT)
-//                .message(ex.getMessage())
-//                .build();
-//        return ResponseEntity.status(GATEWAY_TIMEOUT).body(Arrays.asList(error));
 
 
         ErrorDetailsDTO errorDetailsDTO = createProblemBuilder(GATEWAY_TIMEOUT, TitleValidationConstants.ENTIDATE_EM_USO, ex.getMessage(), request.getContextPath())
