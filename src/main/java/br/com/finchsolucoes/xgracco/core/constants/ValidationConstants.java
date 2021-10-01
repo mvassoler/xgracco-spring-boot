@@ -9,4 +9,5 @@ public interface ValidationConstants {
     String REGISTER_NOT_FOUND_CUSTOM = "register.not.found.custom";
     String ERROR_EXECUTE_QUERY="error.execute.query";
 
+
 }

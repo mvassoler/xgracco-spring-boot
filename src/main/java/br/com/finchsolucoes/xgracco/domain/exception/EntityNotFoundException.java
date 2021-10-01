@@ -7,4 +7,9 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  * @since 2.1
  */
 public class EntityNotFoundException extends RuntimeException {
+
+    public EntityNotFoundException(String message) {
+        super(message);
+    }
+
 }

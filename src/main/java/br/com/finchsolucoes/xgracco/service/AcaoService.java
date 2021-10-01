@@ -8,6 +8,8 @@ import br.com.finchsolucoes.xgracco.domain.dto.entities.AcaoDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.entity.Pratica;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
+import br.com.finchsolucoes.xgracco.domain.exception.BadRequestException;
+import br.com.finchsolucoes.xgracco.domain.exception.EntityNotFoundException;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.Sorter;
 import br.com.finchsolucoes.xgracco.domain.query.impl.AcaoFilter;
@@ -95,7 +97,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoDTO, Long, AcaoReposito
      * @return AcaoDTO
      * @throws EntityNotFoundException
      */
-    public ResponseDTO<AcaoDTO> update(Long id, AcaoDTO dto) throws EntityNotFoundException{
+    public ResponseDTO<AcaoDTO> update(Long id, AcaoDTO dto) throws EntityNotFoundException {
         log.info("Procedido a atualização da acao {} no acao-service.", dto.getDescricao());
         Acao entityDataBase = this.getRepository().findById(id).orElseThrow(
                 () -> new EntityNotFoundException( messageLocale.validationMessageSource(REGISTER_NOT_FOUND_CUSTOM).replace("{table}", "Acao")));
@@ -130,7 +132,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoDTO, Long, AcaoReposito
      * @return AcaoDTO
      * @throws EntityNotFoundException
      */
-    public ResponseDTO<AcaoDTO> findQuery(Long id) throws EntityNotFoundException{
+    public ResponseDTO<AcaoDTO> find(Long id) throws EntityNotFoundException{
         Acao acao = this.getRepository().findById(id).orElseThrow(
                 () -> new EntityNotFoundException( messageLocale.validationMessageSource(REGISTER_NOT_FOUND_CUSTOM).replace("{table}", "Acao")));
         return ResponseDTO.<AcaoDTO>builder().data(this.getModdelMapper().toDtoMapper(acao, getDTOClass())).build();

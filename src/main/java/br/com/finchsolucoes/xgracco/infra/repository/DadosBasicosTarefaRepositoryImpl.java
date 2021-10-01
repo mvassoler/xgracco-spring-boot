@@ -486,7 +486,7 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
 
         //TODO - ACERTAR ESTA CLASSE
 
-        /*if (filter.getFila() != null) {
+        if (filter.getFila() != null) {
             if (filter.getFila().isFilaDevolucao()) {
                 jpaQuery.where(QFila.fila.esteira.eq(filter.getFila().getEsteira()));
             } else {
@@ -521,33 +521,33 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
         if (Objects.nonNull(filter.getListFluxoTrabalhoTarefa())) {
             jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.fluxoTrabalhoTarefa.in(filter.getListFluxoTrabalhoTarefa()));
         }
-        if (filter.getDataAgendamentoInicial() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
-                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
-                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
-                    .asDate().goe(DateUtils.setInicioDeDia(filter.getDataAgendamentoInicial())));
-        }
-
-        if (filter.getDataAgendamentoFinal() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
-                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
-                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
-                    .asDate().loe(DateUtils.setFimDeDia(filter.getDataAgendamentoFinal())));
-        }
-
-        if (filter.getDataConclusaoInicial() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
-                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
-                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
-                    .asDate().goe(filter.getDataConclusaoInicial()));
-        }
-
-        if (filter.getDataConclusaoFinal() != null) {
-            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
-                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
-                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
-                    .asDate().loe(filter.getDataConclusaoFinal()));
-        }
+//        if (filter.getDataAgendamentoInicial() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
+//                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
+//                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
+//                    .asDate().goe(DateUtils.setInicioDeDia(filter.getDataAgendamentoInicial())));
+//        }
+//
+//        if (filter.getDataAgendamentoFinal() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
+//                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
+//                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
+//                    .asDate().loe(DateUtils.setFimDeDia(filter.getDataAgendamentoFinal())));
+//        }
+//
+//        if (filter.getDataConclusaoInicial() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
+//                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
+//                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
+//                    .asDate().goe(filter.getDataConclusaoInicial()));
+//        }
+//
+//        if (filter.getDataConclusaoFinal() != null) {
+//            jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.dataPrazoFatal
+//                    .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataInicio
+//                            .coalesce(QDadosBasicosTarefa.dadosBasicosTarefa.dataAgendamento))
+//                    .asDate().loe(filter.getDataConclusaoFinal()));
+//        }
 
         if (filter.getResponsavel() != null) {
             jpaQuery.where(QDadosBasicosTarefa.dadosBasicosTarefa.responsavel.eq(filter.getResponsavel()));
@@ -590,7 +590,7 @@ public class DadosBasicosTarefaRepositoryImpl extends AbstractJpaRepository<Dado
                             .from(QProcesso.processo1)
                             .where(QProcesso.processo1.eq(QDadosBasicosTarefa.dadosBasicosTarefa.processo))
             ));
-        }*/
+        }
     }
 
 
