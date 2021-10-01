@@ -3,7 +3,6 @@ package br.com.finchsolucoes.xgracco.domain.handler;
 import br.com.finchsolucoes.xgracco.core.constants.TitleValidationConstants;
 import br.com.finchsolucoes.xgracco.core.locale.MessageLocaleComponent;
 import br.com.finchsolucoes.xgracco.domain.dto.ErrorDetailsDTO;
-import br.com.finchsolucoes.xgracco.domain.entity.Tarefa;
 import br.com.finchsolucoes.xgracco.domain.exception.*;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.extern.slf4j.Slf4j;

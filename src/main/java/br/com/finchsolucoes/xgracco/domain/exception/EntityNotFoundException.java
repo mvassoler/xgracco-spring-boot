@@ -6,6 +6,7 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  * @author Rodolpho Couto
  * @since 2.1
  */
+
 public class EntityNotFoundException extends ValidationException {
 
 
@@ -28,6 +29,7 @@ public class EntityNotFoundException extends ValidationException {
         super(message);
     }
 
+
     @Override
     public String getProperty() {
         return null;
@@ -37,4 +39,5 @@ public class EntityNotFoundException extends ValidationException {
     public Object[] getObjects() {
         return new Object[0];
     }
+
 }
