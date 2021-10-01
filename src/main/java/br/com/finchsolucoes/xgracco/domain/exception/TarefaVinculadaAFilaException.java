@@ -21,6 +21,26 @@ public class TarefaVinculadaAFilaException extends ValidationException {
         this.filas = filas;
     }
 
+    public TarefaVinculadaAFilaException(String message, Throwable cause, List<Fila> filas) {
+        super(message, cause);
+        this.filas = filas;
+    }
+
+    public TarefaVinculadaAFilaException(Throwable cause, List<Fila> filas) {
+        super(cause);
+        this.filas = filas;
+    }
+
+    public TarefaVinculadaAFilaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, List<Fila> filas) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.filas = filas;
+    }
+
+    public TarefaVinculadaAFilaException(String message, List<Fila> filas) {
+        super(message);
+        this.filas = filas;
+    }
+
     @Override
     public String getProperty() {
         return "tarefa";

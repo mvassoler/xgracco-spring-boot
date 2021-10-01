@@ -8,6 +8,25 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class PosicaoParteDuplicadaException extends ValidationException {
 
+    public PosicaoParteDuplicadaException() {
+    }
+
+    public PosicaoParteDuplicadaException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public PosicaoParteDuplicadaException(Throwable cause) {
+        super(cause);
+    }
+
+    public PosicaoParteDuplicadaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public PosicaoParteDuplicadaException(String message) {
+        super(message);
+    }
+
     @Override
     public String getProperty() {
         return "id";

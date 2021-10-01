@@ -20,6 +20,26 @@ public class PessoaVinculadaProcessoParteInteressadaException extends Validation
         this.processos = processos;
     }
 
+    public PessoaVinculadaProcessoParteInteressadaException(String message, Throwable cause, List<Processo> processos) {
+        super(message, cause);
+        this.processos = processos;
+    }
+
+    public PessoaVinculadaProcessoParteInteressadaException(Throwable cause, List<Processo> processos) {
+        super(cause);
+        this.processos = processos;
+    }
+
+    public PessoaVinculadaProcessoParteInteressadaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, List<Processo> processos) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.processos = processos;
+    }
+
+    public PessoaVinculadaProcessoParteInteressadaException(String message, List<Processo> processos) {
+        super(message);
+        this.processos = processos;
+    }
+
     @Override
     public String getProperty() {
         return "processos";

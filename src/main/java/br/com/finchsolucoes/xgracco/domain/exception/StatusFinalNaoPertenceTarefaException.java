@@ -8,6 +8,26 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class StatusFinalNaoPertenceTarefaException extends ValidationException {
 
+
+    public StatusFinalNaoPertenceTarefaException() {
+    }
+
+    public StatusFinalNaoPertenceTarefaException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public StatusFinalNaoPertenceTarefaException(Throwable cause) {
+        super(cause);
+    }
+
+    public StatusFinalNaoPertenceTarefaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public StatusFinalNaoPertenceTarefaException(String message) {
+        super(message);
+    }
+
     @Override
     public String getProperty() {
         return null;

@@ -8,6 +8,26 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class UnmodifiedPasswordException extends ValidationException {
 
+
+    public UnmodifiedPasswordException() {
+    }
+
+    public UnmodifiedPasswordException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public UnmodifiedPasswordException(Throwable cause) {
+        super(cause);
+    }
+
+    public UnmodifiedPasswordException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public UnmodifiedPasswordException(String message) {
+        super(message);
+    }
+
     @Override
     public String getProperty() {
         return "senha";

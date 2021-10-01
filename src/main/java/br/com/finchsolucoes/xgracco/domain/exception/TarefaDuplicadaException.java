@@ -14,6 +14,26 @@ public class TarefaDuplicadaException extends ValidationException {
         this.descricao = descricao;
     }
 
+    public TarefaDuplicadaException(String message, Throwable cause, String descricao) {
+        super(message, cause);
+        this.descricao = descricao;
+    }
+
+    public TarefaDuplicadaException(Throwable cause, String descricao) {
+        super(cause);
+        this.descricao = descricao;
+    }
+
+    public TarefaDuplicadaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, String descricao) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.descricao = descricao;
+    }
+
+    public TarefaDuplicadaException(String message, String descricao) {
+        super(message);
+        this.descricao = descricao;
+    }
+
     @Override
     public String getProperty() {
         return descricao;

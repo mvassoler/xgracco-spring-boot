@@ -9,6 +9,26 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class NumeroDocumentoDeveConterApenasNumerosException extends ValidationException {
 
+
+    public NumeroDocumentoDeveConterApenasNumerosException() {
+    }
+
+    public NumeroDocumentoDeveConterApenasNumerosException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public NumeroDocumentoDeveConterApenasNumerosException(Throwable cause) {
+        super(cause);
+    }
+
+    public NumeroDocumentoDeveConterApenasNumerosException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public NumeroDocumentoDeveConterApenasNumerosException(String message) {
+        super(message);
+    }
+
     @Override
     public String getProperty() {
         return "numeroDocumento";

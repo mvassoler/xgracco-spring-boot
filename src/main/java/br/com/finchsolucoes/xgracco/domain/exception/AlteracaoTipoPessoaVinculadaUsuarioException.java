@@ -7,6 +7,24 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  * @since 5.2.3
  */
 public class AlteracaoTipoPessoaVinculadaUsuarioException extends ValidationException {
+    public AlteracaoTipoPessoaVinculadaUsuarioException() {
+    }
+
+    public AlteracaoTipoPessoaVinculadaUsuarioException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public AlteracaoTipoPessoaVinculadaUsuarioException(Throwable cause) {
+        super(cause);
+    }
+
+    public AlteracaoTipoPessoaVinculadaUsuarioException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public AlteracaoTipoPessoaVinculadaUsuarioException(String message) {
+        super(message);
+    }
 
     @Override
     public String getProperty() {

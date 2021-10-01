@@ -10,6 +10,25 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class TarefaCicloDeVidaException extends ValidationException {
 
+    public TarefaCicloDeVidaException(String statusAtual) {
+        this.statusAtual = statusAtual;
+    }
+
+    public TarefaCicloDeVidaException(String message, Throwable cause, String statusAtual) {
+        super(message, cause);
+        this.statusAtual = statusAtual;
+    }
+
+    public TarefaCicloDeVidaException(Throwable cause, String statusAtual) {
+        super(cause);
+        this.statusAtual = statusAtual;
+    }
+
+    public TarefaCicloDeVidaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, String statusAtual) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.statusAtual = statusAtual;
+    }
+
     private String statusAtual;
     private String statusNovo;
 
