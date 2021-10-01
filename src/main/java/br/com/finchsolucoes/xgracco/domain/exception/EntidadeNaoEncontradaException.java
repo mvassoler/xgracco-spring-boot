@@ -1,11 +1,15 @@
 package br.com.finchsolucoes.xgracco.domain.exception;
 
-public abstract class EntidadeNaoEncontradaException extends NegocioException {
+public  class EntidadeNaoEncontradaException extends ValidationException {
 
-	private static final long serialVersionUID = 1L;
 
-	public EntidadeNaoEncontradaException(String mensagem) {
-		super(mensagem);
+	@Override
+	public String getProperty() {
+		return "entidadenaoencontrada";
 	}
-	
+
+	@Override
+	public Object[] getObjects() {
+		return new Object[0];
+	}
 }

@@ -1,11 +1,15 @@
 package br.com.finchsolucoes.xgracco.domain.exception;
 
-public class EntidadeEmUsoException extends NegocioException {
+public class EntidadeEmUsoException extends ValidationException {
 
-	private static final long serialVersionUID = 1L;
 
-	public EntidadeEmUsoException(String mensagem) {
-		super(mensagem);
+	@Override
+	public String getProperty() {
+		return "entidade";
 	}
-	
+
+	@Override
+	public Object[] getObjects() {
+		return new Object[0];
+	}
 }

@@ -1,16 +1,15 @@
 package br.com.finchsolucoes.xgracco.domain.exception;
 
-public class PayloadTooLargeException extends RuntimeException{
+public class PayloadTooLargeException extends ValidationException{
 
-    public PayloadTooLargeException() {
 
+    @Override
+    public String getProperty() {
+        return "payload";
     }
 
-    public PayloadTooLargeException(final String message) {
-        super(message);
-    }
-
-    public PayloadTooLargeException(final String message, final Throwable cause) {
-        super(message, cause);
+    @Override
+    public Object[] getObjects() {
+        return new Object[0];
     }
 }

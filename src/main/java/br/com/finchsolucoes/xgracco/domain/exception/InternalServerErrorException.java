@@ -1,16 +1,15 @@
 package br.com.finchsolucoes.xgracco.domain.exception;
 
-public class InternalServerErrorException  extends RuntimeException{
+public class InternalServerErrorException  extends ValidationException{
 
-    public InternalServerErrorException() {
 
+    @Override
+    public String getProperty() {
+        return "interno";
     }
 
-    public InternalServerErrorException(final String message) {
-        super(message);
-    }
-
-    public InternalServerErrorException(final String message, final Throwable cause) {
-        super(message, cause);
+    @Override
+    public Object[] getObjects() {
+        return new Object[0];
     }
 }

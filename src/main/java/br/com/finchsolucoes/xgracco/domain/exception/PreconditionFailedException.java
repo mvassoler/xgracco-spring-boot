@@ -1,16 +1,15 @@
 package br.com.finchsolucoes.xgracco.domain.exception;
 
-public class PreconditionFailedException extends  RuntimeException{
+public class PreconditionFailedException extends  ValidationException{
 
-    public PreconditionFailedException() {
 
+    @Override
+    public String getProperty() {
+        return "precondition";
     }
 
-    public PreconditionFailedException(final String message) {
-        super(message);
-    }
-
-    public PreconditionFailedException(final String message, final Throwable cause) {
-        super(message, cause);
+    @Override
+    public Object[] getObjects() {
+        return new Object[0];
     }
 }

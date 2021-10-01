@@ -1,15 +1,15 @@
 package br.com.finchsolucoes.xgracco.domain.exception;
 
-public class PaymentRequiredException extends RuntimeException{
+public class PaymentRequiredException extends ValidationException{
 
-    public PaymentRequiredException() {
+
+    @Override
+    public String getProperty() {
+        return "pagamento";
     }
 
-    public PaymentRequiredException(final String message) {
-        super(message);
-    }
-
-    public PaymentRequiredException(final String message, final Throwable cause) {
-        super(message, cause);
+    @Override
+    public Object[] getObjects() {
+        return new Object[0];
     }
 }

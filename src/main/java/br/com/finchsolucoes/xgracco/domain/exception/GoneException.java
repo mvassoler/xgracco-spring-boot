@@ -1,16 +1,15 @@
 package br.com.finchsolucoes.xgracco.domain.exception;
 
-public class GoneException extends RuntimeException{
+public class GoneException extends ValidationException{
 
-    public GoneException() {
 
+    @Override
+    public String getProperty() {
+        return "gone";
     }
 
-    public GoneException(final String message) {
-        super(message);
-    }
-
-    public GoneException(final String message, final Throwable cause) {
-        super(message, cause);
+    @Override
+    public Object[] getObjects() {
+        return new Object[0];
     }
 }

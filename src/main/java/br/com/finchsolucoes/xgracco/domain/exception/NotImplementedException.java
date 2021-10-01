@@ -1,16 +1,15 @@
 package br.com.finchsolucoes.xgracco.domain.exception;
 
-public class NotImplementedException extends RuntimeException{
+public class NotImplementedException extends ValidationException{
 
-    public NotImplementedException() {
 
+    @Override
+    public String getProperty() {
+        return "naoimplementado";
     }
 
-    public NotImplementedException(final String message) {
-        super(message);
-    }
-
-    public NotImplementedException(final String message, final Throwable cause) {
-        super(message, cause);
+    @Override
+    public Object[] getObjects() {
+        return new Object[0];
     }
 }

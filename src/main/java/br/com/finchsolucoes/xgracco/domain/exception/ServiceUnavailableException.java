@@ -1,16 +1,15 @@
 package br.com.finchsolucoes.xgracco.domain.exception;
 
-public class ServiceUnavailableException extends RuntimeException{
+public class ServiceUnavailableException extends ValidationException{
 
-    public ServiceUnavailableException() {
 
+    @Override
+    public String getProperty() {
+        return "service";
     }
 
-    public ServiceUnavailableException(final String message) {
-        super(message);
-    }
-
-    public ServiceUnavailableException(final String message, final Throwable cause) {
-        super(message, cause);
+    @Override
+    public Object[] getObjects() {
+        return new Object[0];
     }
 }

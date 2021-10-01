@@ -1,16 +1,15 @@
 package br.com.finchsolucoes.xgracco.domain.exception;
 
-public class BadRequestException extends RuntimeException{
+public class BadRequestException extends ValidationException{
 
-    public BadRequestException() {
 
+    @Override
+    public String getProperty() {
+        return "badrequest";
     }
 
-    public BadRequestException(final String message) {
-        super(message);
-    }
-
-    public BadRequestException(final String message, final Throwable cause) {
-        super(message, cause);
+    @Override
+    public Object[] getObjects() {
+        return new Object[0];
     }
 }
