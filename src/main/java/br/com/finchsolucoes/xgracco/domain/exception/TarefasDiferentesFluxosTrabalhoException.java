@@ -8,6 +8,26 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class TarefasDiferentesFluxosTrabalhoException extends ValidationException {
 
+
+    public TarefasDiferentesFluxosTrabalhoException() {
+    }
+
+    public TarefasDiferentesFluxosTrabalhoException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public TarefasDiferentesFluxosTrabalhoException(Throwable cause) {
+        super(cause);
+    }
+
+    public TarefasDiferentesFluxosTrabalhoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public TarefasDiferentesFluxosTrabalhoException(String message) {
+        super(message);
+    }
+
     @Override
     public String getProperty() {
         return null;

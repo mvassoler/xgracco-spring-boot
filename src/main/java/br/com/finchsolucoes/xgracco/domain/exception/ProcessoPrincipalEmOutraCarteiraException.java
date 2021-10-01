@@ -8,6 +8,26 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class ProcessoPrincipalEmOutraCarteiraException extends ValidationException {
 
+
+    public ProcessoPrincipalEmOutraCarteiraException() {
+    }
+
+    public ProcessoPrincipalEmOutraCarteiraException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ProcessoPrincipalEmOutraCarteiraException(Throwable cause) {
+        super(cause);
+    }
+
+    public ProcessoPrincipalEmOutraCarteiraException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public ProcessoPrincipalEmOutraCarteiraException(String message) {
+        super(message);
+    }
+
     @Override
     public String getProperty() {
         return "carteira";

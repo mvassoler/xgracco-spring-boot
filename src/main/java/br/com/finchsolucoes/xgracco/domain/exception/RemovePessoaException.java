@@ -9,6 +9,25 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class RemovePessoaException extends ValidationException {
 
+    public RemovePessoaException() {
+    }
+
+    public RemovePessoaException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public RemovePessoaException(Throwable cause) {
+        super(cause);
+    }
+
+    public RemovePessoaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public RemovePessoaException(String message) {
+        super(message);
+    }
+
     @Override
     public String getProperty() {
         return "id";

@@ -20,6 +20,26 @@ public class PessoaVinculadaServicoException extends ValidationException {
         this.servicos = servicos;
     }
 
+    public PessoaVinculadaServicoException(String message, Throwable cause, List<Servico> servicos) {
+        super(message, cause);
+        this.servicos = servicos;
+    }
+
+    public PessoaVinculadaServicoException(Throwable cause, List<Servico> servicos) {
+        super(cause);
+        this.servicos = servicos;
+    }
+
+    public PessoaVinculadaServicoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, List<Servico> servicos) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.servicos = servicos;
+    }
+
+    public PessoaVinculadaServicoException(String message, List<Servico> servicos) {
+        super(message);
+        this.servicos = servicos;
+    }
+
     @Override
     public String getProperty() {
         return "servicos";

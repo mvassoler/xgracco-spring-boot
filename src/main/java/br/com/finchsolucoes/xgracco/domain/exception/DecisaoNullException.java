@@ -8,6 +8,26 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class DecisaoNullException extends ValidationException {
 
+
+    public DecisaoNullException() {
+    }
+
+    public DecisaoNullException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public DecisaoNullException(Throwable cause) {
+        super(cause);
+    }
+
+    public DecisaoNullException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public DecisaoNullException(String message) {
+        super(message);
+    }
+
     @Override
     public String getProperty() {
         return "decisao";

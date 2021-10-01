@@ -8,6 +8,26 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class TaskInativationException extends ValidationException {
 
+
+    public TaskInativationException() {
+    }
+
+    public TaskInativationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public TaskInativationException(Throwable cause) {
+        super(cause);
+    }
+
+    public TaskInativationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public TaskInativationException(String message) {
+        super(message);
+    }
+
     @Override
     public String getProperty() {
         return "id";

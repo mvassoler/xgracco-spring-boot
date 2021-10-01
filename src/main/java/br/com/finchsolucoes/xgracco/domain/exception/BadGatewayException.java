@@ -2,6 +2,8 @@ package br.com.finchsolucoes.xgracco.domain.exception;
 
 public class BadGatewayException extends ValidationException {
 
+
+
     public BadGatewayException() {
 
     }

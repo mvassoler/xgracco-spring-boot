@@ -14,9 +14,30 @@ import java.util.Objects;
  */
 public class PessoaVinculadaProcessoParteException extends ValidationException {
 
+
     private List<Processo> processos;
 
     public PessoaVinculadaProcessoParteException(List<Processo> processos) {
+        this.processos = processos;
+    }
+
+    public PessoaVinculadaProcessoParteException(String message, Throwable cause, List<Processo> processos) {
+        super(message, cause);
+        this.processos = processos;
+    }
+
+    public PessoaVinculadaProcessoParteException(Throwable cause, List<Processo> processos) {
+        super(cause);
+        this.processos = processos;
+    }
+
+    public PessoaVinculadaProcessoParteException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, List<Processo> processos) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.processos = processos;
+    }
+
+    public PessoaVinculadaProcessoParteException(String message, List<Processo> processos) {
+        super(message);
         this.processos = processos;
     }
 

@@ -8,6 +8,26 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class ProfileNameValidationException extends ValidationException {
 
+    public ProfileNameValidationException() {
+    }
+
+    public ProfileNameValidationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ProfileNameValidationException(Throwable cause) {
+        super(cause);
+    }
+
+    public ProfileNameValidationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public ProfileNameValidationException(String message) {
+        super(message);
+    }
+
+
     @Override
     public String getProperty() {
         return "nome";

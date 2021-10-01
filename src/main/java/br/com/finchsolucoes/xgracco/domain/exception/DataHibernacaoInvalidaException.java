@@ -10,6 +10,25 @@ package br.com.finchsolucoes.xgracco.domain.exception;
  */
 public class DataHibernacaoInvalidaException extends ValidationException {
 
+    public DataHibernacaoInvalidaException() {
+    }
+
+    public DataHibernacaoInvalidaException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public DataHibernacaoInvalidaException(Throwable cause) {
+        super(cause);
+    }
+
+    public DataHibernacaoInvalidaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public DataHibernacaoInvalidaException(String message) {
+        super(message);
+    }
+
     @Override
     public String getProperty() {
         return "dataAgendamento";
