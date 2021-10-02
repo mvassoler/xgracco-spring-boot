@@ -1,6 +1,6 @@
 package br.com.finchsolucoes.xgracco.domain.entity;
 
-import br.com.finchsolucoes.xgracco.domain.validation.Unique;
+import br.com.finchsolucoes.xgracco.core.validation.Unique;
 import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.RelatorioInterface;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
 import com.fasterxml.jackson.annotation.JsonIgnore;

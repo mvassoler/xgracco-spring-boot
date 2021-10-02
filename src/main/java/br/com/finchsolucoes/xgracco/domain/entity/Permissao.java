@@ -2,7 +2,7 @@ package br.com.finchsolucoes.xgracco.domain.entity;
 
 import br.com.finchsolucoes.xgracco.domain.enums.EnumTipoPermissao;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumTipoPermissaoConverter;
-import br.com.finchsolucoes.xgracco.domain.validation.Exists;
+import br.com.finchsolucoes.xgracco.core.validation.Exists;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryProjection;

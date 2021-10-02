@@ -1,7 +1,7 @@
 package br.com.finchsolucoes.xgracco.infra.repository;
 
 import br.com.finchsolucoes.xgracco.domain.entity.*;
-import br.com.finchsolucoes.xgracco.domain.exception.IdNullException;
+import br.com.finchsolucoes.xgracco.core.handler.exception.IdNullException;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.impl.ProcessoUsuarioFilter;
 import br.com.finchsolucoes.xgracco.domain.repository.ProcessoUsuarioJpaRepository;

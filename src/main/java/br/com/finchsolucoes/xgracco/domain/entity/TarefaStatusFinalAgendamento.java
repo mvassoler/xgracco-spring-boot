@@ -6,7 +6,7 @@ import br.com.finchsolucoes.xgracco.domain.enums.EnumTipoResponsavelAgendamento;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumTipoDataAgendamentoConverter;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumTipoIntervaloAgendamentoConverter;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumTipoResponsavelAgendamentoConverter;
-import br.com.finchsolucoes.xgracco.domain.validation.Exists;
+import br.com.finchsolucoes.xgracco.core.validation.Exists;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;

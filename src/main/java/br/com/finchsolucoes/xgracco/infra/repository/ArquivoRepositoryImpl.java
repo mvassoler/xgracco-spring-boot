@@ -1,9 +1,9 @@
 package br.com.finchsolucoes.xgracco.infra.repository;
 
 import br.com.finchsolucoes.xgracco.domain.entity.*;
-import br.com.finchsolucoes.xgracco.domain.exception.EntityNotFoundException;
-import br.com.finchsolucoes.xgracco.domain.exception.IdNotNullException;
-import br.com.finchsolucoes.xgracco.domain.exception.IdNullException;
+import br.com.finchsolucoes.xgracco.core.handler.exception.EntityNotFoundException;
+import br.com.finchsolucoes.xgracco.core.handler.exception.IdNotNullException;
+import br.com.finchsolucoes.xgracco.core.handler.exception.IdNullException;
 import br.com.finchsolucoes.xgracco.domain.repository.ArquivoJpaRepository;
 import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQueryFactory;

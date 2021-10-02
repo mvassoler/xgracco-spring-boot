@@ -1,6 +1,6 @@
 package br.com.finchsolucoes.xgracco.legacy.beans.interfaces;
 
-import br.com.finchsolucoes.xgracco.domain.eventlistener.events.ImportacaoPlanilhaEvent;
+import br.com.finchsolucoes.xgracco.core.eventlistener.events.ImportacaoPlanilhaEvent;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 
