@@ -7,12 +7,15 @@ import br.com.finchsolucoes.xgracco.domain.dto.ErrorDetailsDTO;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,20 +28,23 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @ControllerAdvice
 @Slf4j
-public abstract class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    protected final MessageLocaleComponent messageLocale;
+    private final MessageLocaleComponent messageLocale;
+    private final MessageSource messageSource;
 
-    protected GlobalEntityExceptionHandler(
-            final MessageLocaleComponent messageLocale) {
+    public GlobalEntityExceptionHandler(MessageLocaleComponent messageLocale, MessageSource messageSource) {
         this.messageLocale = messageLocale;
+        this.messageSource = messageSource;
     }
+
 
     /**
      * Handler para tratar BadRequestException, lançada pelos serviços.
@@ -517,7 +523,10 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
             final WebRequest request
     ) {
         log.info("M=handleMethodArgumentNotValid", ex.getMessage());
-        return getListErros(ex.getBindingResult(), ClassUtils.getShortClassName(ex.getClass()), ex);
+        //return getListErros(ex.getBindingResult(), ClassUtils.getShortClassName(ex.getClass()), ex);
+        return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
+
+
     }
 
     @Override
@@ -555,11 +564,7 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     }
 
     //TODO Resolver o problema do construtor
-    private ResponseEntity<Object> getListErros(
-            final BindingResult bindingResult,
-            final String shortClassName,
-            final Exception ex
-    ) {
+    private ResponseEntity<Object> getListErros(final BindingResult bindingResult, final String shortClassName, final Exception ex) {
         List<ErrorDetailsDTO> errors = new ArrayList<>();
         bindingResult.getFieldErrors().forEach(error -> {
             String exception = shortClassName;
@@ -569,13 +574,50 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
         return ResponseEntity.status(BAD_REQUEST).body(errors);
     }
 
-    private ErrorDetailsDTO createProblemBuilder(HttpStatus status,  String title, String detail, String contextPath) {
+    private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers,
+                                                            HttpStatus status, WebRequest request, BindingResult bindingResult) {
+        ProblemType problemType = ProblemType.DADOS_INVALIDOS;
+        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
 
+        List<ErrorDetailsDTO.Object> problemObjects = bindingResult.getAllErrors().stream()
+                .map(objectError -> {
+                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+
+                    String name = objectError.getObjectName();
+
+                    if (objectError instanceof FieldError) {
+                        name = ((FieldError) objectError).getField();
+                    }
+
+                    return ErrorDetailsDTO.Object.builder()
+                            .name(name)
+                            .userMessage(message)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        ErrorDetailsDTO problem = createOtherProblemBuilder(status, problemType, detail, request.getContextPath())
+                .userMessage(detail)
+                .objects(problemObjects)
+                .build();
+        return handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
+    private ErrorDetailsDTO createProblemBuilder(HttpStatus status,  String title, String detail, String contextPath) {
         return ErrorDetailsDTO.builder()
                 .timestamp(OffsetDateTime.now())
                 .status(status.value())
                 .type(contextPath)
                 .title(title)
                 .detail(detail).build();
+    }
+
+    private ErrorDetailsDTO.ErrorDetailsDTOBuilder createOtherProblemBuilder(HttpStatus status, ProblemType problemType, String detail, String contextPath) {
+        return ErrorDetailsDTO.builder()
+                .timestamp(OffsetDateTime.now())
+                .status(status.value())
+                .type(contextPath)
+                .title(problemType.getTitle())
+                .detail(detail);
     }
 }
