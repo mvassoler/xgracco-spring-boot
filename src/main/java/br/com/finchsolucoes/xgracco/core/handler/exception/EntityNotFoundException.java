@@ -7,37 +7,17 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @since 2.1
  */
 
-public class EntityNotFoundException extends ValidationException {
 
+public class EntityNotFoundException extends RuntimeException {
 
-    public EntityNotFoundException() {
+    public EntityNotFoundException () {
     }
 
-    public EntityNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public EntityNotFoundException(Throwable cause) {
-        super(cause);
-    }
-
-    public EntityNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
-
-    public EntityNotFoundException(String message) {
+    public EntityNotFoundException (final String message) {
         super(message);
     }
 
-
-    @Override
-    public String getProperty() {
-        return null;
+    public EntityNotFoundException (final String message, final Throwable cause) {
+        super(message, cause);
     }
-
-    @Override
-    public Object[] getObjects() {
-        return new Object[0];
-    }
-
 }

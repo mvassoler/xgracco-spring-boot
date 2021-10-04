@@ -1,6 +1,7 @@
 package br.com.finchsolucoes.xgracco.core.handler;
 
 import br.com.finchsolucoes.xgracco.core.constants.TitleValidationConstants;
+import br.com.finchsolucoes.xgracco.core.handler.exception.*;
 import br.com.finchsolucoes.xgracco.core.locale.MessageLocaleComponent;
 import br.com.finchsolucoes.xgracco.domain.dto.ErrorDetailsDTO;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -131,7 +132,7 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
      * @return ResponseEntity como 404 e contendo mensagem no corpo do response.
      */
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<List<ErrorDetailsDTO>> entityNotFoundException(final EntityNotFoundException ex) {
+    public ResponseEntity<ErrorDetailsDTO> entityNotFoundException(final EntityNotFoundException ex) {
         log.info("M=EntityNotFoundException", ex);
 
         String exception = ClassUtils.getShortClassName(ex.getClass());
@@ -142,7 +143,7 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
                 .statusCode(NOT_FOUND)
                 .message(ex.getMessage())
                 .build();
-        return ResponseEntity.status(NOT_FOUND).body(Arrays.asList(error));
+        return ResponseEntity.status(NOT_FOUND).body(error);
     }
 
     /**
@@ -324,9 +325,8 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
         log.info("M=GatewayTimeoutException", ex);
 
 
-        ErrorDetailsDTO errorDetailsDTO = createProblemBuilder(GATEWAY_TIMEOUT, TitleValidationConstants.ENTIDATE_EM_USO, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO errorDetailsDTO = createProblemBuilder(GATEWAY_TIMEOUT, TitleValidationConstants.ENTIDATE_EM_USO, ex.getMessage(),request.getContextPath());
+              //  createProblemBuilder(GATEWAY_TIMEOUT, TitleValidationConstants.ENTIDATE_EM_USO, ex.getMessage(), request.getContextPath()).userMessage(ex.getMessage());
 
         return handleExceptionInternal(ex, errorDetailsDTO, new HttpHeaders(), GATEWAY_TIMEOUT, request);
 
@@ -335,9 +335,9 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     @ExceptionHandler(EntidadeEmUsoException.class)
     public ResponseEntity<?> handleEntidadeEmUso(final EntidadeEmUsoException ex,WebRequest request) {
 
-        ErrorDetailsDTO errorDetailsDTO = createProblemBuilder(CONFLICT, TitleValidationConstants.ENTIDATE_EM_USO, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO errorDetailsDTO = createProblemBuilder(CONFLICT, TitleValidationConstants.ENTIDATE_EM_USO, ex.getMessage(), request.getContextPath());
+               // .userMessage(ex.getMessage())
+             //   .build();
 
         return handleExceptionInternal(ex, errorDetailsDTO, new HttpHeaders(), CONFLICT, request);
     }
@@ -345,9 +345,9 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<?> handleEntidadeNaoEncontrada(EntidadeNaoEncontradaException ex,
                                                          WebRequest request) {
-        ErrorDetailsDTO errorDetailsDTO = createProblemBuilder(NOT_FOUND, TitleValidationConstants.ENTIDADE_NAO_ENCONTRADA, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO errorDetailsDTO = createProblemBuilder(NOT_FOUND, TitleValidationConstants.ENTIDADE_NAO_ENCONTRADA, ex.getMessage(), request.getContextPath());
+              //  .userMessage(ex.getMessage())
+              //  .build();
 
         return handleExceptionInternal(ex, errorDetailsDTO, new HttpHeaders(), NOT_FOUND, request);
     }
@@ -355,9 +355,9 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     @ExceptionHandler(NegocioException.class)
     public ResponseEntity<?> handleNegocio(NegocioException ex, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(BAD_REQUEST, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(BAD_REQUEST, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(), request.getContextPath());
+              //  .userMessage(ex.getMessage())
+            //    .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), BAD_REQUEST, request);
     }
@@ -365,9 +365,9 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     protected ResponseEntity<Object> handleAdovogadoResponsavel(AdvogadoResponsavelException ex,
                                                                    HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.ADVOGADO_RESPONSAVEL, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.ADVOGADO_RESPONSAVEL, ex.getMessage(), request.getContextPath());
+              //  .userMessage(ex.getMessage())
+              //  .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -375,9 +375,9 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     protected ResponseEntity<Object> handleArquivoNaoEncontrado(ArquivoNaoEncontradoException ex,
                                                                 HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.ARQUIVO_NAO_ENCONTRADO, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.ARQUIVO_NAO_ENCONTRADO, ex.getMessage(), request.getContextPath());
+             //   .userMessage(ex.getMessage())
+             //   .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -385,9 +385,9 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     protected ResponseEntity<Object> handleAuditoriaSemRegistros(AuditoriaSemRegistrosException ex,
                                                                 HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.AUDITORIA_SEM_REGISTROS, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.AUDITORIA_SEM_REGISTROS, ex.getMessage(), request.getContextPath());
+               // .userMessage(ex.getMessage())
+             //   .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -395,9 +395,9 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     protected ResponseEntity<Object> handleCnpjNotValidate(CnjNotValidateException ex,
                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.CNPJ_NAO_VALIDADO, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.CNPJ_NAO_VALIDADO, ex.getMessage(), request.getContextPath());
+               // .userMessage(ex.getMessage())
+              //  .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -405,18 +405,18 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     protected ResponseEntity<Object> handleDataHibernacaoInvalida(DataHibernacaoInvalidaException ex,
                                                            HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.DATA_HIBERNACAO_INVALIDA, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.DATA_HIBERNACAO_INVALIDA, ex.getMessage(), request.getContextPath());
+             //   .userMessage(ex.getMessage())
+             //   .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
     protected ResponseEntity<Object> handleDecisaoNull(DecisaoNullException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.DECISAO_NULL, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.DECISAO_NULL, ex.getMessage(), request.getContextPath());
+           //     .userMessage(ex.getMessage())
+          //      .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -424,27 +424,27 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     protected ResponseEntity<Object> handleDiasUteis(DiasUteisException ex,
                                                        HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.DIAS_UTEIS, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.DIAS_UTEIS, ex.getMessage(), request.getContextPath());
+              //  .userMessage(ex.getMessage())
+           //     .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
     protected ResponseEntity<Object> handleGenericError(GenericErrorException ex,
                                                      HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.ERRO_GENERICO, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.ERRO_GENERICO, ex.getMessage(), request.getContextPath());
+           //     .userMessage(ex.getMessage())
+            //    .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
     protected ResponseEntity<Object> handleIdConflict(IdConflictException ex,
                                                         HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.ID_CONFLITO, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.ID_CONFLITO, ex.getMessage(), request.getContextPath());
+             //   .userMessage(ex.getMessage())
+            //    .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -452,27 +452,27 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     protected ResponseEntity<Object> handleNoFilaActive(NoFilaActiveException ex,
                                                       HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.SEM_FILA_ATIVA, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.SEM_FILA_ATIVA, ex.getMessage(), request.getContextPath());
+            //    .userMessage(ex.getMessage())
+           //     .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
     protected ResponseEntity<Object> handleTarefaDuplicada(TarefaDuplicadaException ex,
                                                            HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.TAREFA_DUPLICADA, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.TAREFA_DUPLICADA, ex.getMessage(), request.getContextPath());
+               // .userMessage(ex.getMessage())
+             //   .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
     protected ResponseEntity<Object> handleUnauthorized(UnauthorizedAccessException ex,
                                                            HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.SEM_AUTORIZACAO, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.SEM_AUTORIZACAO, ex.getMessage(), request.getContextPath());
+            //    .userMessage(ex.getMessage())
+            //    .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -480,9 +480,9 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     protected ResponseEntity<Object> handleUsuarioBloqueado(UsuarioBloqueadoException ex,
                                                         HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.USUARIO_BLOQUEADO, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.USUARIO_BLOQUEADO, ex.getMessage(), request.getContextPath());
+           //     .userMessage(ex.getMessage())
+           //     .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -491,24 +491,11 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
     protected ResponseEntity<Object> handleValorSentenca(ValorSentencaNullException ex,
                                                             HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.VALOR_SETENCA, ex.getMessage(), request.getContextPath())
-                .userMessage(ex.getMessage())
-                .build();
+        ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.VALOR_SETENCA, ex.getMessage(), request.getContextPath());
+            //    .userMessage(ex.getMessage())
+            //    .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
-    }
-
-
-
-    private ErrorDetailsDTO.ErrorDetailsDTOBuilder createProblemBuilder(HttpStatus status,
-                                                        String title, String detail, String contextPath) {
-
-        return ErrorDetailsDTO.builder()
-                .timestamp(OffsetDateTime.now())
-                .status(status.value())
-                .type(contextPath)
-                .title(title)
-                .detail(detail);
     }
 
     @Override
@@ -580,5 +567,15 @@ public abstract class GlobalEntityExceptionHandler extends ResponseEntityExcepti
             log.error(ex.getMessage());
         });
         return ResponseEntity.status(BAD_REQUEST).body(errors);
+    }
+
+    private ErrorDetailsDTO createProblemBuilder(HttpStatus status,  String title, String detail, String contextPath) {
+
+        return ErrorDetailsDTO.builder()
+                .timestamp(OffsetDateTime.now())
+                .status(status.value())
+                .type(contextPath)
+                .title(title)
+                .detail(detail).build();
     }
 }
