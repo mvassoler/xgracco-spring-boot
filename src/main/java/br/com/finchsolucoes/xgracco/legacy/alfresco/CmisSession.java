@@ -1,7 +1,7 @@
 //package br.com.finchsolucoes.xgracco.legacy.alfresco;
 //
 //import br.com.finchsolucoes.xgracco.domain.entity.*;
-//import br.com.finchsolucoes.xgracco.domain.exception.FileNameValidationException;
+//import br.com.finchsolucoes.xgracco.core.handler.exception.FileNameValidationException;
 //import br.com.finchsolucoes.xgracco.domain.service.PreCadastroProcessoService;
 //import br.com.finchsolucoes.xgracco.legacy.business.ProcessoBO;
 //import br.com.finchsolucoes.xgracco.legacy.business.util.Util;

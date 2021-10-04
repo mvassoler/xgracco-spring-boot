@@ -2,6 +2,7 @@ package br.com.finchsolucoes.xgracco.resource;
 
 import br.com.finchsolucoes.xgracco.core.dto.DeletedDTO;
 import br.com.finchsolucoes.xgracco.core.dto.ResponseDTO;
+import br.com.finchsolucoes.xgracco.core.handler.exception.EntityNotFoundException;
 import br.com.finchsolucoes.xgracco.domain.dto.entities.AcaoDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.stream.Collectors;
 
+import static br.com.finchsolucoes.xgracco.core.constants.ValidationConstants.REGISTER_NOT_FOUND_CUSTOM;
 import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
 
 /**
@@ -34,7 +36,11 @@ import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
 //@Api(description = "Recursos para o gerenciamento das Ações.")
 public class AcaoResource implements Serializable {
 
-    private AcaoService acaoService;
+    private final AcaoService acaoService;
+
+    public AcaoResource(AcaoService acaoService) {
+        this.acaoService = acaoService;
+    }
 
     /*@ApiOperation(value = "Registra uma nova ação.")
     @ApiResponses(value = {

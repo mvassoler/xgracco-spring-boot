@@ -2,8 +2,8 @@ package br.com.finchsolucoes.xgracco.infra.repository;
 
 import br.com.finchsolucoes.xgracco.domain.entity.*;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumTipoCampo;
-import br.com.finchsolucoes.xgracco.domain.exception.EntityNotFoundException;
-import br.com.finchsolucoes.xgracco.domain.exception.IdNullException;
+import br.com.finchsolucoes.xgracco.core.handler.exception.EntityNotFoundException;
+import br.com.finchsolucoes.xgracco.core.handler.exception.IdNullException;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.impl.DadosBasicosTarefaCampoFilter;
 import br.com.finchsolucoes.xgracco.domain.repository.DadosBasicosTarefaCamposJpaRepository;

@@ -4,7 +4,7 @@ import br.com.finchsolucoes.xgracco.domain.enums.EnumArea;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumTipoContagemDias;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumAreaConverter;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumTipoContagemDiasConverter;
-import br.com.finchsolucoes.xgracco.domain.validation.Unique;
+import br.com.finchsolucoes.xgracco.core.validation.Unique;
 import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.Identificavel;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
 import com.querydsl.core.annotations.QueryProjection;

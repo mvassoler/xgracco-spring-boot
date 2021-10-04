@@ -2,7 +2,7 @@ package br.com.finchsolucoes.xgracco.domain.entity;
 
 import br.com.finchsolucoes.xgracco.domain.enums.EnumTipoPapel;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumTipoPapelConverter;
-import br.com.finchsolucoes.xgracco.domain.validation.Unique;
+import br.com.finchsolucoes.xgracco.core.validation.Unique;
 import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.EntidadeAuditada;
 import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.Identificavel;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;

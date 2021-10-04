@@ -7,7 +7,7 @@ import br.com.finchsolucoes.xgracco.domain.enums.EnumTarefaStatus;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.impl.AtendimentoFilaFilter;
 import br.com.finchsolucoes.xgracco.domain.repository.AtendimentoFilaJpaRepository;
-import br.com.finchsolucoes.xgracco.domain.utils.DateUtils;
+import br.com.finchsolucoes.xgracco.core.utils.DateUtils;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilder;
