@@ -19,5 +19,6 @@ public interface TitleValidationConstants {
     String SEM_AUTORIZACAO = "";
     String USUARIO_BLOQUEADO = "";
     String VALOR_SETENCA = "";
+    String DADOS_INVALIDOS = "Dados inválidos";
 
 }

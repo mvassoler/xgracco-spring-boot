@@ -1,9 +1,9 @@
 package br.com.finchsolucoes.xgracco.infra.repository;
 
-import br.com.finchsolucoes.xgracco.domain.entity.*;
 import br.com.finchsolucoes.xgracco.core.handler.exception.EntityNotFoundException;
 import br.com.finchsolucoes.xgracco.core.handler.exception.IdNotNullException;
 import br.com.finchsolucoes.xgracco.core.handler.exception.IdNullException;
+import br.com.finchsolucoes.xgracco.domain.entity.*;
 import br.com.finchsolucoes.xgracco.domain.repository.ProfileJpaRepository;
 import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -11,6 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,7 +23,7 @@ import java.util.Set;
 @Repository
 public class ProfileRepositoryImpl extends AbstractJpaRepository<Profile,Long> implements ProfileJpaRepository {
 
-
+    //TODO - ACERTAR ESTA CLASSE
 
     @Override
     public List<Profile> findByProcesso(Processo processo) {

@@ -40,6 +40,10 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     private final MessageLocaleComponent messageLocale;
     private final MessageSource messageSource;
 
+    public static final String MSG_ERRO_GENERICA_USUARIO_FINAL
+            = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se "
+            + "o problema persistir, entre em contato com o administrador do sistema.";
+
     public GlobalEntityExceptionHandler(MessageLocaleComponent messageLocale, MessageSource messageSource) {
         this.messageLocale = messageLocale;
         this.messageSource = messageSource;
@@ -53,19 +57,34 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
      * @return ResponseEntity como 400 e contendo mensagem no corpo do response.
      */
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<List<ErrorDetailsDTO>> badRequestException(final BadRequestException ex) {
+    public ResponseEntity<Object> badRequestException(final BadRequestException ex, WebRequest request) {
         log.info("M=BadRequestException", ex);
 
         String exception = ClassUtils.getShortClassName(ex.getClass());
-        ErrorDetailsDTO error = ErrorDetailsDTO
-                .builder()
-                .code(400)
-                .exception(exception)
-                .statusCode(BAD_REQUEST)
-                .message(ex.getMessage())
-                .build();
-        return ResponseEntity.status(BAD_REQUEST).body(Arrays.asList(error));
+        HttpStatus status = BAD_REQUEST;
+        ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(), request.getContextPath());
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
     }
+
+    /**
+     * Handler para tratar EntityNotFoundException, lançada pelo CrudService se o id passado no find não existe.
+     *
+     * @param ex      a exception
+     * @return ResponseEntity como 404 e contendo mensagem no corpo do response.
+     */
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> entityNotFoundException(final EntityNotFoundException ex, WebRequest request) {
+        log.info("M=EntityNotFoundException", ex);
+
+        String exception = ClassUtils.getShortClassName(ex.getClass());
+        HttpStatus status = NOT_FOUND;
+        ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.ENTIDADE_NAO_ENCONTRADA, ex.getMessage(), request.getContextPath());
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
+    }
+
+
 
     /**
      * Handler para tratar UnAuthorizedeException, lançada pelos serviços.
@@ -131,26 +150,7 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
         return ResponseEntity.status(FORBIDDEN).body(Arrays.asList(error));
     }
 
-    /**
-     * Handler para tratar EntityNotFoundException, lançada pelo CrudService se o id passado no find não existe.
-     *
-     * @param ex      a exception
-     * @return ResponseEntity como 404 e contendo mensagem no corpo do response.
-     */
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorDetailsDTO> entityNotFoundException(final EntityNotFoundException ex) {
-        log.info("M=EntityNotFoundException", ex);
 
-        String exception = ClassUtils.getShortClassName(ex.getClass());
-        ErrorDetailsDTO error = ErrorDetailsDTO
-                .builder()
-                .code(404)
-                .exception(exception)
-                .statusCode(NOT_FOUND)
-                .message(ex.getMessage())
-                .build();
-        return ResponseEntity.status(NOT_FOUND).body(error);
-    }
 
     /**
      * Handler para tratar ConflictException, lançada pelo CrudService se o id passado no find não existe.
@@ -576,7 +576,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
 
     private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers,
                                                             HttpStatus status, WebRequest request, BindingResult bindingResult) {
-        ProblemType problemType = ProblemType.DADOS_INVALIDOS;
         String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
 
         List<ErrorDetailsDTO.Object> problemObjects = bindingResult.getAllErrors().stream()
@@ -596,11 +595,31 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
                 })
                 .collect(Collectors.toList());
 
-        ErrorDetailsDTO problem = createOtherProblemBuilder(status, problemType, detail, request.getContextPath())
+        ErrorDetailsDTO problem = createOtherProblemBuilder(status, TitleValidationConstants.DADOS_INVALIDOS, detail, request.getContextPath())
                 .userMessage(detail)
                 .objects(problemObjects)
                 .build();
         return handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        if (body == null) {
+            body = ErrorDetailsDTO.builder()
+                    .timestamp(OffsetDateTime.now())
+                    .title(status.getReasonPhrase())
+                    .status(status.value())
+                    .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                    .build();
+        } else if (body instanceof String) {
+            body = ErrorDetailsDTO.builder()
+                    .timestamp(OffsetDateTime.now())
+                    .title((String) body)
+                    .status(status.value())
+                    .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                    .build();
+        }
+        return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
     private ErrorDetailsDTO createProblemBuilder(HttpStatus status,  String title, String detail, String contextPath) {
@@ -612,12 +631,12 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
                 .detail(detail).build();
     }
 
-    private ErrorDetailsDTO.ErrorDetailsDTOBuilder createOtherProblemBuilder(HttpStatus status, ProblemType problemType, String detail, String contextPath) {
+    private ErrorDetailsDTO.ErrorDetailsDTOBuilder createOtherProblemBuilder(HttpStatus status, String title, String detail, String contextPath) {
         return ErrorDetailsDTO.builder()
                 .timestamp(OffsetDateTime.now())
                 .status(status.value())
                 .type(contextPath)
-                .title(problemType.getTitle())
+                .title(title)
                 .detail(detail);
     }
 }
