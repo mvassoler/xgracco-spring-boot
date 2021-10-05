@@ -596,7 +596,7 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
                 })
                 .collect(Collectors.toList());
 
-        ErrorDetailsDTO problem = createOtherProblemBuilder(status, TitleValidationConstants.DADOS_INVALIDOS, detail, request.getContextPath())
+        ErrorDetailsDTO problem = createOtherProblemBuilder(status, TitleValidationConstants.DADOS_INVALIDOS, detail, ((ServletWebRequest)request).getRequest().getRequestURL().toString())
                 .userMessage(detail)
                 .objects(problemObjects)
                 .build();
