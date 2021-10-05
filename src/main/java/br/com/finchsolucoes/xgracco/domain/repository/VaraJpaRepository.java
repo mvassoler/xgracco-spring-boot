@@ -1,5 +1,6 @@
 package br.com.finchsolucoes.xgracco.domain.repository;
 
+import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.entity.Vara;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 
@@ -11,4 +12,6 @@ public interface VaraJpaRepository {
 
     Optional<Vara> findByDescricao(String descricao);
     List<Vara> find(Query<Vara> query);
+
+    long count(Query<Vara> query);
 }

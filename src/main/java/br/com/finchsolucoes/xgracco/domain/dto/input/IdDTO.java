@@ -1,5 +1,4 @@
-package br.com.finchsolucoes.xgracco.domain.dto.entities;
-
+package br.com.finchsolucoes.xgracco.domain.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,9 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioAcessoLogEstacoesDTO {
-
-    private String id;
-    private String estacao;
-
+public class IdDTO {
+    private Long id;
 }

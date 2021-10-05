@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
-import java.io.Serial;
+
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;

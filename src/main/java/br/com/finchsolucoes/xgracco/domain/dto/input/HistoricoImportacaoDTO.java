@@ -1,4 +1,4 @@
-package br.com.finchsolucoes.xgracco.domain.dto.entities;
+package br.com.finchsolucoes.xgracco.domain.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
