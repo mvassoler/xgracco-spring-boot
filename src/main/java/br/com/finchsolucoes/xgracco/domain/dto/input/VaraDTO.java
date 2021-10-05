@@ -20,7 +20,5 @@ public class VaraDTO {
     @Size(min = 1, max = 100,  message = "{entity.description.max.lenght}")
     private String descricao;
 
-    private String  tipoJustica;
 
-    private String  instancia;
 }

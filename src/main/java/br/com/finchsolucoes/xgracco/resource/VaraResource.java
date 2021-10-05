@@ -3,6 +3,7 @@ package br.com.finchsolucoes.xgracco.resource;
 import br.com.finchsolucoes.xgracco.core.dto.DeletedDTO;
 import br.com.finchsolucoes.xgracco.core.dto.ResponseDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.input.VaraDTO;
+import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.entity.Vara;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumTipoJustica;
@@ -57,11 +58,8 @@ public class VaraResource implements Serializable {
                                                                  @RequestParam(value = SORT_BY_PARAM, required = false) final String sortProperty,
                                                                  @RequestParam(value = SORT_DIRECTION_PARAM, required = false) final Sorter.Direction sortDirection,
                                                                  @RequestParam(value = PAGE_PARAM, required = false) final Long page) {
-        Query<Vara> query = Query.<Vara>builder()
-                .filter(new VaraFilter(descricao, tipoJustica, instancia))
-                .sort(Sorter.<Vara>by(sortProperty).direction(sortDirection))
-                .page(page)
-                .build();
+
+        Query<Vara> query =  this.varaService.returnQueryVara(descricao, instancia, tipoJustica, sortProperty, sortDirection, page);
 
         return ResponseEntity.ok(Hateoas.pageResources(
                 varaService.findQuery(query).stream().map(Hateoas::toResource).collect(Collectors.toList()),
