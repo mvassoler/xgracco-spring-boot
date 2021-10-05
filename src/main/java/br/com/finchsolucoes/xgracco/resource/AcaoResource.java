@@ -36,6 +36,8 @@ import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
 //@Api(description = "Recursos para o gerenciamento das Ações.")
 public class AcaoResource implements Serializable {
 
+    //TODO - ACERTAR ESTA CLASSE
+
     private final AcaoService acaoService;
 
     public AcaoResource(AcaoService acaoService) {
