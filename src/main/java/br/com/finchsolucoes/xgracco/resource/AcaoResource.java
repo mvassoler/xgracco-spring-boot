@@ -2,8 +2,7 @@ package br.com.finchsolucoes.xgracco.resource;
 
 import br.com.finchsolucoes.xgracco.core.dto.DeletedDTO;
 import br.com.finchsolucoes.xgracco.core.dto.ResponseDTO;
-import br.com.finchsolucoes.xgracco.core.handler.exception.EntityNotFoundException;
-import br.com.finchsolucoes.xgracco.domain.dto.entities.AcaoDTO;
+import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
@@ -11,7 +10,6 @@ import br.com.finchsolucoes.xgracco.domain.query.Sorter;
 import br.com.finchsolucoes.xgracco.hateoas.Hateoas;
 import br.com.finchsolucoes.xgracco.service.AcaoService;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +20,6 @@ import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.stream.Collectors;
 
-import static br.com.finchsolucoes.xgracco.core.constants.ValidationConstants.REGISTER_NOT_FOUND_CUSTOM;
 import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
 
 /**
@@ -90,7 +87,7 @@ public class AcaoResource implements Serializable {
         return ResponseEntity.ok().body(this.acaoService.find(id));
     }
 
-    @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @GetMapping()
     /*@ApiOperation(value = "Retorna uma lista paginada com as ações existentes.",
             notes = "O objeto retornado contém informações de paginação.",
             response = Acao[].class)*/
