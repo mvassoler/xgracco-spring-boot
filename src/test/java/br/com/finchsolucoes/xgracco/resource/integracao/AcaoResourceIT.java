@@ -7,6 +7,7 @@ import br.com.finchsolucoes.xgracco.core.locale.MessageLocale;
 import br.com.finchsolucoes.xgracco.domain.dto.entities.AcaoDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.repository.AcaoRepository;
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,13 @@ public class AcaoResourceIT extends FunctionalBaseTest {
     @Autowired
     private DatabaseCleaner databaseCleaner;
     */
-    private static final String ENDPOINT = "/api/acoes";
 
+    private static final String ENDPOINT = "/api/acoes";
     private static List<Acao> ACOES;
 
     @BeforeEach
     public void setUp() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         //databaseCleaner.clearTables();
         this.ACOES = this.popularBaseDados();
     }
@@ -176,7 +178,8 @@ public class AcaoResourceIT extends FunctionalBaseTest {
         mvc.perform(get(path)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(containsString(messageLocale.validationMessageSource(ValidationConstants.REGISTER_NOT_FOUND_CUSTOM).replace("{table}", "Acao"))));
+                .andExpect(content().string(containsString(
+                        messageLocale.validationMessageSource(ValidationConstants.REGISTER_NOT_FOUND_CUSTOM).replace("{table}", "Acao"))));
     }
 
     @Test
@@ -199,7 +202,8 @@ public class AcaoResourceIT extends FunctionalBaseTest {
         mvc.perform(delete(path)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(containsString(messageLocale.validationMessageSource(ValidationConstants.REGISTER_NOT_FOUND_CUSTOM).replace("{table}", "Acao"))));
+                .andExpect(content().string(containsString(
+                        messageLocale.validationMessageSource(ValidationConstants.REGISTER_NOT_FOUND_CUSTOM).replace("{table}", "Acao"))));
     }
 
     @Test
