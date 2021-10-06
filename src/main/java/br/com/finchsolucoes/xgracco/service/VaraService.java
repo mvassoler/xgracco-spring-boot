@@ -7,7 +7,6 @@ import br.com.finchsolucoes.xgracco.core.handler.exception.EntityNotFoundExcepti
 import br.com.finchsolucoes.xgracco.core.handler.exception.IdConflictException;
 import br.com.finchsolucoes.xgracco.core.locale.MessageLocale;
 import br.com.finchsolucoes.xgracco.core.service.CrudServiceAbstract;
-import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.input.VaraDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Vara;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
