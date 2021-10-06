@@ -2,7 +2,7 @@ package br.com.finchsolucoes.xgracco.resource.unitarios;
 
 import br.com.finchsolucoes.xgracco.configuracao.FunctionalBaseTest;
 import br.com.finchsolucoes.xgracco.configuracao.PathConfig;
-import br.com.finchsolucoes.xgracco.domain.dto.entities.AcaoDTO;
+import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoDTO;
 import br.com.finchsolucoes.xgracco.service.AcaoService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -4,7 +4,7 @@ import br.com.finchsolucoes.xgracco.configuracao.FunctionalBaseTest;
 import br.com.finchsolucoes.xgracco.configuracao.PathConfig;
 import br.com.finchsolucoes.xgracco.core.constants.ValidationConstants;
 import br.com.finchsolucoes.xgracco.core.locale.MessageLocale;
-import br.com.finchsolucoes.xgracco.domain.dto.entities.AcaoDTO;
+import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.repository.AcaoRepository;
 import io.restassured.RestAssured;
