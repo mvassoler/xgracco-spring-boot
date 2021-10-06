@@ -4,7 +4,6 @@ import br.com.finchsolucoes.xgracco.configuracao.FunctionalBaseTest;
 import br.com.finchsolucoes.xgracco.configuracao.PathConfig;
 import br.com.finchsolucoes.xgracco.core.constants.ValidationConstants;
 import br.com.finchsolucoes.xgracco.core.locale.MessageLocale;
-import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.input.VaraDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.entity.Vara;
@@ -71,8 +70,8 @@ public class VaraResourceIT extends FunctionalBaseTest {
     @Test
     //@WithMockUser (username = "admin", authorities = {"SUPER"}) - Retorna após implementar o spring security
     public void createNewVaraWithDescricaoDuplicated() throws Exception {
-        AcaoDTO acaoDTO = AcaoDTO.builder().descricao(this.VARAS.get(0).getDescricao()).build();
-        String requestJson = objectMapper.writeValueAsString(acaoDTO);
+        VaraDTO varaDTO = VaraDTO.builder().descricao(this.VARAS.get(0).getDescricao()).build();
+        String requestJson = objectMapper.writeValueAsString(varaDTO);
 
         mvc.perform(post(ENDPOINT)
                         .content(requestJson)
