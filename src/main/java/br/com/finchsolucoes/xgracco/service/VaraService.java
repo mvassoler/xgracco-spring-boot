@@ -20,6 +20,7 @@ import br.com.finchsolucoes.xgracco.domain.query.impl.AcaoFilter;
 import br.com.finchsolucoes.xgracco.domain.query.impl.VaraFilter;
 import br.com.finchsolucoes.xgracco.domain.repository.VaraRepository;
 import br.com.finchsolucoes.xgracco.domain.transformers.VaraTransformer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import static br.com.finchsolucoes.xgracco.core.constants.ValidationConstants.*;
 import static br.com.finchsolucoes.xgracco.core.constants.ValidationConstants.ENTITY_IDENTIFICATION_ALREADY_EXIST;
 
 @Service
+@Slf4j
 public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepository, Vara, VaraTransformer> {
 
 
@@ -52,7 +54,7 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepositor
     }
 
     public ResponseDTO<VaraDTO> add(VaraDTO dto){
-
+        log.info("Procedido a criação da vara {} no vara-service.", dto.getDescricao());
         Vara vara = this.getModdelMapper().toEntityMapper(dto, this.getEntityClass());
         this.beforeAdd(vara, dto);
         this.getRepository().save(vara);
@@ -61,6 +63,7 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepositor
     }
 
     public ResponseDTO<VaraDTO> update(Long id, VaraDTO dto) throws EntityNotFoundException {
+        log.info("Procedido a atualização da vara {} no vara-service.", dto.getDescricao());
         Vara entityDataBase = this.getRepository().findById(id).orElseThrow(
                 () -> new EntityNotFoundException( messageLocale.validationMessageSource(REGISTER_NOT_FOUND_CUSTOM).replace("{table}", "Vara")));
 
@@ -86,7 +89,7 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepositor
     }
 
     public ResponseDTO<DeletedDTO> delete(Long id) throws EntityNotFoundException {
-
+        log.info("Procedido a exclusão do Cliente de ID {} no domain-service.", id.toString());
         Vara vara = this.getRepository().findById(id).orElseThrow(
                 () -> new EntityNotFoundException( messageLocale.validationMessageSource(REGISTER_NOT_FOUND_CUSTOM).replace("{table}", "Vara")));
         this.getRepository().deleteById(id);
