@@ -7,6 +7,7 @@ import br.com.finchsolucoes.xgracco.core.handler.exception.EntityNotFoundExcepti
 import br.com.finchsolucoes.xgracco.core.handler.exception.IdConflictException;
 import br.com.finchsolucoes.xgracco.core.locale.MessageLocale;
 import br.com.finchsolucoes.xgracco.core.service.CrudServiceAbstract;
+import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.input.VaraDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.entity.Pratica;
@@ -73,6 +74,15 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepositor
         this.getRepository().save(vara);
         dto = this.getModdelMapper().toDtoMapper(vara, this.getDTOClass());
         return ResponseDTO.<VaraDTO>builder().data(dto).build();
+    }
+
+    @Override
+    protected Vara beforeUpdate(Vara entity, Vara entityDataBase, VaraDTO acaoDtoFromRequest) {
+        if (!entityDataBase.getDescricao().equals(entity.getDescricao()) &&
+                this.getRepository().findByDescricao(entity.getDescricao()).isPresent()) {
+            throw new BadRequestException(messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
+        }
+        return entity;
     }
 
     public ResponseDTO<DeletedDTO> delete(Long id) throws EntityNotFoundException {
