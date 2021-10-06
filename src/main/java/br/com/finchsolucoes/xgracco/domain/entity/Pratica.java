@@ -9,6 +9,9 @@ import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.RelatorioInterface;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
@@ -30,6 +33,9 @@ import java.util.Objects;
 @SequenceGenerator(allocationSize = 1, name = "seqPratica", sequenceName = "SEQ_PRATICA")
 @RelatorioInterface(titulo = "Práticas Jurídicas")
 @Audited
+@Data
+@Builder
+@AllArgsConstructor
 public class Pratica extends Entidade implements EntidadeAuditada {
 
     private static final long serialVersionUID = 1L;

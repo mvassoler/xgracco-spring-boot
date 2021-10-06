@@ -7,16 +7,12 @@ import br.com.finchsolucoes.xgracco.core.handler.exception.EntityNotFoundExcepti
 import br.com.finchsolucoes.xgracco.core.handler.exception.IdConflictException;
 import br.com.finchsolucoes.xgracco.core.locale.MessageLocale;
 import br.com.finchsolucoes.xgracco.core.service.CrudServiceAbstract;
-import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.input.VaraDTO;
-import br.com.finchsolucoes.xgracco.domain.entity.Acao;
-import br.com.finchsolucoes.xgracco.domain.entity.Pratica;
 import br.com.finchsolucoes.xgracco.domain.entity.Vara;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumTipoJustica;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.Sorter;
-import br.com.finchsolucoes.xgracco.domain.query.impl.AcaoFilter;
 import br.com.finchsolucoes.xgracco.domain.query.impl.VaraFilter;
 import br.com.finchsolucoes.xgracco.domain.repository.VaraRepository;
 import br.com.finchsolucoes.xgracco.domain.transformers.VaraTransformer;
@@ -28,7 +24,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static br.com.finchsolucoes.xgracco.core.constants.ValidationConstants.*;
-import static br.com.finchsolucoes.xgracco.core.constants.ValidationConstants.ENTITY_IDENTIFICATION_ALREADY_EXIST;
 
 @Service
 @Slf4j
@@ -49,6 +44,15 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepositor
     protected Vara beforeAdd(Vara entity, VaraDTO entityDtoToPersist) {
         if (this.getRepository().findByDescricao(entity.getDescricao()).isPresent()) {
             throw new BadRequestException( messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
+        }
+        return entity;
+    }
+
+    @Override
+    protected Vara beforeUpdate(Vara entity, Vara entityDataBase, VaraDTO acaoDtoFromRequest) {
+        if (!entityDataBase.getDescricao().equals(entity.getDescricao()) &&
+                this.getRepository().findByDescricao(entity.getDescricao()).isPresent()) {
+            throw new BadRequestException(messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
         }
         return entity;
     }
@@ -79,14 +83,7 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepositor
         return ResponseDTO.<VaraDTO>builder().data(dto).build();
     }
 
-    @Override
-    protected Vara beforeUpdate(Vara entity, Vara entityDataBase, VaraDTO acaoDtoFromRequest) {
-        if (!entityDataBase.getDescricao().equals(entity.getDescricao()) &&
-                this.getRepository().findByDescricao(entity.getDescricao()).isPresent()) {
-            throw new BadRequestException(messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
-        }
-        return entity;
-    }
+
 
     public ResponseDTO<DeletedDTO> delete(Long id) throws EntityNotFoundException {
         log.info("Procedido a exclusão do Cliente de ID {} no domain-service.", id.toString());
@@ -97,12 +94,12 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepositor
 
     }
 
-
     public ResponseDTO<VaraDTO> find(Long id) throws EntityNotFoundException {
         Vara vara = this.getRepository().findById(id).orElseThrow(
                 () -> new EntityNotFoundException( messageLocale.validationMessageSource(REGISTER_NOT_FOUND_CUSTOM).replace("{table}", "Vara")));
         return ResponseDTO.<VaraDTO>builder().data(this.getModdelMapper().toDtoMapper(vara, getDTOClass())).build();
     }
+
     public Query returnQueryVara(String descricao, EnumInstancia instancia, EnumTipoJustica tipoJustica, String sortProperty, Sorter.Direction sortDirection, Long page){
         Query<Vara> query = Query.<Vara>builder()
                 .filter(new VaraFilter(descricao, tipoJustica, instancia))
@@ -111,7 +108,6 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepositor
                 .build();
         return query;
     }
-
 
     public List<VaraDTO> findQuery(Query<Vara> query) {
         try {

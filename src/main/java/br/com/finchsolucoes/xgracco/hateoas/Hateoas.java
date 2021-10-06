@@ -1,6 +1,7 @@
 package br.com.finchsolucoes.xgracco.hateoas;
 
 import br.com.finchsolucoes.xgracco.domain.dto.input.*;
+import br.com.finchsolucoes.xgracco.domain.dto.output.AcaoOutDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.*;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.infra.ws.request.RecuperarForo;
@@ -203,8 +204,8 @@ public class Hateoas implements Serializable {
         return resource;
     }
 
-    public static EntityModel<AcaoDTO> toResource(AcaoDTO acao) {
-        final EntityModel<AcaoDTO> resource = new EntityModel<>(acao);
+    public static EntityModel<AcaoOutDTO> toResource(AcaoOutDTO acao) {
+        final EntityModel<AcaoOutDTO> resource = new EntityModel<>(acao);
         resource.add(linkTo(methodOn(AcaoResource.class).findById(acao.getId())).withSelfRel());
         return resource;
     }
@@ -214,10 +215,6 @@ public class Hateoas implements Serializable {
         resource.add(linkTo(methodOn(VaraResource.class).findById(vara.getId())).withSelfRel());
         return resource;
     }
-
-
-
-
 
     public static EntityModel<Materia> toResource(Materia materia) {
         final EntityModel<Materia> resource = new EntityModel<>(materia);

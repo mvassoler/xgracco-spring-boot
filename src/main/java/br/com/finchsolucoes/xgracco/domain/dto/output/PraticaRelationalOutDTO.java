@@ -1,4 +1,4 @@
-package br.com.finchsolucoes.xgracco.domain.dto.input;
+package br.com.finchsolucoes.xgracco.domain.dto.output;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class IdDTO {
+public class PraticaRelationalOutDTO {
 
     @JsonProperty("id")
     private Long id;
 
+    @JsonProperty("descricao")
+    private String descricao;
 }
