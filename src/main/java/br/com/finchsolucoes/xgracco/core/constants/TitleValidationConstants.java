@@ -12,12 +12,13 @@ public interface TitleValidationConstants {
     String DECISAO_NULL = "";
     String DIAS_UTEIS = "";
     String ERRO_GENERICO = "";
-    String ID_CONFLITO = "";
+    String ID_CONFLITO = "Id com conflito";
     String IDENTIDADE_PESSOA = "";
     String SEM_FILA_ATIVA = "";
     String TAREFA_DUPLICADA = "";
     String SEM_AUTORIZACAO = "";
     String USUARIO_BLOQUEADO = "";
     String VALOR_SETENCA = "";
+    String DADOS_INVALIDOS = "Dados inválidos";
 
 }

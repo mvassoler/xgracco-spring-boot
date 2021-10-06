@@ -2,7 +2,7 @@ package br.com.finchsolucoes.xgracco.domain.entity;
 
 import br.com.finchsolucoes.xgracco.domain.enums.EnumStatusTarefa;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumStatusTarefaConverter;
-import br.com.finchsolucoes.xgracco.domain.validation.Exists;
+import br.com.finchsolucoes.xgracco.core.validation.Exists;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;

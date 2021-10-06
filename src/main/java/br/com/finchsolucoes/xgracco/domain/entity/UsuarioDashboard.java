@@ -1,6 +1,6 @@
 package br.com.finchsolucoes.xgracco.domain.entity;
 
-import br.com.finchsolucoes.xgracco.domain.validation.Unique;
+import br.com.finchsolucoes.xgracco.core.validation.Unique;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Data;

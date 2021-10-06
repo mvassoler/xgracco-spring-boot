@@ -4,7 +4,7 @@ import br.com.finchsolucoes.xgracco.domain.enums.EnumPeriodicidadeJuros;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumTipoIndiceEconomico;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumPeriodicidadeJurosConverter;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumTipoIndiceEconomicoConverter;
-import br.com.finchsolucoes.xgracco.domain.validation.Unique;
+import br.com.finchsolucoes.xgracco.core.validation.Unique;
 import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.EntidadeAuditada;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
 import com.querydsl.core.annotations.QueryProjection;
