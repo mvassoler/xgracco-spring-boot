@@ -2,7 +2,8 @@ package br.com.finchsolucoes.xgracco.resource.unitarios;
 
 import br.com.finchsolucoes.xgracco.configuracao.FunctionalBaseTest;
 import br.com.finchsolucoes.xgracco.configuracao.PathConfig;
-import br.com.finchsolucoes.xgracco.domain.dto.entities.AcaoDTO;
+import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoInDTO;
+import br.com.finchsolucoes.xgracco.domain.dto.output.AcaoOutDTO;
 import br.com.finchsolucoes.xgracco.service.AcaoService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,17 +23,17 @@ public class AcaoResourceTests extends FunctionalBaseTest {
     @Test
     public void insertAcaoValidate(){
         //cenario
-        AcaoDTO acao = AcaoDTO.builder().descricao("Teste" + LocalDateTime.now().toString()).build();
+        AcaoInDTO acao = AcaoInDTO.builder().descricao("Teste" + LocalDateTime.now().toString()).build();
         //acão
-        acao = this.acaoService.add(acao).getData();
+        AcaoOutDTO acaoOutDTO = this.acaoService.add(acao).getData();
         //validação
-        Assertions.assertTrue(Objects.nonNull(acao.getId()));
+        Assertions.assertTrue(Objects.nonNull(acaoOutDTO.getId()));
     }
 
     @Test
     public void insertAcaoWithoutDescricao(){
         //cenario
-        AcaoDTO acao = AcaoDTO.builder().descricao(null).build();
+        AcaoInDTO acao = AcaoInDTO.builder().descricao(null).build();
         //acão
         DataIntegrityViolationException erroEsperado =
                 Assertions.assertThrows(DataIntegrityViolationException.class, () -> {

@@ -2,7 +2,8 @@ package br.com.finchsolucoes.xgracco.resource;
 
 import br.com.finchsolucoes.xgracco.core.dto.DeletedDTO;
 import br.com.finchsolucoes.xgracco.core.dto.ResponseDTO;
-import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoDTO;
+import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoInDTO;
+import br.com.finchsolucoes.xgracco.domain.dto.output.AcaoOutDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
@@ -49,7 +50,7 @@ public class AcaoResource implements Serializable {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
-    public ResponseEntity<ResponseDTO<AcaoDTO>> create(@RequestBody @Valid final AcaoDTO dto) {
+    public ResponseEntity<ResponseDTO<AcaoOutDTO>> create(@RequestBody @Valid final AcaoInDTO dto) {
         return ResponseEntity.ok(acaoService.add(dto));
     }
 
@@ -61,7 +62,7 @@ public class AcaoResource implements Serializable {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
-    public ResponseEntity<ResponseDTO<AcaoDTO>>  update(@PathVariable Long id, @Valid @RequestBody AcaoDTO dto) {
+    public ResponseEntity<ResponseDTO<AcaoOutDTO>>  update(@PathVariable Long id, @Valid @RequestBody AcaoInDTO dto) {
         return ResponseEntity.ok(this.acaoService.update(id, dto));
     }
 
@@ -85,7 +86,7 @@ public class AcaoResource implements Serializable {
     @GetMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_CREATE + ") or ("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
-    public ResponseEntity<ResponseDTO<AcaoDTO>> findById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<AcaoOutDTO>> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(this.acaoService.find(id));
     }
 
@@ -94,12 +95,12 @@ public class AcaoResource implements Serializable {
             notes = "O objeto retornado contém informações de paginação.",
             response = Acao[].class)*/
     @ResponseStatus(value = HttpStatus.OK)
-    public ResponseEntity<PagedModel<EntityModel<AcaoDTO>>> find(@RequestParam(value = "descricao", required = false) final String descricao,
-                                                              @RequestParam(value = "instancia", required = false) final EnumInstancia instancia,
-                                                              @RequestParam(value = "idPratica", required = false) final Long idPratica,
-                                                              @RequestParam(value = SORT_BY_PARAM, required = false) final String sortProperty,
-                                                              @RequestParam(value = SORT_DIRECTION_PARAM, required = false) final Sorter.Direction sortDirection,
-                                                              @RequestParam(value = PAGE_PARAM, required = false) final Long page) {
+    public ResponseEntity<PagedModel<EntityModel<AcaoOutDTO>>> find(@RequestParam(value = "descricao", required = false) final String descricao,
+                                                                   @RequestParam(value = "instancia", required = false) final EnumInstancia instancia,
+                                                                   @RequestParam(value = "idPratica", required = false) final Long idPratica,
+                                                                   @RequestParam(value = SORT_BY_PARAM, required = false) final String sortProperty,
+                                                                   @RequestParam(value = SORT_DIRECTION_PARAM, required = false) final Sorter.Direction sortDirection,
+                                                                   @RequestParam(value = PAGE_PARAM, required = false) final Long page) {
         Query<Acao> query =  this.acaoService.returnQueryAcao(descricao, instancia, idPratica, sortProperty, sortDirection, page);
         return ResponseEntity.ok(Hateoas.pageResources(
                 acaoService.findQuery(query).stream().map(Hateoas::toResource).collect(Collectors.toList()),
