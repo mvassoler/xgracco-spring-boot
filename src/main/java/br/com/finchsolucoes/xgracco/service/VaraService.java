@@ -48,6 +48,15 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepositor
         return entity;
     }
 
+    @Override
+    protected Vara beforeUpdate(Vara entity, Vara entityDataBase, VaraDTO acaoDtoFromRequest) {
+        if (!entityDataBase.getDescricao().equals(entity.getDescricao()) &&
+                this.getRepository().findByDescricao(entity.getDescricao()).isPresent()) {
+            throw new BadRequestException(messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
+        }
+        return entity;
+    }
+
     public ResponseDTO<VaraDTO> add(VaraDTO dto){
         log.info("Procedido a criação da vara {} no vara-service.", dto.getDescricao());
         Vara vara = this.getModdelMapper().toEntityMapper(dto, this.getEntityClass());
@@ -74,14 +83,7 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, Long,VaraRepositor
         return ResponseDTO.<VaraDTO>builder().data(dto).build();
     }
 
-    @Override
-    protected Vara beforeUpdate(Vara entity, Vara entityDataBase, VaraDTO acaoDtoFromRequest) {
-        if (!entityDataBase.getDescricao().equals(entity.getDescricao()) &&
-                this.getRepository().findByDescricao(entity.getDescricao()).isPresent()) {
-            throw new BadRequestException(messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
-        }
-        return entity;
-    }
+
 
     public ResponseDTO<DeletedDTO> delete(Long id) throws EntityNotFoundException {
         log.info("Procedido a exclusão do Cliente de ID {} no domain-service.", id.toString());
