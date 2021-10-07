@@ -7,7 +7,7 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @since 2.1
  */
 
-public class RemoverPerfilException extends ValidationException{
+public class RemoverPerfilException extends RuntimeException{
 
     private final Object[] objects;
 
@@ -35,13 +35,4 @@ public class RemoverPerfilException extends ValidationException{
         this.objects = objects;
     }
 
-    @Override
-    public String getProperty() {
-        return "id";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
-    }
 }

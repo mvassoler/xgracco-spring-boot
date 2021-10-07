@@ -1,7 +1,6 @@
 package br.com.finchsolucoes.xgracco.core.handler.exception;
 
-public class IndiceEconomicoConflictException extends ValidationException {
-
+public class IndiceEconomicoConflictException extends RuntimeException {
 
     private final Object[] objects;
 
@@ -27,16 +26,6 @@ public class IndiceEconomicoConflictException extends ValidationException {
     public IndiceEconomicoConflictException(String message, Object[] objects) {
         super(message);
         this.objects = objects;
-    }
-
-    @Override
-    public String getProperty() {
-        return "descricao";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
     }
 
 }

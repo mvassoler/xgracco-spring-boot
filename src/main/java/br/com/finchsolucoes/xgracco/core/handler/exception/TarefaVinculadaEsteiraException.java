@@ -1,6 +1,6 @@
 package br.com.finchsolucoes.xgracco.core.handler.exception;
 
-public class TarefaVinculadaEsteiraException extends ValidationException{
+public class TarefaVinculadaEsteiraException extends RuntimeException{
 
 
     public TarefaVinculadaEsteiraException(Object[] objects) {
@@ -31,16 +31,6 @@ public class TarefaVinculadaEsteiraException extends ValidationException{
 
     public TarefaVinculadaEsteiraException(String tarefa, String carteira, String esteira) {
         this.objects = new Object[]{tarefa, carteira, esteira};
-    }
-
-    @Override
-    public String getProperty() {
-        return "id";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
     }
 
 }

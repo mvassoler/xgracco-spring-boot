@@ -6,8 +6,7 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @author Jordano
  * @since 4.0.5
  */
-public class UsuarioNaoLocalizadoNoEscritorioException extends ValidationException {
-
+public class UsuarioNaoLocalizadoNoEscritorioException extends RuntimeException {
 
     String propriedade;
 
@@ -35,13 +34,4 @@ public class UsuarioNaoLocalizadoNoEscritorioException extends ValidationExcepti
         this.propriedade = propriedade;
     }
 
-    @Override
-    public String getProperty() {
-        return propriedade;
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return new Object[]{};
-    }
 }

@@ -8,7 +8,7 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  *      * DEVOLVIDA -> PENDENTE | CONCLUÍDA | HIBERNADA
  *      * HIBERNADA -> DEVOLVIDA | CONCLUÍDA
  */
-public class TarefaCicloDeVidaException extends ValidationException {
+public class TarefaCicloDeVidaException extends RuntimeException {
 
     public TarefaCicloDeVidaException(String statusAtual) {
         this.statusAtual = statusAtual;
@@ -37,13 +37,4 @@ public class TarefaCicloDeVidaException extends ValidationException {
         this.statusNovo = statusNovo;
     }
 
-    @Override
-    public String getProperty() {
-        return "status";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return new Object[]{statusAtual, statusNovo};
-    }
 }

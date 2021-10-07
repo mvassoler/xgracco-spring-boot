@@ -1,6 +1,6 @@
 package br.com.finchsolucoes.xgracco.core.handler.exception;
 
-public class RemoverMateriaException extends ValidationException{
+public class RemoverMateriaException extends RuntimeException{
 
 
     private final Object[] objects;
@@ -29,13 +29,4 @@ public class RemoverMateriaException extends ValidationException{
         this.objects = objects;
     }
 
-    @Override
-    public String getProperty() {
-        return "id";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
-    }
 }

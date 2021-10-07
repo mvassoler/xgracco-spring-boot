@@ -1,6 +1,6 @@
 package br.com.finchsolucoes.xgracco.core.handler.exception;
 
-public class FileNameValidationException extends ValidationException {
+public class FileNameValidationException extends RuntimeException {
 
     private final Object[] objects;
 
@@ -27,16 +27,6 @@ public class FileNameValidationException extends ValidationException {
     public FileNameValidationException(String message, Object[] objects) {
         super(message);
         this.objects = objects;
-    }
-
-    @Override
-    public String getProperty() {
-        return "id";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
     }
 
     private static String returnMensageValidation(Object... objects){

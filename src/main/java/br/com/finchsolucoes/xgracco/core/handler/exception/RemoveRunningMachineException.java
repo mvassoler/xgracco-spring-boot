@@ -6,7 +6,7 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @author Raphael Moreira
  * @since 2.1
  */
-public class RemoveRunningMachineException extends ValidationException {
+public class RemoveRunningMachineException extends RuntimeException {
 
 
     private final Object[] objects;
@@ -35,13 +35,4 @@ public class RemoveRunningMachineException extends ValidationException {
         this.objects = objects;
     }
 
-    @Override
-    public String getProperty() {
-        return "id";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
-    }
 }

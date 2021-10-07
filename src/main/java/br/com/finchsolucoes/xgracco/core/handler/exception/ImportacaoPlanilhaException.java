@@ -2,7 +2,7 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
 
 import org.apache.poi.ss.usermodel.Cell;
 
-public class ImportacaoPlanilhaException extends Exception {
+public class ImportacaoPlanilhaException extends RuntimeException {
 
     public ImportacaoPlanilhaException(Cell cell) {
         this.cell = cell;

@@ -6,7 +6,7 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @author Raphael Moreira
  * @since 2.1
  */
-public class RemoveStatusFinalException extends ValidationException {
+public class RemoveStatusFinalException extends RuntimeException {
 
     private final Object[] objects;
 
@@ -34,13 +34,4 @@ public class RemoveStatusFinalException extends ValidationException {
         this.objects = objects;
     }
 
-    @Override
-    public String getProperty() {
-        return "id";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
-    }
 }

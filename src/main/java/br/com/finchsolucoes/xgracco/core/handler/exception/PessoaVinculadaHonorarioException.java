@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.Objects;
 
-public class PessoaVinculadaHonorarioException extends ValidationException {
+public class PessoaVinculadaHonorarioException extends RuntimeException {
 
     private List<Processo> processos;
 
@@ -34,15 +34,8 @@ public class PessoaVinculadaHonorarioException extends ValidationException {
         this.processos = processos;
     }
 
-    @Override
-    public String getProperty() {
-        return "processos";
-    }
-
-    @Override
     public Object[] getObjects() {
         String numerosProcessos = "";
-
         if (Objects.nonNull(processos)) {
             numerosProcessos = processos
                     .stream()
@@ -50,7 +43,6 @@ public class PessoaVinculadaHonorarioException extends ValidationException {
                     .reduce(String::concat)
                     .get();
         }
-
         return Lists.newArrayList(numerosProcessos.substring(0, numerosProcessos.length() - 2)).toArray();
     }
 }

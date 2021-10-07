@@ -6,7 +6,7 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @author Roberto Amadeu Neto
  * @since 5.3.0
  */
-public class TarefaDuplicadaException extends ValidationException {
+public class TarefaDuplicadaException extends RuntimeException {
 
     private String descricao;
 
@@ -34,13 +34,4 @@ public class TarefaDuplicadaException extends ValidationException {
         this.descricao = descricao;
     }
 
-    @Override
-    public String getProperty() {
-        return descricao;
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return new Object[]{descricao};
-    }
 }
