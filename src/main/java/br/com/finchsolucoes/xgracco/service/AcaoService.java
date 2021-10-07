@@ -30,10 +30,8 @@ import static br.com.finchsolucoes.xgracco.core.constants.ValidationConstants.*;
 
 @Service
 @Slf4j
-public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long, AcaoRepository, Acao, AcaoTransformer> implements Serializable {
+public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long, AcaoRepository, Acao, AcaoTransformer> {
 
-    @Serial
-    private static final long serialVersionUID = 5845404658313217668L;
     private final AcaoRepository acaoRepository;
     private final AcaoTransformer acaoTransformer;
     private final MessageLocale messageLocale;
