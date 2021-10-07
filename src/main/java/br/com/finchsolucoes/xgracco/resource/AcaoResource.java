@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.Serializable;
 import java.util.stream.Collectors;
 
 import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
@@ -32,7 +31,7 @@ import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
 @RestController
 @RequestMapping(value = "/api/acoes", produces = MediaType.APPLICATION_JSON_VALUE)
 //@Api(description = "Recursos para o gerenciamento das Ações.")
-public class AcaoResource implements Serializable {
+public class AcaoResource {
 
     //TODO - ACERTAR ESTA CLASSE
 

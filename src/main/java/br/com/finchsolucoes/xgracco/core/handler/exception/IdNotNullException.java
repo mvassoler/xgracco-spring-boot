@@ -6,34 +6,16 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @author Rodolpho Couto
  * @since 2.1
  */
-public class IdNotNullException extends ValidationException {
+public class IdNotNullException extends RuntimeException {
 
-    public IdNotNullException() {
+    public IdNotNullException() { }
+
+    public IdNotNullException(String message) {
+        super(message);
     }
 
     public IdNotNullException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public IdNotNullException(Throwable cause) {
-        super(cause);
-    }
-
-    public IdNotNullException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
-
-    public IdNotNullException(String message) {
-        super(message);
-    }
-
-    @Override
-    public String getProperty() {
-        return "id";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return new Object[]{};
-    }
 }

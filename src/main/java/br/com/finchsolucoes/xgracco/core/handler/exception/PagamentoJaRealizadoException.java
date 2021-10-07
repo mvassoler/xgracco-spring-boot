@@ -8,7 +8,7 @@ import br.com.finchsolucoes.xgracco.domain.entity.ProcessoDespesas;
  * @author andre.baroni
  * @since 5.2.0
  */
-public class PagamentoJaRealizadoException extends ValidationException {
+public class PagamentoJaRealizadoException extends RuntimeException {
 
     private final Object[] objects;
 
@@ -36,13 +36,4 @@ public class PagamentoJaRealizadoException extends ValidationException {
         this.objects = objects;
     }
 
-    @Override
-    public String getProperty() {
-        return "statusPagamento";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return this.objects;
-    }
 }

@@ -20,5 +20,8 @@ public interface TitleValidationConstants {
     String USUARIO_BLOQUEADO = "";
     String VALOR_SETENCA = "";
     String DADOS_INVALIDOS = "Dados inválidos";
+    String MENSAGEM_INCOMPREENSIVEL = "Mensagem incompreensível";
+    String SERVER_ERROR = "Erro de servidor";
+    String TIME_OUT = "Time Out";
 
 }

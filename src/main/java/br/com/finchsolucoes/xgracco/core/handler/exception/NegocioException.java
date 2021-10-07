@@ -1,34 +1,11 @@
 package br.com.finchsolucoes.xgracco.core.handler.exception;
 
-public class NegocioException extends ValidationException {
+public class NegocioException extends RuntimeException {
 
+	public NegocioException() {}
 
-	public NegocioException() {
-	}
+	public NegocioException(String message) {super(message);}
 
-	public NegocioException(String message, Throwable cause) {
-		super(message, cause);
-	}
+	public NegocioException(String message, Throwable cause) {super(message, cause);}
 
-	public NegocioException(Throwable cause) {
-		super(cause);
-	}
-
-	public NegocioException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
-
-	public NegocioException(String message) {
-		super(message);
-	}
-
-	@Override
-	public String getProperty() {
-		return "negocio";
-	}
-
-	@Override
-	public Object[] getObjects() {
-		return new Object[0];
-	}
 }

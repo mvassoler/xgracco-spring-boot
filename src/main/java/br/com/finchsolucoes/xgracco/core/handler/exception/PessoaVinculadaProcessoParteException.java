@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author bruno.thiago
  * @since 5.6.0.1
  */
-public class PessoaVinculadaProcessoParteException extends ValidationException {
+public class PessoaVinculadaProcessoParteException extends RuntimeException {
 
 
     private List<Processo> processos;
@@ -41,15 +41,8 @@ public class PessoaVinculadaProcessoParteException extends ValidationException {
         this.processos = processos;
     }
 
-    @Override
-    public String getProperty() {
-        return "processos";
-    }
-
-    @Override
     public Object[] getObjects() {
         String numerosProcessos = "";
-
         if (Objects.nonNull(processos)) {
             numerosProcessos = processos
                     .stream()
@@ -57,7 +50,6 @@ public class PessoaVinculadaProcessoParteException extends ValidationException {
                     .reduce(String::concat)
                     .get();
         }
-
         return Lists.newArrayList(numerosProcessos.substring(0, numerosProcessos.length() - 2)).toArray();
     }
 }

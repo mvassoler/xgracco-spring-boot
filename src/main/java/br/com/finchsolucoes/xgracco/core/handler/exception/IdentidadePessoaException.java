@@ -5,7 +5,7 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  *
  * @author guilhermecamargo
  */
-public class IdentidadePessoaException extends ValidationException {
+public class IdentidadePessoaException extends RuntimeException {
 
     private final Object[] objects;
 
@@ -33,13 +33,4 @@ public class IdentidadePessoaException extends ValidationException {
         this.objects = objects;
     }
 
-    @Override
-    public String getProperty() {
-        return "id";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
-    }
 }

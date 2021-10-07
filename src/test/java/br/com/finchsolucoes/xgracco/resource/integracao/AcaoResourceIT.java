@@ -114,7 +114,6 @@ public class AcaoResourceIT extends FunctionalBaseTest {
                         messageLocale.beanMessageMessageSource("entity.description.max.lenght").replace("{max}", "100"))));
     }
 
-
     @Test
     //@WithMockUser (username = "admin", authorities = {"SUPER"}) - Retorna após implementar o spring security
     public void createNewAcaoWithInstanciaAndPraticaValidate() throws Exception {

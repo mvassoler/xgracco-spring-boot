@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author andre.baroni
  * @since 5.2.0
  */
-public class TarefaVinculadaAFilaException extends ValidationException {
+public class TarefaVinculadaAFilaException extends RuntimeException {
 
     private final List<Fila> filas;
 
@@ -41,15 +41,8 @@ public class TarefaVinculadaAFilaException extends ValidationException {
         this.filas = filas;
     }
 
-    @Override
-    public String getProperty() {
-        return "tarefa";
-    }
-
-    @Override
     public Object[] getObjects() {
         String descricaoFilas = "";
-
         if (Objects.nonNull(this.filas)) {
             descricaoFilas = this.filas
                     .stream()
@@ -57,7 +50,6 @@ public class TarefaVinculadaAFilaException extends ValidationException {
                     .reduce(String::concat)
                     .get();
         }
-
         //retorna a string obtida ignorando os dois ultimos caracteres que serão ", ".
         return Lists.newArrayList(descricaoFilas.substring(0, descricaoFilas.length() - 2)).toArray();
     }

@@ -6,34 +6,16 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @author paulomarcon
  * @since 2.2.0
  */
-public class PendingTasksException extends ValidationException {
+public class PendingTasksException extends RuntimeException {
 
-    public PendingTasksException() {
+    public PendingTasksException() { }
+
+    public PendingTasksException(String message) {
+        super(message);
     }
 
     public PendingTasksException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public PendingTasksException(Throwable cause) {
-        super(cause);
-    }
-
-    public PendingTasksException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
-
-    public PendingTasksException(String message) {
-        super(message);
-    }
-
-    @Override
-    public String getProperty() {
-        return "carteira";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return new Object[0];
-    }
 }

@@ -1,6 +1,6 @@
 package br.com.finchsolucoes.xgracco.core.handler.exception;
 
-public class RemoveUserRunningMachineFilaException extends ValidationException {
+public class RemoveUserRunningMachineFilaException extends RuntimeException {
 
     private final Object[] objects;
 
@@ -28,13 +28,4 @@ public class RemoveUserRunningMachineFilaException extends ValidationException {
         this.objects = objects;
     }
 
-    @Override
-    public String getProperty() {
-        return "pessoas";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
-    }
 }

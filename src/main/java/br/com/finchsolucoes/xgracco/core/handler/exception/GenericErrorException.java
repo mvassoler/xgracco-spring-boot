@@ -1,40 +1,11 @@
 package br.com.finchsolucoes.xgracco.core.handler.exception;
 
-public class GenericErrorException extends ValidationException {
+public class GenericErrorException extends RuntimeException {
 
-    private Object[] objects;
+    public GenericErrorException() { }
 
-    public GenericErrorException(Object[] objects) {
-        this.objects = objects;
-    }
+    public GenericErrorException(String message, Throwable cause) { super(message, cause); }
 
-    public GenericErrorException(String message, Throwable cause, Object[] objects) {
-        super(message, cause);
-        this.objects = objects;
-    }
+    public GenericErrorException(String message) { super(message); }
 
-    public GenericErrorException(Throwable cause, Object[] objects) {
-        super(cause);
-        this.objects = objects;
-    }
-
-    public GenericErrorException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, Object[] objects) {
-        super(message, cause, enableSuppression, writableStackTrace);
-        this.objects = objects;
-    }
-
-    public GenericErrorException(String message, Object[] objects) {
-        super(message);
-        this.objects = objects;
-    }
-
-    @Override
-    public String getProperty() {
-        return "task";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
-    }
 }

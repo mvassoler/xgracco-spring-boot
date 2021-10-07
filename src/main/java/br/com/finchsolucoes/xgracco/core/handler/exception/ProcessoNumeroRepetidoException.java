@@ -6,7 +6,7 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @author Jordano
  * @since 4.0.4
  */
-public class ProcessoNumeroRepetidoException extends ValidationException {
+public class ProcessoNumeroRepetidoException extends RuntimeException {
 
     private String numeroProcesso;
 
@@ -34,13 +34,4 @@ public class ProcessoNumeroRepetidoException extends ValidationException {
         this.numeroProcesso = numeroProcesso;
     }
 
-    @Override
-    public String getProperty() {
-        return "numero";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return new Object[]{this.numeroProcesso};
-    }
 }

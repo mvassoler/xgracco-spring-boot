@@ -7,35 +7,16 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @author andre.baroni
  * @since 5.2.0
  */
-public class NumeroDocumentoDeveConterApenasNumerosException extends ValidationException {
+public class NumeroDocumentoDeveConterApenasNumerosException extends RuntimeException {
 
+    public NumeroDocumentoDeveConterApenasNumerosException() { }
 
-    public NumeroDocumentoDeveConterApenasNumerosException() {
+    public NumeroDocumentoDeveConterApenasNumerosException(String message) {
+        super(message);
     }
 
     public NumeroDocumentoDeveConterApenasNumerosException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public NumeroDocumentoDeveConterApenasNumerosException(Throwable cause) {
-        super(cause);
-    }
-
-    public NumeroDocumentoDeveConterApenasNumerosException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
-
-    public NumeroDocumentoDeveConterApenasNumerosException(String message) {
-        super(message);
-    }
-
-    @Override
-    public String getProperty() {
-        return "numeroDocumento";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return new Object[0];
-    }
 }

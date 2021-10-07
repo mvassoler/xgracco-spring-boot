@@ -1,6 +1,7 @@
 package br.com.finchsolucoes.xgracco.core.handler.exception;
 
-public class RemoveIndiceEconomicoException extends ValidationException{
+public class RemoveIndiceEconomicoException extends RuntimeException{
+
     private final Object[] objects;
 
     public RemoveIndiceEconomicoException(Object[] objects) {
@@ -27,13 +28,4 @@ public class RemoveIndiceEconomicoException extends ValidationException{
         this.objects = objects;
     }
 
-    @Override
-    public String getProperty() {
-        return "id";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return objects;
-    }
 }

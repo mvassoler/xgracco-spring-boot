@@ -8,10 +8,9 @@ package br.com.finchsolucoes.xgracco.core.handler.exception;
  * @author andre.baroni
  * @since 5.2.0
  */
-public class DataHibernacaoInvalidaException extends ValidationException {
+public class DataHibernacaoInvalidaException extends RuntimeException {
 
-    public DataHibernacaoInvalidaException() {
-    }
+    public DataHibernacaoInvalidaException() { }
 
     public DataHibernacaoInvalidaException(String message, Throwable cause) {
         super(message, cause);
@@ -21,21 +20,5 @@ public class DataHibernacaoInvalidaException extends ValidationException {
         super(cause);
     }
 
-    public DataHibernacaoInvalidaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 
-    public DataHibernacaoInvalidaException(String message) {
-        super(message);
-    }
-
-    @Override
-    public String getProperty() {
-        return "dataAgendamento";
-    }
-
-    @Override
-    public Object[] getObjects() {
-        return new Object[0];
-    }
 }

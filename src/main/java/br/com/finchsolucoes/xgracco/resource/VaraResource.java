@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.Serializable;
 import java.util.stream.Collectors;
 
 import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
@@ -33,12 +32,9 @@ import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
 @RestController
 @RequestMapping(value = "/api/varas")
 //@Api(description = "Recurso para o gerenciamento de varas.")
-public class VaraResource implements Serializable {
-
+public class VaraResource {
 
     private final VaraService varaService;
-
-
 
     public VaraResource(VaraService varaService) {
         this.varaService = varaService;
