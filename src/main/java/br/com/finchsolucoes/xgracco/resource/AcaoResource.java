@@ -2,7 +2,6 @@ package br.com.finchsolucoes.xgracco.resource;
 
 import br.com.finchsolucoes.xgracco.core.dto.DeletedDTO;
 import br.com.finchsolucoes.xgracco.core.dto.ResponseDTO;
-import br.com.finchsolucoes.xgracco.domain.dto.ErrorDetailsDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoInDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.output.AcaoOutDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
@@ -11,10 +10,11 @@ import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.Sorter;
 import br.com.finchsolucoes.xgracco.hateoas.Hateoas;
 import br.com.finchsolucoes.xgracco.service.AcaoService;
-
-import io.swagger.annotations.*;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
@@ -46,6 +46,7 @@ public class AcaoResource {
     }
 
     @ApiOperation(value = "CREATE", notes = "Registra uma nova ação.")
+    @ApiResponses(@ApiResponse(responseCode = "201", description = "Registro da ação criado"))
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
     public ResponseEntity<ResponseDTO<AcaoOutDTO>> create(@ApiParam(name = "PAYLOAD", value = "Representação de uma ação") @RequestBody @Valid final AcaoInDTO dto) {
@@ -75,12 +76,6 @@ public class AcaoResource {
     }
 
     @ApiOperation(value = "FIND ALL", notes = "Retorna uma lista paginada das ações.", response = Acao[].class)
-    @io.swagger.v3.oas.annotations.responses.ApiResponses(
-            {
-                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Requisição inválida", content = @Content(schema = @Schema(implementation = ErrorDetailsDTO.class))),
-                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro de servidor", content = @Content(schema = @Schema(implementation = ErrorDetailsDTO.class)))
-            }
-    )
     @GetMapping()
     public ResponseEntity<PagedModel<EntityModel<AcaoOutDTO>>> find(@ApiParam(value = "Descrição de uma ação", example = "Notificar") @RequestParam(value = "descricao", required = false) final String descricao,
                                                                     @ApiParam(value = "Instância", example = "PRIMEIRA")@RequestParam(value = "instancia", required = false) final EnumInstancia instancia,

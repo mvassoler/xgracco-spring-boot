@@ -29,6 +29,14 @@ import java.util.function.Consumer;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfiguration implements WebMvcConfigurer {
 
+    private static final String ERRO_INTERNO_SERVIDOR = "Erro interno do Servidor";
+    private static final String ERRO_NAO_ENCONTRADO = "Recurso não encontrado para um ID informado";
+    private static final String ERRO_NAO_ACEITAVEL = "Recurso não possui representação que pode ser aceita pelo consumidor";
+    private static final String ERRO_BAD_REQUEST = "Requisição inválida (erro do cliente)";
+    private static final String ERRO_TIPO_MIDIA_NAO_SUPORTADO = "Requisição recusada porque o corpo está em um formato não suportado";
+    private static final String ERRO_RECURSO_NAO_AUTORIZADO = "Recurso não liberado para acesso";
+    private static final String ERRO_SEM_AUTORIZACAO = "Recurso não autorizado";
+
     @Bean
     public Docket apiDocket(){
         var typeResolver = new TypeResolver();
@@ -69,19 +77,31 @@ public class SpringFoxConfiguration implements WebMvcConfigurer {
         return Arrays.asList(
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
-                        .description("Erro interno do Servidor")
+                        .description(ERRO_INTERNO_SERVIDOR)
                         .representation( MediaType.APPLICATION_JSON )
                         .apply(problemBuilder())
                         .build(),
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.NOT_FOUND))
-                        .description("Recurso não encontrado para um ID informado")
+                        .description(ERRO_NAO_ENCONTRADO)
                         .representation( MediaType.APPLICATION_JSON )
                         .apply(problemBuilder())
                         .build(),
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.BAD_REQUEST))
-                        .description("Requisição inválida (erro do cliente)")
+                        .description(ERRO_BAD_REQUEST)
+                        .representation( MediaType.APPLICATION_JSON )
+                        .apply(problemBuilder())
+                        .build(),
+                new ResponseBuilder()
+                        .code(comoString(HttpStatus.FORBIDDEN))
+                        .description(ERRO_SEM_AUTORIZACAO)
+                        .representation( MediaType.APPLICATION_JSON )
+                        .apply(problemBuilder())
+                        .build(),
+                new ResponseBuilder()
+                        .code(comoString(HttpStatus.UNAUTHORIZED))
+                        .description(ERRO_RECURSO_NAO_AUTORIZADO)
                         .representation( MediaType.APPLICATION_JSON )
                         .apply(problemBuilder())
                         .build()
@@ -92,29 +112,41 @@ public class SpringFoxConfiguration implements WebMvcConfigurer {
         return Arrays.asList(
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
-                        .description("Erro interno do Servidor")
+                        .description(ERRO_INTERNO_SERVIDOR)
                         .representation( MediaType.APPLICATION_JSON )
                         .apply(problemBuilder())
                         .build(),
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.NOT_ACCEPTABLE))
-                        .description("Recurso não possui representação que pode ser aceita pelo consumidor")
+                        .description(ERRO_NAO_ACEITAVEL)
                         .build(),
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.BAD_REQUEST))
-                        .description("Requisição inválida (erro do cliente)")
+                        .description(ERRO_BAD_REQUEST)
                         .representation( MediaType.APPLICATION_JSON )
                         .apply(problemBuilder())
                         .build(),
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.NOT_FOUND))
-                        .description("Recurso não encontrado para um ID informado")
+                        .description(ERRO_NAO_ENCONTRADO)
                         .representation( MediaType.APPLICATION_JSON )
                         .apply(problemBuilder())
                         .build(),
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.UNSUPPORTED_MEDIA_TYPE))
-                        .description("Requisição recusada porque o corpo está em um formato não suportado")
+                        .description(ERRO_TIPO_MIDIA_NAO_SUPORTADO)
+                        .representation( MediaType.APPLICATION_JSON )
+                        .apply(problemBuilder())
+                        .build(),
+                new ResponseBuilder()
+                        .code(comoString(HttpStatus.FORBIDDEN))
+                        .description(ERRO_SEM_AUTORIZACAO)
+                        .representation( MediaType.APPLICATION_JSON )
+                        .apply(problemBuilder())
+                        .build(),
+                new ResponseBuilder()
+                        .code(comoString(HttpStatus.UNAUTHORIZED))
+                        .description(ERRO_RECURSO_NAO_AUTORIZADO)
                         .representation( MediaType.APPLICATION_JSON )
                         .apply(problemBuilder())
                         .build()
@@ -125,19 +157,31 @@ public class SpringFoxConfiguration implements WebMvcConfigurer {
         return Arrays.asList(
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
-                        .description("Erro interno do Servidor")
+                        .description(ERRO_INTERNO_SERVIDOR)
                         .representation( MediaType.APPLICATION_JSON )
                         .apply(problemBuilder())
                         .build(),
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.NOT_FOUND))
-                        .description("Recurso não encontrado para um ID informado")
+                        .description(ERRO_NAO_ENCONTRADO)
+                        .representation( MediaType.APPLICATION_JSON )
+                        .apply(problemBuilder())
+                        .build(),
+                new ResponseBuilder()
+                        .code(comoString(HttpStatus.UNAUTHORIZED))
+                        .description(ERRO_RECURSO_NAO_AUTORIZADO)
+                        .representation( MediaType.APPLICATION_JSON )
+                        .apply(problemBuilder())
+                        .build(),
+                new ResponseBuilder()
+                        .code(comoString(HttpStatus.FORBIDDEN))
+                        .description(ERRO_SEM_AUTORIZACAO)
                         .representation( MediaType.APPLICATION_JSON )
                         .apply(problemBuilder())
                         .build(),
                 new ResponseBuilder()
                         .code(comoString(HttpStatus.NOT_ACCEPTABLE))
-                        .description("Recurso não possui representação que pode ser aceita pelo consumidor")
+                        .description(ERRO_NAO_ACEITAVEL)
                         .build()
         );
     }

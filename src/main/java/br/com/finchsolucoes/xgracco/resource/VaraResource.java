@@ -2,7 +2,6 @@ package br.com.finchsolucoes.xgracco.resource;
 
 import br.com.finchsolucoes.xgracco.core.dto.DeletedDTO;
 import br.com.finchsolucoes.xgracco.core.dto.ResponseDTO;
-import br.com.finchsolucoes.xgracco.domain.dto.ErrorDetailsDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.input.VaraDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Vara;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
@@ -11,9 +10,11 @@ import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.Sorter;
 import br.com.finchsolucoes.xgracco.hateoas.Hateoas;
 import br.com.finchsolucoes.xgracco.service.VaraService;
-import io.swagger.annotations.*;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
@@ -44,6 +45,7 @@ public class VaraResource {
     }
 
     @ApiOperation(value = "CREATE", notes = "Registra uma nova vara.")
+    @ApiResponses(@ApiResponse(responseCode = "201", description = "Registro da vara criado"))
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasPermission(#usuario, 'gestao-processos:cadastros:processo:varas:incluir')")
     public ResponseEntity<ResponseDTO<VaraDTO>> create(@ApiParam(name = "PAYLOAD", value = "Representação de uma vara") @RequestBody @Valid final VaraDTO vara) {
@@ -72,12 +74,7 @@ public class VaraResource {
     }
 
     @ApiOperation(value = "FIND ALL", notes = "Retorna uma lista paginada das varas.", response = Vara[].class)
-    @io.swagger.v3.oas.annotations.responses.ApiResponses(
-            {
-                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Requisição inválida", content = @Content(schema = @Schema(implementation = ErrorDetailsDTO.class))),
-                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "Erro de servidor", content = @Content(schema = @Schema(implementation = ErrorDetailsDTO.class)))
-            }
-    )
+    //@ApiResponses(@ApiResponse(responseCode = "403", description = "Recurso não autorizado", content = @Content(schema = @Schema(implementation = ErrorDetailsDTO.class))))
     @GetMapping()
     public ResponseEntity<PagedModel<EntityModel<VaraDTO>>> find(@ApiParam(value = "Descrição de uma vara", example = "Trabalhista") @RequestParam(value = "descricao", required = false) final String descricao,
                                                                  @ApiParam(value = "Tipo de justiça", example = "Arbitral") @RequestParam(value = "tipoJustica", required = false) final EnumTipoJustica tipoJustica,
