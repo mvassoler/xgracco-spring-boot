@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -57,7 +56,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Object> badRequestException(final BadRequestException ex, WebRequest request) {
         log.info("M=BadRequestException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = BAD_REQUEST;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -73,7 +71,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> entityNotFoundException(final EntityNotFoundException ex, WebRequest request) {
         log.info("M=EntityNotFoundException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = NOT_FOUND;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.ENTIDADE_NAO_ENCONTRADA, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -89,7 +86,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(UnAuthorizedeException.class)
     public ResponseEntity<Object> unAuthorizedeException(final UnAuthorizedeException ex, WebRequest request) {
         log.info("M=UnAuthorizedeException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = UNAUTHORIZED;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.SEM_AUTORIZACAO, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -105,7 +101,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(PaymentRequiredException.class)
     public ResponseEntity<Object> paymentRequiredException(final PaymentRequiredException ex, WebRequest request) {
         log.info("M=PaymentRequiredException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = PAYMENT_REQUIRED;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -121,7 +116,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(ForbidenException.class)
     public ResponseEntity<Object> forbidenException(final ForbidenException ex, WebRequest request) {
         log.info("M=ForbidenException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = FORBIDDEN;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.SEM_AUTORIZACAO, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -137,7 +131,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<Object> conflictException(final ConflictException ex, WebRequest request) {
         log.info("M=ConflictException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = CONFLICT;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -153,7 +146,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(GoneException.class)
     public ResponseEntity<Object> goneException(final GoneException ex, WebRequest request) {
         log.info("M=GoneException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = GONE;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -169,7 +161,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(PreconditionFailedException.class)
     public ResponseEntity<Object> preconditionFailedException(final PreconditionFailedException ex, WebRequest request) {
         log.info("M=PreconditionFailedException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = PRECONDITION_FAILED;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -185,7 +176,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(PayloadTooLargeException.class)
     public ResponseEntity<Object> payloadTooLargeException(final PayloadTooLargeException ex, WebRequest request) {
         log.info("M=PayloadTooLargeException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = PAYLOAD_TOO_LARGE;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -201,7 +191,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(InternalServerErrorException.class)
     public ResponseEntity<Object> internalServerErrorException(final InternalServerErrorException ex, WebRequest request) {
         log.info("M=InternalServerErrorException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = INTERNAL_SERVER_ERROR;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.SERVER_ERROR, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -217,7 +206,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(NotImplementedException.class)
     public ResponseEntity<Object> notImplementedException(final NotImplementedException ex, WebRequest request) {
         log.info("M=NotImplementedException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = NOT_IMPLEMENTED;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.SERVER_ERROR, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -233,7 +221,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(BadGatewayException.class)
     public ResponseEntity<Object> badGatewayException(final BadGatewayException ex, WebRequest request) {
         log.info("M=BadGatewayException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = BAD_GATEWAY;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.SERVER_ERROR, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -249,7 +236,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(ServiceUnavailableException.class)
     public ResponseEntity<Object> serviceUnavailableException(final ServiceUnavailableException ex, WebRequest request) {
         log.info("M=ServiceUnavailableException", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         HttpStatus status = SERVICE_UNAVAILABLE;
         ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.SERVER_ERROR, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
@@ -415,10 +401,10 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(final HttpMessageNotReadableException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request){
         Throwable rootCause = ExceptionUtils.getRootCause(ex);
-        if (rootCause instanceof InvalidFormatException) {
-            return handleInvalidFormat((InvalidFormatException) rootCause, headers, status, request);
-        } else if (rootCause instanceof PropertyBindingException) {
-            return handlePropertyBinding((PropertyBindingException) rootCause, headers, status, request);
+        if (rootCause instanceof InvalidFormatException invalidFormatException) {
+            return handleInvalidFormat(invalidFormatException, headers, status, request);
+        } else if (rootCause instanceof PropertyBindingException propertyBindingException) {
+            return handlePropertyBinding(propertyBindingException, headers, status, request);
         }
         String detail = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
         ErrorDetailsDTO problem = createOtherProblemBuilder(status, TitleValidationConstants.MENSAGEM_INCOMPREENSIVEL, detail,
@@ -431,7 +417,6 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(final MissingServletRequestParameterException ex, final HttpHeaders headers, final HttpStatus status,             final WebRequest request) {
         log.info("M=handleMissingServletRequestParameter", ex);
-        String exception = ClassUtils.getShortClassName(ex.getClass());
         ErrorDetailsDTO problem = createProblemBuilder(status, TitleValidationConstants.ERRO_NEGOCIO, ex.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURL().toString());
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -446,8 +431,8 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
 
                     String name = objectError.getObjectName();
 
-                    if (objectError instanceof FieldError) {
-                        name = ((FieldError) objectError).getField();
+                    if (objectError instanceof FieldError fieldError) {
+                        name = fieldError.getField();
                     }
 
                     return ErrorDetailsDTO.Object.builder()
@@ -473,10 +458,10 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
                     .status(status.value())
                     .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
                     .build();
-        } else if (body instanceof String) {
+        } else if (body instanceof String bodyStr) {
             body = ErrorDetailsDTO.builder()
                     .timestamp(OffsetDateTime.now())
-                    .title((String) body)
+                    .title(bodyStr)
                     .status(status.value())
                     .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
                     .build();
@@ -530,7 +515,7 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
 
     private String joinPath(List<JsonMappingException.Reference> references) {
         return references.stream()
-                .map(ref -> ref.getFieldName())
+                .map(JsonMappingException.Reference::getFieldName)
                 .collect(Collectors.joining("."));
     }
 }
