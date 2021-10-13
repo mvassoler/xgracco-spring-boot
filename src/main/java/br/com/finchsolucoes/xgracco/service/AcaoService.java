@@ -100,7 +100,6 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
          return this.getModdelMapper().toAcaoForListAcaoOutDTO(this.findEntityQuery(query));
     }
 
-    @Transactional
     @Override
     public Acao saveEntity(Acao entity){
         if(Objects.isNull(entity.getId())){
