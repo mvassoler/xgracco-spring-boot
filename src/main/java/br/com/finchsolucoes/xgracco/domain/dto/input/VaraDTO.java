@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@ApiModel(value = "VARA", description = "Representa o payload de entrada/saída de uma vara")
+@ApiModel(value = "VARA_DTO", description = "Representa o payload de entrada/saída de uma vara")
 @Data
 @Builder
 @AllArgsConstructor
@@ -35,9 +35,8 @@ public class VaraDTO {
     @JsonProperty("tipos_justica")
     private List<EnumTipoJustica> tiposJustica;
 
-    @ApiModelProperty(value = "Instãncias vinculadas a ação", example = "[PRIMEIRA, SEGUNDA, TERCEIRA, SUPERIOR, SUPREMO]")
+    @ApiModelProperty(value = "Instãncias vinculadas a vara", example = "[PRIMEIRA, SEGUNDA, TERCEIRA, SUPERIOR, SUPREMO]")
     @JsonProperty("instâncias")
     private List<EnumInstancia> instancias;
-
 
 }

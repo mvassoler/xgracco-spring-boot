@@ -9,12 +9,9 @@ import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.Sorter;
 import br.com.finchsolucoes.xgracco.hateoas.Hateoas;
+import br.com.finchsolucoes.xgracco.resource.openapi.AcaoResourceOpenApi;
 import br.com.finchsolucoes.xgracco.service.AcaoService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
@@ -35,7 +32,7 @@ import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
 @RestController
 @RequestMapping(value = "/api/acoes", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = "Ações")
-public class AcaoResource {
+public class AcaoResource implements AcaoResourceOpenApi {
 
     //TODO - ACERTAR ESTA CLASSE
 
@@ -45,44 +42,42 @@ public class AcaoResource {
         this.acaoService = acaoService;
     }
 
-    @ApiOperation(value = "CREATE", notes = "Registra uma nova ação.")
-    @ApiResponses(@ApiResponse(responseCode = "201", description = "Registro da ação criado"))
+    @Override
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
-    public ResponseEntity<ResponseDTO<AcaoOutDTO>> create(@ApiParam(name = "PAYLOAD", value = "Representação de uma ação") @RequestBody @Valid final AcaoInDTO dto) {
+    public ResponseEntity<ResponseDTO<AcaoOutDTO>> create(@RequestBody @Valid final AcaoInDTO dto) {
         return ResponseEntity.ok(acaoService.add(dto));
     }
 
-    @ApiOperation(value = "UPDATE",notes = "Atualiza uma ação.")
+    @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
-    public ResponseEntity<ResponseDTO<AcaoOutDTO>>  update(@ApiParam(value = "ID da ação", example = "1") @PathVariable final Long id,
-                                                           @ApiParam(name = "PAYLOAD", value = "Representação de uma ação") @Valid @RequestBody AcaoInDTO dto) {
+    public ResponseEntity<ResponseDTO<AcaoOutDTO>>  update(@PathVariable final Long id, @Valid @RequestBody AcaoInDTO dto) {
         return ResponseEntity.ok(this.acaoService.update(id, dto));
     }
 
-    @ApiOperation(value = "DELETE",notes = "Exclui uma ação.")
-    @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
-    public ResponseEntity<ResponseDTO<DeletedDTO>> remove(@ApiParam(value = "ID da ação", example = "1") @PathVariable("id") final Long id) {
+    public ResponseEntity<ResponseDTO<DeletedDTO>> remove( @PathVariable("id") final Long id) {
         return ResponseEntity.ok(this.acaoService.delete(id));
     }
 
-    @ApiOperation(value = "FIND BY ID",notes = "Consulta uma ação pelo Id.")
-    @GetMapping(value = "/{id}")
+    @Override
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_CREATE + ") or ("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
-    public ResponseEntity<ResponseDTO<AcaoOutDTO>> findById(@ApiParam(value = "ID da ação", example = "1") @PathVariable final Long id) {
+    public ResponseEntity<ResponseDTO<AcaoOutDTO>> findById(@PathVariable final Long id) {
         return ResponseEntity.ok().body(this.acaoService.find(id));
     }
 
-    @ApiOperation(value = "FIND ALL", notes = "Retorna uma lista paginada das ações.", response = Acao[].class)
-    @GetMapping()
-    public ResponseEntity<PagedModel<EntityModel<AcaoOutDTO>>> find(@ApiParam(value = "Descrição de uma ação", example = "Notificar") @RequestParam(value = "descricao", required = false) final String descricao,
-                                                                    @ApiParam(value = "Instância", example = "PRIMEIRA")@RequestParam(value = "instancia", required = false) final EnumInstancia instancia,
-                                                                    @ApiParam(value = "ID de uma prática", example = "1")@RequestParam(value = "idPratica", required = false) final Long idPratica,
-                                                                    @ApiParam(value = "Propriedade de filtro das ações", example = "descricao")@RequestParam(value = SORT_BY_PARAM, required = false) final String sortProperty,
-                                                                    @ApiParam(value = "Ordenação dos dados", example = "ASC")@RequestParam(value = SORT_DIRECTION_PARAM, required = false) final Sorter.Direction sortDirection,
-                                                                    @ApiParam(value = "Número da página", example = "1")@RequestParam(value = PAGE_PARAM, required = false) final Long page) {
+    @Override
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PagedModel<EntityModel<AcaoOutDTO>>> find(@RequestParam(value = "descricao", required = false) final String descricao,
+                                                                    @RequestParam(value = "instancia", required = false) final EnumInstancia instancia,
+                                                                    @RequestParam(value = "idPratica", required = false) final Long idPratica,
+                                                                    @RequestParam(value = SORT_BY_PARAM, required = false) final String sortProperty,
+                                                                    @RequestParam(value = SORT_DIRECTION_PARAM, required = false) final Sorter.Direction sortDirection,
+                                                                    @RequestParam(value = PAGE_PARAM, required = false) final Long page) {
         Query<Acao> query =  this.acaoService.returnQueryAcao(descricao, instancia, idPratica, sortProperty, sortDirection, page);
         return ResponseEntity.ok(Hateoas.pageResources(
                 acaoService.findQuery(query).stream().map(Hateoas::toResource).collect(Collectors.toList()),
