@@ -1,6 +1,8 @@
-package br.com.finchsolucoes.xgracco.legacy.beans.views;
+package br.com.finchsolucoes.xgracco.domain.dto.output;
 
 import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.Identificavel;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,35 +19,55 @@ import java.util.Map;
 /**
  * @author Marcelo Aguiar
  */
+@ApiModel(value = "RETORNO_METODO_DTO", description = "Representação de uma resposta genéric1")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
 @Builder
 @AllArgsConstructor
-public class RetornoMetodo implements Serializable, Identificavel<Long> {
+public class RetornoMetodoDTO implements Serializable, Identificavel<Long> {
 
+    @ApiModelProperty(value = "sucesso")
     private boolean sucesso;
+
+    @ApiModelProperty(value = "mensagem")
     private String mensagem;
+
+    @ApiModelProperty(value = "pagina")
     private String pagina;
+
+    @ApiModelProperty(value = "classe")
     private String classe;
+
+    @ApiModelProperty(value = "id_gerado")
     private Long idGerado;
+
+    @ApiModelProperty(value = "valor")
     private String valor;
+
+    @ApiModelProperty(value = "exception")
     private String exception;
+
+    @ApiModelProperty(value = "objeto")
     private Object objeto;
+
+    @ApiModelProperty(value = "objetos")
     private List<Object> objetos;
+
+    @ApiModelProperty(value = "chave_valor")
     private Map<String, Object> chaveValor;
 
-    public RetornoMetodo() {
+    public RetornoMetodoDTO() {
         objetos = new ArrayList<>();
         chaveValor = new HashMap<>();
     }
 
-    public RetornoMetodo(boolean sucesso, String mensagem) {
+    public RetornoMetodoDTO(boolean sucesso, String mensagem) {
         this.sucesso = sucesso;
         this.mensagem = mensagem;
     }
 
-    public RetornoMetodo(boolean sucesso, String mensagem, String exception) {
+    public RetornoMetodoDTO(boolean sucesso, String mensagem, String exception) {
         this.sucesso = sucesso;
         this.mensagem = mensagem;
         this.exception = exception;
