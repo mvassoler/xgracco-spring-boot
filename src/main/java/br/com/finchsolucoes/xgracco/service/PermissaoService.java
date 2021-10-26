@@ -46,7 +46,7 @@ public class PermissaoService {
         this.env = env;
     }
 
-    public List<PermissaoOutDTO> findByPai(String path, final HttpServletRequest request, Boolean recursive){
+    public List<PermissaoOutDTO> findPermissoes(String path, final HttpServletRequest request, Boolean recursive){
         String codigo = request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString()
                 .replaceFirst(path, "")
                 .replaceFirst("/", "")

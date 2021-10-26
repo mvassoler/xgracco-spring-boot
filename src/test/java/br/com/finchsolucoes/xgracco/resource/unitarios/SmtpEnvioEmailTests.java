@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
@@ -20,17 +21,23 @@ public class SmtpEnvioEmailTests extends FunctionalBaseTest {
     @Autowired
     private SmtpEnvioEmailService emailService;
 
+    @Autowired
+    private Environment environment;
+
     private static final String TITULO = "TESTE DO SERVIÇO DO ENVIO DO EMAIL";
 
     private static List<String> DESTINATARIOS;
     private static List<String> COPIADOS;
+    private static String EMAIL;
 
     @BeforeEach
     public void setUp() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
+        this.EMAIL = environment.getProperty("test.email.send");
         this.DESTINATARIOS = this.setDestinatarios();
         this.COPIADOS = this.setCopiados();
+
     }
 
     @Test
@@ -67,13 +74,13 @@ public class SmtpEnvioEmailTests extends FunctionalBaseTest {
 
     private List<String> setDestinatarios(){
         List<String> destinatarios = new ArrayList<>();
-        destinatarios.add("marcosvassoler@finchsolucoes.com.br");
+        destinatarios.add(this.EMAIL);
         return destinatarios;
     }
 
     private List<String> setCopiados(){
         List<String> copiados = new ArrayList<>();
-        copiados.add("marcosvassoler@finchsolucoes.com.br");
+        copiados.add(this.EMAIL);
         return copiados;
     }
 

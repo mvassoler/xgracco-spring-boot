@@ -49,7 +49,7 @@ public class PermissaoResource implements PermissaoResourceOpenApi {
     }
 
     private ResponseEntity<CollectionModel<EntityModel<PermissaoOutDTO>>> getCollectionModelResponseEntity(HttpServletRequest request) {
-        final List<PermissaoOutDTO> permissoes = this.permissaoService.findByPai(this.PATH, request, Boolean.TRUE);
+        final List<PermissaoOutDTO> permissoes = this.permissaoService.findPermissoes(this.PATH, request, Boolean.TRUE);
         return ResponseEntity.ok(new CollectionModel<>(permissoes
                 .stream()
                 .map(permissao -> Hateoas.toResource(permissao, ServletUriComponentsBuilder.fromCurrentContextPath().path(PATH),  this.permissaoService.getUrl(permissao.getCodigo())))
