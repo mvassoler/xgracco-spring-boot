@@ -502,23 +502,15 @@ public class Permissao { //implements GrantedAuthority {
     @Column(name = "ID")
     private Long id;
 
-    @NotNull
-    @Size(min = 1, max = 255)
     @Column(name = "CODIGO")
     private String codigo;
 
-    @NotNull
-    @Size(min = 1, max = 255)
     @Column(name = "DESCRICAO")
     private String descricao;
 
-    @NotNull
-    @Min(1)
-    @Max(10)
     @Column(name = "ORDEM")
     private Integer ordem;
 
-    @NotNull
     @Column(name = "ID_TIPO_PERMISSAO")
     @Convert(converter = EnumTipoPermissaoConverter.class)
     private EnumTipoPermissao tipo;
@@ -549,14 +541,6 @@ public class Permissao { //implements GrantedAuthority {
         this.permissaoPai = permissaoPai;
     }
 
-   /* @JsonIgnore
-    @Override
-    public String getAuthority() {
-        return getCodigo();
-    }*/
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -574,6 +558,5 @@ public class Permissao { //implements GrantedAuthority {
     public String toString() {
         return getCodigo();
     }
-
 
 }

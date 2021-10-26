@@ -49,7 +49,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
     @Override
     protected void beforeAdd(Acao entity) {
         if (this.getRepository().findByDescricao(entity.getDescricao()).isPresent()) {
-            log.error("Exceção gerada na gravação do Acao no acao-service. Exception: {} ." , messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
+            log.error("Exceção gerada na gravação da Acao no acao-service. Exception: {} ." , messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
             throw new BadRequestException( messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
         }
     }
@@ -58,7 +58,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
     protected void beforeUpdate(Acao entity, Acao entityDataBase) {
         if (!entityDataBase.getDescricao().equals(entity.getDescricao()) &&
                 this.getRepository().findByDescricao(entity.getDescricao()).isPresent()) {
-            log.error("Exceção gerada na atualização do Cliente no domain-service. Exception: {} ." , messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
+            log.error("Exceção gerada na atualização da Acao no acao-service. Exception: {} ." , messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
             throw new BadRequestException(messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
         }
     }
@@ -85,7 +85,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
     @Transactional
     @Override
     public ResponseDTO<DeletedDTO> delete(Long id) throws EntityNotFoundException {
-        log.info("Procedido a exclusão do Cliente de ID {} no domain-service.", id.toString());
+        log.info("Procedido a exclusão do Cliente de ID {} no acao-service.", id.toString());
         this.deleteEntity(id);
         return ResponseDTO.<DeletedDTO>builder().data(DeletedDTO.setNewDeletedDTO(Acao.class, id)).build();
     }

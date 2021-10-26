@@ -2,6 +2,7 @@ package br.com.finchsolucoes.xgracco.hateoas;
 
 import br.com.finchsolucoes.xgracco.domain.dto.input.*;
 import br.com.finchsolucoes.xgracco.domain.dto.output.AcaoOutDTO;
+import br.com.finchsolucoes.xgracco.domain.dto.output.PermissaoOutDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.*;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.infra.ws.request.RecuperarForo;
@@ -509,8 +510,8 @@ public class Hateoas implements Serializable {
         return resource;
     }
 
-    public static EntityModel<Permissao> toResource(Permissao permissao, UriComponentsBuilder uriBuilder, String url) {
-        final EntityModel<Permissao> resource = new EntityModel<>(permissao);
+    public static EntityModel<PermissaoOutDTO> toResource(PermissaoOutDTO permissao, UriComponentsBuilder uriBuilder, String url) {
+        final EntityModel<PermissaoOutDTO> resource = new EntityModel<>(permissao);
         resource.add(new Link(uriBuilder.path("/" + permissao.getCodigo().replace(":", "/")).toUriString()));
         if (StringUtils.isNotBlank(url)) {
             resource.add(new Link(url, REL_HOME));
