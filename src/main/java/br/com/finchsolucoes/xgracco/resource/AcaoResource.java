@@ -12,13 +12,17 @@ import br.com.finchsolucoes.xgracco.hateoas.Hateoas;
 import br.com.finchsolucoes.xgracco.resource.openapi.AcaoResourceOpenApi;
 import br.com.finchsolucoes.xgracco.service.AcaoService;
 import io.swagger.annotations.Api;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+import java.util.logging.LogManager;
 import java.util.stream.Collectors;
 
 import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
@@ -36,6 +40,10 @@ public class AcaoResource implements AcaoResourceOpenApi {
 
     //TODO - ACERTAR ESTA CLASSE
 
+    private static final Logger logger = LoggerFactory.getLogger(AcaoResource.class);
+
+
+
     private final AcaoService acaoService;
 
     public AcaoResource(AcaoService acaoService) {
@@ -46,6 +54,8 @@ public class AcaoResource implements AcaoResourceOpenApi {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
     public ResponseEntity<ResponseDTO<AcaoOutDTO>> create(@RequestBody @Valid final AcaoInDTO dto) {
+        logger.info("Olá mundo");
+        logger.error("Teste dois");
         return ResponseEntity.ok(acaoService.add(dto));
     }
 
@@ -53,6 +63,8 @@ public class AcaoResource implements AcaoResourceOpenApi {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
     public ResponseEntity<ResponseDTO<AcaoOutDTO>>  update(@PathVariable final Long id, @Valid @RequestBody AcaoInDTO dto) {
+        logger.info("Olá mundo");
+        logger.error("Teste dois");
         return ResponseEntity.ok(this.acaoService.update(id, dto));
     }
 
@@ -60,6 +72,8 @@ public class AcaoResource implements AcaoResourceOpenApi {
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
     public ResponseEntity<ResponseDTO<DeletedDTO>> remove( @PathVariable("id") final Long id) {
+        logger.info("Olá mundo");
+        logger.error("Teste dois");
         return ResponseEntity.ok(this.acaoService.delete(id));
     }
 
@@ -67,6 +81,8 @@ public class AcaoResource implements AcaoResourceOpenApi {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_CREATE + ") or ("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
     public ResponseEntity<ResponseDTO<AcaoOutDTO>> findById(@PathVariable final Long id) {
+        logger.info("Olá mundo");
+        logger.error("Teste dois");
         return ResponseEntity.ok().body(this.acaoService.find(id));
     }
 
@@ -79,6 +95,8 @@ public class AcaoResource implements AcaoResourceOpenApi {
                                                                     @RequestParam(value = SORT_DIRECTION_PARAM, required = false) final Sorter.Direction sortDirection,
                                                                     @RequestParam(value = PAGE_PARAM, required = false) final Long page) {
         Query<Acao> query =  this.acaoService.returnQueryAcao(descricao, instancia, idPratica, sortProperty, sortDirection, page);
+        logger.info("Olá mundo");
+        logger.error("Teste dois");
         return ResponseEntity.ok(Hateoas.pageResources(
                 acaoService.findQuery(query).stream().map(Hateoas::toResource).collect(Collectors.toList()),
                 acaoService.count(query),
