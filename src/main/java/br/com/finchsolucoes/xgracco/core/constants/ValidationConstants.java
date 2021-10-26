@@ -15,6 +15,7 @@ public interface ValidationConstants {
     String ERRO_TAMANHO_ANEXO_EMAIL = "erro.tamanho.anexo.email";
     String ERRO_ASSUNTO_EMAIL = "erro.assunto.email";
     String ERRO_COMPRESSAO_ANEXO_EMAIL = "erro.compressao.anexo.email";
+    String ENTITY_ID_EQUALS_ID_FATHER = "entity.id.equals.id.father";
 
 
 }
