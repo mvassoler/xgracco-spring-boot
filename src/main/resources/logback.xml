@@ -10,4 +10,27 @@
         <appender-ref ref="GELF" />
     </root>
 
+    <logger name="br.com.finchsolucoes.xgracco">
+        <level value="INFO"/>
+    </logger>
+
+    <logger name="springfox.documentation">
+        <level value="ERROR"/>
+    </logger>
+
+    <logger name="org.springframework">
+        <level value="ERROR"/>
+    </logger>
+
+    <logger name="org.hibernate">
+        <level value="ERROR"/>
+    </logger>
+
+    <logger name="org.hibernate.SQL">
+        <level value="ERROR"/>
+    </logger>
+
+    <logger name="org.hibernate.type">
+        <level value="ERROR"/>
+    </logger>
 </configuration>

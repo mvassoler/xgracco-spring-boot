@@ -50,7 +50,6 @@ public class VaraResource implements VaraResourceOpenApi {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasPermission(#usuario, 'gestao-processos:cadastros:processo:varas:incluir')")
     public ResponseEntity<ResponseDTO<VaraDTO>> create(@RequestBody @Valid final VaraDTO vara) {
-        logger.info("Olá mundo");
         return ResponseEntity.ok(varaService.add(vara));
     }
 
@@ -58,7 +57,6 @@ public class VaraResource implements VaraResourceOpenApi {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasPermission(#usuario, 'gestao-processos:cadastros:processo:varas:editar')")
     public ResponseEntity<ResponseDTO<VaraDTO>> update(@PathVariable("id") final Long id, @RequestBody @Valid VaraDTO vara) {
-        logger.info("Olá mundo");
         return ResponseEntity.ok(this.varaService.update(id,vara));
     }
 
@@ -66,14 +64,12 @@ public class VaraResource implements VaraResourceOpenApi {
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasPermission(#usuario, 'gestao-processos:cadastros:processo:varas:excluir')")
     public ResponseEntity<ResponseDTO<DeletedDTO>> remove(@PathVariable("id") final Long id) {
-        logger.info("Olá mundo");
         return ResponseEntity.ok(this.varaService.delete(id));
     }
 
     @Override
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO<VaraDTO>> findById(@PathVariable("id") final Long id) {
-        logger.info("Olá mundo");
         return ResponseEntity.ok().body(this.varaService.find(id));
     }
 
@@ -86,7 +82,6 @@ public class VaraResource implements VaraResourceOpenApi {
                                                                  @RequestParam(value = SORT_DIRECTION_PARAM, required = false) final Sorter.Direction sortDirection,
                                                                  @RequestParam(value = PAGE_PARAM, required = false) final Long page) {
         Query<Vara> query =  this.varaService.returnQueryVara(descricao, instancia, tipoJustica, sortProperty, sortDirection, page);
-        logger.info("Olá mundo");
         return ResponseEntity.ok(Hateoas.pageResources(
                 varaService.findQuery(query).stream().map(Hateoas::toResource).collect(Collectors.toList()),
                 varaService.count(query),
