@@ -1,0 +1,32 @@
+begin transaction;
+INSERT INTO public.parametroglobal (id,chave,classe,descricao,valor) VALUES
+                                                                         (15,'tema',NULL,'Temas disponíveis: 1 = Padrão, 2 = Contraste','1'),
+                                                                         (2,'ParametrosDashboardCoordenadorOperacional.qtdeNomesGraficoProdutividade','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosDashboardCoordenadorOperacional','Quantidade de nomes para serem exibidos no gráfico de produtividade','7'),
+                                                                         (13,'ParametrosEmail.proxyMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','Proxy de E-mail','false'),
+                                                                         (14,'ParametrosFila.horasProdutividade','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosFila','Horas consideradas para gráfico da Fila','5'),
+                                                                         (18,'ParametrosModelo.modeloEstilo','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosModelo','Estilo do Modelo',NULL),
+                                                                         (20,'ParametrosEmail.portaProxyMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','Porta do Proxy de E-mail','0'),
+                                                                         (21,'ParametrosDashboardCoordenadorOperacional.intervaloFiltroData','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosDashboardCoordenadorOperacional','Intervalo (em dias) para trazer o filtro inicial do gráfico de produtividade','6'),
+                                                                         (22,'ParametrosSistema.idClienteFinch','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosSistema','ID Cliente Finch','0'),
+                                                                         (23,'ParametrosFaturamento.dataBloqueio','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosFaturamento','Data de Bloqueio',NULL),
+                                                                         (3,'ParametrosEmail.autenticacaoMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','Autenticação de E-mail','true');
+INSERT INTO public.parametroglobal (id,chave,classe,descricao,valor) VALUES
+                                                                         (4,'ParametrosEmail.enderecoProxyMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','Endereço do Proxy de E-mail',''),
+                                                                         (1,'ParametrosEmail.portaMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','Porta do Servidor de E-mail','465'),
+                                                                         (6,'ParametrosEmail.emailRemetenteMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','E-mail Remente','noreply@dataim.com.br'),
+                                                                         (11,'ParametrosEmail.usuarioMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','Usuário de E-mail','noreply@dataim.com.br'),
+                                                                         (5,'ParametrosEmail.senhaMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','Senha de E-mail','#720910@991A'),
+                                                                         (17,'ParametrosEmail.tlsMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','TLS E-mail','false'),
+                                                                         (7,'ParametrosEmail.sslMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','SSL E-mail','true'),
+                                                                         (12,'ParametrosEmail.servidorMail','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail','Servidor de E-mail','email-ssl.com.br'),
+                                                                         (8,'ParametrosPublicacaoEnforce.url','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosPublicacaoEnforce','','https://api-ext.enforcegroup.com.br/juris'),
+                                                                         (9,'ParametrosPublicacaoEnforce.usuario','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosPublicacaoEnforce','','enforce@enforcegroup.com.br');
+INSERT INTO public.parametroglobal (id,chave,classe,descricao,valor) VALUES
+                                                                         (10,'ParametrosPublicacaoEnforce.senha','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosPublicacaoEnforce','','Enforce@enforce01'),
+                                                                         (24,'ParametrosRotinasAgendadas.agendamentoRotinas.autocorrecao.tempo','br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosRotinasAgendadas','Tempo para autocorreção de execuções de rotinas agendadas (Valor em Horas)','12'),
+                                                                         (28,'ParametroListaDePossiveisNomesProxy',NULL,'Lista com os possíveis nomes de parâmetros que passam pelo proxy','X-Forwarded-For,Proxy-Client-IP,WL-Proxy-Client-IP,HTTP_X_FORWARDED_FOR,HTTP_X_FORWARDED,HTTP_X_CLUSTER_CLIENT_IP,HTTP_CLIENT_IP,HTTP_FORWARDED_FOR,HTTP_FORWARDED,HTTP_VIA,REMOTE_ADDR,X-REAL-IP'),
+                                                                         (26,'ParametroTimeIdleFrontend','','Controla o tempo máximo em minutos que o sistema pode ficar ocioso com a sessão ativa (Máximo: 60 minutos)','180'),
+                                                                         (27,'ParametroTempoVidaToken',NULL,'Controla o tempo do token da aplicação em segundos (Máximo: 3600 segundos = 1 hora)','3600'),
+                                                                         (25,'ParametroTimeoutFrontend','','Controla em segundos o tempo que a aplicação deve aguardar comunicação antes de invalidar a sessão (Mínimo: 30 segundos)','180');
+
+commit;

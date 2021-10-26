@@ -265,8 +265,8 @@
 //    }
 //
 //    @Transactional
-//    public RetornoMetodo registrar(Processo processo, Pessoa usuario) {
-//        RetornoMetodo retorno = new RetornoMetodo();
+//    public RetornoMetodoDTO registrar(Processo processo, Pessoa usuario) {
+//        RetornoMetodoDTO retorno = new RetornoMetodoDTO();
 //
 //        List<ProcessoRelacionado> processosRelacionados = null;
 //        if(processo != null && processo.getId() != null) {
@@ -549,7 +549,7 @@
 //
 //            /* Verifica se o usuário está encerrando o processo */
 //            if (processo.getStatus().equals(EnumProcessoEncerramento.ENCERRADO)) {
-//                RetornoMetodo retornoMetodo = validarPendenciaProcesso(processo);
+//                RetornoMetodoDTO retornoMetodo = validarPendenciaProcesso(processo);
 //                if (!retornoMetodo.isSucesso()) {
 //                    return retornoMetodo;
 //                }
@@ -1814,8 +1814,8 @@
 //        }
 //    }
 //
-//    public RetornoMetodo ativarProcessoEncerrado(Processo processo) {
-//        RetornoMetodo retorno = new RetornoMetodo();
+//    public RetornoMetodoDTO ativarProcessoEncerrado(Processo processo) {
+//        RetornoMetodoDTO retorno = new RetornoMetodoDTO();
 //        try {
 //            if (processo.getStatus() == EnumProcessoEncerramento.ENCERRADO) {
 //                processo.setStatus(EnumProcessoEncerramento.ATIVO);
@@ -1854,8 +1854,8 @@
 //        return false;
 //    }
 //
-//    public RetornoMetodo update(Processo processo, String colunas, Object... where) {
-//        RetornoMetodo retornoMetodo = new RetornoMetodo();
+//    public RetornoMetodoDTO update(Processo processo, String colunas, Object... where) {
+//        RetornoMetodoDTO retornoMetodo = new RetornoMetodoDTO();
 //
 //        try {
 //            processoDao.updateSomeColumns(processo, colunas, where);
@@ -1868,8 +1868,8 @@
 //        return retornoMetodo;
 //    }
 //
-//    public RetornoMetodo update(Processo processo, Path... colunas) {
-//        RetornoMetodo retornoMetodo = new RetornoMetodo();
+//    public RetornoMetodoDTO update(Processo processo, Path... colunas) {
+//        RetornoMetodoDTO retornoMetodo = new RetornoMetodoDTO();
 //
 //        try {
 //            processoDao.updateColumns(processo, colunas);
@@ -1998,20 +1998,20 @@
 //    }
 //
 //    @Transactional
-//    public RetornoMetodo criarRelacao(final Long idProcesso, final Long idProcessoRelacionado) {
+//    public RetornoMetodoDTO criarRelacao(final Long idProcesso, final Long idProcessoRelacionado) {
 //
 //        if (idProcesso.equals(idProcessoRelacionado)) {
-//            return new RetornoMetodo(false, Util.retornaMensagem("relacionados.erro.autorelacionamento"));
+//            return new RetornoMetodoDTO(false, Util.retornaMensagem("relacionados.erro.autorelacionamento"));
 //        }
 //
 //        Processo processo = processoDao.findById(idProcesso);
 //        Processo processoRelacionado = processoDao.findById(idProcessoRelacionado);
 //        if (processo.getProcessosRelacionados().stream().anyMatch(p -> p.getId().equals(idProcessoRelacionado))
 //                || processo.getRelacionadoEm().stream().anyMatch(p -> p.getId().equals(idProcessoRelacionado))) {
-//            return new RetornoMetodo(false, Util.retornaMensagem("relacionados.erro.existente"));
+//            return new RetornoMetodoDTO(false, Util.retornaMensagem("relacionados.erro.existente"));
 //        }
 //
-//        RetornoMetodo retornoMetodo = new RetornoMetodo();
+//        RetornoMetodoDTO retornoMetodo = new RetornoMetodoDTO();
 //        retornoMetodo.setSucesso(processo.getProcessosRelacionados().add(processoRelacionado));
 //        if (StringUtils.isBlank(retornoMetodo.getMensagem())) {
 //            retornoMetodo.setMensagem(Util.retornaMensagem(retornoMetodo.isSucesso() ? "relacionados.create.sucesso" : "relacionados.create.erro"));
@@ -2177,8 +2177,8 @@
 //        }
 //    }
 //
-//    public RetornoMetodo validarPendenciaProcesso(Processo processo) {
-//        RetornoMetodo retorno = new RetornoMetodo();
+//    public RetornoMetodoDTO validarPendenciaProcesso(Processo processo) {
+//        RetornoMetodoDTO retorno = new RetornoMetodoDTO();
 //        retorno.setSucesso(Boolean.TRUE);
 //        /* Verifica se há desdobramentos para este processo */
 //        if (!verificarDesdobramentosAtivosProcesso(processo.getId())) {
@@ -2218,8 +2218,8 @@
 //        return false;
 //    }
 //
-//    private RetornoMetodo validarTrocaDeCarteira(Processo processo) {
-//        RetornoMetodo retorno = new RetornoMetodo();
+//    private RetornoMetodoDTO validarTrocaDeCarteira(Processo processo) {
+//        RetornoMetodoDTO retorno = new RetornoMetodoDTO();
 //        retorno.setSucesso(Boolean.FALSE);
 //
 //        try {

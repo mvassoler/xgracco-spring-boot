@@ -1,5 +1,6 @@
 package br.com.finchsolucoes.xgracco.legacy.mail;
 
+import br.com.finchsolucoes.xgracco.core.handler.exception.FileAttachmentException;
 import org.apache.chemistry.opencmis.client.api.Document;
 import org.apache.chemistry.opencmis.commons.data.ContentStream;
 import org.apache.commons.io.FileUtils;

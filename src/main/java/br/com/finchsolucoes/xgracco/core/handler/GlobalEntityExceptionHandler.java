@@ -384,6 +384,21 @@ public class GlobalEntityExceptionHandler extends ResponseEntityExceptionHandler
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
+    /**
+     * Handler para tratar ForbidenException, lançada pelos serviços.
+     *
+     * @param ex      a exception
+     * @return ResponseEntity como 403 e contendo mensagem no corpo do response.
+     */
+    @ExceptionHandler(FileAttachmentException.class)
+    public ResponseEntity<Object> forbidenException(final FileAttachmentException ex, WebRequest request) {
+        log.info("M=FileAttachmentException", ex);
+        HttpStatus status = BAD_REQUEST;
+        ErrorDetailsDTO error = createProblemBuilder(status, TitleValidationConstants.SEM_AUTORIZACAO, ex.getMessage(),
+                ((ServletWebRequest)request).getRequest().getRequestURL().toString());
+        return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
+    }
+
     @Override
     protected ResponseEntity<Object> handleBindException(final BindException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request){
         log.info("M=handleBindException", ex);
