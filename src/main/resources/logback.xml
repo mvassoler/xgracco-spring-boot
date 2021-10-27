@@ -33,4 +33,5 @@
     <logger name="org.hibernate.type">
         <level value="ERROR"/>
     </logger>
+
 </configuration>
