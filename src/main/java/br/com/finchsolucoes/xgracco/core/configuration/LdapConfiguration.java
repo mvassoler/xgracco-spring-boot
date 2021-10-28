@@ -19,6 +19,8 @@
 //@Configuration
 //public class LdapConfiguration implements Serializable {
 //
+//TODO ACERTAR ESSA CLASSE
+
 //    @Autowired
 //    private Environment environment;
 //
