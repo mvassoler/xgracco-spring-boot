@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AcaoOutDTO {
+public class AcaoOutDTO extends RepresentationModel<AcaoOutDTO> {
 
     @ApiModelProperty(value = "ID da ação")
     @JsonProperty("id")

@@ -4,6 +4,7 @@ import br.com.finchsolucoes.xgracco.core.dto.DeletedDTO;
 import br.com.finchsolucoes.xgracco.core.dto.ResponseDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoInDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.output.AcaoOutDTO;
+import br.com.finchsolucoes.xgracco.domain.dto.output.PraticaRelationalOutDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
@@ -38,7 +39,7 @@ import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
 @Api(tags = "Ações")
 public class AcaoResource implements AcaoResourceOpenApi {
 
-    //TODO - ACERTAR ESTA CLASSE
+    //TODO - ACERTAR ESTA CLASSE - REVER AUTORITIES
 
     private static final Logger logger = LoggerFactory.getLogger(AcaoResource.class);
 
@@ -54,7 +55,7 @@ public class AcaoResource implements AcaoResourceOpenApi {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
     public ResponseEntity<ResponseDTO<AcaoOutDTO>> create(@RequestBody @Valid final AcaoInDTO dto) {
-        return ResponseEntity.ok(acaoService.add(dto));
+        return ResponseEntity.ok(this.acaoService.add(dto));
     }
 
     @Override
@@ -75,7 +76,10 @@ public class AcaoResource implements AcaoResourceOpenApi {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_CREATE + ") or ("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
     public ResponseEntity<ResponseDTO<AcaoOutDTO>> findById(@PathVariable final Long id) {
-        return ResponseEntity.ok().body(this.acaoService.find(id));
+        //Utilizado o recurso para exemplo de emprego do cache-control para Cache de HTTP, não apague - MVASSOLER
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+                .body(this.acaoService.find(id));
     }
 
     @Override

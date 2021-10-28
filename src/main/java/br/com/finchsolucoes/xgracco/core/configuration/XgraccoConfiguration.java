@@ -1,6 +1,5 @@
 package br.com.finchsolucoes.xgracco.core.configuration;
 
-import br.com.finchsolucoes.xgracco.core.locale.MessageSourceFactory;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -30,7 +28,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.Properties;
 
 
 @Configuration
@@ -60,6 +57,10 @@ public class XgraccoConfiguration implements WebMvcConfigurer {
                 .allowedMethods("*");
     }
 
+    /**
+     * Configura a permissão da utilização das ETAGs nos Caches HTTP
+     * @return Filter
+     */
     @Bean
     public Filter shallowEtagHeaderFilter() {
         return new ShallowEtagHeaderFilter();
@@ -109,11 +110,6 @@ public class XgraccoConfiguration implements WebMvcConfigurer {
                 .registerModule(new Hibernate5Module().disable(Hibernate5Module.Feature.USE_TRANSIENT_ANNOTATION))
                 .registerModule(module);
     }
-
-
-
-
-
 
 
     //TODO - ACERTAR ESTA CLASSE - ORIGEM NO ACCOUNT-SERVICE

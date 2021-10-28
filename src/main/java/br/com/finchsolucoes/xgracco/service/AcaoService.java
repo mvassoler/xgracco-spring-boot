@@ -68,7 +68,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
     public ResponseDTO<AcaoOutDTO> add(AcaoInDTO dto){
         log.info("Procedido a criação da acao {} no acao-service.", dto.getDescricao());
         Acao acao = this.getModdelMapper().toEntityMapper(dto, this.getEntityClass());
-        AcaoOutDTO acaoOutDTO = this.getModdelMapper().toAcaoForAcaoOutDTO(this.acaoRepository.findById(this.saveEntity(acao).getId()).get());
+        AcaoOutDTO acaoOutDTO = this.getModdelMapper().toModel(this.acaoRepository.findById(this.saveEntity(acao).getId()).get());
         return ResponseDTO.<AcaoOutDTO>builder().data(acaoOutDTO).build();
     }
 
@@ -78,7 +78,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
         log.info("Procedido a atualização da acao {} no acao-service.", dto.getDescricao());
         Acao acao = this.getModdelMapper().toEntityMapper(dto, this.getEntityClass());
         acao.setId(id);
-        AcaoOutDTO acaoOutDTO = this.getModdelMapper().toAcaoForAcaoOutDTO(this.acaoRepository.findById(this.saveEntity(acao).getId()).get());
+        AcaoOutDTO acaoOutDTO = this.getModdelMapper().toModel(this.acaoRepository.findById(this.saveEntity(acao).getId()).get());
         return ResponseDTO.<AcaoOutDTO>builder().data(acaoOutDTO).build();
     }
 
@@ -92,7 +92,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
 
     @Override
     public ResponseDTO<AcaoOutDTO> find(Long id) throws EntityNotFoundException{
-        return ResponseDTO.<AcaoOutDTO>builder().data(this.getModdelMapper().toAcaoForAcaoOutDTO(this.findEntity(id))).build();
+        return ResponseDTO.<AcaoOutDTO>builder().data(this.getModdelMapper().toModel(this.findEntity(id))).build();
     }
 
     @Override
