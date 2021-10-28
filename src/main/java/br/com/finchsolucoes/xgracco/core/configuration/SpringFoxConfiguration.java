@@ -1,10 +1,15 @@
 package br.com.finchsolucoes.xgracco.core.configuration;
 
 import br.com.finchsolucoes.xgracco.domain.dto.ErrorDetailsDTO;
+import br.com.finchsolucoes.xgracco.resource.openapi.LinksModelOpenApi;
+import br.com.finchsolucoes.xgracco.resource.openapi.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,10 +62,13 @@ public class SpringFoxConfiguration implements WebMvcConfigurer {
                 .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
                 .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
                 .additionalModels(typeResolver.resolve(ErrorDetailsDTO.class))
+                .directModelSubstitute(PagedModel.class, PageableModelOpenApi.class)
+                .directModelSubstitute(Links.class, LinksModelOpenApi.class)
                 .ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class, File.class, InputStream.class)
                 .apiInfo(apiInfo())
                 .tags(new Tag("Ações", "Recursos do cadastro de Ações"),
                       new Tag("Permissões", "Recursos do cadastro de Permissões"),
+                      new Tag("Recursos", "Recursos de entrada da API"),
                       new Tag("Varas", "Recursos do cadastro de Varas"));
     }
 
