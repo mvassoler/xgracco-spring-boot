@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
-    <appender name="GELF" class="de.siegmar.logbackgelf.GelfUdpAppender">
-        <graylogHost>localhost</graylogHost>
-        <graylogPort>12201</graylogPort>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS, America/Sao_Paulo} %-5level [%logger] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
     </appender>
-
-    <root level="debug">
-        <appender-ref ref="GELF" />
+    <appender name="GELF" class="de.siegmar.logbackgelf.GelfUdpAppender">
+        <graylogHost>hom-graylog.finchsolucoes.com.br</graylogHost>
+        <graylogPort>9001</graylogPort>
+        <maxChunkSize>508</maxChunkSize>
+        <useCompression>true</useCompression>
+        <encoder class="de.siegmar.logbackgelf.GelfEncoder">
+            <staticField>AppName:X-GRACCO</staticField>
+            <staticField>AppTeam:Beer2Beer</staticField>
+            <staticField>AppGroup:Teste</staticField>
+        </encoder>
+    </appender>
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="GELF"/>
     </root>
 
     <logger name="br.com.finchsolucoes.xgracco">
@@ -33,5 +46,4 @@
     <logger name="org.hibernate.type">
         <level value="ERROR"/>
     </logger>
-
 </configuration>
