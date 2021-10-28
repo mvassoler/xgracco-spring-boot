@@ -19,7 +19,7 @@
 //@Configuration
 //public class LdapConfiguration implements Serializable {
 //
-//TODO ACERTAR ESSA CLASSE
+//TODO ACERTAR ESSA CLASSE E VOLTAR A DEPENDENCIA NO POM.XML
 
 //    @Autowired
 //    private Environment environment;
