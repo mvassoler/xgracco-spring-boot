@@ -15,7 +15,8 @@ import br.com.finchsolucoes.xgracco.domain.query.Sorter;
 import br.com.finchsolucoes.xgracco.domain.query.impl.VaraFilter;
 import br.com.finchsolucoes.xgracco.domain.repository.VaraRepository;
 import br.com.finchsolucoes.xgracco.domain.transformers.VaraTransformer;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +27,13 @@ import java.util.Objects;
 import static br.com.finchsolucoes.xgracco.core.constants.ValidationConstants.*;
 
 @Service
-@Slf4j
 public class VaraService extends CrudServiceAbstract<VaraDTO, VaraDTO, Long,VaraRepository, Vara, VaraTransformer> {
 
     private final MessageLocale messageLocale;
     private final VaraRepository varaRepository;
     private final VaraTransformer varaTransformer;
+
+    private static final Logger log = LoggerFactory.getLogger(VaraService.class);
 
     private static final String CONSTANTE = "{table}";
 
@@ -85,7 +87,8 @@ public class VaraService extends CrudServiceAbstract<VaraDTO, VaraDTO, Long,Vara
 
     @Override
     public ResponseDTO<VaraDTO> find(Long id) throws EntityNotFoundException {
-           return ResponseDTO.<VaraDTO>builder().data(this.getModdelMapper().toDtoMapper(this.findEntity(id), getDTOOUTClass())).build();
+        log.info("Procedido uma pesquisa de vara de ID {} no acao-service.", id.toString());
+        return ResponseDTO.<VaraDTO>builder().data(this.getModdelMapper().toDtoMapper(this.findEntity(id), getDTOOUTClass())).build();
     }
 
     @Override

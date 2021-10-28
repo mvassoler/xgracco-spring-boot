@@ -17,19 +17,17 @@ import br.com.finchsolucoes.xgracco.domain.query.impl.AcaoFilter;
 import br.com.finchsolucoes.xgracco.domain.repository.AcaoRepository;
 import br.com.finchsolucoes.xgracco.domain.repository.PraticaRepository;
 import br.com.finchsolucoes.xgracco.domain.transformers.AcaoTransformer;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 import static br.com.finchsolucoes.xgracco.core.constants.ValidationConstants.*;
 
 @Service
-@Slf4j
 public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long, AcaoRepository, Acao, AcaoTransformer> {
 
     private final AcaoRepository acaoRepository;
@@ -38,6 +36,8 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
     private final PraticaRepository praticaRepository;
 
     private static final String CONSTANTE = "{table}";
+
+    private static final Logger log = LoggerFactory.getLogger(AcaoService.class);
 
     public AcaoService(AcaoRepository acaoRepository, AcaoTransformer acaoTransformer, MessageLocale messageLocale, PraticaRepository praticaRepository) {
         this.acaoRepository = acaoRepository;
@@ -92,6 +92,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
 
     @Override
     public ResponseDTO<AcaoOutDTO> find(Long id) throws EntityNotFoundException{
+        log.info("Procedido uma pesquisa na acao de ID {} no acao-service.", id.toString());
         return ResponseDTO.<AcaoOutDTO>builder().data(this.getModdelMapper().toModel(this.findEntity(id))).build();
     }
 

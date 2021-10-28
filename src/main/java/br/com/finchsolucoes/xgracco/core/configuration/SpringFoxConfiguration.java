@@ -7,7 +7,6 @@ import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
@@ -34,6 +33,7 @@ import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 @Configuration
 @EnableSwagger2
@@ -53,8 +53,10 @@ public class SpringFoxConfiguration implements WebMvcConfigurer {
         var typeResolver = new TypeResolver();
         return new Docket(DocumentationType.OAS_30)
                 .select()
-                    .apis(RequestHandlerSelectors.basePackage("br.com.finchsolucoes.xgracco.resource"))
-                    .paths(PathSelectors.any())
+                    //.apis(RequestHandlerSelectors.basePackage("br.com.finchsolucoes.xgracco.resource"))
+                    .apis(RequestHandlerSelectors.any())
+                    .paths(Predicate.not(PathSelectors.regex("(/manage.*|/error)")))
+                    //.paths(PathSelectors.any())
                     .build()
                 .useDefaultResponseMessages(false)
                 .globalResponses(HttpMethod.GET, globalGetResponseMessages())
