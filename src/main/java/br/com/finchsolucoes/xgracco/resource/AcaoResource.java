@@ -4,7 +4,6 @@ import br.com.finchsolucoes.xgracco.core.dto.DeletedDTO;
 import br.com.finchsolucoes.xgracco.core.dto.ResponseDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoInDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.output.AcaoOutDTO;
-import br.com.finchsolucoes.xgracco.domain.dto.output.PraticaRelationalOutDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
@@ -13,8 +12,6 @@ import br.com.finchsolucoes.xgracco.hateoas.Hateoas;
 import br.com.finchsolucoes.xgracco.resource.openapi.AcaoResourceOpenApi;
 import br.com.finchsolucoes.xgracco.service.AcaoService;
 import io.swagger.annotations.Api;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.EntityModel;
@@ -23,9 +20,9 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.LogManager;
 import java.util.stream.Collectors;
 
 import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
@@ -44,8 +41,6 @@ public class AcaoResource implements AcaoResourceOpenApi {
     //TODO - ACERTAR ESTA CLASSE - REVER AUTORITIES
 
     private static final Logger logger = LoggerFactory.getLogger(AcaoResource.class);
-
-
 
     private final AcaoService acaoService;
 
