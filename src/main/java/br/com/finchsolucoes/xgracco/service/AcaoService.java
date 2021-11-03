@@ -17,19 +17,17 @@ import br.com.finchsolucoes.xgracco.domain.query.impl.AcaoFilter;
 import br.com.finchsolucoes.xgracco.domain.repository.AcaoRepository;
 import br.com.finchsolucoes.xgracco.domain.repository.PraticaRepository;
 import br.com.finchsolucoes.xgracco.domain.transformers.AcaoTransformer;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 import static br.com.finchsolucoes.xgracco.core.constants.ValidationConstants.*;
 
 @Service
-@Slf4j
 public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long, AcaoRepository, Acao, AcaoTransformer> {
 
     private final AcaoRepository acaoRepository;
@@ -38,6 +36,8 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
     private final PraticaRepository praticaRepository;
 
     private static final String CONSTANTE = "{table}";
+
+    private static final Logger log = LoggerFactory.getLogger(AcaoService.class);
 
     public AcaoService(AcaoRepository acaoRepository, AcaoTransformer acaoTransformer, MessageLocale messageLocale, PraticaRepository praticaRepository) {
         this.acaoRepository = acaoRepository;
@@ -49,7 +49,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
     @Override
     protected void beforeAdd(Acao entity) {
         if (this.getRepository().findByDescricao(entity.getDescricao()).isPresent()) {
-            log.error("Exceção gerada na gravação do Acao no acao-service. Exception: {} ." , messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
+            log.error("Exceção gerada na gravação da Acao no acao-service. Exception: {} ." , messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
             throw new BadRequestException( messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
         }
     }
@@ -58,7 +58,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
     protected void beforeUpdate(Acao entity, Acao entityDataBase) {
         if (!entityDataBase.getDescricao().equals(entity.getDescricao()) &&
                 this.getRepository().findByDescricao(entity.getDescricao()).isPresent()) {
-            log.error("Exceção gerada na atualização do Cliente no domain-service. Exception: {} ." , messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
+            log.error("Exceção gerada na atualização da Acao no acao-service. Exception: {} ." , messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
             throw new BadRequestException(messageLocale.validationMessageSource(ENTITY_IDENTIFICATION_ALREADY_EXIST));
         }
     }
@@ -68,7 +68,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
     public ResponseDTO<AcaoOutDTO> add(AcaoInDTO dto){
         log.info("Procedido a criação da acao {} no acao-service.", dto.getDescricao());
         Acao acao = this.getModdelMapper().toEntityMapper(dto, this.getEntityClass());
-        AcaoOutDTO acaoOutDTO = this.getModdelMapper().toAcaoForAcaoOutDTO(this.acaoRepository.findById(this.saveEntity(acao).getId()).get());
+        AcaoOutDTO acaoOutDTO = this.getModdelMapper().toModel(this.acaoRepository.findById(this.saveEntity(acao).getId()).get());
         return ResponseDTO.<AcaoOutDTO>builder().data(acaoOutDTO).build();
     }
 
@@ -78,21 +78,22 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
         log.info("Procedido a atualização da acao {} no acao-service.", dto.getDescricao());
         Acao acao = this.getModdelMapper().toEntityMapper(dto, this.getEntityClass());
         acao.setId(id);
-        AcaoOutDTO acaoOutDTO = this.getModdelMapper().toAcaoForAcaoOutDTO(this.acaoRepository.findById(this.saveEntity(acao).getId()).get());
+        AcaoOutDTO acaoOutDTO = this.getModdelMapper().toModel(this.acaoRepository.findById(this.saveEntity(acao).getId()).get());
         return ResponseDTO.<AcaoOutDTO>builder().data(acaoOutDTO).build();
     }
 
     @Transactional
     @Override
     public ResponseDTO<DeletedDTO> delete(Long id) throws EntityNotFoundException {
-        log.info("Procedido a exclusão do Cliente de ID {} no domain-service.", id.toString());
+        log.info("Procedido a exclusão da ação de ID {} no acao-service.", id.toString());
         this.deleteEntity(id);
         return ResponseDTO.<DeletedDTO>builder().data(DeletedDTO.setNewDeletedDTO(Acao.class, id)).build();
     }
 
     @Override
     public ResponseDTO<AcaoOutDTO> find(Long id) throws EntityNotFoundException{
-        return ResponseDTO.<AcaoOutDTO>builder().data(this.getModdelMapper().toAcaoForAcaoOutDTO(this.findEntity(id))).build();
+        log.info("Procedido uma pesquisa na acao de ID {} no acao-service.", id.toString());
+        return ResponseDTO.<AcaoOutDTO>builder().data(this.getModdelMapper().toModel(this.findEntity(id))).build();
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PermissaoJpaRepository {
+
     List<Permissao> findAll();
 
     List<Permissao> findByRoot();

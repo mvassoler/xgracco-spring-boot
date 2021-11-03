@@ -1,6 +1,6 @@
 package br.com.finchsolucoes.xgracco.domain.entity;
 
-import br.com.finchsolucoes.xgracco.legacy.beans.views.RetornoMetodo;
+import br.com.finchsolucoes.xgracco.domain.dto.output.RetornoMetodoDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.validation.ConstraintViolation;
@@ -23,9 +23,9 @@ public abstract class Entidade {
         return this == null || getId() == null;
     }
 
-    public <E> RetornoMetodo validar() {
+    public <E> RetornoMetodoDTO validar() {
         E obj = (E) this;
-        RetornoMetodo retorno = new RetornoMetodo();
+        RetornoMetodoDTO retorno = new RetornoMetodoDTO();
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<E>> constraintViolations = validator.validate(obj);

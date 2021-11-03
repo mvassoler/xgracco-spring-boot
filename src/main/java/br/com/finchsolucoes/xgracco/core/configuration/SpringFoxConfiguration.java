@@ -1,10 +1,14 @@
 package br.com.finchsolucoes.xgracco.core.configuration;
 
 import br.com.finchsolucoes.xgracco.domain.dto.ErrorDetailsDTO;
+import br.com.finchsolucoes.xgracco.resource.openapi.LinksModelOpenApi;
+import br.com.finchsolucoes.xgracco.resource.openapi.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,6 +33,7 @@ import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 @Configuration
 @EnableSwagger2
@@ -48,8 +53,10 @@ public class SpringFoxConfiguration implements WebMvcConfigurer {
         var typeResolver = new TypeResolver();
         return new Docket(DocumentationType.OAS_30)
                 .select()
-                    .apis(RequestHandlerSelectors.basePackage("br.com.finchsolucoes.xgracco.resource"))
-                    .paths(PathSelectors.any())
+                    //.apis(RequestHandlerSelectors.basePackage("br.com.finchsolucoes.xgracco.resource"))
+                    .apis(RequestHandlerSelectors.any())
+                    .paths(Predicate.not(PathSelectors.regex("(/manage.*|/error)")))
+                    //.paths(PathSelectors.any())
                     .build()
                 .useDefaultResponseMessages(false)
                 .globalResponses(HttpMethod.GET, globalGetResponseMessages())
@@ -57,9 +64,14 @@ public class SpringFoxConfiguration implements WebMvcConfigurer {
                 .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
                 .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
                 .additionalModels(typeResolver.resolve(ErrorDetailsDTO.class))
+                .directModelSubstitute(PagedModel.class, PageableModelOpenApi.class)
+                .directModelSubstitute(Links.class, LinksModelOpenApi.class)
                 .ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class, File.class, InputStream.class)
                 .apiInfo(apiInfo())
                 .tags(new Tag("Ações", "Recursos do cadastro de Ações"),
+                      new Tag("Perfis", "Recursos do cadastro de Perfis"),
+                      new Tag("Permissões", "Recursos do cadastro de Permissões"),
+                      new Tag("Recursos", "Recursos de entrada da API"),
                       new Tag("Varas", "Recursos do cadastro de Varas"));
     }
 

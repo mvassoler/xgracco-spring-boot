@@ -2,6 +2,7 @@ package br.com.finchsolucoes.xgracco.legacy.mail;
 
 import br.com.finchsolucoes.xgracco.domain.entity.Arquivo;
 
+import javax.mail.internet.MimeBodyPart;
 import java.io.File;
 import java.io.Serializable;
 
@@ -46,12 +47,11 @@ public class Attachment implements Serializable {
     public OpenCmisSession getOpenCmisSession() {
         return openCmisSession;
     }
+    */
 
     public MimeBodyPart create() {
         return this.type.create(this);
     }
-
-     */
 
     // modificador de acesso default (package)
     void setFile(File file) {

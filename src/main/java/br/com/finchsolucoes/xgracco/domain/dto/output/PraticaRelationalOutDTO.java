@@ -7,13 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 @ApiModel(value = "PRATICA_RELACAO_OUTPUT", description = "Representa o payload de saída das práticas relacionadas a entidade")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PraticaRelationalOutDTO {
+public class PraticaRelationalOutDTO extends RepresentationModel {
 
     @ApiModelProperty(value = "ID da pratica")
     @JsonProperty("id")

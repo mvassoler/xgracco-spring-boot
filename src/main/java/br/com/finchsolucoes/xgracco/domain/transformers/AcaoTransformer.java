@@ -6,6 +6,9 @@ import br.com.finchsolucoes.xgracco.domain.dto.output.AcaoOutDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Acao;
 import br.com.finchsolucoes.xgracco.domain.entity.Pratica;
 import br.com.finchsolucoes.xgracco.domain.repository.PraticaRepository;
+import br.com.finchsolucoes.xgracco.hateoas.XgraccoLinksHypermediaHateoas;
+import br.com.finchsolucoes.xgracco.resource.AcaoResource;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,12 +16,16 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-public class AcaoTransformer implements TransformerModelMapper<AcaoInDTO, Acao> {
+public class AcaoTransformer extends RepresentationModelAssemblerSupport<Acao, AcaoOutDTO>
+        implements TransformerModelMapper<AcaoInDTO, Acao>{
 
     private final PraticaRepository praticaRepository;
+    private final XgraccoLinksHypermediaHateoas xgraccoLinksHypermediaHateoas;
 
-    public AcaoTransformer(PraticaRepository praticaRepository) {
+    public AcaoTransformer(PraticaRepository praticaRepository, XgraccoLinksHypermediaHateoas xgraccoLinksHypermediaHateoas) {
+        super(AcaoResource.class, AcaoOutDTO.class);
         this.praticaRepository = praticaRepository;
+        this.xgraccoLinksHypermediaHateoas = xgraccoLinksHypermediaHateoas;
     }
 
     public AcaoOutDTO toAcaoForAcaoOutDTO(Acao entity){
@@ -47,5 +54,21 @@ public class AcaoTransformer implements TransformerModelMapper<AcaoInDTO, Acao> 
         }
         return acaoOutDTOS;
     }
+
+    @Override
+    public AcaoOutDTO toModel(Acao entity) {
+        AcaoOutDTO acaoOutDTO = this.toAcaoForAcaoOutDTO(entity);
+        acaoOutDTO.add(xgraccoLinksHypermediaHateoas.setLinkAcaoOutDTOSelf(acaoOutDTO));
+        acaoOutDTO.add(xgraccoLinksHypermediaHateoas.setLinkAcaoOutDTOCollection(
+                this.xgraccoLinksHypermediaHateoas.getLinkApiAcao(), this.xgraccoLinksHypermediaHateoas.getTemplatesAcao()));
+        if(Objects.nonNull(acaoOutDTO.getPraticas()) && !acaoOutDTO.getPraticas().isEmpty()){
+            acaoOutDTO.getPraticas().forEach(
+                    praticaRelationalOutDTO -> praticaRelationalOutDTO.add(xgraccoLinksHypermediaHateoas.setLinkPraticaRelationalDTOSelf(praticaRelationalOutDTO))
+            );
+        }
+        return  acaoOutDTO;
+    }
+
+
 
 }

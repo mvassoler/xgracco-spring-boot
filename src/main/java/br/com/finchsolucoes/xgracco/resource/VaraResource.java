@@ -12,17 +12,21 @@ import br.com.finchsolucoes.xgracco.hateoas.Hateoas;
 import br.com.finchsolucoes.xgracco.resource.openapi.VaraResourceOpenApi;
 import br.com.finchsolucoes.xgracco.service.VaraService;
 import io.swagger.annotations.Api;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
-
 
 /**
  * Endpoint REST da entidade {@link Vara}.
@@ -32,11 +36,10 @@ import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
  */
 @RestController
 @RequestMapping(value = "/api/varas", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = "Varas")
 public class VaraResource implements VaraResourceOpenApi {
 
     //TODO - ACERTAR ESTA CLASSE
-
+    private static final Logger logger = LoggerFactory.getLogger(VaraResource.class);
     private final VaraService varaService;
 
     public VaraResource(VaraService varaService) {
@@ -67,7 +70,17 @@ public class VaraResource implements VaraResourceOpenApi {
     @Override
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDTO<VaraDTO>> findById(@PathVariable("id") final Long id) {
-        return ResponseEntity.ok().body(this.varaService.find(id));
+        //Utilizado o recurso para exemplo de emprego do cache-control para Cache de HTTP, não apague - MVASSOLER
+        //diretriz cache private torna a resposta do cache apenas local
+        //diretriz cache public torna a resposta do cache local e compartilhada, e sem informação da diretriz, é a padrão
+        //diretriz noCache obriga que toda resposta cacheada seja validada no servidor, importante a utilização de ETAGS
+        //diretriz noStore remove o cache da resposta
+        return ResponseEntity.ok()
+                //.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
+                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+                //.cacheControl(CacheControl.noCache())
+                //.cacheControl(CacheControl.noStore())
+                .body(this.varaService.find(id));
     }
 
     @Override

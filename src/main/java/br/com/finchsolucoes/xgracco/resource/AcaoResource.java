@@ -12,13 +12,17 @@ import br.com.finchsolucoes.xgracco.hateoas.Hateoas;
 import br.com.finchsolucoes.xgracco.resource.openapi.AcaoResourceOpenApi;
 import br.com.finchsolucoes.xgracco.service.AcaoService;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
@@ -31,10 +35,9 @@ import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
  */
 @RestController
 @RequestMapping(value = "/api/acoes", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = "Ações")
 public class AcaoResource implements AcaoResourceOpenApi {
 
-    //TODO - ACERTAR ESTA CLASSE
+    //TODO - ACERTAR ESTA CLASSE - REVER AUTORITIES
 
     private final AcaoService acaoService;
 
@@ -46,7 +49,7 @@ public class AcaoResource implements AcaoResourceOpenApi {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
     public ResponseEntity<ResponseDTO<AcaoOutDTO>> create(@RequestBody @Valid final AcaoInDTO dto) {
-        return ResponseEntity.ok(acaoService.add(dto));
+        return ResponseEntity.ok(this.acaoService.add(dto));
     }
 
     @Override
@@ -67,7 +70,10 @@ public class AcaoResource implements AcaoResourceOpenApi {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("("+ AUTHORITY_DOMAIN_CREATE + ") or ("+ AUTHORITY_DOMAIN_UPDATE + ") or ("+ AUTHORITY_SUPORTE + ")")
     public ResponseEntity<ResponseDTO<AcaoOutDTO>> findById(@PathVariable final Long id) {
-        return ResponseEntity.ok().body(this.acaoService.find(id));
+        //Utilizado o recurso para exemplo de emprego do cache-control para Cache de HTTP, não apague - MVASSOLER
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+                .body(this.acaoService.find(id));
     }
 
     @Override

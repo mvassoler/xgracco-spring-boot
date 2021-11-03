@@ -13,7 +13,7 @@ public abstract class CrudServiceAbstract<DTOIN, DTOOUT, ID, REPOSITORY extends 
 
     protected abstract void beforeAdd(ENTITY entity);
 
-    protected abstract void beforeUpdate(ENTITY entityToPersist, ENTITY databaseEntity);
+    protected abstract void beforeUpdate(ENTITY entity, ENTITY entityDataBase);
 
     public abstract  ResponseDTO<DTOOUT> add(DTOIN dto);
 
