@@ -85,7 +85,7 @@ public class AcaoService extends CrudServiceAbstract<AcaoInDTO, AcaoOutDTO, Long
     @Transactional
     @Override
     public ResponseDTO<DeletedDTO> delete(Long id) throws EntityNotFoundException {
-        log.info("Procedido a exclusão do Cliente de ID {} no acao-service.", id.toString());
+        log.info("Procedido a exclusão da ação de ID {} no acao-service.", id.toString());
         this.deleteEntity(id);
         return ResponseDTO.<DeletedDTO>builder().data(DeletedDTO.setNewDeletedDTO(Acao.class, id)).build();
     }

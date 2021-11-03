@@ -133,7 +133,7 @@ public class PerfilRepositoryImpl extends AbstractJpaRepository<Perfil, Long> im
     }
 
     @Override
-    public Optional<Perfil> findById(Long id) {
+    public Optional<Perfil> findPerfilById(Long id) {
         final QPerfil qPerfil = QPerfil.perfil;
 
         return Optional.ofNullable(new JPAQueryFactory(entityManager)

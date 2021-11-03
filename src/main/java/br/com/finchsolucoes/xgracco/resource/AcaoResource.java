@@ -35,12 +35,9 @@ import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
  */
 @RestController
 @RequestMapping(value = "/api/acoes", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = "Ações")
 public class AcaoResource implements AcaoResourceOpenApi {
 
     //TODO - ACERTAR ESTA CLASSE - REVER AUTORITIES
-
-    private static final Logger logger = LoggerFactory.getLogger(AcaoResource.class);
 
     private final AcaoService acaoService;
 

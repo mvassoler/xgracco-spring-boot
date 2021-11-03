@@ -69,6 +69,7 @@ public class SpringFoxConfiguration implements WebMvcConfigurer {
                 .ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class, File.class, InputStream.class)
                 .apiInfo(apiInfo())
                 .tags(new Tag("Ações", "Recursos do cadastro de Ações"),
+                      new Tag("Perfis", "Recursos do cadastro de Perfis"),
                       new Tag("Permissões", "Recursos do cadastro de Permissões"),
                       new Tag("Recursos", "Recursos de entrada da API"),
                       new Tag("Varas", "Recursos do cadastro de Varas"));

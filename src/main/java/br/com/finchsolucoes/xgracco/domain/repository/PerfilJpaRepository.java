@@ -17,7 +17,7 @@ public interface PerfilJpaRepository {
 
     long count(Query<Perfil> query);
 
-    Optional<Perfil> findById(Long id);
+    Optional<Perfil> findPerfilById(Long id);
 
     List<Perfil> findByNome(Set<String> nomes);
 }

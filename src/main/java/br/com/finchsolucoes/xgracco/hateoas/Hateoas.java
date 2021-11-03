@@ -2,12 +2,14 @@ package br.com.finchsolucoes.xgracco.hateoas;
 
 import br.com.finchsolucoes.xgracco.domain.dto.input.*;
 import br.com.finchsolucoes.xgracco.domain.dto.output.AcaoOutDTO;
+import br.com.finchsolucoes.xgracco.domain.dto.output.PerfilOutDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.output.PermissaoOutDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.*;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.infra.ws.request.RecuperarForo;
 import br.com.finchsolucoes.xgracco.legacy.beans.parametros.ParametrosEmail;
 import br.com.finchsolucoes.xgracco.resource.AcaoResource;
+import br.com.finchsolucoes.xgracco.resource.PerfilResource;
 import br.com.finchsolucoes.xgracco.resource.VaraResource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.hateoas.EntityModel;
@@ -504,9 +506,9 @@ public class Hateoas implements Serializable {
         return resource;
     }
 
-    public static EntityModel<Perfil> toResource(Perfil perfil) {
-        final EntityModel<Perfil> resource = new EntityModel<>(perfil);
-        //resource.add(linkTo(methodOn(PerfilResource.class).findById(perfil.getId())).withSelfRel());
+    public static EntityModel<PerfilOutDTO> toResource(PerfilOutDTO perfil) {
+        final EntityModel<PerfilOutDTO> resource = new EntityModel<>(perfil);
+        resource.add(linkTo(methodOn(PerfilResource.class).findById(perfil.getId())).withSelfRel());
         return resource;
     }
 
