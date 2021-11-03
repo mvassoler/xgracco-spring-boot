@@ -36,7 +36,6 @@ import static br.com.finchsolucoes.xgracco.hateoas.Hateoas.*;
  */
 @RestController
 @RequestMapping(value = "/api/varas", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = "Varas")
 public class VaraResource implements VaraResourceOpenApi {
 
     //TODO - ACERTAR ESTA CLASSE

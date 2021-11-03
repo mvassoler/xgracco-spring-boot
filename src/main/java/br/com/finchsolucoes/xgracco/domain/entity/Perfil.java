@@ -2,7 +2,6 @@ package br.com.finchsolucoes.xgracco.domain.entity;
 
 import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.EntidadeAuditada;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +11,6 @@ import org.hibernate.envers.NotAudited;
 import org.springframework.hateoas.server.core.Relation;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,13 +39,9 @@ public class Perfil implements EntidadeAuditada {
     @Column(name = "ID")
     private Long id;
 
-    @NotBlank
-    @Size(min = 1, max = 100)
     @Column(name = "NOME")
     private String nome;
 
-    @NotBlank
-    @Size(min = 1, max = 200)
     @Column(name = "DESCRICAO")
     private String descricao;
 
@@ -57,7 +50,6 @@ public class Perfil implements EntidadeAuditada {
     @JoinTable(name = "PERFIL_PERMISSAO", joinColumns = @JoinColumn(name = "ID_PERFIL"), inverseJoinColumns = @JoinColumn(name = "ID_PERMISSAO"))
     private List<Permissao> permissoes;
 
-    @JsonIgnore
     @NotAudited
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "perfil")
     private List<Usuario> usuarios;

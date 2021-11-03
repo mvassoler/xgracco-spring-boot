@@ -20,6 +20,7 @@ public class RootEntryPointModelResource {
     public RootEntryPointModel root(){
         var rootEntryPointModel = new RootEntryPointModel();
         rootEntryPointModel.add(linkTo(AcaoResource.class).withRel("Ações"));
+        rootEntryPointModel.add(linkTo(PerfilResource.class).withRel("Perfil"));
         rootEntryPointModel.add(linkTo(PermissaoResource.class).withRel("Permissões"));
         rootEntryPointModel.add(linkTo(PraticaResource.class).withRel("Praticas"));
         rootEntryPointModel.add(linkTo(VaraResource.class).withRel("Varas"));

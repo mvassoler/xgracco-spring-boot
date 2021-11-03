@@ -14,6 +14,7 @@ import br.com.finchsolucoes.xgracco.domain.enums.EnumArea;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
 import br.com.finchsolucoes.xgracco.domain.repository.AcaoRepository;
 import br.com.finchsolucoes.xgracco.domain.repository.PraticaRepository;
+import br.com.finchsolucoes.xgracco.domain.transformers.AcaoTransformer;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -168,13 +169,7 @@ public class AcaoResourceIT extends FunctionalBaseTest {
         String path = ENDPOINT + "/" + this.ACOES.get(0).getId().toString();
         AcaoInDTO acaoDTO = AcaoInDTO.builder().descricao(descricao).build();
         String requestJson = objectMapper.writeValueAsString(acaoDTO);
-        AcaoOutDTO acaoResponsetDTO = AcaoOutDTO.builder()
-                .id(this.ACOES.get(0).getId())
-                .descricao(descricao)
-                .praticas(new ArrayList<>())
-                .instancias(new ArrayList<>())
-                .build();
-        String responseJson = objectMapper.writeValueAsString(acaoResponsetDTO);
+        String responseJson = "\"id\":" + this.ACOES.get(0).getId() + ",\"descricao\":\"Alterando a descricao\",\"instancias\":[],\"praticas\":[]";
         mvc.perform(put(path)
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -227,26 +222,22 @@ public class AcaoResourceIT extends FunctionalBaseTest {
         praticas.add(IdDTO.builder().id(this.PRATICAS.get(0).getId()).build());
         praticas.add(IdDTO.builder().id(this.PRATICAS.get(1).getId()).build());
 
-
         AcaoInDTO acaoDTO = AcaoInDTO.builder().descricao(descricao).instancias(instancias).praticas(praticas).build();
         String requestJson = objectMapper.writeValueAsString(acaoDTO);
         List<PraticaRelationalOutDTO> praticaOut = new ArrayList<>();
         praticaOut.add(PraticaRelationalOutDTO.builder().id(this.PRATICAS.get(0).getId()).descricao(this.PRATICAS.get(0).getDescricao()).build());
         praticaOut.add(PraticaRelationalOutDTO.builder().id(this.PRATICAS.get(1).getId()).descricao(this.PRATICAS.get(1).getDescricao()).build());
-        AcaoOutDTO acaoResponsetDTO = AcaoOutDTO.builder()
-                .id(this.ACOES.get(0).getId())
-                .descricao(descricao)
-                .praticas(praticaOut)
-                .instancias(instancias)
-                .build();
-        String responseJson = objectMapper.writeValueAsString(acaoResponsetDTO);
+
         mvc.perform(put(path)
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         mvc.perform(get(path)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(containsString(responseJson)));
+                .andExpect(content().string(containsString("\"instancias\":[\"PRIMEIRA\",\"SEGUNDA\"]")))
+                .andExpect(content().string(containsString("\"descricao\":\"Pratica um\"")))
+                .andExpect(content().string(containsString("\"descricao\":\"Pratica dois\"")));;
+
     }
 
     @Test
@@ -328,7 +319,7 @@ public class AcaoResourceIT extends FunctionalBaseTest {
                 .praticas(new ArrayList<>())
                 .instancias(new ArrayList<>())
                 .build();
-        String responseJson = objectMapper.writeValueAsString(acaoResponseDTO);
+        String responseJson = "\"id\":" + this.ACOES.get(0).getId().toString() + ",\"descricao\":\"Abrir processo\",\"instancias\":[],\"praticas\":[]";
         mvc.perform(get(path)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

@@ -10,14 +10,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.List;
-
-@ApiModel(value = "PERMISSAO_OUTPUT", description = "Representa o payload de saída de uma permissão")
+@ApiModel(value = "PERMISSAO_RELACAO_OUTPUT", description = "Representa o payload de saída das permissões relacionadas a entidade")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PermissaoOutDTO extends RepresentationModel<PermissaoOutDTO> {
+public class PermissaoRelationalOutDTO extends RepresentationModel<PermissaoRelationalOutDTO> {
 
     @ApiModelProperty(value = "ID da permissão")
     @JsonProperty("id")
@@ -39,11 +37,4 @@ public class PermissaoOutDTO extends RepresentationModel<PermissaoOutDTO> {
     @JsonProperty("tipo")
     private EnumTipoPermissao tipo;
 
-    @ApiModelProperty(value = "ID da permissão pai")
-    @JsonProperty("permissao_pai_id")
-    private Long permissaoPaiId;
-
-    @ApiModelProperty(value = "Permissões vinculadas")
-    @JsonProperty("permissões")
-    private List<PermissaoOutDTO> permissoes;
 }
