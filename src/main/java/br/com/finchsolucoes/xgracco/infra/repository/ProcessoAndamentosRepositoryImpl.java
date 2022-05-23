@@ -95,6 +95,8 @@ public class ProcessoAndamentosRepositoryImpl extends AbstractJpaRepository<Proc
         final QPerfil qPerfil = QPerfil.perfil;
         final QPermissao qPermissao = QPermissao.permissao;
         final QUsuarioEscritorio qUsuarioEscritorio = QUsuarioEscritorio.usuarioEscritorio;
+        final QUsuarioPerfil qUsuarioPerfil = QUsuarioPerfil.usuarioPerfil;
+
 
         jpaQuery.join(qProcesso.carteira, qCarteira);
         jpaQuery.where(qCarteira.in(filter.getCarteiras()));
@@ -107,7 +109,8 @@ public class ProcessoAndamentosRepositoryImpl extends AbstractJpaRepository<Proc
                 .select(qUsuarioEscritorio)
                 .from(qUsuarioEscritorio)
                 .join(qUsuarioEscritorio.usuario, qUsuario)
-                .join(qUsuario.perfil, qPerfil)
+                .join(qUsuario.perfis, qUsuarioPerfil)
+                .join(qUsuarioPerfil.perfil, qPerfil)
                 .join(qPerfil.permissoes, qPermissao)
                 .where(qPermissao.codigo.eq(Permissao.NOTIFICACOES_NOVOS_ANDAMENTOS))
                 .where(qUsuarioEscritorio.escritorio.eq(qProcesso.escritorio))

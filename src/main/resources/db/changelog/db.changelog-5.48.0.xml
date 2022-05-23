@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="delete-job-0-importacao-planilha" author="henrique.oliveira">
+        <delete tableName="QRTZ_CRON_TRIGGERS">
+            <where>TRIGGER_NAME = 'trigger0'</where>
+        </delete>
+        <delete tableName="QRTZ_FIRED_TRIGGERS">
+            <where>TRIGGER_NAME = 'trigger0'</where>
+        </delete>
+        <delete tableName="QRTZ_TRIGGERS">
+            <where>TRIGGER_NAME = 'trigger0'</where>
+        </delete>
+        <delete tableName="QRTZ_JOB_DETAILS">
+            <where>JOB_NAME = 'job0'</where>
+        </delete>
+    </changeSet>
+
+    <changeSet id="insert-rotina-importacao-planilha" author="henrique.oliveira">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="17"/>
+            <column name="DESCRICAO" value="Importação de Planilha"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="nathan.barbosa" id="Mudanças-partes-para-envolvidos">
+        <sql>
+            UPDATE PERMISSAO
+            SET DESCRICAO = 'Tipos de Envolvido'
+            WHERE ID = 233
+        </sql>
+        <sql>
+            UPDATE PERMISSAO
+            SET DESCRICAO = 'Posição dos Envolvidos'
+            WHERE ID = 183
+        </sql>
+        <sql>
+            UPDATE PERMISSAO
+            SET DESCRICAO = 'Envolvidos'
+            WHERE ID = 336
+        </sql>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="addColum-Tutela-Data_PublicacaoAgendamento">
+        <addColumn tableName="AGENDAMENTO">
+            <column name="DATAPUBLICACAO" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="addColum-Dados_Basicos-Data_PublicacaoAgendamento">
+        <addColumn tableName="DADOSBASICOSTAREFA">
+            <column name="DATA_PUBLICACAO" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="addColum-Dados_Basicos-Data_PublicacaoAgendamentoAud">
+        <addColumn tableName="DADOSBASICOSTAREFA_AUD">
+            <column name="DATA_PUBLICACAO" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

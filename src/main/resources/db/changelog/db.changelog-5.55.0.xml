@@ -1,0 +1,209 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--     PROCESSO      -->
+    <changeSet author="gabriel.ribeiro" id="create-table-classificacao">
+        <createTable tableName="CLASSIFICACAO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CLASSIFICACAO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="addColum-FK_CLASSIFICACAO">
+        <addColumn tableName="PROCESSO">
+            <column name="FK_CLASSIFICACAO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="create-fk-classificacao-processo">
+        <addForeignKeyConstraint baseColumnNames="FK_CLASSIFICACAO" baseTableName="PROCESSO"
+                                 constraintName="FK_CLASSIFICACAO_PROCESSO" referencedColumnNames="ID"
+                                 referencedTableName="CLASSIFICACAO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="insert-values-into-classificacao" author="gabriel.ribeiro" dbms="${dbmsAutoIncrement}">
+        <sql>
+            insert classificacao (DESCRICAO)
+            select distinct (processo.classificacao)
+            from processo
+            where processo.classificacao is not null and processo.classificacao != ''
+        </sql>
+    </changeSet>
+
+    <changeSet id="createSequence-classificacao" author="gabriel.ribeiro">
+        <createSequence sequenceName="SEQ_CLASSIFICACAO"/>
+    </changeSet>
+
+    <changeSet id="insert-values-into-classificacao" author="gabriel.ribeiro" dbms="${dbmsSequence}">
+        <sql>
+            insert into classificacao (id,descricao)
+            select NEXTVAL('SEQ_CLASSIFICACAO'), T.classificacao
+            from (select distinct (processo.classificacao) from processo
+                  where processo.classificacao is not null and processo.classificacao != '') as T
+        </sql>
+    </changeSet>
+
+    <changeSet id="update-processo-fk-classificacao" author="gabriel.ribeiro">
+        <sql>
+            update processo set fk_classificacao = (select id from classificacao where descricao = processo.classificacao)
+            where processo.id in (
+                select p.id
+                from processo p where p.classificacao in
+                                      (
+                                          select distinct p2.descricao from classificacao p2 where p2.descricao is not null and p2.descricao != ''
+                )
+                )
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-classificacao-AUD" author="gabriel.ribeiro">
+        <createTable tableName="CLASSIFICACAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CLASSIFICACAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CLASSIFICACAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="DESCRICAO" type="VARCHAR(255)"></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="addColum-FK_CLASSIFICACAO-AUD">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="FK_CLASSIFICACAO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="create-FK-CLASSIFICACAO-AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CLASSIFICACAO_AUD"
+                                 constraintName="FK_CLASSIFICACAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!--     PRE CADASTRO PROCESSO      -->
+
+    <changeSet author="gabriel.ribeiro" id="addColum-FK_CLASSIFICACAO-pre-cadastro-processo">
+        <addColumn tableName="PRE_CADASTRO_PROCESSO">
+            <column name="FK_CLASSIFICACAO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="create-fk-classificacao-pre-cadastro-processo">
+        <addForeignKeyConstraint baseColumnNames="FK_CLASSIFICACAO" baseTableName="PRE_CADASTRO_PROCESSO"
+                                 constraintName="FK_CLASSIFICACAO_PRE-CADASTRO-PROCESSO" referencedColumnNames="ID"
+                                 referencedTableName="CLASSIFICACAO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="insert-values-into-classificacao-pre-cadastro" author="gabriel.ribeiro" dbms="${dbmsAutoIncrement}">
+        <sql>
+            insert into classificacao(descricao)
+            select distinct (pcp.classificacao)
+            from PRE_CADASTRO_PROCESSO pcp where pcp.CLASSIFICACAO != '' and pcp.CLASSIFICACAO is not null and not EXISTS (select c.DESCRICAO from classificacao c where c.DESCRICAO = pcp.CLASSIFICACAO)
+        </sql>
+    </changeSet>
+
+    <changeSet id="insert-values-into-classificacao-pre-cadastro" author="gabriel.ribeiro" dbms="${dbmsSequence}">
+        <sql>
+            insert into classificacao (id,descricao)
+            select NEXTVAL('SEQ_CLASSIFICACAO'), T.classificacao
+            from (select distinct (pcp.classificacao)
+            from PRE_CADASTRO_PROCESSO pcp where pcp.CLASSIFICACAO != '' and pcp.CLASSIFICACAO is not null and not EXISTS (select c.DESCRICAO from classificacao c where c.DESCRICAO = pcp.CLASSIFICACAO)) as T
+        </sql>
+    </changeSet>
+
+    <changeSet id="update-processo-fk-classificacao-pre-cadastro" author="gabriel.ribeiro">
+        <sql>
+            update PRE_CADASTRO_PROCESSO  set fk_classificacao = (select id from classificacao where descricao = PRE_CADASTRO_PROCESSO.classificacao)
+            where PRE_CADASTRO_PROCESSO.id in (
+                select pcp.id
+                from PRE_CADASTRO_PROCESSO pcp where pcp.classificacao in
+                                      (
+                                          select distinct p2.descricao from classificacao p2 where p2.descricao is not null and p2.descricao != ''
+                )
+                )
+        </sql>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="insert-values-into-CLASSIFICACAO-AUD">
+        <sql>INSERT INTO CLASSIFICACAO_AUD (ID, DESCRICAO,  ID_AUD, TIPO_AUD)
+             SELECT ID, DESCRICAO,  (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM CLASSIFICACAO
+        </sql>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="addColum-FK_CLASSIFICACAO-AUD-pre-cadastro">
+        <addColumn tableName="PRE_CADASTRO_PROCESSO_AUD">
+            <column name="FK_CLASSIFICACAO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet author="gabriel.ribeiro" id="drop-column-classificacao">
+        <dropColumn tableName="PROCESSO" columnName="CLASSIFICACAO"/>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="drop-column-classificacao-AUD">
+        <dropColumn tableName="PROCESSO_AUD" columnName="CLASSIFICACAO"/>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="drop-column-classificacao-pre-cadastro">
+        <dropColumn tableName="PRE_CADASTRO_PROCESSO" columnName="CLASSIFICACAO"/>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="drop-column-classificacao-AUD-pre-cadastro">
+        <dropColumn tableName="PRE_CADASTRO_PROCESSO_AUD" columnName="CLASSIFICACAO"/>
+    </changeSet>
+
+    <changeSet author="henrique.oliveira" id="permission-classificacao">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="658"/>
+            <column name="DESCRICAO" value="Classificação"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="136"/>
+            <column name="ORDEM" valueNumeric="29"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:classificacao"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="659"/>
+            <column name="DESCRICAO" value="Incluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="658"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:classificacao:incluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="660"/>
+            <column name="DESCRICAO" value="Editar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="658"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:classificacao:editar"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="661"/>
+            <column name="DESCRICAO" value="Excluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="658"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:classificacao:excluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="662"/>
+            <column name="DESCRICAO" value="Duplicar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="658"/>
+            <column name="ORDEM" valueNumeric="4"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:classificacao:duplicar"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

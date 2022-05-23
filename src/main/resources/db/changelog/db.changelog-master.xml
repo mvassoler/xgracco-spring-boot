@@ -159,4 +159,31 @@
 
     <!--5.47.0-->
     <include file="db/changelog/db.changelog-5.47.0.xml"/>
+
+    <!--5.48.0-->
+    <include file="db/changelog/db.changelog-5.48.0.xml"/>
+
+    <!--5.49.0-->
+    <include file="db/changelog/db.changelog-5.49.0.xml"/>
+
+    <!--5.50.0-->
+    <include file="db/changelog/db.changelog-5.50.0.xml"/>
+
+    <!--5.52.0-->
+    <include file="db/changelog/db.changelog-5.52.0.xml"/>
+
+    <!--5.53.0-->
+    <include file="db/changelog/db.changelog-5.53.0.xml"/>
+
+    <!--5.54.0-->
+    <include file="db/changelog/db.changelog-5.54.0.xml"/>
+
+    <!--5.55.0-->
+    <include file="db/changelog/db.changelog-5.55.0.xml"/>
+
+    <!--5.56.0-->
+    <include file="db/changelog/db.changelog-5.56.0.xml"/>
+
+    <!--5.57.0-->
+    <include file="db/changelog/db.changelog-5.57.0.xml"/>
 </databaseChangeLog>

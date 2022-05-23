@@ -53,7 +53,7 @@ public class SpringFoxConfiguration implements WebMvcConfigurer {
         var typeResolver = new TypeResolver();
         return new Docket(DocumentationType.OAS_30)
                 .select()
-                    //.apis(RequestHandlerSelectors.basePackage("br.com.finchsolucoes.xgracco.resource"))
+                    .apis(RequestHandlerSelectors.basePackage("br.com.finchsolucoes.xgracco.resource"))
                     .apis(RequestHandlerSelectors.any())
                     .paths(Predicate.not(PathSelectors.regex("(/manage.*|/error)")))
                     //.paths(PathSelectors.any())

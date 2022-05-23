@@ -1,0 +1,92 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="insert-rotina-sincronizacao-usuario-okta" author="henrique.oliveira">
+        <insert tableName="ROTINA_JOB">
+            <column name="ID" valueNumeric="18"/>
+            <column name="DESCRICAO" value="Sincronização Usuário Okta"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="atualizar-values-processo-historico-character" author="henrique.oliveira" dbms="${dbmsAutoIncrement}">
+        <sql>
+            update ph set ph.antes = REPLACE(REPLACE(REPLACE(REPLACE(antes,'¤','R$ '),',','|'),'.',','),'|','.')
+            from processohistorico ph
+                where ph.id = (select phi.id
+                from processohistorico phi
+                where phi.antes like '¤%' and ph.id = phi.id
+                and (phi.informacao = 'Valor Causa' or phi.informacao = 'Valor Condenação' or phi.informacao = 'Valor Sentença')
+            );
+        </sql>
+        <sql>
+            update ph set ph.depois = REPLACE(REPLACE(REPLACE(REPLACE(depois,'¤','R$ '),',','|'),'.',','),'|','.')
+            from processohistorico ph
+                where ph.id = (select phi.id
+                from processohistorico phi
+                where phi.depois like '¤%' and ph.id = phi.id
+                and (phi.informacao = 'Valor Causa' or phi.informacao = 'Valor Condenação' or phi.informacao = 'Valor Sentença')
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="atualizar-values-processo-historico-dollar" author="henrique.oliveira" dbms="${dbmsAutoIncrement}">
+        <sql>
+            update ph set ph.antes = REPLACE(REPLACE(REPLACE(REPLACE(antes,'$','R$ '),',','|'),'.',','),'|','.') from processohistorico ph
+            where ph.id = (select phi.id
+                from processohistorico phi
+                where phi.antes like '$%' and ph.id = phi.id
+                and (phi.informacao = 'Valor Causa' or phi.informacao = 'Valor Condenação' or phi.informacao = 'Valor Sentença')
+            );
+        </sql>
+        <sql>
+            update ph set ph.depois = REPLACE(REPLACE(REPLACE(REPLACE(depois,'$','R$ '),',','|'),'.',','),'|','.') from processohistorico ph
+            where ph.id = (select phi.id
+                from processohistorico phi
+                where phi.depois like '$%' and ph.id = phi.id
+                and (phi.informacao = 'Valor Causa' or phi.informacao = 'Valor Condenação' or phi.informacao = 'Valor Sentença')
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="atualizar-values-processo-historico-character" author="henrique.oliveira" dbms="${dbmsSequence}">
+        <sql>
+            update PROCESSOHISTORICO ph set antes = REPLACE(REPLACE(REPLACE(REPLACE(antes,'¤','R$ '),',','|'),'.',','),'|','.')
+            where ph.id = (select phi.id
+                from processohistorico phi
+                where phi.antes like '¤%' and ph.id = phi.id
+                and (phi.informacao = 'Valor Causa' or phi.informacao = 'Valor Condenação' or phi.informacao = 'Valor Sentença')
+            );
+        </sql>
+        <sql>
+            update PROCESSOHISTORICO ph set depois = REPLACE(REPLACE(REPLACE(REPLACE(depois,'¤','R$ '),',','|'),'.',','),'|','.')
+            where ph.id = (select phi.id
+                from processohistorico phi
+                where phi.depois like '¤%' and ph.id = phi.id
+                and (phi.informacao = 'Valor Causa' or phi.informacao = 'Valor Condenação' or phi.informacao = 'Valor Sentença')
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="atualizar-values-processo-historico-dollar" author="henrique.oliveira" dbms="${dbmsSequence}">
+        <sql>
+            update PROCESSOHISTORICO ph set antes = REPLACE(REPLACE(REPLACE(REPLACE(antes,'$','R$ '),',','|'),'.',','),'|','.')
+            where ph.id = (select phi.id
+                from processohistorico phi
+                where phi.antes like '$%' and ph.id = phi.id
+                and (phi.informacao = 'Valor Causa' or phi.informacao = 'Valor Condenação' or phi.informacao = 'Valor Sentença')
+            );
+        </sql>
+        <sql>
+            update PROCESSOHISTORICO ph set depois = REPLACE(REPLACE(REPLACE(REPLACE(depois,'$','R$ '),',','|'),'.',','),'|','.')
+            where ph.id = (select phi.id
+                from processohistorico phi
+                where phi.depois like '$%' and ph.id = phi.id
+                and (phi.informacao = 'Valor Causa' or phi.informacao = 'Valor Condenação' or phi.informacao = 'Valor Sentença')
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

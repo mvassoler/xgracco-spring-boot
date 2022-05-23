@@ -1,0 +1,192 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="humberto.guerrer" id="altera o campo DESCRICAO da tabela FUNCAO de Operacional para Advogado Operacional">
+        <sql>
+            UPDATE FUNCAO
+            SET DESCRICAO = 'Advogado Operacional'
+            WHERE ID = 1
+        </sql>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="Retirada da 3o. Instancia e troca dos nomes das instancias">
+        <sql>
+            update desdobramento
+            set instancia_descricao = '1° Instância'
+            where instancia_descricao = '3° Instância';
+            update desdobramento_aud
+            set instancia_descricao = '1° Instância'
+            where instancia_descricao = '3° Instância';
+
+            update pre_cadastro_processo
+            set fk_instancia = 1
+            where fk_instancia = 3;
+            update pre_cadastro_processo_aud
+            set fk_instancia = 1
+            where fk_instancia = 3;
+            update processo
+            set fk_instancia = 1
+            where fk_instancia = 3;
+            update processo_aud
+            set fk_instancia = 1
+            where fk_instancia = 3;
+
+            delete
+            from decisao_instancia
+            where instancia_id = 3;
+            delete
+            from foro_instancia
+            where instancia_id = 3;
+            delete
+            from instancia_acao
+            where instancia_id = 3;
+            delete
+            from vara_instancia
+            where instancia_id = 3;
+
+            delete
+            from instancia
+            where id = 3;
+
+            update instancia
+            set descricao = 'STJ'
+            where id = 4;
+            update instancia
+            set descricao = 'STF'
+            where id = 5;
+        </sql>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="create-table-USUARIO-PERFIL">
+        <createTable tableName="USUARIO_PERFIL">
+            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_PERFIL"/>
+            </column>
+            <column name="FK_USUARIO" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_PERFIL"/>
+            </column>
+            <column name="FK_PERFIL" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_PERFIL"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Cria Sequence SEQ_FLUXOTRABALHOTAREFA  -->
+    <changeSet id="create-sequence-SEQ_USUARIOPERFIL" author="henrique.oliveira">
+        <createSequence sequenceName="SEQ_USUARIOPERFIL"/>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="add-foreign-key-usuario">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO" baseTableName="USUARIO_PERFIL"
+                                 constraintName="FK_USUARIO_PERFIL_USUARIO" referencedColumnNames="ID"
+                                 referencedTableName="USUARIO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="add-foreign-key-perfil">
+        <addForeignKeyConstraint baseColumnNames="FK_PERFIL" baseTableName="USUARIO_PERFIL"
+                                 constraintName="FK_USUARIO_PERFIL_PERFIL" referencedColumnNames="ID"
+                                 referencedTableName="PERFIL" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="insert-values-into-USUARIO-PERFIL" author="gabriel.ribeiro" dbms="${dbmsSequence}">
+        <sql>
+            insert into USUARIO_PERFIL (ID, FK_USUARIO, FK_PERFIL)
+            select NEXTVAL('SEQ_USUARIOPERFIL'), T.id, T.id_perfil
+            from (select id, id_perfil from usuario) as T
+        </sql>
+    </changeSet>
+
+
+    <changeSet id="create-Usuario-Perfil-AUD" author="gabriel.ribeiro">
+        <createTable tableName="USUARIO_PERFIL_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_PERFIL_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO_PERFIL_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="FK_USUARIO" type="BIGINT"/>
+            <column name="FK_PERFIL" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="create-FK-USUARIO-PERFIL-AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="USUARIO_PERFIL_AUD"
+                                 constraintName="FK_USUARIO_PERFIL_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+    <changeSet author="gabriel.ribeiro" id="insert-values-into-usuario-perfil-AUD">
+        <sql>INSERT INTO USUARIO_PERFIL_AUD (ID, ID_AUD, TIPO_AUD, FK_USUARIO, FK_PERFIL)
+             SELECT ID, (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD, FK_USUARIO, FK_PERFIL
+             FROM USUARIO_PERFIL
+        </sql>
+    </changeSet>
+
+    <changeSet id="insert-values-into-USUARIO-PERFIL" author="gabriel.ribeiro" dbms="${dbmsAutoIncrement}">
+        <sql>
+            insert
+            USUARIO_PERFIL (FK_USUARIO,FK_PERFIL)
+            select id, id_perfil
+            from usuario
+        </sql>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="drop-contraint-not-null-ID-PERFIL">
+        <dropNotNullConstraint columnName="ID_PERFIL" tableName="USUARIO" columnDataType="BIGINT"/>
+    </changeSet>
+
+    <!-- SEQUENCE -->
+    <changeSet id="createSequence-SEQ_USUARIO_RECURSO_ACESSADO" author="eloi.correia">
+        <createSequence sequenceName="SEQ_USUARIO_RECURSO_ACESSADO"/>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="criar-tabela-USUARIO-RECURSO-ACESSADO">
+        <createTable tableName="USUARIO_RECURSO_ACESSADO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USUARIO-RECURSO-ACESSADO"/>
+            </column>
+            <column name="FK_USUARIO" type="BIGINT"/>
+            <column name="USUARIO" type="VARCHAR(100)"/>
+            <column name="DATAHORA" type="DATETIME"/>
+            <column name="RECURSO" type="VARCHAR(255)"/>
+            <column name="PERMITIDO" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet author="eloi.correia" id="create-fk-FK_USUARIO-RECURSO-ACESSADO">
+        <addForeignKeyConstraint baseColumnNames="FK_USUARIO" baseTableName="USUARIO_RECURSO_ACESSADO"
+                                 constraintName="FK_USUARIO_USUARIO_RECURSO_ACESSADO"
+                                 referencedColumnNames="ID" referencedTableName="PESSOA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <!-- TIPO_PERMISSAO -->
+    <changeSet author="henrique.oliveira" id="tipo-permissao">
+        <insert tableName="TIPO_PERMISSAO">
+            <column name="ID" valueNumeric="5"/>
+            <column name="DESCRICAO" value="Sub Menu"/>
+        </insert>
+    </changeSet>
+
+    <!-- RELACIONAMENTOS -->
+    <changeSet author="eloi.correia" id="alter-table-usuarios">
+        <addColumn tableName="USUARIO">
+            <column name="ABAS" type="varchar(4000)"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- NOVO CAMPO DO MÉTODO HTTP PARA A ENTIDADE PERMISSAO - TAREFA T01-1936 - 16/02/2022-->
+    <changeSet author="marcos.vassoler" id="alter-table-permissao-add-column-metodo">
+        <addColumn tableName="PERMISSAO">
+            <column name="METODO" type="varchar(20)"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

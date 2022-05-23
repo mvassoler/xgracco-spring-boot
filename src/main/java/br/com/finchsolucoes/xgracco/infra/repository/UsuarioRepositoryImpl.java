@@ -34,16 +34,17 @@ public class UsuarioRepositoryImpl  extends AbstractJpaRepository<Usuario,Long> 
         final QEscritorio qEscritorio = QEscritorio.escritorio;
         final QPessoa qEscritorioPessoa = new QPessoa("escritorioPessoa");
         final QUsuarioEscritorio qUsuarioEscritorio = QUsuarioEscritorio.usuarioEscritorio;
+        final QUsuarioPerfil qUsuarioPerfil = QUsuarioPerfil.usuarioPerfil;
 
         return new JPAQueryFactory(entityManager)
                 .selectDistinct(qUsuario)
                 .from(qUsuario)
-                .innerJoin(qUsuario.pessoa, qPessoa).fetchJoin()
-                .innerJoin(qUsuario.perfil, qPerfil).fetchJoin()
+                .innerJoin(qUsuario.pessoa, qPessoa)
+                .innerJoin(qUsuario.perfis, qUsuarioPerfil)
                 .leftJoin(qUsuario.escritorios, qUsuarioEscritorio)
                 .leftJoin(qUsuarioEscritorio.escritorio, qEscritorio)
                 .leftJoin(qEscritorio.pessoa, qEscritorioPessoa)
-                .leftJoin(qUsuario.funcoes).fetchJoin()
+                .leftJoin(qUsuario.funcoes)
                 .fetch();
     }
 
@@ -55,12 +56,13 @@ public class UsuarioRepositoryImpl  extends AbstractJpaRepository<Usuario,Long> 
         final QEscritorio qEscritorio = QEscritorio.escritorio;
         final QPessoa qEscritorioPessoa = new QPessoa("escritorioPessoa");
         final QUsuarioEscritorio qUsuarioEscritorio = QUsuarioEscritorio.usuarioEscritorio;
+        final QUsuarioPerfil qUsuarioPerfil = QUsuarioPerfil.usuarioPerfil;
 
         final JPAQuery<Usuario> query = new JPAQueryFactory(entityManager)
                 .selectDistinct(qUsuario)
                 .from(qUsuario)
-                .innerJoin(qUsuario.pessoa, qPessoa).fetchJoin()
-                .innerJoin(qUsuario.perfil, qPerfil).fetchJoin()
+                .innerJoin(qUsuario.pessoa, qPessoa)
+                .innerJoin(qUsuario.perfis, qUsuarioPerfil)
                 .leftJoin(qUsuario.escritorios, qUsuarioEscritorio)
                 .leftJoin(qUsuarioEscritorio.escritorio, qEscritorio)
                 .leftJoin(qEscritorio.pessoa, qEscritorioPessoa)
@@ -259,12 +261,12 @@ public class UsuarioRepositoryImpl  extends AbstractJpaRepository<Usuario,Long> 
         final QCarteira qCarteira = QCarteira.carteira;
         final PathBuilder<Usuario> path = new PathBuilder<>(Usuario.class, "usuario");
         final QUsuarioEscritorio qUsuarioEscritorio = QUsuarioEscritorio.usuarioEscritorio;
-        final QImportacaoPlanilha qImportacaoPlanilha = QImportacaoPlanilha.importacaoPlanilha;
         final QUsuarioAcessoLog qUsuarioAcessoLog = QUsuarioAcessoLog.usuarioAcessoLog;
+        final QUsuarioPerfil qUsuarioPerfil = QUsuarioPerfil.usuarioPerfil;
+
 
         final JPAQuery<Usuario> jpaQuery = new JPAQueryFactory(entityManager)
                 .selectDistinct(QUsuario.create(
-                        qUsuario.id,
                         QPessoa.create(
                                 qPessoa.id,
                                 qPessoa.nomeRazaoSocial,
@@ -274,20 +276,17 @@ public class UsuarioRepositoryImpl  extends AbstractJpaRepository<Usuario,Long> 
                                 qPessoa.tipo,
                                 qPessoa.ativo
                         ),
+                        qUsuario.id,
                         qUsuario.login,
                         qUsuario.senha,
                         qUsuario.email,
                         qUsuario.bloqueado,
-                        QPerfil.create(
-                                qPerfil.id,
-                                qPerfil.nome,
-                                qPerfil.descricao
-                        ),
                         qUsuario.sistemaExternoUsuario
                 ))
                 .from(qUsuario)
                 .innerJoin(qUsuario.pessoa, qPessoa)
-                .innerJoin(qUsuario.perfil, qPerfil)
+                .leftJoin(qUsuario.perfis, qUsuarioPerfil)
+                .leftJoin(qUsuarioPerfil.perfil, qPerfil)
                 .leftJoin(qUsuario.escritorios, qUsuarioEscritorio)
                 .leftJoin(qUsuarioEscritorio.escritorio, qEscritorio)
                 .leftJoin(qUsuario.funcoes)
@@ -524,70 +523,19 @@ public class UsuarioRepositoryImpl  extends AbstractJpaRepository<Usuario,Long> 
         return jpaQuery;
     }
 
-
-    @Deprecated
-    public Optional<Usuario> findById(Long id) {
-        final QUsuario qUsuario = QUsuario.usuario;
-        final QPessoa qPessoa = QPessoa.pessoa;
-        final QPerfil qPerfil = QPerfil.perfil;
-
-        final Optional<Usuario> usuario = Optional.ofNullable(new JPAQueryFactory(entityManager)
-                .select(qUsuario)
-                .from(qUsuario)
-                .innerJoin(qUsuario.pessoa, qPessoa).fetchJoin()
-                .innerJoin(qUsuario.perfil, qPerfil).fetchJoin()
-                .leftJoin(qUsuario.funcoes).fetchJoin()
-                .where(qUsuario.id.eq(id))
-                .fetchOne());
-
-        if (usuario.isPresent()) {
-            final QEscritorio qEscritorio = QEscritorio.escritorio;
-            final QPessoa qEscritorioPessoa = new QPessoa("escritorioPessoa");
-            final QUsuarioEscritorio qUsuarioEscritorio = QUsuarioEscritorio.usuarioEscritorio;
-            final QUsuario qUser = QUsuario.usuario;
-
-            final List<UsuarioEscritorio> escritorios = new JPAQueryFactory(entityManager)
-                    .select(QUsuarioEscritorio.create(
-                            QUsuario.create(
-                                    qUser.id
-                            ),
-                            QEscritorio.create(
-                                    qEscritorio.id,
-                                    QPessoa.create(
-                                            qEscritorioPessoa.id,
-                                            qEscritorioPessoa.nomeRazaoSocial
-                                    )
-                            ),
-                            qUsuarioEscritorio.principal
-                    ))
-                    .from(qUsuarioEscritorio)
-                    .join(qUsuarioEscritorio.escritorio, qEscritorio)
-                    .join(qEscritorio.pessoa, qEscritorioPessoa)
-                    .join(qUsuarioEscritorio.usuario, qUser)
-                    .where(qUser.id.eq(id))
-                    .fetch();
-
-            if (CollectionUtils.isNotEmpty(escritorios)) {
-                usuario.ifPresent(user -> user.setEscritorios(escritorios));
-            }
-        }
-
-        return usuario;
-    }
-
     @Override
     public Optional<Usuario> findByLogin(String login) {
         final QUsuario qUsuario = QUsuario.usuario;
         final QPessoa qPessoa = QPessoa.pessoa;
-        final QPerfil qPerfil = QPerfil.perfil;
+        final QUsuarioPerfil qUsuarioPerfil = QUsuarioPerfil.usuarioPerfil;
 
         return Optional.ofNullable(
                 new JPAQueryFactory(entityManager)
                         .selectDistinct(qUsuario)
                         .from(qUsuario)
                         .innerJoin(qUsuario.pessoa, qPessoa).fetchJoin()
-                        .innerJoin(qUsuario.perfil, qPerfil).fetchJoin()
-                        .leftJoin(qUsuario.funcoes).fetchJoin()
+                        .innerJoin(qUsuario.perfis, qUsuarioPerfil).fetchJoin()
+                        .leftJoin(qUsuario.funcoes)
                         .where(qUsuario.login.eq(login))
                         .fetchOne());
     }
@@ -596,15 +544,15 @@ public class UsuarioRepositoryImpl  extends AbstractJpaRepository<Usuario,Long> 
     public Optional<Usuario> findByLoginExterno(String login) {
         final QUsuario qUsuario = QUsuario.usuario;
         final QPessoa qPessoa = QPessoa.pessoa;
-        final QPerfil qPerfil = QPerfil.perfil;
+        final QUsuarioPerfil qUsuarioPerfil = QUsuarioPerfil.usuarioPerfil;
 
         return Optional.ofNullable(
                 new JPAQueryFactory(entityManager)
                         .selectDistinct(qUsuario)
                         .from(qUsuario)
                         .innerJoin(qUsuario.pessoa, qPessoa).fetchJoin()
-                        .innerJoin(qUsuario.perfil, qPerfil).fetchJoin()
-                        .leftJoin(qUsuario.funcoes).fetchJoin()
+                        .leftJoin(qUsuario.perfis, qUsuarioPerfil).fetchJoin()
+                        .leftJoin(qUsuario.funcoes)
                         .where(qUsuario.login.eq(login))
                         .where(qUsuario.sistemaExternoUsuario.isNotNull())
                         .fetchOne());

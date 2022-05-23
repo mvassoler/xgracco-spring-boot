@@ -1,0 +1,149 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!-- Tables -->
+    <changeSet author="gabriel.ribeiro" id="create-table-orgao-2">
+        <createTable tableName="ORGAO">
+            <column autoIncrement="${autoIncrement}" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ORGAO"/>
+            </column>
+            <column name="DESCRICAO" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="addColum-FK_ORGAO-2">
+        <addColumn tableName="PROCESSO">
+            <column name="FK_ORGAO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="create-fk-orgao-processo-2">
+        <addForeignKeyConstraint baseColumnNames="FK_ORGAO" baseTableName="PROCESSO"
+                                 constraintName="FK_ORGAO_PROCESSO" referencedColumnNames="ID"
+                                 referencedTableName="ORGAO" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="insert-values-into-orgao-2" author="gabriel.ribeiro" dbms="${dbmsAutoIncrement}">
+        <sql>
+            insert orgao (DESCRICAO)
+            select distinct (processo.orgao)
+            from processo
+            where processo.orgao is not null and processo.orgao != ''
+        </sql>
+    </changeSet>
+
+    <changeSet id="createSequence-ORGAO" author="gabriel.ribeiro">
+        <createSequence sequenceName="SEQ_ORGAO"/>
+    </changeSet>
+
+    <changeSet id="insert-values-into-orgao-2" author="gabriel.ribeiro" dbms="${dbmsSequence}">
+        <sql>
+            insert into orgao (id,descricao)
+            select NEXTVAL('SEQ_ORGAO'), T.orgao
+            from (select distinct (processo.orgao) from processo
+                  where processo.orgao is not null and processo.orgao != '') as T
+        </sql>
+    </changeSet>
+
+    <changeSet id="update-processo-fk-orgao-2" author="gabriel.ribeiro">
+        <sql>
+            update processo set fk_orgao = (select id from orgao where descricao = processo.orgao)
+            where processo.id in (
+                select p.id
+                from processo p where p.orgao in
+                                      (
+                                          select distinct p2.descricao from orgao p2 where p2.descricao is not null and p2.descricao != ''
+                )
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-ORGAO-AUD" author="gabriel.ribeiro">
+        <createTable tableName="ORGAO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ORGAO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ORGAO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="DESCRICAO" type="VARCHAR(200)"></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="addColum-FK_ORGAO-AUD">
+        <addColumn tableName="PROCESSO_AUD">
+            <column name="FK_ORGAO" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="create-FK-ORGAO-AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="ORGAO_AUD"
+                                 constraintName="FK_ORGAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="insert-values-into-orgao-AUD">
+        <sql>INSERT INTO ORGAO_AUD (ID, DESCRICAO,  ID_AUD, TIPO_AUD)
+             SELECT ID, DESCRICAO,  (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD FROM ORGAO
+        </sql>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="drop-column-orgao">
+        <dropColumn tableName="PROCESSO" columnName="ORGAO"/>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="drop-column-orgao-AUD">
+        <dropColumn tableName="PROCESSO_AUD" columnName="ORGAO"/>
+    </changeSet>
+
+    <changeSet author="joaoguimaraes" id="permission-orgao">
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="653"/>
+            <column name="DESCRICAO" value="Órgãos"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="2"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="136"/>
+            <column name="ORDEM" valueNumeric="28"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:orgaos"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="654"/>
+            <column name="DESCRICAO" value="Incluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="653"/>
+            <column name="ORDEM" valueNumeric="1"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:orgaos:incluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="655"/>
+            <column name="DESCRICAO" value="Editar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="653"/>
+            <column name="ORDEM" valueNumeric="2"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:orgaos:editar"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="656"/>
+            <column name="DESCRICAO" value="Excluir"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="653"/>
+            <column name="ORDEM" valueNumeric="3"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:orgaos:excluir"/>
+        </insert>
+        <insert tableName="PERMISSAO">
+            <column name="ID" valueNumeric="657"/>
+            <column name="DESCRICAO" value="Duplicar"/>
+            <column name="ID_TIPO_PERMISSAO" valueNumeric="4"/>
+            <column name="ID_PERMISSAO_PAI" valueNumeric="653"/>
+            <column name="ORDEM" valueNumeric="4"/>
+            <column name="CODIGO" value="gestao-processos:cadastros:processo:orgaos:duplicar"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

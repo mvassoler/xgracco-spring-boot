@@ -3,6 +3,7 @@ package br.com.finchsolucoes.xgracco.infra.repository;
 import br.com.finchsolucoes.xgracco.domain.entity.Perfil;
 import br.com.finchsolucoes.xgracco.domain.entity.QPerfil;
 import br.com.finchsolucoes.xgracco.domain.entity.QUsuario;
+import br.com.finchsolucoes.xgracco.domain.entity.QUsuarioPerfil;
 import br.com.finchsolucoes.xgracco.domain.entity.Usuario;
 import br.com.finchsolucoes.xgracco.domain.query.Query;
 import br.com.finchsolucoes.xgracco.domain.query.impl.PerfilFilter;
@@ -46,13 +47,13 @@ public class PerfilRepositoryImpl extends AbstractJpaRepository<Perfil, Long> im
 
     @Override
     public List<Usuario> findByUsuario(Perfil perfil) {
-        final QPerfil qPerfil = QPerfil.perfil;
         final QUsuario qUsuario = QUsuario.usuario;
+        final QUsuarioPerfil qUsuarioPerfil = QUsuarioPerfil.usuarioPerfil;
         return new JPAQueryFactory(entityManager)
                 .select(qUsuario)
                 .from(qUsuario)
-                .join(qUsuario.perfil, qPerfil).fetchJoin()
-                .where(qPerfil.eq(perfil))
+                .join(qUsuario.perfis, qUsuarioPerfil).fetchJoin()
+                .where(qUsuarioPerfil.perfil.eq(perfil))
                 .fetch();
     }
 
@@ -100,8 +101,7 @@ public class PerfilRepositoryImpl extends AbstractJpaRepository<Perfil, Long> im
 
                     final JPQLQuery usuarioQuery = JPAExpressions
                             .select(qUsuario.count())
-                            .from(qUsuario)
-                            .where(qUsuario.perfil.eq(qPerfil));
+                            .from(qUsuario);
 
                     jpaQuery.where(perfilFilter.getUsuario() ? usuarioQuery.gt(0L) : usuarioQuery.eq(0L));
                 }

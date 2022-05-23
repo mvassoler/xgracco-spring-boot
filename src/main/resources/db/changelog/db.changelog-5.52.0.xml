@@ -1,0 +1,135 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="humberto.guerrer" id="inclusão da coluna VALORRISCO">
+        <addColumn tableName="PEDIDO">
+            <column name="VALORRISCO" type="DECIMAL(19,2)"></column>
+        </addColumn>
+        <addColumn tableName="PEDIDO_AUD">
+            <column name="VALORRISCO" type="DECIMAL(19,2)"></column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="create-Carteira-Evento-AUD" author="gabriel.ribeiro">
+        <createTable tableName="CARTEIRA_EVENTO_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_EVENTO_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_EVENTO_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="ID_CARTEIRA" type="BIGINT"></column>
+            <column name="ID_EVENTO" type="BIGINT"></column>
+            <column name="NOME" type="VARCHAR(100)"></column>
+            <column name="ATIVO" type="BOOLEAN"></column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="create-FK-Carteira-Evento-AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CARTEIRA_EVENTO_AUD"
+                                 constraintName="FK_CARTEIRA_EVENTO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="insert-values-into-carteira-evento-AUD">
+        <sql>INSERT INTO CARTEIRA_EVENTO_AUD (ID, ID_AUD, TIPO_AUD,ID_CARTEIRA,ID_EVENTO,NOME,ATIVO)
+             SELECT ID,  (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD, ID_CARTEIRA, ID_EVENTO, NOME, ATIVO FROM CARTEIRA_EVENTO
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-Carteira-Evento-Tarefa-AUD" author="gabriel.ribeiro">
+        <createTable tableName="CARTEIRA_EVENTO_TAREFA_AUD">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_EVENTO_TAREFA_AUD"/>
+            </column>
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARTEIRA_EVENTO_TAREFA_AUD"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="ID_CARTEIRA_EVENTO" type="BIGINT"></column>
+            <column name="ID_TAREFA" type="BIGINT"></column>
+            <column name="ID_TIPO_RESPONSAVEL" type="INTEGER"></column>
+            <column name="ID_TIPO_INTERVALO" type="INTEGER"></column>
+            <column name="INTERVALO" type="INTEGER"></column>
+            <column name="DIAS_UTEIS" type="BOOLEAN"></column>
+            <column name="ID_RESPONSAVEL" type="BIGINT"></column>
+            <column name="FK_FLUXOTRABALHOTAREFA" type="BIGINT"></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="create-FK-Carteira-Evento-Tarefa-AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CARTEIRA_EVENTO_TAREFA_AUD"
+                                 constraintName="FK_CARTEIRA_EVENTO_TAREFA_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="insert-values-into-carteira-evento-tarefa-AUD">
+        <sql>INSERT INTO CARTEIRA_EVENTO_TAREFA_AUD (ID, ID_AUD, TIPO_AUD,ID_CARTEIRA_EVENTO,ID_TAREFA,ID_TIPO_RESPONSAVEL,ID_TIPO_INTERVALO,INTERVALO,DIAS_UTEIS,ID_RESPONSAVEL,FK_FLUXOTRABALHOTAREFA)
+             SELECT ID,  (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD, ID_CARTEIRA_EVENTO,ID_TAREFA,ID_TIPO_RESPONSAVEL,ID_TIPO_INTERVALO,INTERVALO,DIAS_UTEIS,ID_RESPONSAVEL,FK_FLUXOTRABALHOTAREFA FROM CARTEIRA_EVENTO_TAREFA
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-Carteira-Evento-Funcao-AUD" author="gabriel.ribeiro">
+        <createTable tableName="CARTEIRA_EVENTO_FUNCAO_AUD">
+            <column name="ID_AUD" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIPO_AUD" type="INTEGER"/>
+            <column name="ID_CARTEIRA_EVENTO" type="BIGINT"></column>
+            <column name="ID_FUNCAO" type="BIGINT"></column>
+
+        </createTable>
+    </changeSet>
+    <changeSet author="gabriel.ribeiro" id="create-FK-Carteira-Evento-FUNCAO-AUD">
+        <addForeignKeyConstraint baseColumnNames="ID_AUD" baseTableName="CARTEIRA_EVENTO_FUNCAO_AUD"
+                                 constraintName="FK_CARTEIRA_EVENTO_FUNCAO_AUD" referencedColumnNames="ID"
+                                 referencedTableName="LOG_AUDITORIA" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet author="gabriel.ribeiro" id="insert-values-into-carteira-evento-funcao-AUD">
+        <sql>INSERT INTO CARTEIRA_EVENTO_FUNCAO_AUD (ID_AUD, TIPO_AUD,ID_CARTEIRA_EVENTO,ID_FUNCAO)
+             SELECT   (SELECT MIN(ID) FROM LOG_AUDITORIA), 0 AS TIPO_AUD, ID_CARTEIRA_EVENTO,ID_FUNCAO FROM CARTEIRA_EVENTO_FUNCAO
+        </sql>
+    </changeSet>
+
+    <!-- Adicionando o campo URL na tabela Permissoes -->
+    <changeSet author="MVASSOLER" id="permissao-add-column-url">
+        <addColumn tableName="permissao">
+            <column name="url" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="joao.guimaraes" id="change-CONTEUDO-column-length-to-max-default-at-PRE_CADASTRO_INFO_ADICIONAL">
+        <modifyDataType
+                tableName="PRE_CADASTRO_INFO_ADICIONAL"
+                columnName="CONTEUDO"
+                newDataType="VARCHAR(500)"
+        />
+    </changeSet>
+
+    <changeSet author="joao.guimaraes"
+               id="change-CONTEUDO-column-length-to-max-default-at-PRE_CADASTRO_INFO_ADICIONAL_AUD">
+        <modifyDataType
+                tableName="PRE_CADASTRO_INFO_ADICIONAL_AUD"
+                columnName="CONTEUDO"
+                newDataType="VARCHAR(500)"
+        />
+    </changeSet>
+
+    <changeSet author="joao.guimaraes"
+               id="update-TAMANHO-column-at-PRE_CADASTRO_INFO_ADICIONAL-where-value-ZERO-to-default-255">
+        <sql>
+            UPDATE CAMPO SET TAMANHO = 255 WHERE TAMANHO = 0
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
+

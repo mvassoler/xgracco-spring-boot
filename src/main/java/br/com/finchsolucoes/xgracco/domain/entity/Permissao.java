@@ -1,5 +1,6 @@
 package br.com.finchsolucoes.xgracco.domain.entity;
 
+import br.com.finchsolucoes.xgracco.domain.enums.EnumMetodo;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumTipoPermissao;
 import br.com.finchsolucoes.xgracco.domain.enums.converter.EnumTipoPermissaoConverter;
 import br.com.finchsolucoes.xgracco.core.validation.Exists;
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  * Permissão.
@@ -31,7 +33,7 @@ import java.util.Objects;
 @Data
 @Builder
 @AllArgsConstructor
-public class Permissao { //implements GrantedAuthority {
+public class Permissao implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
 
@@ -328,10 +330,10 @@ public class Permissao { //implements GrantedAuthority {
     public static final String PAINEIS_SLA_EXCLUIR = "gestao-processos:cadastros:sistema:paineis-sla:excluir";
     public static final String PAINEIS_SLA_INCLUIR = "gestao-processos:cadastros:sistema:paineis-sla:incluir";
     public static final String PARAMETROS = "gestao-processos:cadastros:sistema:parametros";
-    public static final String PARAMETROS_DUPLICAR = "gestao-processos:cadastros:sistema:parametros:duplicar";
     public static final String PARAMETROS_EDITAR = "gestao-processos:cadastros:sistema:parametros:editar";
-    public static final String PARAMETROS_EXCLUIR = "gestao-processos:cadastros:sistema:parametros:excluir";
-    public static final String PARAMETROS_INCLUIR = "gestao-processos:cadastros:sistema:parametros:incluir";
+    public static final String PARAMETROS_ESPECIFICO = "gestao-processos:cadastros:sistema:parametros:especifico";
+    public static final String PARAMETROS_ESPECIFICO_EDITAR = "gestao-processos:cadastros:sistema:parametros:especifico:editar";
+    public static final String PARAMETROS_ESPECIFICO_EXCLUIR = "gestao-processos:cadastros:sistema:parametros:especifico:excluir";
     public static final String DASHBOARD = "gestao-processos:dashboard";
     public static final String FERRAMENTAS = "gestao-processos:ferramentas";
     public static final String FATURAMENTO = "gestao-processos:ferramentas:faturamento";
@@ -497,20 +499,30 @@ public class Permissao { //implements GrantedAuthority {
     public static final String PROCESSO_CONSULTIVO = "gestao-processos:processo-consultivo";
     public static final String TAREFA_VENCENDO = "gestao-processos:notificacoes:tarefa-vencendo";
     public static final String USUARIOS_LOGADOS = "gestao-processos:ferramentas:usuarios-logados";
+    public static final String ORGAOS = "gestao-processos:cadastros:processo:orgaos";
+    public static final String CLASSIFICACAO = "gestao-processos:cadastros:processo:classificacao";
 
     @Id
     @Column(name = "ID")
     private Long id;
 
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "CODIGO")
     private String codigo;
 
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "DESCRICAO")
     private String descricao;
 
+    @NotNull
+    @Min(1)
+    @Max(10)
     @Column(name = "ORDEM")
     private Integer ordem;
 
+    @NotNull
     @Column(name = "ID_TIPO_PERMISSAO")
     @Convert(converter = EnumTipoPermissaoConverter.class)
     private EnumTipoPermissao tipo;
@@ -524,6 +536,13 @@ public class Permissao { //implements GrantedAuthority {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "permissaoPai")
     private List<Permissao> permissoes;
 
+    @Column(name = "url")
+    private String url;
+
+    @Column(name = "METODO")
+    @Enumerated(value = EnumType.STRING)
+    private EnumMetodo metodo;
+
     public Permissao() {
     }
 
@@ -531,14 +550,112 @@ public class Permissao { //implements GrantedAuthority {
         this.id = id;
     }
 
+    public Permissao(Long id, String codigo) {
+        this.id = id;
+        this.codigo = codigo;
+    }
+
     @QueryProjection
-    public Permissao(Long id, String codigo, String descricao, Integer ordem, EnumTipoPermissao tipo, Permissao permissaoPai) {
+    public Permissao(Long id, String codigo, String descricao, Integer ordem, EnumTipoPermissao tipo, Permissao permissaoPai, EnumMetodo metodo) {
         this.id = id;
         this.codigo = codigo;
         this.descricao = descricao;
         this.ordem = ordem;
         this.tipo = tipo;
         this.permissaoPai = permissaoPai;
+        this.metodo = metodo;
+    }
+
+    public Permissao(String codigo, String descricao, Integer ordem, EnumTipoPermissao tipo, String url, EnumMetodo metodo) {
+        this.codigo = codigo;
+        this.descricao = descricao;
+        this.ordem = ordem;
+        this.tipo = tipo;
+        this.url = url;
+        this.metodo = metodo;
+    }
+
+    @JsonIgnore
+    public String getAuthority() {
+        return getCodigo();
+    }
+
+    @JsonIgnore
+    @Transient
+    public Permissao getAuthorityXgracco() {
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Integer getOrdem() {
+        return ordem;
+    }
+
+    public void setOrdem(Integer ordem) {
+        this.ordem = ordem;
+    }
+
+    public EnumTipoPermissao getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(EnumTipoPermissao tipo) {
+        this.tipo = tipo;
+    }
+
+    public Permissao getPermissaoPai() {
+        return permissaoPai;
+    }
+
+    public void setPermissaoPai(Permissao permissaoPai) {
+        this.permissaoPai = permissaoPai;
+    }
+
+    public List<Permissao> getPermissoes() {
+        return permissoes;
+    }
+
+    public void setPermissoes(List<Permissao> permissoes) {
+        this.permissoes = permissoes;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public EnumMetodo getMetodo() {
+        return metodo;
+    }
+
+    public void setMetodo(EnumMetodo metodo) {
+        this.metodo = metodo;
     }
 
     @Override

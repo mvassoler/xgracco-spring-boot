@@ -1,0 +1,79 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="eloi.correia" id="adiciona a o id do token">
+        <addColumn tableName="USUARIO_ACESSO_LOG">
+            <column name="ID_TOKEN" type="VARCHAR(50)"></column>
+        </addColumn>
+
+        <createIndex indexName="idx_usuario_acesso_log_id_token" tableName="USUARIO_ACESSO_LOG">
+            <column name="ID_TOKEN"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="eloi.correia" id="informação de queda">
+        <addColumn tableName="USUARIO_ACESSO_LOG">
+            <column name="INFORMACAO_QUEDA" type="VARCHAR(255)"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="nathan.barbosa" id="dropar_vwcampo">
+        <dropView viewName="VW_CAMPO"/>
+    </changeSet>
+
+    <changeSet author="nathan.barbosa" id="aumentar-tamanho-da-descricao-da-Tabela-Campo-para-150">
+        <modifyDataType
+                tableName="campo"
+                columnName="descricao"
+                newDataType="VARCHAR(150)"
+        />
+    </changeSet>
+
+    <changeSet author="nathan.barbosa" id="aumentar-tamanho-da-descricao-da-Tabela-Campo_LOGeAUD-para-150">
+        <modifyDataType
+                tableName="campo_log"
+                columnName="descricao"
+                newDataType="VARCHAR(150)"
+        />
+        <modifyDataType
+                tableName="campo_aud"
+                columnName="descricao"
+                newDataType="VARCHAR(150)"
+        />
+    </changeSet>
+
+    <changeSet author="nathan.barbosa" id="create_table_vwcampo">
+        <createView viewName="VW_CAMPO">
+            SELECT
+            ID,
+            ATIVO,
+            DESCRICAO,
+            EXTENSAO,
+            OBRIGATORIO,
+            ORDEM,
+            SISTEMA,
+            TAMANHO,
+            TAMANHOMAXIMO,
+            TIPO_CAMPO,
+            TIPO_CAMPO_SISTEMA,
+            VISIVEL,
+            FK_FORMULARIO,
+            FK_GRUPOCAMPO,
+            CAST(ID AS CHAR) AS ID_NAME
+            FROM CAMPO
+        </createView>
+    </changeSet>
+
+    <changeSet author="humberto.guerrer" id="incluir a coluna RISCOATUALIZADO">
+        <addColumn tableName="PEDIDORESUMO">
+            <column name="RISCOATUALIZADO" type="DECIMAL(19,2)"></column>
+        </addColumn>
+        <addColumn tableName="PEDIDORESUMO_AUD">
+            <column name="RISCOATUALIZADO" type="DECIMAL(19,2)"></column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

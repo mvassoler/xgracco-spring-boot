@@ -2,7 +2,10 @@ package br.com.finchsolucoes.xgracco.domain.entity;
 
 import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.EntidadeAuditada;
 import br.com.finchsolucoes.xgracco.legacy.bussines.util.Util;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryProjection;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,9 +42,13 @@ public class Perfil implements EntidadeAuditada {
     @Column(name = "ID")
     private Long id;
 
+    @NotBlank
+    @Size(min = 1, max = 100)
     @Column(name = "NOME")
     private String nome;
 
+    @NotBlank
+    @Size(min = 1, max = 200)
     @Column(name = "DESCRICAO")
     private String descricao;
 
@@ -50,9 +57,14 @@ public class Perfil implements EntidadeAuditada {
     @JoinTable(name = "PERFIL_PERMISSAO", joinColumns = @JoinColumn(name = "ID_PERFIL"), inverseJoinColumns = @JoinColumn(name = "ID_PERMISSAO"))
     private List<Permissao> permissoes;
 
+    @JsonIgnore
     @NotAudited
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "perfil")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "perfis")
     private List<Usuario> usuarios;
+
+//    @NotAudited
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "perfil")
+//    private List<UsuarioPerfil> perfis;
 
     @Transient
     private LogAuditoria logAuditoria;
@@ -109,4 +121,5 @@ public class Perfil implements EntidadeAuditada {
     public String toString() {
         return nome;
     }
+
 }

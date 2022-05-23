@@ -1,0 +1,54 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="remover-perfil-parametro" author="eloi.correia">
+        <sql>
+            DELETE
+            FROM PERFIL_PERMISSAO
+            WHERE ID_PERMISSAO IN (264, 266, 267)
+        </sql>
+    </changeSet>
+
+    <changeSet id="remover-permissao-parametro" author="eloi.correia">
+        <sql>
+            DELETE
+            FROM PERMISSAO
+            WHERE ID IN (264, 266)
+        </sql>
+    </changeSet>
+
+    <changeSet id="renomear-parametro-para-historico" author="eloi.correia">
+        <sql>
+            update PERMISSAO
+            set DESCRICAO = 'Histórico de alterações',
+                CODIGO    = 'gestao-processos:cadastros:sistema:parametros:historico',
+                ordem     = 9
+            WHERE ID = 267
+        </sql>
+    </changeSet>
+
+    <changeSet id="insert-especifico" author="eloi.correia">
+        <sql>
+            INSERT INTO PERMISSAO (id, descricao, id_tipo_permissao, id_permissao_pai, ordem, codigo, url)
+            VALUES (663, 'Valor Específico para Usuário', 2, 263, 3, 'gestao-processos:cadastros:sistema:parametros:especifico', null)
+        </sql>
+    </changeSet>
+
+    <changeSet id="insert-especifico-editar" author="eloi.correia">
+        <sql>
+            INSERT INTO PERMISSAO (id, descricao, id_tipo_permissao, id_permissao_pai, ordem, codigo, url)
+            VALUES (664, 'Editar', 4, 663, 2, 'gestao-processos:cadastros:sistema:parametros:especifico:editar', null)
+        </sql>
+    </changeSet>
+
+    <changeSet id="insert-especifico-excluir" author="eloi.correia">
+        <sql>
+            INSERT INTO PERMISSAO (id, descricao, id_tipo_permissao, id_permissao_pai, ordem, codigo, url)
+            VALUES (665, 'Excluir', 4, 663, 3, 'gestao-processos:cadastros:sistema:parametros:especifico:excluir', null)
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
