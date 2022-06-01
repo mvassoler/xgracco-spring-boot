@@ -10,7 +10,6 @@ import br.com.finchsolucoes.xgracco.domain.query.Sorter;
 import br.com.finchsolucoes.xgracco.hateoas.Hateoas;
 import br.com.finchsolucoes.xgracco.resource.openapi.PerfilResourceOpenApi;
 import br.com.finchsolucoes.xgracco.service.PerfilService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
@@ -75,9 +74,6 @@ public class PerfilResource implements PerfilResourceOpenApi {
 
     @Override
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    @ApiOperation(value = "Retorna uma lista paginada com os perfis existentes.",
-            notes = "O objeto retornado contém informações de paginação.",
-            response = Perfil[].class)
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<PagedModel<EntityModel<PerfilOutDTO>>> find(@RequestParam(value = "nome", required = false) String nome,
                                                                       @RequestParam(value = "descricao", required = false) String descricao,

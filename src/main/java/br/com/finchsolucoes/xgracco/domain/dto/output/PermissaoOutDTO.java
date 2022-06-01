@@ -2,8 +2,7 @@ package br.com.finchsolucoes.xgracco.domain.dto.output;
 
 import br.com.finchsolucoes.xgracco.domain.enums.EnumTipoPermissao;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,38 +11,38 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
-@ApiModel(value = "PERMISSAO_OUTPUT", description = "Representa o payload de saída de uma permissão")
+@Schema(name = "PERMISSAO_OUTPUT", description = "Representa o payload de saída de uma permissão")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PermissaoOutDTO extends RepresentationModel<PermissaoOutDTO> {
 
-    @ApiModelProperty(value = "ID da permissão")
+    @Schema(name = "ID da permissão")
     @JsonProperty("id")
     private Long id;
 
-    @ApiModelProperty(value = "Código")
+    @Schema(name = "Código")
     @JsonProperty("codigo")
     private String codigo;
 
-    @ApiModelProperty(value = "Descrição")
+    @Schema(name = "Descrição")
     @JsonProperty("descricao")
     private String descricao;
 
-    @ApiModelProperty(value = "Ordem")
+    @Schema(name = "Ordem")
     @JsonProperty("ordem")
     private Integer ordem;
 
-    @ApiModelProperty(value = "Tipo")
+    @Schema(name = "Tipo")
     @JsonProperty("tipo")
     private EnumTipoPermissao tipo;
 
-    @ApiModelProperty(value = "ID da permissão pai")
+    @Schema(name = "ID da permissão pai")
     @JsonProperty("permissao_pai_id")
     private Long permissaoPaiId;
 
-    @ApiModelProperty(value = "Permissões vinculadas")
+    @Schema(name = "Permissões vinculadas")
     @JsonProperty("permissões")
     private List<PermissaoOutDTO> permissoes;
 }

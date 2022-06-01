@@ -1,8 +1,7 @@
 package br.com.finchsolucoes.xgracco.domain.dto.output;
 
 import br.com.finchsolucoes.xgracco.legacy.beans.interfaces.Identificavel;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +18,7 @@ import java.util.Map;
 /**
  * @author Marcelo Aguiar
  */
-@ApiModel(value = "RETORNO_METODO_DTO", description = "Representação de uma resposta genéric1")
+@Schema(name = "RETORNO_METODO_DTO", description = "Representação de uma resposta genéric1")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Data
@@ -27,34 +26,34 @@ import java.util.Map;
 @AllArgsConstructor
 public class RetornoMetodoDTO implements Serializable, Identificavel<Long> {
 
-    @ApiModelProperty(value = "sucesso")
+    @Schema(name = "sucesso")
     private boolean sucesso;
 
-    @ApiModelProperty(value = "mensagem")
+    @Schema(name = "mensagem")
     private String mensagem;
 
-    @ApiModelProperty(value = "pagina")
+    @Schema(name = "pagina")
     private String pagina;
 
-    @ApiModelProperty(value = "classe")
+    @Schema(name = "classe")
     private String classe;
 
-    @ApiModelProperty(value = "id_gerado")
+    @Schema(name = "id_gerado")
     private Long idGerado;
 
-    @ApiModelProperty(value = "valor")
+    @Schema(name = "valor")
     private String valor;
 
-    @ApiModelProperty(value = "exception")
+    @Schema(name = "exception")
     private String exception;
 
-    @ApiModelProperty(value = "objeto")
+    @Schema(name = "objeto")
     private Object objeto;
 
-    @ApiModelProperty(value = "objetos")
+    @Schema(name = "objetos")
     private List<Object> objetos;
 
-    @ApiModelProperty(value = "chave_valor")
+    @Schema(name = "chave_valor")
     private Map<String, Object> chaveValor;
 
     public RetornoMetodoDTO() {

@@ -2,15 +2,15 @@ package br.com.finchsolucoes.xgracco.resource.openapi;
 
 import br.com.finchsolucoes.xgracco.core.dto.ResponseDTO;
 import br.com.finchsolucoes.xgracco.domain.entity.Pratica;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
-@Api(tags = "Praticas")
+@Tag(name = "Praticas", description = "Rercurso para gerenciamento de práticas")
 public interface PraticaResourceOpenApi {
 
-    @ApiOperation(value = "FIND BY ID", notes = "Consulta uma pratica pelo Id.")
-    ResponseEntity<ResponseDTO<Pratica>> findById(@ApiParam(value = "ID da pratica", example = "1") Long id);
+    @Operation(summary = "Consulta uma pratica pelo Id.")
+    ResponseEntity<ResponseDTO<Pratica>> findById(@Parameter(description = "ID da pratica", example = "1") Long id);
 
 }

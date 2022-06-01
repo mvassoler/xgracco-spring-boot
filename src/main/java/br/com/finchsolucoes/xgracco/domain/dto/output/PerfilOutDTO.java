@@ -2,8 +2,7 @@ package br.com.finchsolucoes.xgracco.domain.dto.output;
 
 import br.com.finchsolucoes.xgracco.domain.dto.input.IdDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,31 +11,31 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
-@ApiModel(value = "PERFIL_OUTPUT", description = "Representa o payload de saída de um perfil")
+@Schema(name = "PERFIL_OUTPUT", description = "Representa o payload de saída de um perfil")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PerfilOutDTO extends RepresentationModel<PerfilOutDTO> {
 
-    @ApiModelProperty(value = "ID do Perfil")
+    @Schema(name = "ID do Perfil")
     @JsonProperty("id")
     private Long id;
 
-    @ApiModelProperty(value = "Nome")
+    @Schema(name = "Nome")
     @JsonProperty(value = "nome")
     private String nome;
 
-    @ApiModelProperty(value = "Descrição")
+    @Schema(name = "Descrição")
 
     @JsonProperty(value = "descrição")
     private String descricao;
 
-    @ApiModelProperty(value = "Permissões vinculadas")
+    @Schema(name = "Permissões vinculadas")
     @JsonProperty(value = "permissões")
     private List<PermissaoRelationalOutDTO> permissoes;
 
-    @ApiModelProperty(value = "Usuários vinculadas")
+    @Schema(name = "Usuários vinculadas")
     @JsonProperty(value = "usuários_id")
     private List<IdDTO> usuarios;
 }

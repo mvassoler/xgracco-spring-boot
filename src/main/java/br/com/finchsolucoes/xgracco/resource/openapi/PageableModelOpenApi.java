@@ -1,23 +1,24 @@
 package br.com.finchsolucoes.xgracco.resource.openapi;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 
-@ApiModel("Pageable")
+@Tag(name = "Pageable")
 @Data
 public class PageableModelOpenApi {
 
-    @ApiModelProperty(example = "0", value = "Número da página (começa em 0)")
+    @Schema(example = "0", description = "Número da página (começa em 0)")
     private int number;
 
-    @ApiModelProperty(example = "10", value = "Quantidade de elementos por página")
+    @Schema(example = "10", description = "Quantidade de elementos por página")
     private int size;
 
-    @ApiModelProperty(example = "10", value = "Quantidade de páginas")
+    @Schema(example = "10", description = "Quantidade de páginas")
     private int totalPages;
 
-    @ApiModelProperty(example = "10", value = "Quantidade de registros da consulta")
+    @Schema(example = "10", description = "Quantidade de registros da consulta")
     private int totalElements;
 
 }

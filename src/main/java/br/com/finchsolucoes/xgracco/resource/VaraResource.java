@@ -11,7 +11,6 @@ import br.com.finchsolucoes.xgracco.domain.query.Sorter;
 import br.com.finchsolucoes.xgracco.hateoas.Hateoas;
 import br.com.finchsolucoes.xgracco.resource.openapi.VaraResourceOpenApi;
 import br.com.finchsolucoes.xgracco.service.VaraService;
-import io.swagger.annotations.Api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

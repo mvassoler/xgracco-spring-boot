@@ -2,32 +2,31 @@ package br.com.finchsolucoes.xgracco.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@ApiModel(value = "DETELE_OUTPUT", description = "Representa o payload de saída de uma exclusão")
+@Schema(name = "DETELE_OUTPUT", description = "Representa o payload de saída de uma exclusão")
 @Getter
 @Setter
 public class DeletedDTO implements Serializable {
 
-    @ApiModelProperty(value = "Mensagem do processo")
+    @Schema(name = "Mensagem do processo")
     @JsonProperty("mensagem")
     private String message;
 
-    @ApiModelProperty(value = "Tabela")
+    @Schema(name = "Tabela")
     @JsonProperty("tabela")
     private String table;
 
-    @ApiModelProperty(value = "ID do registro excluído")
+    @Schema(name = "ID do registro excluído")
     @JsonProperty("id")
     private Long id;
 
-    @ApiModelProperty(value = "Data e hora da exclusão")
+    @Schema(name = "Data e hora da exclusão")
     @JsonProperty("data_hora")
     @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
     private LocalDateTime dateTime;

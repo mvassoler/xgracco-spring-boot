@@ -1,17 +1,21 @@
 package br.com.finchsolucoes.xgracco.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
 
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
-@ApiModel("Problema")
+@Schema(name = "Problema")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 @Builder
@@ -22,35 +26,35 @@ public class ErrorDetailsDTO implements Serializable{
     @Serial
     private static final long serialVersionUID = -7766453300222693652L;
 
-    @ApiModelProperty(example = "400", position = 1)
+    @Schema(example = "400")
     private Integer status;
 
-    @ApiModelProperty(value = "Data e hora do problema")
+    @Schema(name = "Data e hora do problema")
     private OffsetDateTime timestamp;
 
-    @ApiModelProperty(example = "https://finchsolucoes.com.br/dados-invalidos", position = 10)
+    @Schema(example = "https://finchsolucoes.com.br/dados-invalidos")
     private String type;
 
-    @ApiModelProperty(example = "Dados inválidos", position = 15)
+    @Schema(example = "Dados inválidos")
     private String title;
 
-    @ApiModelProperty(example = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.",  position = 20)
+    @Schema(example = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.")
     private String detail;
 
-    @ApiModelProperty(example = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.",  position = 25)
+    @Schema(example = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.")
     private String userMessage;
 
     private List<Object> objects;
 
-    @ApiModel("ObjetoProblema")
+    @Schema(name = "ObjetoProblema")
     @Getter
     @Builder
     public static class Object {
 
-        @ApiModelProperty(example = "descrição")
+        @Schema(name = "descrição")
         private String name;
 
-        @ApiModelProperty(example = "Descrição obritatória.")
+        @Schema(name = "Descrição obritatória.")
         private String userMessage;
 
     }

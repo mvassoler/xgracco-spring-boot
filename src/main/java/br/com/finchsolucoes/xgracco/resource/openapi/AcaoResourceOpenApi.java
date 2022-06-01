@@ -6,38 +6,45 @@ import br.com.finchsolucoes.xgracco.domain.dto.input.AcaoInDTO;
 import br.com.finchsolucoes.xgracco.domain.dto.output.AcaoOutDTO;
 import br.com.finchsolucoes.xgracco.domain.enums.EnumInstancia;
 import br.com.finchsolucoes.xgracco.domain.query.Sorter;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 
-@Api(tags = "Ações")
+@Tag(name = "Ações", description = "Recurso para gerenciamento de ações")
 public interface AcaoResourceOpenApi {
 
-    @ApiOperation(value = "CREATE", notes = "Registra uma nova ação.")
+//    @Operation(value = "CREATE", notes = "Registra uma nova ação.")
+    @Operation(summary = "Registra uma nova ação" )
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Ação cadastrada"))
-    ResponseEntity<ResponseDTO<AcaoOutDTO>> create(@ApiParam(name = "PAYLOAD", value = "Representação de uma ação") final AcaoInDTO dto);
+    ResponseEntity<ResponseDTO<AcaoOutDTO>> create(@Parameter(name = "PAYLOAD", description = "Representação de uma ação") final AcaoInDTO dto);
 
-    @ApiOperation(value = "UPDATE",notes = "Atualiza uma ação.")
-    ResponseEntity<ResponseDTO<AcaoOutDTO>>  update(@ApiParam(value = "ID da ação", example = "1") Long id,
-                                                           @ApiParam(name = "PAYLOAD", value = "Representação de uma ação") AcaoInDTO dto) ;
+    @Operation(summary = "Atualiza uma ação.")
+    ResponseEntity<ResponseDTO<AcaoOutDTO>>  update(@Parameter(description = "ID da ação", example = "1") Long id,
+                                                           @Parameter(name = "PAYLOAD", description = "Representação de uma ação") AcaoInDTO dto) ;
 
-    @ApiOperation(value = "DELETE",notes = "Exclui uma ação.")
-    ResponseEntity<ResponseDTO<DeletedDTO>> remove(@ApiParam(value = "ID da ação", example = "1")  final Long id) ;
+    @Operation(summary = "Exclui uma ação.")
+    ResponseEntity<ResponseDTO<DeletedDTO>> remove(@Parameter(description = "ID da ação", example = "1")  final Long id) ;
 
-    @ApiOperation(value = "FIND BY ID",notes = "Consulta uma ação pelo Id.")
-    ResponseEntity<ResponseDTO<AcaoOutDTO>> findById(@ApiParam(value = "ID da ação", example = "1") final Long id) ;
+    @Operation(summary = "Consulta uma ação pelo Id.")
+    ResponseEntity<ResponseDTO<AcaoOutDTO>> findById(@Parameter(description = "ID da ação", example = "1") final Long id) ;
 
-    @ApiOperation(value = "FIND ALL", notes = "Retorna uma lista paginada das ações.", response = AcaoOutDTO[].class)
-    ResponseEntity<PagedModel<EntityModel<AcaoOutDTO>>> find(@ApiParam(value = "Descrição de uma ação", example = "Notificar")  final String descricao,
-                                                             @ApiParam(value = "Instância", example = "PRIMEIRA")  final EnumInstancia instancia,
-                                                             @ApiParam(value = "ID de uma prática", example = "1")  final Long idPratica,
-                                                             @ApiParam(value = "Propriedade de filtro das ações", example = "descricao")  final String sortProperty,
-                                                             @ApiParam(value = "Ordenação dos dados", example = "ASC")  final Sorter.Direction sortDirection,
-                                                             @ApiParam(value = "Número da página", example = "1")  final Long page) ;
+    @Operation(summary = "Retorna uma lista paginada das ações.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operação realizada com sucesso",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = AcaoOutDTO.class)))) })
+    ResponseEntity<PagedModel<EntityModel<AcaoOutDTO>>> find(@Parameter(description = "Descrição de uma ação", example = "Notificar")  final String descricao,
+                                                             @Parameter(description = "Instância", example = "PRIMEIRA")  final EnumInstancia instancia,
+                                                             @Parameter(description = "ID de uma prática", example = "1")  final Long idPratica,
+                                                             @Parameter(description = "Propriedade de filtro das ações", example = "descricao")  final String sortProperty,
+                                                             @Parameter(description = "Ordenação dos dados", example = "ASC")  final Sorter.Direction sortDirection,
+                                                             @Parameter(description = "Número da página", example = "1")  final Long page) ;
 
 }
