@@ -194,11 +194,13 @@
 <!--			<version>2.3.4.RELEASE</version>-->
 <!--		</dependency>-->
 
-		<!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf -->
 		<dependency>
-			<groupId>org.thymeleaf</groupId>
-			<artifactId>thymeleaf</artifactId>
-			<version>3.0.12.RELEASE</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring4 -->
@@ -255,6 +257,16 @@
 			<version>3.0.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- dependency for saml2 -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-saml2-service-provider</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
